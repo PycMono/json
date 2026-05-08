@@ -1,0 +1,64 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400" width="800" height="400">
+  <defs>
+    <linearGradient id="stepGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#78350f"/>
+      <stop offset="100%" style="stop-color:#d97706"/>
+    </linearGradient>
+    <linearGradient id="arrowGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#fde68a"/>
+      <stop offset="100%" style="stop-color:#f59e0b"/>
+    </linearGradient>
+    <filter id="sh">
+      <feDropShadow dx="0" dy="3" stdDeviation="6" flood-opacity="0.08"/>
+    </filter>
+  </defs>
+  <rect width="800" height="400" fill="#fffbeb" rx="12"/>
+  <text x="400" y="42" font-family="system-ui, sans-serif" font-size="18" font-weight="700" fill="#0f172a" text-anchor="middle">三步完成浏览器指纹检测</text>
+
+  <!-- Step 1 -->
+  <rect x="40" y="70" width="210" height="280" rx="16" fill="white" filter="url(#sh)"/>
+  <circle cx="145" cy="120" r="35" fill="#fef3c7"/>
+  <text x="145" y="128" font-family="system-ui, sans-serif" font-size="32" text-anchor="middle">🔍</text>
+  <circle cx="70" cy="90" r="16" fill="url(#stepGrad)"/>
+  <text x="70" y="96" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="white" text-anchor="middle">1</text>
+  <text x="145" y="180" font-family="system-ui, sans-serif" font-size="15" font-weight="600" fill="#0f172a" text-anchor="middle">点击开始扫描</text>
+  <text x="145" y="210" font-family="system-ui, sans-serif" font-size="12" fill="#64748b" text-anchor="middle">一键启动全面检测</text>
+  <text x="145" y="230" font-family="system-ui, sans-serif" font-size="12" fill="#64748b" text-anchor="middle">无需安装任何软件</text>
+  <text x="145" y="260" font-family="system-ui, sans-serif" font-size="12" fill="#64748b" text-anchor="middle">数据不离开浏览器</text>
+  <rect x="95" y="285" width="100" height="32" rx="16" fill="#fef3c7" stroke="#fde68a" stroke-width="1"/>
+  <text x="145" y="306" font-family="system-ui, sans-serif" font-size="11" fill="#78350f" text-anchor="middle">秒级启动</text>
+
+  <!-- Arrow 1 -->
+  <path d="M260 210 L290 210" stroke="url(#arrowGrad)" stroke-width="3" stroke-linecap="round"/>
+  <path d="M285 200 L295 210 L285 220" fill="none" stroke="#d97706" stroke-width="3" stroke-linecap="round"/>
+
+  <!-- Step 2 -->
+  <rect x="300" y="70" width="210" height="280" rx="16" fill="white" filter="url(#sh)"/>
+  <circle cx="405" cy="120" r="35" fill="#fef3c7"/>
+  <text x="405" y="128" font-family="system-ui, sans-serif" font-size="32" text-anchor="middle">⚡</text>
+  <circle cx="330" cy="90" r="16" fill="url(#stepGrad)"/>
+  <text x="330" y="96" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="white" text-anchor="middle">2</text>
+  <text x="405" y="180" font-family="system-ui, sans-serif" font-size="15" font-weight="600" fill="#0f172a" text-anchor="middle">自动深度扫描</text>
+  <text x="405" y="210" font-family="system-ui, sans-serif" font-size="12" fill="#64748b" text-anchor="middle">检测12+追踪向量</text>
+  <text x="405" y="230" font-family="system-ui, sans-serif" font-size="12" fill="#64748b" text-anchor="middle">分析浏览器唯一性</text>
+  <text x="405" y="260" font-family="system-ui, sans-serif" font-size="12" fill="#64748b" text-anchor="middle">生成隐私风险报告</text>
+  <rect x="355" y="285" width="100" height="32" rx="16" fill="#fef3c7" stroke="#fde68a" stroke-width="1"/>
+  <text x="405" y="306" font-family="system-ui, sans-serif" font-size="11" fill="#78350f" text-anchor="middle">全面覆盖</text>
+
+  <!-- Arrow 2 -->
+  <path d="M520 210 L550 210" stroke="url(#arrowGrad)" stroke-width="3" stroke-linecap="round"/>
+  <path d="M545 200 L555 210 L545 220" fill="none" stroke="#d97706" stroke-width="3" stroke-linecap="round"/>
+
+  <!-- Step 3 -->
+  <rect x="560" y="70" width="210" height="280" rx="16" fill="white" filter="url(#sh)"/>
+  <circle cx="665" cy="120" r="35" fill="#fef2f2"/>
+  <text x="665" y="128" font-family="system-ui, sans-serif" font-size="32" text-anchor="middle">🛡️</text>
+  <circle cx="590" cy="90" r="16" fill="#92400e"/>
+  <text x="590" y="96" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="white" text-anchor="middle">3</text>
+  <text x="665" y="180" font-family="system-ui, sans-serif" font-size="15" font-weight="600" fill="#0f172a" text-anchor="middle">获取防护方案</text>
+  <text x="665" y="210" font-family="system-ui, sans-serif" font-size="12" fill="#64748b" text-anchor="middle">查看具体修复建议</text>
+  <text x="665" y="230" font-family="system-ui, sans-serif" font-size="12" fill="#64748b" text-anchor="middle">一键安装隐私扩展</text>
+  <text x="665" y="260" font-family="system-ui, sans-serif" font-size="12" fill="#64748b" text-anchor="middle">下载完整检测报告</text>
+  <rect x="615" y="285" width="100" height="32" rx="16" fill="#fef2f2" stroke="#fecaca" stroke-width="1"/>
+  <text x="665" y="306" font-family="system-ui, sans-serif" font-size="11" fill="#92400e" text-anchor="middle">立即加固</text>
+</svg>

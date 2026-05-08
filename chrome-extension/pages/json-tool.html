@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>JSON Tool - ToolBoxNova</title>
+  <link rel="stylesheet" href="shared.css">
+  <link rel="stylesheet" href="../static/css/json-tools.css">
+  <!-- json-tool.css intentionally NOT loaded — it conflicts with json-tools.css -->
+</head>
+<body class="jt-page">
+  <div id="jtToolPage" style="min-height:100vh;">
+    <div id="jtContent">
+      <div style="text-align:center;padding:40px 20px;">
+        <p style="font-size:16px;color:#666;">Loading tool...</p>
+      </div>
+    </div>
+    <div id="toastContainer"></div>
+  </div>
+
+  <!-- 1. Build editor DOM -->
+  <script src="ext-json-tool-dom.js"></script>
+  <!-- 2. Monaco Editor (local) -->
+  <script src="../static/vendor/monaco-vs/loader.js"></script>
+  <script src="ext-monaco-lock.js"></script>
+  <script src="../static/vendor/file-saver.min.js"></script>
+  <!-- 3. Set globals & overrides -->
+  <script src="ext-json-tool.js"></script>
+  <!-- 4. Shared utilities -->
+  <script src="shared.js"></script>
+  <!-- 5. Core JSON tools (creates Monaco editors, defines all shared functions) -->
+  <script src="../static/js/json-tools-core.js"></script>
+  <!-- 6. Per-tool code (all 54 tools bundled, each guarded by JT_TOOL check) -->
+  <script src="json-tools-bundle.js"></script>
+  <!-- 7. Wire up event listeners -->
+  <script src="ext-json-tool-events.js"></script>
+</body>
+</html>

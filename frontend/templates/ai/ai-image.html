@@ -1,0 +1,535 @@
+{{ template "base" . }}
+
+{{ define "extraHead" }}
+<link rel="stylesheet" href="/static/css/ai-tool-page.css?v={{ .AssetVer }}">
+<link rel="stylesheet" href="/static/css/ai-tool-nav.css?v={{ .AssetVer }}">
+<link rel="stylesheet" href="/static/css/ai-image.css?v={{ .AssetVer }}">
+
+<link rel="canonical" href="{{ .Canonical }}">
+<link rel="alternate" hreflang="zh"        href="{{ .HreflangZH }}">
+<link rel="alternate" hreflang="en"        href="{{ .HreflangEN }}">
+<link rel="alternate" hreflang="ja"        href="{{ .HreflangJA }}">
+<link rel="alternate" hreflang="ko"        href="{{ .HreflangKO }}">
+<link rel="alternate" hreflang="es"        href="{{ .HreflangSPA }}">
+<link rel="alternate" hreflang="x-default" href="{{ .Canonical }}">
+{{ end }}
+
+{{ define "content" }}
+{{ template "partials/ai_tool_nav.html" . }}
+
+<div class="page-ai-image atp-tool-page">
+
+  {{/* ─── Hero ─────────────────────────────────────────────────────── */}}
+  <section class="atp-hero aig-hero">
+    <div class="atp-hero__badges">
+      <span class="atp-badge atp-badge--accent">{{ call .T "ai-image.hero.eyebrow" }}</span>
+    </div>
+    <h1 class="atp-hero__title">
+      <span class="atp-gradient-text">{{ call .T "ai-image.hero.title" }}</span>
+    </h1>
+    <p class="atp-hero__subtitle">{{ call .T "ai-image.hero.subtitle" }}</p>
+    <div class="atp-strip">
+      <span class="atp-strip__label">✨</span>
+      <div class="atp-strip__items">
+        <span>{{ call .T "ai-image.hero.badge1" }}</span>
+        <span class="atp-sep">•</span>
+        <span>{{ call .T "ai-image.hero.badge2" }}</span>
+        <span class="atp-sep">•</span>
+        <span>{{ call .T "ai-image.hero.badge3" }}</span>
+        <span class="atp-sep">•</span>
+        <span>{{ call .T "ai-image.hero.badge4" }}</span>
+      </div>
+    </div>
+  </section>
+
+  {{/* ─── Style chips (horizontal scroll) ──────────────────────────── */}}
+  <section class="aig-style-section">
+    <div class="aig-style-inner">
+      <div class="aig-style-header">
+        <h2 class="aig-style-title">{{ call .T "ai-image.style.title" }}</h2>
+        <span class="aig-style-hint">{{ call .T "ai-image.style.hint" }}</span>
+      </div>
+      <div class="aig-style-row" id="styleRow" role="tablist" aria-label="{{ call .T "ai-image.style.title" }}">
+        <button class="aig-style-chip" type="button" data-style="photoreal"
+                data-suffix="photorealistic, 8K, ultra detailed, natural lighting"
+                data-cat="realistic"
+                data-ga data-ga-action="mode_select" data-ga-category="ai-image" data-ga-label="style_photoreal">
+          <span class="aig-style-icon" aria-hidden="true">📷</span>
+          <span class="aig-style-name">{{ call .T "ai-image.style.photoreal" }}</span>
+        </button>
+        <button class="aig-style-chip" type="button" data-style="cinematic"
+                data-suffix="cinematic lighting, film grain, dramatic mood, depth of field"
+                data-cat="realistic"
+                data-ga data-ga-action="mode_select" data-ga-category="ai-image" data-ga-label="style_cinematic">
+          <span class="aig-style-icon" aria-hidden="true">🎬</span>
+          <span class="aig-style-name">{{ call .T "ai-image.style.cinematic" }}</span>
+        </button>
+        <button class="aig-style-chip" type="button" data-style="anime"
+                data-suffix="anime style, vibrant colors, detailed eyes, cel shading"
+                data-cat="anime"
+                data-ga data-ga-action="mode_select" data-ga-category="ai-image" data-ga-label="style_anime">
+          <span class="aig-style-icon" aria-hidden="true">🎌</span>
+          <span class="aig-style-name">{{ call .T "ai-image.style.anime" }}</span>
+        </button>
+        <button class="aig-style-chip" type="button" data-style="render3d"
+                data-suffix="3D render, octane render, soft shadows, studio lighting"
+                data-cat="artistic"
+                data-ga data-ga-action="mode_select" data-ga-category="ai-image" data-ga-label="style_render3d">
+          <span class="aig-style-icon" aria-hidden="true">🧊</span>
+          <span class="aig-style-name">{{ call .T "ai-image.style.render3d" }}</span>
+        </button>
+        <button class="aig-style-chip" type="button" data-style="watercolor"
+                data-suffix="watercolor painting, soft brush strokes, paper texture, pastel"
+                data-cat="artistic"
+                data-ga data-ga-action="mode_select" data-ga-category="ai-image" data-ga-label="style_watercolor">
+          <span class="aig-style-icon" aria-hidden="true">🎨</span>
+          <span class="aig-style-name">{{ call .T "ai-image.style.watercolor" }}</span>
+        </button>
+        <button class="aig-style-chip" type="button" data-style="flat"
+                data-suffix="flat illustration, vector style, minimal, clean lines"
+                data-cat="artistic"
+                data-ga data-ga-action="mode_select" data-ga-category="ai-image" data-ga-label="style_flat">
+          <span class="aig-style-icon" aria-hidden="true">🟦</span>
+          <span class="aig-style-name">{{ call .T "ai-image.style.flat" }}</span>
+        </button>
+        <button class="aig-style-chip" type="button" data-style="cyberpunk"
+                data-suffix="cyberpunk, neon lights, futuristic city, blade runner"
+                data-cat="artistic"
+                data-ga data-ga-action="mode_select" data-ga-category="ai-image" data-ga-label="style_cyberpunk">
+          <span class="aig-style-icon" aria-hidden="true">🌃</span>
+          <span class="aig-style-name">{{ call .T "ai-image.style.cyberpunk" }}</span>
+        </button>
+        <button class="aig-style-chip" type="button" data-style="product"
+                data-suffix="product photography, white background, studio softbox, sharp focus"
+                data-cat="realistic"
+                data-ga data-ga-action="mode_select" data-ga-category="ai-image" data-ga-label="style_product">
+          <span class="aig-style-icon" aria-hidden="true">📦</span>
+          <span class="aig-style-name">{{ call .T "ai-image.style.product" }}</span>
+        </button>
+        <button class="aig-style-chip" type="button" data-style="logo"
+                data-suffix="logo concept, simple, geometric, vector, brand identity"
+                data-cat="artistic"
+                data-ga data-ga-action="mode_select" data-ga-category="ai-image" data-ga-label="style_logo">
+          <span class="aig-style-icon" aria-hidden="true">✦</span>
+          <span class="aig-style-name">{{ call .T "ai-image.style.logo" }}</span>
+        </button>
+        <button class="aig-style-chip" type="button" data-style="poster"
+                data-suffix="poster design, bold typography, vibrant colors, layout"
+                data-cat="artistic"
+                data-ga data-ga-action="mode_select" data-ga-category="ai-image" data-ga-label="style_poster">
+          <span class="aig-style-icon" aria-hidden="true">🪧</span>
+          <span class="aig-style-name">{{ call .T "ai-image.style.poster" }}</span>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  {{/* ─── Studio ──────────────────────────────────────────────────── */}}
+  <section class="atp-tool aig-studio" id="aiImageStudio">
+    <div class="atp-tool__grid">
+
+      {{/* ─── Left: Params panel ─────────────────────────────────── */}}
+      <aside class="atp-panel atp-panel--input aig-params" id="paramsPanel">
+
+        {{/* Mode switcher */}}
+        <div class="atp-form-group">
+          <label class="atp-label">{{ call .T "ai-image.mode.label" }}</label>
+          <div class="aig-segment" role="tablist" aria-label="{{ call .T "ai-image.mode.label" }}">
+            <button class="aig-segment__btn aig-segment__btn--active" id="tab-txt2img"
+                    role="tab" data-mode="txt2img" aria-selected="true" type="button"
+                    data-ga data-ga-action="tab_switch" data-ga-category="ai-image" data-ga-label="mode_txt2img">
+              ✏️ {{ call .T "ai-image.mode.txt2img" }}
+            </button>
+            <button class="aig-segment__btn" id="tab-img2img"
+                    role="tab" data-mode="img2img" aria-selected="false" type="button"
+                    data-ga data-ga-action="tab_switch" data-ga-category="ai-image" data-ga-label="mode_img2img">
+              🖼️ {{ call .T "ai-image.mode.img2img" }}
+            </button>
+          </div>
+        </div>
+
+        {{/* Prompt */}}
+        <div class="atp-form-group">
+          <div class="aig-label-row">
+            <label class="atp-label" for="promptInput">{{ call .T "ai-image.prompt.label" }}</label>
+            <span class="aig-token-counter" id="tokenCounter" aria-live="polite">0 / 1000</span>
+          </div>
+          <textarea
+            id="promptInput"
+            class="atp-textarea aig-prompt"
+            rows="6"
+            maxlength="1000"
+            placeholder="{{ call .T "ai-image.prompt.placeholder" }}"
+            aria-label="{{ call .T "ai-image.prompt.label" }}"
+          ></textarea>
+          <div class="aig-prompt-actions">
+            <button class="atp-btn atp-btn--outline atp-btn--sm" id="btnEnhance" type="button"
+                    data-ga data-ga-action="enhance" data-ga-category="ai-image" data-ga-label="prompt_enhance">
+              ✨ {{ call .T "ai-image.prompt.enhance" }}
+            </button>
+            <button class="atp-btn atp-btn--ghost atp-btn--sm" id="btnRandom" type="button"
+                    data-ga data-ga-action="randomize" data-ga-category="ai-image" data-ga-label="prompt_random">
+              🎲 {{ call .T "ai-image.prompt.random" }}
+            </button>
+            <button class="atp-btn atp-btn--ghost atp-btn--sm" id="btnClearPrompt" type="button"
+                    data-ga data-ga-action="clear" data-ga-category="ai-image" data-ga-label="prompt_clear">
+              🗑 {{ call .T "ai-image.prompt.clear" }}
+            </button>
+          </div>
+        </div>
+
+        {{/* Negative prompt (collapsible) */}}
+        <details class="aig-collapsible" id="negBlock">
+          <summary class="aig-collapsible__head">
+            <span>{{ call .T "ai-image.prompt.neg_label" }}</span>
+            <span class="aig-collapsible__icon">▾</span>
+          </summary>
+          <div class="aig-collapsible__body">
+            <textarea
+              id="negPromptInput"
+              class="atp-textarea aig-prompt aig-prompt--sm"
+              rows="2"
+              maxlength="500"
+              placeholder="{{ call .T "ai-image.prompt.neg_placeholder" }}"
+            ></textarea>
+            <div class="aig-quick-chips" id="negQuickInsert">
+              <span class="aig-quick-label">{{ call .T "ai-image.prompt.neg_quick" }}</span>
+              <button class="aig-quick-chip" data-insert="blurry, low quality" type="button" data-ga data-ga-action="insert_tag" data-ga-category="ai-image" data-ga-label="neg_lowq">{{ call .T "ai-image.neg.lowq" }}</button>
+              <button class="aig-quick-chip" data-insert="watermark, text, logo" type="button" data-ga data-ga-action="insert_tag" data-ga-category="ai-image" data-ga-label="neg_watermark">{{ call .T "ai-image.neg.watermark" }}</button>
+              <button class="aig-quick-chip" data-insert="bad anatomy, extra limbs" type="button" data-ga data-ga-action="insert_tag" data-ga-category="ai-image" data-ga-label="neg_deformed">{{ call .T "ai-image.neg.deformed" }}</button>
+              <button class="aig-quick-chip" data-insert="nsfw, nude" type="button" data-ga data-ga-action="insert_tag" data-ga-category="ai-image" data-ga-label="neg_nsfw">NSFW</button>
+            </div>
+          </div>
+        </details>
+
+        {{/* img2img upload (hidden by default) */}}
+        <div class="atp-form-group aig-img2img" id="img2imgBlock" style="display:none">
+          <label class="atp-label">{{ call .T "ai-image.img2img.upload" }}</label>
+          <div class="aig-dropzone" id="img2imgDropzone"
+               role="button" tabindex="0"
+               aria-label="{{ call .T "ai-image.img2img.drag" }}">
+            <div class="aig-dropzone__placeholder" id="dropzonePlaceholder">
+              <span class="aig-dropzone__icon" aria-hidden="true">📁</span>
+              <span>{{ call .T "ai-image.img2img.drag" }}</span>
+            </div>
+            <img id="initImagePreview" class="aig-dropzone__preview" style="display:none" alt="Reference image">
+            <input type="file" id="initImageInput" accept="image/jpeg,image/png,image/webp"
+                   style="display:none" aria-hidden="true">
+          </div>
+          <div class="aig-slider-row">
+            <label class="atp-label" for="strengthSlider">
+              {{ call .T "ai-image.img2img.strength" }}
+              <span class="aig-tip" data-tip="{{ call .T "ai-image.img2img.strength_tip" }}">?</span>
+            </label>
+            <div class="aig-slider-line">
+              <input type="range" id="strengthSlider" min="0" max="1" step="0.05" value="0.75" class="aig-range">
+              <span class="aig-slider-val" id="strengthVal">0.75</span>
+            </div>
+          </div>
+        </div>
+
+        {{/* Model selector */}}
+        <div class="atp-form-group">
+          <label class="atp-label">{{ call .T "ai-image.model.label" }}</label>
+          <div class="aig-cat-tabs" role="group" aria-label="Model categories">
+            <button class="aig-cat-btn aig-cat-btn--active" data-cat="all" type="button" data-ga data-ga-action="filter" data-ga-category="ai-image" data-ga-label="model_cat_all">{{ call .T "ai-image.model.category.all" }}</button>
+            <button class="aig-cat-btn" data-cat="anime" type="button" data-ga data-ga-action="filter" data-ga-category="ai-image" data-ga-label="model_cat_anime">{{ call .T "ai-image.model.category.anime" }}</button>
+            <button class="aig-cat-btn" data-cat="realistic" type="button" data-ga data-ga-action="filter" data-ga-category="ai-image" data-ga-label="model_cat_realistic">{{ call .T "ai-image.model.category.realistic" }}</button>
+            <button class="aig-cat-btn" data-cat="artistic" type="button" data-ga data-ga-action="filter" data-ga-category="ai-image" data-ga-label="model_cat_artistic">{{ call .T "ai-image.model.category.artistic" }}</button>
+          </div>
+          <div class="aig-model-grid" id="modelCardGrid">
+            {{/* 模型卡片由 JS 动态渲染 */}}
+          </div>
+          {{/* 隐藏的 select 保持兼容性 */}}
+          <select id="modelSelect" class="atp-select" style="display:none" aria-hidden="true">
+            <option value="" disabled>{{ call .T "ai-image.model.loading" }}</option>
+          </select>
+        </div>
+
+        {{/* Image size */}}
+        <div class="atp-form-group">
+          <label class="atp-label">{{ call .T "ai-image.size.label" }}</label>
+          <div class="aig-size-grid" role="group">
+            <button class="aig-size-btn" data-w="512" data-h="768" data-ratio="2:3" type="button" data-ga data-ga-action="size_select" data-ga-category="ai-image" data-ga-label="size_portrait">
+              <span class="aig-size-shape aig-size-shape--portrait"></span>
+              <span class="aig-size-name">{{ call .T "ai-image.size.portrait" }}</span>
+              <span class="aig-size-dim">2:3</span>
+            </button>
+            <button class="aig-size-btn aig-size-btn--active" data-w="1024" data-h="1024" data-ratio="1:1" type="button" data-ga data-ga-action="size_select" data-ga-category="ai-image" data-ga-label="size_square">
+              <span class="aig-size-shape aig-size-shape--square"></span>
+              <span class="aig-size-name">{{ call .T "ai-image.size.square" }}</span>
+              <span class="aig-size-dim">1:1</span>
+            </button>
+            <button class="aig-size-btn" data-w="768" data-h="512" data-ratio="3:2" type="button" data-ga data-ga-action="size_select" data-ga-category="ai-image" data-ga-label="size_landscape">
+              <span class="aig-size-shape aig-size-shape--landscape"></span>
+              <span class="aig-size-name">{{ call .T "ai-image.size.landscape" }}</span>
+              <span class="aig-size-dim">3:2</span>
+            </button>
+            <button class="aig-size-btn" data-w="1024" data-h="576" data-ratio="16:9" type="button" data-ga data-ga-action="size_select" data-ga-category="ai-image" data-ga-label="size_wide">
+              <span class="aig-size-shape aig-size-shape--wide"></span>
+              <span class="aig-size-name">{{ call .T "ai-image.size.wide" }}</span>
+              <span class="aig-size-dim">16:9</span>
+            </button>
+            <button class="aig-size-btn" data-w="576" data-h="1024" data-ratio="9:16" type="button" data-ga data-ga-action="size_select" data-ga-category="ai-image" data-ga-label="size_tall">
+              <span class="aig-size-shape aig-size-shape--tall"></span>
+              <span class="aig-size-name">{{ call .T "ai-image.size.tall" }}</span>
+              <span class="aig-size-dim">9:16</span>
+            </button>
+            <button class="aig-size-btn" data-w="1024" data-h="768" data-ratio="4:3" type="button" data-ga data-ga-action="size_select" data-ga-category="ai-image" data-ga-label="size_medium">
+              <span class="aig-size-shape aig-size-shape--medium"></span>
+              <span class="aig-size-name">{{ call .T "ai-image.size.medium" }}</span>
+              <span class="aig-size-dim">4:3</span>
+            </button>
+          </div>
+        </div>
+
+        {{/* Batch count */}}
+        <div class="atp-form-group">
+          <label class="atp-label">{{ call .T "ai-image.params.batch" }}</label>
+          <div class="aig-segment" role="group">
+            <button class="aig-segment__btn aig-segment__btn--active" data-count="1" type="button" data-ga data-ga-action="batch_select" data-ga-category="ai-image" data-ga-label="batch_1">1</button>
+            <button class="aig-segment__btn" data-count="2" type="button" data-ga data-ga-action="batch_select" data-ga-category="ai-image" data-ga-label="batch_2">2</button>
+            <button class="aig-segment__btn" data-count="4" type="button" data-ga data-ga-action="batch_select" data-ga-category="ai-image" data-ga-label="batch_4">4</button>
+          </div>
+        </div>
+
+        {{/* Advanced params */}}
+        <details class="aig-collapsible" id="advancedBlock">
+          <summary class="aig-collapsible__head">
+            <span>{{ call .T "ai-image.params.label" }}</span>
+            <span class="aig-collapsible__icon">▾</span>
+          </summary>
+          <div class="aig-collapsible__body">
+
+            <div class="aig-slider-row">
+              <label class="atp-label" for="stepsSlider">
+                {{ call .T "ai-image.params.steps" }}
+                <span class="aig-tip" data-tip="{{ call .T "ai-image.params.steps_tip" }}">?</span>
+              </label>
+              <div class="aig-slider-line">
+                <input type="range" id="stepsSlider" min="10" max="50" step="1" value="20" class="aig-range">
+                <span class="aig-slider-val" id="stepsVal">20</span>
+              </div>
+            </div>
+
+            <div class="aig-slider-row">
+              <label class="atp-label" for="cfgSlider">
+                {{ call .T "ai-image.params.cfg" }}
+                <span class="aig-tip" data-tip="{{ call .T "ai-image.params.cfg_tip" }}">?</span>
+              </label>
+              <div class="aig-slider-line">
+                <input type="range" id="cfgSlider" min="1" max="20" step="0.5" value="7" class="aig-range">
+                <span class="aig-slider-val" id="cfgVal">7.0</span>
+              </div>
+            </div>
+
+            <div class="aig-form-row">
+              <div>
+                <label class="atp-label" for="samplerSelect">{{ call .T "ai-image.params.sampler" }}</label>
+                <select id="samplerSelect" class="atp-select">
+                  <option value="DPM++ 2M Karras">DPM++ 2M Karras</option>
+                  <option value="Euler a">Euler a</option>
+                  <option value="DDIM">DDIM</option>
+                  <option value="DPM++ SDE Karras">DPM++ SDE Karras</option>
+                  <option value="UniPC">UniPC</option>
+                </select>
+              </div>
+              <div>
+                <label class="atp-label" for="seedInput">{{ call .T "ai-image.params.seed" }}</label>
+                <input type="number" id="seedInput" class="atp-input"
+                       placeholder="{{ call .T "ai-image.params.seed_placeholder" }}"
+                       min="-1" max="2147483647">
+              </div>
+            </div>
+
+            <label class="aig-toggle-row">
+              <span>{{ call .T "ai-image.params.hires" }}</span>
+              <span class="aig-toggle">
+                <input type="checkbox" id="hiresToggle">
+                <span class="aig-toggle-track"></span>
+              </span>
+            </label>
+
+          </div>
+        </details>
+
+        {{/* Privacy notice */}}
+        <p class="aig-privacy">🔒 {{ call .T "ai-image.privacy.notice" }}</p>
+
+        {{/* Generate button */}}
+        <button class="atp-btn atp-btn--primary atp-btn--full aig-btn-generate" id="btnGenerate" type="button"
+                aria-label="{{ call .T "ai-image.btn.generate" }}"
+                data-ga data-ga-action="generate" data-ga-category="ai-image" data-ga-label="generate_image">
+          <span class="aig-btn-text">{{ call .T "ai-image.btn.generate" }}</span>
+          <span class="aig-btn-spinner" aria-hidden="true"></span>
+        </button>
+        <p class="aig-btn-hint">{{ call .T "ai-image.btn.hint" }}</p>
+
+      </aside>
+
+      {{/* ─── Right: Results panel ───────────────────────────────── */}}
+      <div class="atp-panel aig-results" id="resultsArea">
+
+        {{/* Empty state */}}
+        <div class="aig-empty" id="resultsEmpty" role="status" aria-live="polite">
+          <div class="aig-empty__icon" aria-hidden="true">🎨</div>
+          <h3 class="aig-empty__title">{{ call .T "ai-image.result.empty_title" }}</h3>
+          <p class="aig-empty__text">{{ call .T "ai-image.result.empty_text" }}</p>
+          <div class="aig-empty__samples" aria-hidden="true">
+            <div class="aig-empty__sample"><span>👤</span><em>{{ call .T "ai-image.result.sample1" }}</em></div>
+            <div class="aig-empty__sample"><span>📦</span><em>{{ call .T "ai-image.result.sample2" }}</em></div>
+            <div class="aig-empty__sample"><span>🌸</span><em>{{ call .T "ai-image.result.sample3" }}</em></div>
+            <div class="aig-empty__sample"><span>🪧</span><em>{{ call .T "ai-image.result.sample4" }}</em></div>
+          </div>
+        </div>
+
+        {{/* Loading state */}}
+        <div class="aig-loading" id="resultsLoading" style="display:none" aria-live="assertive">
+          <div class="aig-loading__glow" aria-hidden="true"></div>
+          <p class="aig-loading__text" id="loadingText">{{ call .T "ai-image.result.generating" }}</p>
+          <ol class="aig-loading__stages">
+            <li class="aig-loading__stage" data-stage="0">{{ call .T "ai-image.loading.stage1" }}</li>
+            <li class="aig-loading__stage" data-stage="1">{{ call .T "ai-image.loading.stage2" }}</li>
+            <li class="aig-loading__stage" data-stage="2">{{ call .T "ai-image.loading.stage3" }}</li>
+            <li class="aig-loading__stage" data-stage="3">{{ call .T "ai-image.loading.stage4" }}</li>
+          </ol>
+          <div class="aig-skeleton-grid" id="skeletonGrid"></div>
+        </div>
+
+        {{/* Results grid */}}
+        <div class="aig-results-grid" id="resultsGrid" style="display:none"></div>
+
+        {{/* Result metadata */}}
+        <div class="aig-results-meta" id="resultsMeta" style="display:none">
+          <div class="aig-meta-item">
+            <span class="aig-meta-label">{{ call .T "ai-image.result.model_label" }}</span>
+            <span class="aig-meta-val" id="metaModel">—</span>
+          </div>
+          <div class="aig-meta-item">
+            <span class="aig-meta-label">{{ call .T "ai-image.result.seed_label" }}</span>
+            <span class="aig-meta-val" id="metaSeed">—</span>
+          </div>
+          <div class="aig-meta-item">
+            <span class="aig-meta-label">{{ call .T "ai-image.result.time_label" }}</span>
+            <span class="aig-meta-val" id="metaTime">—</span>
+          </div>
+        </div>
+
+        {{/* Result actions */}}
+        <div class="aig-results-actions" id="resultsActions" style="display:none">
+          <button class="atp-btn atp-btn--ghost atp-btn--sm" id="btnCopyParams" type="button" data-ga data-ga-action="copy" data-ga-category="ai-image" data-ga-label="copy_params">
+            📋 {{ call .T "ai-image.result.copy_params" }}
+          </button>
+          <button class="atp-btn atp-btn--ghost atp-btn--sm" id="btnRegen" type="button" data-ga data-ga-action="regenerate" data-ga-category="ai-image" data-ga-label="regenerate_image">
+            🔄 {{ call .T "ai-image.result.regenerate" }}
+          </button>
+          <button class="atp-btn atp-btn--outline atp-btn--sm" id="btnDownloadAll" type="button" data-ga data-ga-action="download" data-ga-category="ai-image" data-ga-label="download_all">
+            ⬇️ {{ call .T "ai-image.btn.download_all" }}
+          </button>
+        </div>
+
+      </div>
+
+    </div>
+  </section>
+
+  {{/* ─── Inspiration prompts ───────────────────────────────────── */}}
+  <section class="aig-inspiration" id="examples">
+    <div class="aig-section-inner">
+      <h2 class="aig-section-title">🎨 {{ call .T "ai-image.inspiration.title" }}</h2>
+      <p class="aig-section-subtitle">{{ call .T "ai-image.inspiration.subtitle" }}</p>
+      <div class="aig-inspire-grid" id="inspirationGrid">
+        <button class="aig-inspire-card" type="button" data-prompt="{{ call .T "ai-image.inspiration.p1" }}" data-ga data-ga-action="use_prompt" data-ga-category="ai-image" data-ga-label="inspiration_1">
+          <div class="aig-inspire-thumb aig-inspire-thumb--1" aria-hidden="true"></div>
+          <p class="aig-inspire-text">{{ call .T "ai-image.inspiration.p1" }}</p>
+        </button>
+        <button class="aig-inspire-card" type="button" data-prompt="{{ call .T "ai-image.inspiration.p2" }}" data-ga data-ga-action="use_prompt" data-ga-category="ai-image" data-ga-label="inspiration_2">
+          <div class="aig-inspire-thumb aig-inspire-thumb--2" aria-hidden="true"></div>
+          <p class="aig-inspire-text">{{ call .T "ai-image.inspiration.p2" }}</p>
+        </button>
+        <button class="aig-inspire-card" type="button" data-prompt="{{ call .T "ai-image.inspiration.p3" }}" data-ga data-ga-action="use_prompt" data-ga-category="ai-image" data-ga-label="inspiration_3">
+          <div class="aig-inspire-thumb aig-inspire-thumb--3" aria-hidden="true"></div>
+          <p class="aig-inspire-text">{{ call .T "ai-image.inspiration.p3" }}</p>
+        </button>
+        <button class="aig-inspire-card" type="button" data-prompt="{{ call .T "ai-image.inspiration.p4" }}" data-ga data-ga-action="use_prompt" data-ga-category="ai-image" data-ga-label="inspiration_4">
+          <div class="aig-inspire-thumb aig-inspire-thumb--4" aria-hidden="true"></div>
+          <p class="aig-inspire-text">{{ call .T "ai-image.inspiration.p4" }}</p>
+        </button>
+        <button class="aig-inspire-card" type="button" data-prompt="{{ call .T "ai-image.inspiration.p5" }}" data-ga data-ga-action="use_prompt" data-ga-category="ai-image" data-ga-label="inspiration_5">
+          <div class="aig-inspire-thumb aig-inspire-thumb--5" aria-hidden="true"></div>
+          <p class="aig-inspire-text">{{ call .T "ai-image.inspiration.p5" }}</p>
+        </button>
+        <button class="aig-inspire-card" type="button" data-prompt="{{ call .T "ai-image.inspiration.p6" }}" data-ga data-ga-action="use_prompt" data-ga-category="ai-image" data-ga-label="inspiration_6">
+          <div class="aig-inspire-thumb aig-inspire-thumb--6" aria-hidden="true"></div>
+          <p class="aig-inspire-text">{{ call .T "ai-image.inspiration.p6" }}</p>
+        </button>
+      </div>
+    </div>
+  </section>
+
+  {{/* ─── Brief description + landing link ──────────────────────── */}}
+  <section class="aig-brief">
+    <div class="aig-brief-inner">
+      <p class="aig-brief-text">{{ call .T "ai-image.brief.text" }}</p>
+      <a class="aig-brief-link" href="{{ .LandingURL }}" data-ga data-ga-action="navigate" data-ga-category="ai-image" data-ga-label="landing_link">{{ call .T "ai-image.brief.link" }} →</a>
+    </div>
+  </section>
+
+  {{/* ─── i18n bridge for JS ───────────────────────────────────── */}}
+  <script>window.__I18N__ = {{ toJSON .Translations }};</script>
+
+  {{/* ─── Toast ────────────────────────────────────────────────── */}}
+  <div id="ai-image-toast" class="aig-toast" role="alert" aria-live="assertive" aria-atomic="true"></div>
+
+  {{/* ─── History FAB + Drawer ────────────────────────────────── */}}
+  <button class="aig-fab" id="historyFab" type="button"
+          aria-label="{{ call .T "ai-image.btn.history" }}"
+          data-ga data-ga-action="toggle" data-ga-category="ai-image" data-ga-label="history_drawer">
+    <span aria-hidden="true">🕐</span>
+  </button>
+
+  <div class="aig-drawer" id="historyDrawer" role="dialog"
+       aria-label="{{ call .T "ai-image.history.title" }}" aria-hidden="true">
+    <div class="aig-drawer__header">
+      <h3>{{ call .T "ai-image.history.title" }}</h3>
+      <button class="aig-drawer__close" id="drawerClose" type="button" aria-label="Close" data-ga data-ga-action="close" data-ga-category="ai-image" data-ga-label="history_drawer">✕</button>
+    </div>
+    <div class="aig-drawer__body" id="drawerBody">
+      <p class="aig-drawer__empty" id="historyEmpty">{{ call .T "ai-image.history.empty" }}</p>
+      <div class="aig-drawer__list" id="historyList"></div>
+    </div>
+    <div class="aig-drawer__footer">
+      <button class="atp-btn atp-btn--outline atp-btn--sm" id="btnClearHistory" type="button" data-ga data-ga-action="clear" data-ga-category="ai-image" data-ga-label="history_clear">
+        {{ call .T "ai-image.history.clear" }}
+      </button>
+    </div>
+  </div>
+  <div class="aig-drawer-overlay" id="drawerOverlay" aria-hidden="true"></div>
+
+  {{/* ─── Image preview Modal ────────────────────────────────── */}}
+  <div class="aig-modal" id="previewModal" role="dialog"
+       aria-label="Image Preview" aria-hidden="true" style="display:none">
+    <div class="aig-modal__overlay" id="modalOverlay"></div>
+    <div class="aig-modal__content">
+      <button class="aig-modal__close" id="modalClose" type="button" aria-label="Close" data-ga data-ga-action="close" data-ga-category="ai-image" data-ga-label="preview_modal">✕</button>
+      <img id="previewImg" class="aig-modal__img" alt="Generated image">
+      <div class="aig-modal__actions">
+        <button class="atp-btn atp-btn--outline atp-btn--sm" id="modalDownload" type="button" data-ga data-ga-action="download" data-ga-category="ai-image" data-ga-label="modal_download">
+          ⬇️ {{ call .T "ai-image.btn.download" }}
+        </button>
+        <button class="atp-btn atp-btn--ghost atp-btn--sm" id="modalCopyPrompt" type="button" data-ga data-ga-action="copy" data-ga-category="ai-image" data-ga-label="modal_copy_prompt">
+          📋 {{ call .T "ai-image.btn.copy_prompt" }}
+        </button>
+        <button class="atp-btn atp-btn--ghost atp-btn--sm" id="modalUseThis" type="button" data-ga data-ga-action="reuse" data-ga-category="ai-image" data-ga-label="modal_use_this">
+          🔁 {{ call .T "ai-image.btn.use_this" }}
+        </button>
+      </div>
+    </div>
+  </div>
+
+</div>
+{{ end }}
+
+{{ define "extraScript" }}
+<script src="/static/js/ai-image.js?v={{ .AssetVer }}"></script>
+{{ end }}

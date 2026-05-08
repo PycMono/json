@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400" width="800" height="400">
+  <defs>
+    <linearGradient id="stepGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0d9488"/>
+      <stop offset="100%" style="stop-color:#14b8a6"/>
+    </linearGradient>
+    <linearGradient id="arrowGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#99f6e4"/>
+      <stop offset="100%" style="stop-color:#14b8a6"/>
+    </linearGradient>
+    <filter id="sh">
+      <feDropShadow dx="0" dy="3" stdDeviation="6" flood-opacity="0.08"/>
+    </filter>
+  </defs>
+  <rect width="800" height="400" fill="#f8fffe" rx="12"/>
+
+  <!-- Title -->
+  <text x="400" y="42" font-family="system-ui, sans-serif" font-size="18" font-weight="700" fill="#0f172a" text-anchor="middle">三步完成短信验证</text>
+
+  <!-- Step 1 -->
+  <rect x="40" y="70" width="210" height="280" rx="16" fill="white" filter="url(#sh)"/>
+  <circle cx="145" cy="120" r="35" fill="#f0fdfa"/>
+  <text x="145" y="128" font-family="system-ui, sans-serif" font-size="32" text-anchor="middle">🔍</text>
+  <circle cx="70" cy="90" r="16" fill="url(#stepGrad)"/>
+  <text x="70" y="96" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="white" text-anchor="middle">1</text>
+  <text x="145" y="180" font-family="system-ui, sans-serif" font-size="15" font-weight="600" fill="#0f172a" text-anchor="middle">选择平台和国家</text>
+  <text x="145" y="210" font-family="system-ui, sans-serif" font-size="12" fill="#64748b" text-anchor="middle">从 700+ 平台中搜索</text>
+  <text x="145" y="230" font-family="system-ui, sans-serif" font-size="12" fill="#64748b" text-anchor="middle">目标应用</text>
+  <text x="145" y="260" font-family="system-ui, sans-serif" font-size="12" fill="#64748b" text-anchor="middle">选择国家和运营商</text>
+  <rect x="95" y="285" width="100" height="32" rx="16" fill="#f0fdfa" stroke="#99f6e4" stroke-width="1"/>
+  <text x="145" y="306" font-family="system-ui, sans-serif" font-size="11" fill="#0d9488" text-anchor="middle">~10 秒</text>
+
+  <!-- Arrow 1 -->
+  <path d="M260 210 L290 210" stroke="url(#arrowGrad)" stroke-width="3" stroke-linecap="round"/>
+  <path d="M285 200 L295 210 L285 220" fill="none" stroke="#14b8a6" stroke-width="3" stroke-linecap="round"/>
+
+  <!-- Step 2 -->
+  <rect x="300" y="70" width="210" height="280" rx="16" fill="white" filter="url(#sh)"/>
+  <circle cx="405" cy="120" r="35" fill="#f0fdfa"/>
+  <text x="405" y="128" font-family="system-ui, sans-serif" font-size="32" text-anchor="middle">📱</text>
+  <circle cx="330" cy="90" r="16" fill="url(#stepGrad)"/>
+  <text x="330" y="96" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="white" text-anchor="middle">2</text>
+  <text x="405" y="180" font-family="system-ui, sans-serif" font-size="15" font-weight="600" fill="#0f172a" text-anchor="middle">获取虚拟号码</text>
+  <text x="405" y="210" font-family="system-ui, sans-serif" font-size="12" fill="#64748b" text-anchor="middle">一键购买虚拟手机号</text>
+  <text x="405" y="230" font-family="system-ui, sans-serif" font-size="12" fill="#64748b" text-anchor="middle">复制到目标平台</text>
+  <text x="405" y="260" font-family="system-ui, sans-serif" font-size="12" fill="#64748b" text-anchor="middle">号码立即生效</text>
+  <rect x="355" y="285" width="100" height="32" rx="16" fill="#f0fdfa" stroke="#99f6e4" stroke-width="1"/>
+  <text x="405" y="306" font-family="system-ui, sans-serif" font-size="11" fill="#0d9488" text-anchor="middle">即时可用</text>
+
+  <!-- Arrow 2 -->
+  <path d="M520 210 L550 210" stroke="url(#arrowGrad)" stroke-width="3" stroke-linecap="round"/>
+  <path d="M545 200 L555 210 L545 220" fill="none" stroke="#14b8a6" stroke-width="3" stroke-linecap="round"/>
+
+  <!-- Step 3 -->
+  <rect x="560" y="70" width="210" height="280" rx="16" fill="white" filter="url(#sh)"/>
+  <circle cx="665" cy="120" r="35" fill="#ecfdf5"/>
+  <text x="665" y="128" font-family="system-ui, sans-serif" font-size="32" text-anchor="middle">✅</text>
+  <circle cx="590" cy="90" r="16" fill="#059669"/>
+  <text x="590" y="96" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="white" text-anchor="middle">3</text>
+  <text x="665" y="180" font-family="system-ui, sans-serif" font-size="15" font-weight="600" fill="#0f172a" text-anchor="middle">接收验证码</text>
+  <text x="665" y="210" font-family="system-ui, sans-serif" font-size="12" fill="#64748b" text-anchor="middle">验证码自动到达</text>
+  <text x="665" y="230" font-family="system-ui, sans-serif" font-size="12" fill="#64748b" text-anchor="middle">一键复制完成验证</text>
+  <text x="665" y="260" font-family="system-ui, sans-serif" font-size="12" fill="#64748b" text-anchor="middle">全程不到 30 秒</text>
+  <rect x="615" y="285" width="100" height="32" rx="16" fill="#ecfdf5" stroke="#6ee7b7" stroke-width="1"/>
+  <text x="665" y="306" font-family="system-ui, sans-serif" font-size="11" fill="#059669" text-anchor="middle">~10 秒到达</text>
+</svg>

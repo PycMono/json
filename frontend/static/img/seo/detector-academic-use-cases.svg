@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500">
+  <rect width="800" height="500" fill="#fffbeb" rx="16"/>
+  <text x="400" y="45" fill="#111827" font-size="22" font-weight="bold" text-anchor="middle">Who Uses Academic AI Detection?</text>
+  <rect x="40" y="70" width="340" height="120" rx="12" fill="#fff" stroke="#f59e0b" stroke-width="2"/>
+  <text x="60" y="100" fill="#f59e0b" font-size="28">📚</text>
+  <text x="95" y="100" fill="#111827" font-size="15" font-weight="bold">Journal Authors</text>
+  <text x="60" y="125" fill="#6b7280" font-size="12">Verify your manuscript before submission to</text>
+  <text x="60" y="142" fill="#6b7280" font-size="12">journals that use advanced AI detection. Ensure</text>
+  <text x="60" y="159" fill="#6b7280" font-size="12">your work passes all reviewer checks.</text>
+  <rect x="420" y="70" width="340" height="120" rx="12" fill="#fff" stroke="#f59e0b" stroke-width="2"/>
+  <text x="440" y="100" fill="#f59e0b" font-size="28">🔬</text>
+  <text x="475" y="100" fill="#111827" font-size="15" font-weight="bold">Research Institutions</text>
+  <text x="440" y="125" fill="#6b7280" font-size="12">Verify research integrity before publication.</text>
+  <text x="440" y="142" fill="#6b7280" font-size="12">Screen thesis, dissertations, and lab reports</text>
+  <text x="440" y="159" fill="#6b7280" font-size="12">with institutional-grade accuracy.</text>
+  <rect x="40" y="210" width="340" height="120" rx="12" fill="#fff" stroke="#f59e0b" stroke-width="2"/>
+  <text x="60" y="240" fill="#f59e0b" font-size="28">👨‍🏫</text>
+  <text x="95" y="240" fill="#111827" font-size="15" font-weight="bold">Peer Reviewers</text>
+  <text x="60" y="265" fill="#6b7280" font-size="12">During peer review, check if submissions contain</text>
+  <text x="60" y="282" fill="#6b7280" font-size="12">AI-generated content. Our detector provides</text>
+  <text x="60" y="299" fill="#6b7280" font-size="12">objective, evidence-based assessments.</text>
+  <rect x="420" y="210" width="340" height="120" rx="12" fill="#fff" stroke="#f59e0b" stroke-width="2"/>
+  <text x="440" y="240" fill="#f59e0b" font-size="28">🎓</text>
+  <text x="475" y="240" fill="#111827" font-size="15" font-weight="bold">Graduate Students</text>
+  <text x="440" y="265" fill="#6b7280" font-size="12">Before submitting your thesis or dissertation,</text>
+  <text x="440" y="282" fill="#6b7280" font-size="12">run it through our academic detector to</text>
+  <text x="440" y="299" fill="#6b7280" font-size="12">ensure it meets integrity standards.</text>
+  <rect x="40" y="350" width="340" height="120" rx="12" fill="#fff" stroke="#f59e0b" stroke-width="2"/>
+  <text x="60" y="380" fill="#f59e0b" font-size="28">🏛️</text>
+  <text x="95" y="380" fill="#111827" font-size="15" font-weight="bold">University Admins</text>
+  <text x="60" y="405" fill="#6b7280" font-size="12">Screen student submissions institution-wide.</text>
+  <text x="60" y="422" fill="#6b7280" font-size="12">Our batch-ready detection provides systematic</text>
+  <text x="60" y="439" fill="#6b7280" font-size="12">verification for academic integrity offices.</text>
+  <rect x="420" y="350" width="340" height="120" rx="12" fill="#fff" stroke="#f59e0b" stroke-width="2"/>
+  <text x="440" y="380" fill="#f59e0b" font-size="28">📖</text>
+  <text x="475" y="380" fill="#111827" font-size="15" font-weight="bold">Academic Publishers</text>
+  <text x="440" y="405" fill="#6b7280" font-size="12">Pre-screen submissions at scale. Our API</text>
+  <text x="440" y="422" fill="#6b7280" font-size="12">integration enables automated screening of</text>
+  <text x="440" y="439" fill="#6b7280" font-size="12">manuscripts before human review begins.</text>
+</svg>

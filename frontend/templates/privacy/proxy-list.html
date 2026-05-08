@@ -1,0 +1,258 @@
+{{ template "base" . }}
+
+{{ define "extraHead" }}
+<link rel="stylesheet" href="/static/css/proxy-list.css?v={{ .AssetVer }}">
+<link rel="stylesheet" href="/static/css/proxy-list-seo.css?v={{ .AssetVer }}">
+{{ end }}
+
+{{ define "content" }}
+
+{{/* Hero 区 — 放在容器外部，占满全宽 */}}
+<section class="tool-hero">
+  <h1>{{ call .T "proxy-list.hero.title" }}</h1>
+  <p class="hero-subtitle">{{ call .T "proxy-list.hero.subtitle" }}</p>
+  <div class="hero-badges">
+    <span class="badge">🟢 {{ call .T "proxy-list.hero.badge1" }}</span>
+    <span class="badge">🌍 {{ call .T "proxy-list.hero.badge2" }}</span>
+    <span class="badge">🔒 {{ call .T "proxy-list.hero.badge3" }}</span>
+  </div>
+
+  {{/* 统计数字卡片 */}}
+  <div class="proxy-stats-bar">
+    <div class="stat-item">
+      <span class="stat-num" id="statTotal">{{ .TotalCount }}</span>
+      <span class="stat-label">{{ call .T "proxy-list.stat.total" }}</span>
+    </div>
+    <div class="stat-divider"></div>
+    <div class="stat-item">
+      <span class="stat-num stat-alive" id="statAlive">{{ .AliveCount }}</span>
+      <span class="stat-label">{{ call .T "proxy-list.stat.alive" }}</span>
+    </div>
+    <div class="stat-divider"></div>
+    <div class="stat-item">
+      <span class="stat-num" id="statCountries">{{ .CountryCount }}</span>
+      <span class="stat-label">{{ call .T "proxy-list.stat.countries" }}</span>
+    </div>
+  </div>
+</section>
+
+<div class="page-proxy-list">
+
+  {{/* ── 广告位：Hero 下方 ── */}}
+  <div style="text-align:center;margin:0 auto 12px;">
+    {{- template "partials/ad_slot.html" (dict "Ctx" . "SlotID" "proxy-list-top" "Size" "728x90" "Mobile" "320x50") }}
+  </div>
+
+  {{/* 同步状态条 + 操作栏 */}}
+  <section class="sync-toolbar">
+    <div class="sync-left">
+      <span class="sync-dot" id="syncDot"></span>
+      <span class="sync-label" id="syncLabel">{{ call .T "proxy-list.sync.last" }}: —</span>
+      <div class="sync-progress-wrap">
+        <div class="sync-progress" id="syncProgress"></div>
+      </div>
+      <span class="sync-next" id="syncNext"></span>
+    </div>
+    <div class="sync-right">
+      <button id="btnRefresh" class="btn btn-ghost btn-sm" title="Refresh" data-ga="proxy_refresh">
+        🔄 <span class="btn-text">{{ call .T "proxy-list.btn.refresh" }}</span>
+      </button>
+      <button id="btnExportCSV" class="btn btn-ghost btn-sm" title="Export CSV" data-ga="proxy_export_csv">
+        ⬇ <span class="btn-text">CSV</span>
+      </button>
+      <button id="btnExportAll" class="btn btn-ghost btn-sm" title="Export All" data-ga="proxy_export_all">
+        📦 <span class="btn-text">{{ call .T "proxy-list.btn.export_all" }}</span>
+      </button>
+    </div>
+  </section>
+
+  {{/* 协议快速切换标签 */}}
+  <section class="proto-tabs">
+    <button class="proto-tab active" data-proto="all" data-ga="proxy_filter_all">{{ call .T "proxy-list.filter.all" }}</button>
+    <button class="proto-tab" data-proto="http" data-ga="proxy_filter_http">HTTP</button>
+    <button class="proto-tab" data-proto="https" data-ga="proxy_filter_https">HTTPS</button>
+    <button class="proto-tab" data-proto="socks4" data-ga="proxy_filter_socks4">SOCKS4</button>
+    <button class="proto-tab" data-proto="socks5" data-ga="proxy_filter_socks5">SOCKS5</button>
+  </section>
+
+  {{/* ── 侧边栏布局：左右广告 + 主内容 ── */}}
+  <div class="proxy-sidebar-layout">
+    <aside class="proxy-sidebar-ad">
+      {{- template "partials/ad_slot.html" (dict "Ctx" . "SlotID" "proxy-list-left" "Size" "160x600" "MobileHide" true) }}
+    </aside>
+
+    <div class="proxy-main">
+    {{/* 筛选栏 */}}
+  <section class="proxy-filter-bar">
+    <div class="filter-row">
+      {{/* 搜索 */}}
+      <div class="filter-group filter-search">
+        <label class="filter-label">🔍 {{ call .T "proxy-list.search.placeholder" }}</label>
+        <input type="text" id="filterSearch" class="filter-input" placeholder="{{ call .T "proxy-list.search.placeholder" }}" autocomplete="off">
+      </div>
+
+      {{/* 国家筛选 */}}
+      <div class="filter-group">
+        <label class="filter-label">🌍 {{ call .T "proxy-list.filter.country" }}</label>
+        <select id="filterCountry" class="filter-select" data-filter="country">
+          <option value="all">{{ call .T "proxy-list.filter.all" }}</option>
+        </select>
+      </div>
+
+      {{/* 匿名度筛选 */}}
+      <div class="filter-group">
+        <label class="filter-label">🔒 {{ call .T "proxy-list.filter.anonymity" }}</label>
+        <select id="filterAnonymity" class="filter-select" data-filter="anonymity">
+          <option value="all">{{ call .T "proxy-list.filter.all" }}</option>
+          <option value="elite">{{ call .T "proxy-list.anonymity.elite" }}</option>
+          <option value="anonymous">{{ call .T "proxy-list.anonymity.anonymous" }}</option>
+          <option value="transparent">{{ call .T "proxy-list.anonymity.transparent" }}</option>
+        </select>
+      </div>
+
+      {{/* 排序 */}}
+      <div class="filter-group">
+        <label class="filter-label">↕ Sort</label>
+        <select id="filterSort" class="filter-select" data-filter="sort">
+          <option value="latency">{{ call .T "proxy-list.table.latency" }}</option>
+          <option value="uptime">{{ call .T "proxy-list.table.uptime" }}</option>
+          <option value="checked">{{ call .T "proxy-list.table.checked" }}</option>
+        </select>
+      </div>
+
+      <div class="filter-actions">
+        <button id="btnReset" class="btn btn-ghost btn-sm" data-ga="proxy_filter_reset">
+          ✕ {{ call .T "proxy-list.btn.reset" }}
+        </button>
+      </div>
+    </div>
+
+    {{/* 结果计数 */}}
+    <div class="filter-result-count" id="filterResultCount"></div>
+  </section>
+
+  {{/* 主功能区 */}}
+  <section>
+    <div class="proxy-table-wrap">
+
+      {{/* 加载骨架 */}}
+      <div id="proxyLoading" class="proxy-loading">
+        <div class="skeleton-row" aria-hidden="true"></div>
+        <div class="skeleton-row" aria-hidden="true"></div>
+        <div class="skeleton-row" aria-hidden="true"></div>
+        <div class="skeleton-row" aria-hidden="true"></div>
+        <div class="skeleton-row" aria-hidden="true"></div>
+        <div class="skeleton-row" aria-hidden="true"></div>
+        <div class="skeleton-row" aria-hidden="true"></div>
+        <div class="skeleton-row" aria-hidden="true"></div>
+      </div>
+
+      {{/* 桌面端 Table */}}
+      <table class="proxy-table" id="proxyTable" style="display:none" role="table">
+        <thead>
+          <tr>
+            <th class="th-check"><input type="checkbox" id="selectAll" title="Select All" data-ga="proxy_select_all"></th>
+            <th class="th-sortable" data-sort="ip">{{ call .T "proxy-list.table.ip" }} <span class="sort-icon"></span></th>
+            <th>{{ call .T "proxy-list.table.protocol" }}</th>
+            <th class="th-sortable" data-sort="country">{{ call .T "proxy-list.table.country" }} <span class="sort-icon"></span></th>
+            <th>{{ call .T "proxy-list.table.anonymity" }}</th>
+            <th class="th-sortable th-latency" data-sort="latency">{{ call .T "proxy-list.table.latency" }} <span class="sort-icon">↕</span></th>
+            <th class="th-sortable" data-sort="uptime">{{ call .T "proxy-list.table.uptime" }} <span class="sort-icon">↕</span></th>
+            <th class="th-sortable" data-sort="checked">{{ call .T "proxy-list.table.checked" }} <span class="sort-icon"></span></th>
+            <th>{{ call .T "proxy-list.table.action" }}</th>
+          </tr>
+        </thead>
+        <tbody id="proxyTableBody"></tbody>
+      </table>
+
+      {{/* 批量操作栏 */}}
+      <div id="bulkActionBar" class="bulk-action-bar" style="display:none">
+        <span id="bulkCount">0 selected</span>
+        <button id="btnBulkCopy" class="btn btn-ghost btn-sm" data-ga="proxy_bulk_copy">📋 {{ call .T "proxy-list.btn.copy_selected" }}</button>
+        <button id="btnBulkExport" class="btn btn-ghost btn-sm" data-ga="proxy_bulk_export">⬇ {{ call .T "proxy-list.btn.export_selected" }}</button>
+      </div>
+
+      {{/* 移动端卡片列表 */}}
+      <div class="proxy-card-list" id="proxyCardList" style="display:none"></div>
+
+      {{/* 空状态 */}}
+      <div id="proxyEmpty" class="proxy-empty" style="display:none">
+        <div class="empty-icon">🔍</div>
+        <p id="proxyEmptyMsg">{{ call .T "proxy-list.error.empty" }}</p>
+      </div>
+
+      {{/* 错误状态 */}}
+      <div id="proxyError" class="proxy-error" style="display:none">
+        <div class="error-icon">⚠️</div>
+        <p id="proxyErrorMsg">{{ call .T "proxy-list.error.fetch_fail" }}</p>
+        <button onclick="window.ProxyList.reload()" class="btn btn-outline btn-sm" data-ga="proxy_error_retry">Retry</button>
+      </div>
+
+      {{/* 分页 */}}
+      <div class="proxy-pagination" id="proxyPagination" style="display:none">
+        <button id="btnPrevPage" class="btn btn-ghost btn-sm" disabled data-ga="proxy_page_prev">{{ call .T "proxy-list.pagination.prev" }}</button>
+        <span class="page-info" id="pageInfo">1 / 1</span>
+        <button id="btnNextPage" class="btn btn-ghost btn-sm" data-ga="proxy_page_next">{{ call .T "proxy-list.pagination.next" }}</button>
+        <select id="pageSizeSelect" class="page-size-select">
+          <option value="10" selected>10 / page</option>
+          <option value="20">20 / page</option>
+        </select>
+      </div>
+    </div>
+  </section>
+
+    </div>{{/* /proxy-main */}}
+
+    <aside class="proxy-sidebar-ad">
+      {{- template "partials/ad_slot.html" (dict "Ctx" . "SlotID" "proxy-list-right" "Size" "160x600" "MobileHide" true) }}
+    </aside>
+  </div>{{/* /proxy-sidebar-layout */}}
+
+  {{/* ── 广告位：列表下方 / 底部角页之前 ── */}}
+  <div style="text-align:center;margin:16px auto 0;">
+    {{- template "partials/ad_slot.html" (dict "Ctx" . "SlotID" "proxy-list-bottom" "Size" "728x90" "Mobile" "320x50") }}
+  </div>
+
+  {{/* i18n 注入（供 JS 使用） */}}
+  <script>
+  window.__PROXY_I18N__ = {
+    copied:        {{ call .T "proxy-list.toast.copied" | printf "%q" }},
+    exportOk:      {{ call .T "proxy-list.toast.export_ok" | printf "%q" }},
+    refreshOk:     {{ call .T "proxy-list.toast.refresh_ok" | printf "%q" }},
+    refreshLimit:  {{ call .T "proxy-list.toast.refresh_limit" | printf "%q" }},
+    fetchFail:     {{ call .T "proxy-list.error.fetch_fail" | printf "%q" }},
+    empty:         {{ call .T "proxy-list.error.empty" | printf "%q" }},
+    syncing:       {{ call .T "proxy-list.sync.syncing" | printf "%q" }},
+    lastSync:      {{ call .T "proxy-list.sync.last" | printf "%q" }},
+    nextSync:      {{ call .T "proxy-list.sync.next" | printf "%q" }},
+    syncStale:     {{ call .T "proxy-list.sync.stale" | printf "%q" }},
+    copy:          {{ call .T "proxy-list.btn.copy" | printf "%q" }},
+    copiedBtn:     {{ call .T "proxy-list.btn.copied" | printf "%q" }},
+    anonTransparent: {{ call .T "proxy-list.anonymity.transparent" | printf "%q" }},
+    anonAnonymous:   {{ call .T "proxy-list.anonymity.anonymous" | printf "%q" }},
+    anonElite:       {{ call .T "proxy-list.anonymity.elite" | printf "%q" }},
+    bulkCopySuccess: {{ call .T "proxy-list.toast.bulk_copy" | printf "%q" }},
+    exportAll:       {{ call .T "proxy-list.btn.export_all" | printf "%q" }},
+    pagPrev:         {{ call .T "proxy-list.pagination.prev" | printf "%q" }},
+    pagNext:         {{ call .T "proxy-list.pagination.next" | printf "%q" }},
+    pagPerPage:      {{ call .T "proxy-list.pagination.per_page" | printf "%q" }}
+  };
+  </script>
+
+  {{/* Toast 容器 */}}
+  <div id="proxy-list-toast" class="toast" role="alert" aria-live="assertive"></div>
+
+</div>{{/* /page-proxy-list */}}
+
+{{/* SEO 文章内容（放在 page-proxy-list 外部，确保全宽展示 + footer 清晰可见） */}}
+{{ if .SEOArticle }}
+<section class="proxy-seo-section">
+  {{ .SEOArticle }}
+</section>
+{{ end }}
+
+{{ end }}
+
+{{ define "extraScript" }}
+<script src="/static/js/proxy-list.js?v={{ .AssetVer }}"></script>
+{{ end }}

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Image Compressor - ToolBoxNova</title>
+  <link rel="stylesheet" href="shared.css">
+  <link rel="stylesheet" href="../static/css/img-compress.css">
+  <style>
+    .ic-drop-zone {
+      border: 2px dashed #ccc; border-radius: 16px; padding: 48px 24px; text-align: center;
+      cursor: pointer; transition: all 0.2s; background: #fff; margin: 16px 0;
+    }
+    .ic-drop-zone:hover, .ic-drop-zone.drag-over { border-color: #1a73e8; background: #f0f7ff; }
+    .ic-drop-icon { font-size: 48px; display: block; }
+    .ic-drop-title { font-size: 18px; margin: 12px 0 8px; color: #333; }
+    .ic-drop-hint { font-size: 13px; color: #888; margin: 0 0 16px; }
+    .ic-btn-upload {
+      padding: 10px 24px; background: #1a73e8; color: #fff; border: none; border-radius: 8px;
+      font-size: 14px; cursor: pointer;
+    }
+    .ic-btn-upload:hover { background: #1557b0; }
+    .ic-drop-formats { margin-top: 12px; font-size: 12px; color: #aaa; }
+    .ic-drop-formats span { background: #f0f0f0; padding: 2px 8px; border-radius: 4px; margin: 0 2px; }
+
+    .ic-opts-bar { background: #fff; border-radius: 12px; padding: 16px; margin-bottom: 16px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1); display: flex; gap: 24px; flex-wrap: wrap; }
+    .ic-opt-group label { display: block; font-size: 12px; color: #888; margin-bottom: 4px; }
+    .ic-slider { width: 160px; }
+    .ic-slider-val { font-size: 14px; font-weight: 600; color: #1a73e8; }
+    .ic-select { padding: 6px 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 13px; }
+    .ic-input { padding: 6px 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 13px; width: 80px; }
+
+    .ic-results-wrap { background: #fff; border-radius: 12px; padding: 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+    .ic-results-list { margin-bottom: 12px; }
+    .ic-results-stat { font-size: 13px; color: #666; }
+    .ic-bulk { display: flex; gap: 8px; }
+    .ic-btn-dl-all { padding: 8px 16px; background: #34a853; color: #fff; border: none; border-radius: 6px; cursor: pointer; }
+    .ic-btn-dl-all:hover { background: #2d9249; }
+    .ic-btn-clear-all { padding: 8px 16px; background: #fff; border: 1px solid #ddd; border-radius: 6px; cursor: pointer; }
+    .ic-btn-clear-all:hover { background: #f0f0f0; }
+  </style>
+</head>
+<body>
+  <nav class="ext-topbar">
+    <a href="#" class="ext-topbar__back">← Back</a>
+    <h1 class="ext-topbar__title">Image Compressor</h1>
+    <a href="https://toolboxnova.com/img/compress" target="_blank" class="ext-topbar__site">Web ↗</a>
+  </nav>
+
+  <div class="ext-container">
+    <!-- Drop Zone -->
+    <div class="ic-drop-zone" id="dropZone">
+      <span class="ic-drop-icon">📂</span>
+      <h2 class="ic-drop-title">Drop images here or click to upload</h2>
+      <p class="ic-drop-hint">Supports batch processing — compress multiple images at once</p>
+      <button type="button" class="ic-btn-upload" id="uploadBtn">📁 Browse Files</button>
+      <input type="file" id="fileInput" accept="image/*" multiple style="display:none">
+      <div class="ic-drop-formats">
+        <span>JPG</span><span>PNG</span><span>WebP</span><span>GIF</span><span>BMP</span>
+        · Multiple files supported
+      </div>
+    </div>
+
+    <!-- Options -->
+    <div class="ic-opts-bar" id="optsBar" style="display:none">
+      <div class="ic-opt-group">
+        <label>Quality</label>
+        <div style="display:flex;align-items:center;gap:8px">
+          <input type="range" id="qualitySlider" class="ic-slider" min="1" max="100" value="80">
+          <span class="ic-slider-val" id="qualityValue">80%</span>
+        </div>
+      </div>
+      <div class="ic-opt-group">
+        <label>Output Format</label>
+        <select id="outputFormat" class="ic-select">
+          <option value="auto">Original Format</option>
+          <option value="jpg">JPEG</option>
+          <option value="png">PNG</option>
+          <option value="webp">WebP</option>
+        </select>
+      </div>
+      <div class="ic-opt-group">
+        <label>Max Width (px)</label>
+        <input type="number" id="maxWidth" class="ic-input" placeholder="1920">
+      </div>
+    </div>
+
+    <!-- Results -->
+    <div class="ic-results-wrap" id="resultsSection" style="display:none">
+      <div class="ic-results-list" id="resultsList"></div>
+      <div style="display:flex;align-items:center;justify-content:space-between">
+        <span id="resultsHeader" class="ic-results-stat"></span>
+        <div class="ic-bulk">
+          <button class="ic-btn-dl-all" id="downloadAllBtn">⬇ Download All</button>
+          <button class="ic-btn-clear-all" id="clearAllBtn">🗑 Clear</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="../static/vendor/browser-image-compression.js"></script>
+  <script src="../static/vendor/jszip.min.js"></script>
+  <script src="../static/vendor/file-saver.min.js"></script>
+  <script src="shared.js"></script>
+  <script src="../static/js/img-compress-engine.js"></script>
+  <script src="../static/js/img-compress.js"></script>
+  <script src="ext-image-compress.js"></script>
+</body>
+</html>

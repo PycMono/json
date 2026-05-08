@@ -1,0 +1,91 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="800" height="500">
+  <defs>
+    <linearGradient id="g1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#be123c"/>
+      <stop offset="100%" style="stop-color:#f43f5e"/>
+    </linearGradient>
+    <filter id="sh">
+      <feDropShadow dx="0" dy="2" stdDeviation="4" flood-opacity="0.08"/>
+    </filter>
+  </defs>
+  <rect width="800" height="500" fill="#fff1f2" rx="12"/>
+  <text x="400" y="42" font-family="system-ui, sans-serif" font-size="18" font-weight="700" fill="#0f172a" text-anchor="middle">使用场景 — 谁需要账号泄露检查</text>
+
+  <!-- 6 use-case cards -->
+  <g transform="translate(30, 70)">
+    <rect x="0" y="0" width="240" height="130" rx="12" fill="white" filter="url(#sh)"/>
+    <circle cx="40" cy="45" r="28" fill="#fff1f2"/>
+    <text x="40" y="53" font-family="system-ui, sans-serif" font-size="24" text-anchor="middle">👤</text>
+    <text x="130" y="35" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#0f172a">普通网民自查</text>
+    <text x="20" y="80" font-family="system-ui, sans-serif" font-size="11" fill="#64748b">定期检查邮箱是否泄露</text>
+    <text x="20" y="95" font-family="system-ui, sans-serif" font-size="11" fill="#64748b">及时发现账号安全风险</text>
+    <text x="20" y="110" font-family="system-ui, sans-serif" font-size="11" fill="#64748b">保护个人数字身份安全</text>
+  </g>
+  <g transform="translate(280, 70)">
+    <rect x="0" y="0" width="240" height="130" rx="12" fill="white" filter="url(#sh)"/>
+    <circle cx="40" cy="45" r="28" fill="#fef2f2"/>
+    <text x="40" y="53" font-family="system-ui, sans-serif" font-size="24" text-anchor="middle">🏢</text>
+    <text x="130" y="35" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#0f172a">企业安全审计</text>
+    <text x="20" y="80" font-family="system-ui, sans-serif" font-size="11" fill="#64748b">批量检查员工邮箱安全</text>
+    <text x="20" y="95" font-family="system-ui, sans-serif" font-size="11" fill="#64748b">评估企业整体安全态势</text>
+    <text x="20" y="110" font-family="system-ui, sans-serif" font-size="11" fill="#64748b">满足合规安全要求</text>
+  </g>
+  <g transform="translate(530, 70)">
+    <rect x="0" y="0" width="240" height="130" rx="12" fill="white" filter="url(#sh)"/>
+    <circle cx="40" cy="45" r="28" fill="#fff1f2"/>
+    <text x="40" y="53" font-family="system-ui, sans-serif" font-size="24" text-anchor="middle">💻</text>
+    <text x="130" y="35" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#0f172a">开发者安全</text>
+    <text x="20" y="80" font-family="system-ui, sans-serif" font-size="11" fill="#64748b">检查开发测试账号安全</text>
+    <text x="20" y="95" font-family="system-ui, sans-serif" font-size="11" fill="#64748b">确保API密钥未泄露</text>
+    <text x="20" y="110" font-family="system-ui, sans-serif" font-size="11" fill="#64748b">集成安全检查流程</text>
+  </g>
+  <g transform="translate(30, 210)">
+    <rect x="0" y="0" width="240" height="130" rx="12" fill="white" filter="url(#sh)"/>
+    <circle cx="40" cy="45" r="28" fill="#fef2f2"/>
+    <text x="40" y="53" font-family="system-ui, sans-serif" font-size="24" text-anchor="middle">🔐</text>
+    <text x="130" y="35" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#0f172a">密码管理优化</text>
+    <text x="20" y="80" font-family="system-ui, sans-serif" font-size="11" fill="#64748b">检测密码是否出现在泄露库</text>
+    <text x="20" y="95" font-family="system-ui, sans-serif" font-size="11" fill="#64748b">生成高强度替代密码</text>
+    <text x="20" y="110" font-family="system-ui, sans-serif" font-size="11" fill="#64748b">评估密码破解难度</text>
+  </g>
+  <g transform="translate(280, 210)">
+    <rect x="0" y="0" width="240" height="130" rx="12" fill="white" filter="url(#sh)"/>
+    <circle cx="40" cy="45" r="28" fill="#fff1f2"/>
+    <text x="40" y="53" font-family="system-ui, sans-serif" font-size="24" text-anchor="middle">🌐</text>
+    <text x="130" y="35" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#0f172a">新注册前检查</text>
+    <text x="20" y="80" font-family="system-ui, sans-serif" font-size="11" fill="#64748b">注册新服务前检查邮箱</text>
+    <text x="20" y="95" font-family="system-ui, sans-serif" font-size="11" fill="#64748b">了解关联账号安全状况</text>
+    <text x="20" y="110" font-family="system-ui, sans-serif" font-size="11" fill="#64748b">评估目标平台安全记录</text>
+  </g>
+  <g transform="translate(530, 210)">
+    <rect x="0" y="0" width="240" height="130" rx="12" fill="white" filter="url(#sh)"/>
+    <circle cx="40" cy="45" r="28" fill="#fef2f2"/>
+    <text x="40" y="53" font-family="system-ui, sans-serif" font-size="24" text-anchor="middle">📰</text>
+    <text x="130" y="35" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#0f172a">安全事件追踪</text>
+    <text x="20" y="80" font-family="system-ui, sans-serif" font-size="11" fill="#64748b">浏览最新泄露事件</text>
+    <text x="20" y="95" font-family="system-ui, sans-serif" font-size="11" fill="#64748b">了解泄露影响范围</text>
+    <text x="20" y="110" font-family="system-ui, sans-serif" font-size="11" fill="#64748b">主动采取防护措施</text>
+  </g>
+
+  <!-- Bottom bar -->
+  <rect x="50" y="370" width="700" height="80" rx="14" fill="white" filter="url(#sh)"/>
+  <g transform="translate(80, 395)">
+    <text x="0" y="20" font-family="system-ui, sans-serif" font-size="22" font-weight="700" fill="#be123c">免费</text>
+    <text x="0" y="45" font-family="system-ui, sans-serif" font-size="12" fill="#64748b">无需注册</text>
+  </g>
+  <line x1="160" y1="385" x2="160" y2="435" stroke="#fecdd3" stroke-width="1"/>
+  <g transform="translate(200, 395)">
+    <text x="0" y="20" font-family="system-ui, sans-serif" font-size="22" font-weight="700" fill="#f43f5e">HIBP</text>
+    <text x="0" y="45" font-family="system-ui, sans-serif" font-size="12" fill="#64748b">权威数据源</text>
+  </g>
+  <line x1="310" y1="385" x2="310" y2="435" stroke="#fecdd3" stroke-width="1"/>
+  <g transform="translate(350, 395)">
+    <text x="0" y="20" font-family="system-ui, sans-serif" font-size="22" font-weight="700" fill="#be123c">K-匿名</text>
+    <text x="0" y="45" font-family="system-ui, sans-serif" font-size="12" fill="#64748b">密码不离开浏览器</text>
+  </g>
+  <line x1="510" y1="385" x2="510" y2="435" stroke="#fecdd3" stroke-width="1"/>
+  <g transform="translate(550, 395)">
+    <text x="0" y="20" font-family="system-ui, sans-serif" font-size="22" font-weight="700" fill="#f43f5e">4合1</text>
+    <text x="0" y="45" font-family="system-ui, sans-serif" font-size="12" fill="#64748b">多功能安全工具</text>
+  </g>
+</svg>

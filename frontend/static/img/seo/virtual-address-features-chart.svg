@@ -1,0 +1,131 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="800" height="500">
+  <defs>
+    <linearGradient id="g1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#6366f1"/>
+      <stop offset="100%" style="stop-color:#8b5cf6"/>
+    </linearGradient>
+    <filter id="sh">
+      <feDropShadow dx="0" dy="2" stdDeviation="4" flood-opacity="0.08"/>
+    </filter>
+  </defs>
+  <rect width="800" height="500" fill="#faf5ff" rx="12"/>
+
+  <!-- Title -->
+  <text x="400" y="42" font-family="system-ui, sans-serif" font-size="18" font-weight="700" fill="#0f172a" text-anchor="middle">生成的身份数据类型 — 全面覆盖</text>
+
+  <!-- Data type cards (3x4 grid) -->
+  <!-- Row 1 -->
+  <g transform="translate(30, 70)">
+    <rect x="0" y="0" width="180" height="100" rx="10" fill="white" filter="url(#sh)"/>
+    <circle cx="35" cy="35" r="22" fill="#f5f3ff"/>
+    <text x="35" y="42" font-family="system-ui, sans-serif" font-size="18" text-anchor="middle">👤</text>
+    <text x="90" y="30" font-family="system-ui, sans-serif" font-size="13" font-weight="600" fill="#0f172a" text-anchor="middle">姓名</text>
+    <text x="90" y="55" font-family="system-ui, sans-serif" font-size="11" fill="#64748b" text-anchor="middle">本地化真实姓名</text>
+    <text x="90" y="75" font-family="system-ui, sans-serif" font-size="10" fill="#a78bfa" text-anchor="middle">First + Last</text>
+  </g>
+
+  <g transform="translate(220, 70)">
+    <rect x="0" y="0" width="180" height="100" rx="10" fill="white" filter="url(#sh)"/>
+    <circle cx="35" cy="35" r="22" fill="#faf5ff"/>
+    <text x="35" y="42" font-family="system-ui, sans-serif" font-size="18" text-anchor="middle">🏠</text>
+    <text x="90" y="30" font-family="system-ui, sans-serif" font-size="13" font-weight="600" fill="#0f172a" text-anchor="middle">地址</text>
+    <text x="90" y="55" font-family="system-ui, sans-serif" font-size="11" fill="#64748b" text-anchor="middle">完整街道地址</text>
+    <text x="90" y="75" font-family="system-ui, sans-serif" font-size="10" fill="#a78bfa" text-anchor="middle">Street + City + Zip</text>
+  </g>
+
+  <g transform="translate(410, 70)">
+    <rect x="0" y="0" width="180" height="100" rx="10" fill="white" filter="url(#sh)"/>
+    <circle cx="35" cy="35" r="22" fill="#f5f3ff"/>
+    <text x="35" y="42" font-family="system-ui, sans-serif" font-size="18" text-anchor="middle">📱</text>
+    <text x="90" y="30" font-family="system-ui, sans-serif" font-size="13" font-weight="600" fill="#0f172a" text-anchor="middle">电话</text>
+    <text x="90" y="55" font-family="system-ui, sans-serif" font-size="11" fill="#64748b" text-anchor="middle">本地手机号码</text>
+    <text x="90" y="75" font-family="system-ui, sans-serif" font-size="10" fill="#a78bfa" text-anchor="middle">符合国家格式</text>
+  </g>
+
+  <g transform="translate(600, 70)">
+    <rect x="0" y="0" width="180" height="100" rx="10" fill="white" filter="url(#sh)"/>
+    <circle cx="35" cy="35" r="22" fill="#faf5ff"/>
+    <text x="35" y="42" font-family="system-ui, sans-serif" font-size="18" text-anchor="middle">📧</text>
+    <text x="90" y="30" font-family="system-ui, sans-serif" font-size="13" font-weight="600" fill="#0f172a" text-anchor="middle">邮箱</text>
+    <text x="90" y="55" font-family="system-ui, sans-serif" font-size="11" fill="#64748b" text-anchor="middle">虚拟邮箱地址</text>
+    <text x="90" y="75" font-family="system-ui, sans-serif" font-size="10" fill="#a78bfa" text-anchor="middle">可选域名</text>
+  </g>
+
+  <!-- Row 2 -->
+  <g transform="translate(30, 180)">
+    <rect x="0" y="0" width="180" height="100" rx="10" fill="white" filter="url(#sh)"/>
+    <circle cx="35" cy="35" r="22" fill="#f5f3ff"/>
+    <text x="35" y="42" font-family="system-ui, sans-serif" font-size="18" text-anchor="middle">🎂</text>
+    <text x="90" y="30" font-family="system-ui, sans-serif" font-size="13" font-weight="600" fill="#0f172a" text-anchor="middle">生日</text>
+    <text x="90" y="55" font-family="system-ui, sans-serif" font-size="11" fill="#64748b" text-anchor="middle">随机出生日期</text>
+    <text x="90" y="75" font-family="system-ui, sans-serif" font-size="10" fill="#a78bfa" text-anchor="middle">Age 18-65</text>
+  </g>
+
+  <g transform="translate(220, 180)">
+    <rect x="0" y="0" width="180" height="100" rx="10" fill="white" filter="url(#sh)"/>
+    <circle cx="35" cy="35" r="22" fill="#faf5ff"/>
+    <text x="35" y="42" font-family="system-ui, sans-serif" font-size="18" text-anchor="middle">🆔</text>
+    <text x="90" y="30" font-family="system-ui, sans-serif" font-size="13" font-weight="600" fill="#0f172a" text-anchor="middle">身份证</text>
+    <text x="90" y="55" font-family="system-ui, sans-serif" font-size="11" fill="#64748b" text-anchor="middle">虚拟身份证号</text>
+    <text x="90" y="75" font-family="system-ui, sans-serif" font-size="10" fill="#a78bfa" text-anchor="middle">符合国家算法</text>
+  </g>
+
+  <g transform="translate(410, 180)">
+    <rect x="0" y="0" width="180" height="100" rx="10" fill="white" filter="url(#sh)"/>
+    <circle cx="35" cy="35" r="22" fill="#f5f3ff"/>
+    <text x="35" y="42" font-family="system-ui, sans-serif" font-size="18" text-anchor="middle">💳</text>
+    <text x="90" y="30" font-family="system-ui, sans-serif" font-size="13" font-weight="600" fill="#0f172a" text-anchor="middle">银行卡</text>
+    <text x="90" y="55" font-family="system-ui, sans-serif" font-size="11" fill="#64748b" text-anchor="middle">虚拟卡号（测试用）</text>
+    <text x="90" y="75" font-family="system-ui, sans-serif" font-size="10" fill="#a78bfa" text-anchor="middle">BIN/IIN 校验</text>
+  </g>
+
+  <g transform="translate(600, 180)">
+    <rect x="0" y="0" width="180" height="100" rx="10" fill="white" filter="url(#sh)"/>
+    <circle cx="35" cy="35" r="22" fill="#faf5ff"/>
+    <text x="35" y="42" font-family="system-ui, sans-serif" font-size="18" text-anchor="middle">🏢</text>
+    <text x="90" y="30" font-family="system-ui, sans-serif" font-size="13" font-weight="600" fill="#0f172a" text-anchor="middle">公司</text>
+    <text x="90" y="55" font-family="system-ui, sans-serif" font-size="11" fill="#64748b" text-anchor="middle">虚拟公司名称</text>
+    <text x="90" y="75" font-family="system-ui, sans-serif" font-size="10" fill="#a78bfa" text-anchor="middle">Business Profile</text>
+  </g>
+
+  <!-- Row 3 -->
+  <g transform="translate(30, 290)">
+    <rect x="0" y="0" width="180" height="100" rx="10" fill="white" filter="url(#sh)"/>
+    <circle cx="35" cy="35" r="22" fill="#f5f3ff"/>
+    <text x="35" y="42" font-family="system-ui, sans-serif" font-size="18" text-anchor="middle">🌐</text>
+    <text x="90" y="30" font-family="system-ui, sans-serif" font-size="13" font-weight="600" fill="#0f172a" text-anchor="middle">用户名</text>
+    <text x="90" y="55" font-family="system-ui, sans-serif" font-size="11" fill="#64748b" text-anchor="middle">在线用户名</text>
+    <text x="90" y="75" font-family="system-ui, sans-serif" font-size="10" fill="#a78bfa" text-anchor="middle">Username</text>
+  </g>
+
+  <g transform="translate(220, 290)">
+    <rect x="0" y="0" width="180" height="100" rx="10" fill="white" filter="url(#sh)"/>
+    <circle cx="35" cy="35" r="22" fill="#faf5ff"/>
+    <text x="35" y="42" font-family="system-ui, sans-serif" font-size="18" text-anchor="middle">🔒</text>
+    <text x="90" y="30" font-family="system-ui, sans-serif" font-size="13" font-weight="600" fill="#0f172a" text-anchor="middle">密码</text>
+    <text x="90" y="55" font-family="system-ui, sans-serif" font-size="11" fill="#64748b" text-anchor="middle">强密码生成</text>
+    <text x="90" y="75" font-family="system-ui, sans-serif" font-size="10" fill="#a78bfa" text-anchor="middle">Secure Password</text>
+  </g>
+
+  <g transform="translate(410, 290)">
+    <rect x="0" y="0" width="180" height="100" rx="10" fill="white" filter="url(#sh)"/>
+    <circle cx="35" cy="35" r="22" fill="#f5f3ff"/>
+    <text x="35" y="42" font-family="system-ui, sans-serif" font-size="18" text-anchor="middle">🧬</text>
+    <text x="90" y="30" font-family="system-ui, sans-serif" font-size="13" font-weight="600" fill="#0f172a" text-anchor="middle">性别</text>
+    <text x="90" y="55" font-family="system-ui, sans-serif" font-size="11" fill="#64748b" text-anchor="middle">随机或指定性别</text>
+    <text x="90" y="75" font-family="system-ui, sans-serif" font-size="10" fill="#a78bfa" text-anchor="middle">Male/Female</text>
+  </g>
+
+  <g transform="translate(600, 290)">
+    <rect x="0" y="0" width="180" height="100" rx="10" fill="white" filter="url(#sh)"/>
+    <circle cx="35" cy="35" r="22" fill="#faf5ff"/>
+    <text x="35" y="42" font-family="system-ui, sans-serif" font-size="18" text-anchor="middle">🌍</text>
+    <text x="90" y="30" font-family="system-ui, sans-serif" font-size="13" font-weight="600" fill="#0f172a" text-anchor="middle">国家</text>
+    <text x="90" y="55" font-family="system-ui, sans-serif" font-size="11" fill="#64748b" text-anchor="middle">50+ 国家选择</text>
+    <text x="90" y="75" font-family="system-ui, sans-serif" font-size="10" fill="#a78bfa" text-anchor="middle">Global Coverage</text>
+  </g>
+
+  <!-- Summary bar -->
+  <rect x="50" y="410" width="700" height="60" rx="12" fill="white" filter="url(#sh)"/>
+  <text x="400" y="448" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#6366f1" text-anchor="middle">一键生成 · 批量导出 · 完全免费 · 无需注册 · 隐私安全</text>
+</svg>

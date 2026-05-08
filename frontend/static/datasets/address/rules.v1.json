@@ -1,0 +1,52 @@
+{
+  "version": "v1",
+  "countries": {
+    "US": { "group": "WESTERN", "zipRegex": "^\\d{5}$", "idRegex": "^\\d{3}-\\d{2}-\\d{4}$", "taxRegex": "^\\d{2}-\\d{7}$", "passportRegex": "^\\d{9}$", "licenseRegex": "^.{5,12}$" },
+    "GB": { "group": "WESTERN", "zipRegex": "^[A-Z]{1,2}\\d{1,2} \\d[A-Z]{2}$", "idRegex": "^[A-Z]{2}\\d{2} \\d{2} \\d{2} [A-Z]$", "taxRegex": "^\\d{3} \\d{2} \\d{2}$", "passportRegex": "^\\d{9}$", "licenseRegex": "^[A-Z]{5}\\d{6}[A-Z]{2}$" },
+    "CA": { "group": "WESTERN", "zipRegex": "^[A-Z]\\d[A-Z] \\d[A-Z]\\d$", "idRegex": "^\\d{3} \\d{3} \\d{3}$", "taxRegex": "^\\d{9}$", "passportRegex": "^[A-Z]{2}\\d{7}$", "licenseRegex": "^[A-Z]\\d{12}$" },
+    "AU": { "group": "WESTERN", "zipRegex": "^\\d{4}$", "idRegex": "^\\d{3} \\d{3} \\d{3}$", "taxRegex": "^\\d{9}$", "passportRegex": "^[A-Z]\\d{7}$", "licenseRegex": "^\\d{8}$" },
+    "DE": { "group": "WESTERN", "zipRegex": "^\\d{5}$", "idRegex": "^\\d{11}$", "taxRegex": "^\\d{3}/\\d{4}/\\d{4}$", "passportRegex": "^[A-Z]\\d{8}$", "licenseRegex": "^[A-Z]\\d{7}$" },
+    "FR": { "group": "WESTERN", "zipRegex": "^\\d{5}$", "idRegex": "^[12]\\d{14}$", "taxRegex": "^\\d{9}$", "passportRegex": "^\\d{2}[A-Z]{2}\\d{5}$", "licenseRegex": "^\\d{12}$" },
+    "IT": { "group": "WESTERN", "zipRegex": "^\\d{5}$", "idRegex": "^[A-Z]{6}\\d{2}[A-Z]\\d{2}[A-Z]\\d{3}[A-Z]$", "taxRegex": "^\\d{11}$", "passportRegex": "^[A-Z]{2}\\d{7}$", "licenseRegex": "^[A-Z]\\d{8}$" },
+    "ES": { "group": "WESTERN", "zipRegex": "^\\d{5}$", "idRegex": "^\\d{8}[TRWAGMYFPDXBNJZSQVHLCKE]$", "taxRegex": "^[A-Z]\\d{8}[A-Z]$", "passportRegex": "^[A-Z]\\d{7}[A-Z]$", "licenseRegex": "^\\d{9}$" },
+    "NL": { "group": "WESTERN", "zipRegex": "^\\d{4} [A-Z]{2}$", "idRegex": "^\\d{9}$", "taxRegex": "^\\d{9}B\\d{2}$", "passportRegex": "^[A-Z]\\d{7}$", "licenseRegex": "^\\d{8}$" },
+    "SE": { "group": "WESTERN", "zipRegex": "^\\d{5}$", "idRegex": "^(19|20)\\d{6}-\\d{4}$", "taxRegex": "^\\d{12}$", "passportRegex": "^\\d{7}$", "licenseRegex": "^\\d{8}$" },
+    "PL": { "group": "WESTERN", "zipRegex": "^\\d{2}-\\d{3}$", "idRegex": "^\\d{11}$", "taxRegex": "^\\d{10}$", "passportRegex": "^[A-Z]{2}\\d{6}$", "licenseRegex": "^\\d{8}$" },
+    "PT": { "group": "WESTERN", "zipRegex": "^\\d{4}-\\d{3}$", "idRegex": "^\\d{9}$", "taxRegex": "^\\d{9}$", "passportRegex": "^[A-Z]\\d{6}$", "licenseRegex": "^\\d{7}$" },
+    "CZ": { "group": "WESTERN", "zipRegex": "^\\d{3} \\d{2}$", "idRegex": "^\\d{6}/\\d{3,4}$", "taxRegex": "^\\d{8}$", "passportRegex": "^\\d{8}$", "licenseRegex": "^\\d{7}$" },
+    "GR": { "group": "WESTERN", "zipRegex": "^\\d{5}$", "idRegex": "^\\d{11}$", "taxRegex": "^\\d{9}$", "passportRegex": "^[A-Z]{2}\\d{6}$", "licenseRegex": "^[A-Z]\\d{7}$" },
+    "UA": { "group": "EAST_EUROPE", "zipRegex": "^\\d{5}$", "idRegex": "^\\d{9}$", "taxRegex": "^\\d{9}$", "passportRegex": "^[A-Z]{2}\\d{6}$", "licenseRegex": "^[A-Z]{2}\\d{6}$" },
+    "RU": { "group": "EAST_EUROPE", "zipRegex": "^\\d{6}$", "idRegex": "^\\d{3}-\\d{3}-\\d{3} \\d{2}$", "taxRegex": "^\\d{10}/\\d{4}$", "passportRegex": "^\\d{8}$", "licenseRegex": "^\\d{7}$" },
+
+    "CN": { "group": "EAST_ASIA", "zipRegex": "^\\d{6}$", "idRegex": "^\\d{6}\\d{4}\\d{2}\\d{2}\\d{3}[\\dX]$", "taxRegex": "^[0-9A-Z]{18}$", "passportRegex": "^E\\d{8}$", "licenseRegex": "^\\d{18}$" },
+    "JP": { "group": "EAST_ASIA", "zipRegex": "^\\d{3}-\\d{4}$", "idRegex": "^\\d{4}-\\d{4}-\\d{4}$", "taxRegex": "^\\d{13}$", "passportRegex": "^[A-Z]{2}\\d{7}$", "licenseRegex": "^\\d{12}$" },
+    "KR": { "group": "EAST_ASIA", "zipRegex": "^\\d{5}$", "idRegex": "^\\d{6}-\\d{7}$", "taxRegex": "^\\d{3}-\\d{2}-\\d{5}$", "passportRegex": "^[A-Z]\\d{7}$", "licenseRegex": "^\\d{10}$" },
+    "TW": { "group": "EAST_ASIA", "zipRegex": "^\\d{3}$", "idRegex": "^[A-Z][12]\\d{7}$", "taxRegex": "^\\d{8}$", "passportRegex": "^\\d{7}$", "licenseRegex": "^[A-Z]\\d{7}$" },
+
+    "IN": { "group": "SOUTH_ASIA", "zipRegex": "^\\d{6}$", "idRegex": "^\\d{4} \\d{4} \\d{4}$", "taxRegex": "^[A-Z]{5}\\d{4}[A-Z]$", "passportRegex": "^[A-Z]\\d{7}$", "licenseRegex": "^[A-Z]{2}\\d{8}$" },
+
+    "SG": { "group": "SE_ASIA", "zipRegex": "^\\d{6}$", "idRegex": "^[STFG]\\d{7}[A-Z]$", "taxRegex": "^\\d{9}[A-Z]$", "passportRegex": "^[A-Z]\\d{7}$", "licenseRegex": "^\\d{7}$" },
+    "TH": { "group": "SE_ASIA", "zipRegex": "^\\d{5}$", "idRegex": "^\\d{13}$", "taxRegex": "^\\d{13}$", "passportRegex": "^[A-Z]\\d{7}$", "licenseRegex": "^\\d{10}$" },
+    "VN": { "group": "SE_ASIA", "zipRegex": "^\\d{6}$", "idRegex": "^\\d{12}$", "taxRegex": "^\\d{10}$", "passportRegex": "^[A-Z]\\d{7}$", "licenseRegex": "^\\d{9}$" },
+    "PH": { "group": "SE_ASIA", "zipRegex": "^\\d{4}$", "idRegex": "^\\d{12}$", "taxRegex": "^\\d{12}$", "passportRegex": "^[A-Z]\\d{7}$", "licenseRegex": "^[A-Z]\\d{8}$" },
+    "ID": { "group": "SE_ASIA", "zipRegex": "^\\d{5}$", "idRegex": "^\\d{16}$", "taxRegex": "^\\d{15}$", "passportRegex": "^[A-Z]\\d{7}$", "licenseRegex": "^\\d{10}$" },
+    "MY": { "group": "SE_ASIA", "zipRegex": "^\\d{5}$", "idRegex": "^\\d{6}-\\d{2}-\\d{4}$", "taxRegex": "^\\d{11}$", "passportRegex": "^[A-Z]\\d{7}$", "licenseRegex": "^\\d{9}$" },
+
+    "BR": { "group": "LATAM", "zipRegex": "^\\d{5}-\\d{3}$", "idRegex": "^\\d{3}\\.\\d{3}\\.\\d{3}-\\d{2}$", "taxRegex": "^\\d{2}\\.\\d{3}\\.\\d{3}/\\d{4}-\\d{2}$", "passportRegex": "^[A-Z]{2}\\d{6}$", "licenseRegex": "^\\d{11}$" },
+    "MX": { "group": "LATAM", "zipRegex": "^\\d{5}$", "idRegex": "^[A-Z]{4}\\d{6}[A-Z0-9]{6}$", "taxRegex": "^[A-Z]{4}\\d{6}[A-Z0-9]{3}$", "passportRegex": "^[A-Z]{3}\\d{8}$", "licenseRegex": "^[A-Z]\\d{8}$" },
+    "AR": { "group": "LATAM", "zipRegex": "^[A-Z]\\d{4}[A-Z]{3}$", "idRegex": "^\\d{8}$", "taxRegex": "^\\d{11}$", "passportRegex": "^[A-Z]{2}\\d{6}$", "licenseRegex": "^\\d{8}$" },
+    "CO": { "group": "LATAM", "zipRegex": "^\\d{6}$", "idRegex": "^\\d{10}$", "taxRegex": "^\\d{9}$", "passportRegex": "^[A-Z]{2}\\d{5}$", "licenseRegex": "^\\d{7}$" },
+    "CL": { "group": "LATAM", "zipRegex": "^\\d{7}$", "idRegex": "^\\d{7,8}-\\d$", "taxRegex": "^\\d{8}-\\d$", "passportRegex": "^[A-Z]\\d{7}$", "licenseRegex": "^[A-Z]\\d{7}$" },
+    "PE": { "group": "LATAM", "zipRegex": "^\\d{5}$", "idRegex": "^\\d{8}$", "taxRegex": "^\\d{11}$", "passportRegex": "^[A-Z]\\d{7}$", "licenseRegex": "^[A-Z]\\d{7}$" },
+
+    "TR": { "group": "MIDDLE_EAST", "zipRegex": "^\\d{5}$", "idRegex": "^\\d{11}$", "taxRegex": "^\\d{10}$", "passportRegex": "^[A-Z]\\d{8}$", "licenseRegex": "^\\d{7}$" },
+    "AE": { "group": "MIDDLE_EAST", "zipRegex": "^\\d{5}$", "idRegex": "^784-\\d{4}-\\d{7}-\\d$", "taxRegex": "^\\d{15}$", "passportRegex": "^[A-Z]\\d{8}$", "licenseRegex": "^\\d{7}$" },
+    "SA": { "group": "MIDDLE_EAST", "zipRegex": "^\\d{5}$", "idRegex": "^\\d{10}$", "taxRegex": "^\\d{10}$", "passportRegex": "^[A-Z]{2}\\d{7}$", "licenseRegex": "^\\d{8}$" },
+    "IL": { "group": "MIDDLE_EAST", "zipRegex": "^\\d{7}$", "idRegex": "^\\d{9}$", "taxRegex": "^\\d{8,9}$", "passportRegex": "^\\d{7}$", "licenseRegex": "^\\d{7}$" },
+    "EG": { "group": "MIDDLE_EAST", "zipRegex": "^\\d{5}$", "idRegex": "^\\d{14}$", "taxRegex": "^\\d{9}$", "passportRegex": "^[A-Z]\\d{7}$", "licenseRegex": "^\\d{7}$" },
+
+    "ZA": { "group": "AFRICA", "zipRegex": "^\\d{4}$", "idRegex": "^\\d{10}[01]\\d$", "taxRegex": "^\\d{10}$", "passportRegex": "^[A-Z]\\d{7}$", "licenseRegex": "^[A-Z]\\d{7}$" },
+    "NG": { "group": "AFRICA", "zipRegex": "^\\d{6}$", "idRegex": "^\\d{11}$", "taxRegex": "^\\d{10}$", "passportRegex": "^[A-Z]\\d{7}$", "licenseRegex": "^[A-Z]{3}\\d{6}$" },
+    "KE": { "group": "AFRICA", "zipRegex": "^\\d{5}$", "idRegex": "^\\d{8}$", "taxRegex": "^[A-Z]\\d{9}[A-Z]$", "passportRegex": "^[A-Z]\\d{7}$", "licenseRegex": "^\\d{7}$" }
+  }
+}

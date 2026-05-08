@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600">
+  <!-- Background -->
+  <rect width="800" height="600" fill="#f9fafb"/>
+  <text x="400" y="40" fill="#111827" font-size="24" font-weight="bold" text-anchor="middle">Who Uses AI Sentence Rewriter?</text>
+
+  <!-- Students -->
+  <g transform="translate(100, 80)">
+    <circle cx="80" cy="80" r="70" fill="#10b981" opacity="0.1"/>
+    <text x="80" y="80" text-anchor="middle" fill="#10b981" font-size="50">📝</text>
+    <text x="80" y="180" text-anchor="middle" fill="#111827" font-size="18" font-weight="bold">Students</text>
+    <text x="80" y="200" text-anchor="middle" fill="#6b7280" font-size="12">Essays &amp; Papers</text>
+    <text x="80" y="215" text-anchor="middle" fill="#6b7280" font-size="12">Assignment Writing</text>
+  </g>
+
+  <!-- Professionals -->
+  <g transform="translate(280, 80)">
+    <circle cx="80" cy="80" r="70" fill="#6366f1" opacity="0.1"/>
+    <text x="80" y="80" text-anchor="middle" fill="#6366f1" font-size="50">💼</text>
+    <text x="80" y="180" text-anchor="middle" fill="#111827" font-size="18" font-weight="bold">Professionals</text>
+    <text x="80" y="200" text-anchor="middle" fill="#6b7280" font-size="12">Business Writing</text>
+    <text x="80" y="215" text-anchor="middle" fill="#6b7280" font-size="12">Email &amp; Reports</text>
+  </g>
+
+  <!-- Content Creators -->
+  <g transform="translate(460, 80)">
+    <circle cx="80" cy="80" r="70" fill="#8b5cf6" opacity="0.1"/>
+    <text x="80" y="80" text-anchor="middle" fill="#8b5cf6" font-size="50">✍️</text>
+    <text x="80" y="180" text-anchor="middle" fill="#111827" font-size="18" font-weight="bold">Content Creators</text>
+    <text x="80" y="200" text-anchor="middle" fill="#6b7280" font-size="12">Blog Posts</text>
+    <text x="80" y="215" text-anchor="middle" fill="#6b7280" font-size="12">Social Media</text>
+  </g>
+
+  <!-- ESL Writers -->
+  <g transform="translate(640, 80)">
+    <circle cx="80" cy="80" r="70" fill="#f59e0b" opacity="0.1"/>
+    <text x="80" y="80" text-anchor="middle" fill="#f59e0b" font-size="50">🌍</text>
+    <text x="80" y="180" text-anchor="middle" fill="#111827" font-size="18" font-weight="bold">ESL Writers</text>
+    <text x="80" y="200" text-anchor="middle" fill="#6b7280" font-size="12">Language Learning</text>
+    <text x="80" y="215" text-anchor="middle" fill="#6b7280" font-size="12">Natural Expression</text>
+  </g>
+
+  <!-- Bottom section - Use Cases -->
+  <rect x="50" y="300" width="700" height="260" rx="12" fill="#fff" stroke="#e5e7eb" stroke-width="2"/>
+  <text x="400" y="330" fill="#111827" font-size="18" font-weight="bold" text-anchor="middle">Common Use Cases</text>
+
+  <!-- Use case 1 -->
+  <g transform="translate(80, 360)">
+    <rect width="140" height="100" rx="8" fill="#10b981" opacity="0.1"/>
+    <text x="70" y="40" text-anchor="middle" fill="#10b981" font-size="30">📄</text>
+    <text x="70" y="70" text-anchor="middle" fill="#111827" font-size="12" font-weight="bold">Academic</text>
+    <text x="70" y="85" text-anchor="middle" fill="#6b7280" font-size="10">Improve grades</text>
+  </g>
+
+  <!-- Use case 2 -->
+  <g transform="translate(230, 360)">
+    <rect width="140" height="100" rx="8" fill="#6366f1" opacity="0.1"/>
+    <text x="70" y="40" text-anchor="middle" fill="#6366f1" font-size="30">📧</text>
+    <text x="70" y="70" text-anchor="middle" fill="#111827" font-size="12" font-weight="bold">Business</text>
+    <text x="70" y="85" text-anchor="middle" fill="#6b7280" font-size="10">Professional emails</text>
+  </g>
+
+  <!-- Use case 3 -->
+  <g transform="translate(380, 360)">
+    <rect width="140" height="100" rx="8" fill="#8b5cf6" opacity="0.1"/>
+    <text x="70" y="40" text-anchor="middle" fill="#8b5cf6" font-size="30">🎨</text>
+    <text x="70" y="70" text-anchor="middle" fill="#111827" font-size="12" font-weight="bold">Creative</text>
+    <text x="70" y="85" text-anchor="middle" fill="#6b7280" font-size="10">Enhance writing</text>
+  </g>
+
+  <!-- Use case 4 -->
+  <g transform="translate(530, 360)">
+    <rect width="140" height="100" rx="8" fill="#f59e0b" opacity="0.1"/>
+    <text x="70" y="40" text-anchor="middle" fill="#f59e0b" font-size="30">🔤</text>
+    <text x="70" y="70" text-anchor="middle" fill="#111827" font-size="12" font-weight="bold">Grammar</text>
+    <text x="70" y="85" text-anchor="middle" fill="#6b7280" font-size="10">Fix errors</text>
+  </g>
+</svg>

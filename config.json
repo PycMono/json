@@ -1,0 +1,52 @@
+{
+  "port": "5015",
+  "debug": false,
+  "site_url": "https://toolboxnova.com",
+  "asset_version": "v20260506_v1",
+  "sms_api_key": "",
+  "email_api_key": "",
+  "ocr_space_api_key": "K82752969788957",
+  "google_ads_id": "ca-pub-9000734285117391",
+  "enable_ads": false,
+  "ga_measurement_id": "G-11XY9KKW2J",
+  "google_ads_conversion_id": "1",
+  "google_ads_conversion_label": "1",
+  "google_ads_conversion_label_sms": "1",
+  "google_ads_conversion_label_tool": "1",
+  "consent_cookie_name": "cky_consent",
+  "domain": "toolboxnova.com",
+  "twitter_url": "https://twitter.com/toolboxnova",
+  "github_url": "https://github.com/toolboxnova",
+  "linkedin_url": "https://www.linkedin.com/company/toolboxnova",
+  "newsletter_enabled": true,
+  "newsletter_provider": "",
+  "redis": {
+    "cache": {
+      "client_name": "cache",
+      "addr": "127.0.0.1:6379",
+      "password": "123456",
+      "poolsize": 5,
+      "db": 6
+    },
+    "session": {
+      "client_name": "session",
+      "addr": "127.0.0.1:6379",
+      "password": "123456",
+      "poolsize": 5,
+      "db": 0
+    }
+  },
+  "mysql": {
+    "enabled": true,
+    "host": "127.0.0.1",
+    "port": 3306,
+    "user": "root",
+    "password": "123456",
+    "db_name": "toolboxnova",
+    "charset": "utf8mb4",
+    "max_idle_conns": 10,
+    "max_open_conns": 100,
+    "conn_max_lifetime": 3600
+  }
+
+}

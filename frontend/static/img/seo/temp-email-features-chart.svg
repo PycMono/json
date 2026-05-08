@@ -1,0 +1,103 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" width="800" height="500">
+  <defs>
+    <linearGradient id="g1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0e7490"/>
+      <stop offset="100%" style="stop-color:#06b6d4"/>
+    </linearGradient>
+    <filter id="sh">
+      <feDropShadow dx="0" dy="2" stdDeviation="4" flood-opacity="0.08"/>
+    </filter>
+  </defs>
+  <rect width="800" height="500" fill="#ecfeff" rx="12"/>
+
+  <!-- Title -->
+  <text x="400" y="42" font-family="system-ui, sans-serif" font-size="18" font-weight="700" fill="#0f172a" text-anchor="middle">临时邮箱核心功能 — 全面保护你的隐私</text>
+
+  <!-- Feature cards (2x3 grid) -->
+  <!-- Row 1 -->
+  <g transform="translate(30, 70)">
+    <rect x="0" y="0" width="245" height="120" rx="12" fill="white" filter="url(#sh)"/>
+    <circle cx="40" cy="35" r="24" fill="#ecfeff"/>
+    <text x="40" y="42" font-family="system-ui, sans-serif" font-size="20" text-anchor="middle">⚡</text>
+    <text x="140" y="30" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#0f172a" text-anchor="middle">即时创建</text>
+    <text x="122" y="55" font-family="system-ui, sans-serif" font-size="11" fill="#64748b" text-anchor="middle">打开页面自动生成邮箱</text>
+    <text x="122" y="75" font-family="system-ui, sans-serif" font-size="11" fill="#64748b" text-anchor="middle">无需注册无需等待</text>
+    <text x="122" y="95" font-family="system-ui, sans-serif" font-size="11" fill="#06b6d4" text-anchor="middle">Instant Generation</text>
+  </g>
+
+  <g transform="translate(285, 70)">
+    <rect x="0" y="0" width="245" height="120" rx="12" fill="white" filter="url(#sh)"/>
+    <circle cx="40" cy="35" r="24" fill="#f0fdfa"/>
+    <text x="40" y="42" font-family="system-ui, sans-serif" font-size="20" text-anchor="middle">⏱</text>
+    <text x="140" y="30" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#0f172a" text-anchor="middle">自动过期</text>
+    <text x="122" y="55" font-family="system-ui, sans-serif" font-size="11" fill="#64748b" text-anchor="middle">10分钟后自动销毁</text>
+    <text x="122" y="75" font-family="system-ui, sans-serif" font-size="11" fill="#64748b" text-anchor="middle">可手动延长使用时间</text>
+    <text x="122" y="95" font-family="system-ui, sans-serif" font-size="11" fill="#06b6d4" text-anchor="middle">Auto Expire</text>
+  </g>
+
+  <g transform="translate(540, 70)">
+    <rect x="0" y="0" width="245" height="120" rx="12" fill="white" filter="url(#sh)"/>
+    <circle cx="40" cy="35" r="24" fill="#ecfeff"/>
+    <text x="40" y="42" font-family="system-ui, sans-serif" font-size="20" text-anchor="middle">🔄</text>
+    <text x="140" y="30" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#0f172a" text-anchor="middle">实时收件</text>
+    <text x="122" y="55" font-family="system-ui, sans-serif" font-size="11" fill="#64748b" text-anchor="middle">15秒自动刷新检查</text>
+    <text x="122" y="75" font-family="system-ui, sans-serif" font-size="11" fill="#64748b" text-anchor="middle">收到邮件即时通知</text>
+    <text x="122" y="95" font-family="system-ui, sans-serif" font-size="11" fill="#06b6d4" text-anchor="middle">Real-time Inbox</text>
+  </g>
+
+  <!-- Row 2 -->
+  <g transform="translate(30, 200)">
+    <rect x="0" y="0" width="245" height="120" rx="12" fill="white" filter="url(#sh)"/>
+    <circle cx="40" cy="35" r="24" fill="#f0fdfa"/>
+    <text x="40" y="42" font-family="system-ui, sans-serif" font-size="20" text-anchor="middle">🔒</text>
+    <text x="140" y="30" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#0f172a" text-anchor="middle">加密安全</text>
+    <text x="122" y="55" font-family="system-ui, sans-serif" font-size="11" fill="#64748b" text-anchor="middle">HTTPS全链路加密</text>
+    <text x="122" y="75" font-family="system-ui, sans-serif" font-size="11" fill="#64748b" text-anchor="middle">过期后数据彻底删除</text>
+    <text x="122" y="95" font-family="system-ui, sans-serif" font-size="11" fill="#06b6d4" text-anchor="middle">Encrypted & Secure</text>
+  </g>
+
+  <g transform="translate(285, 200)">
+    <rect x="0" y="0" width="245" height="120" rx="12" fill="white" filter="url(#sh)"/>
+    <circle cx="40" cy="35" r="24" fill="#ecfeff"/>
+    <text x="40" y="42" font-family="system-ui, sans-serif" font-size="20" text-anchor="middle">🌐</text>
+    <text x="140" y="30" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#0f172a" text-anchor="middle">多域名选择</text>
+    <text x="122" y="55" font-family="system-ui, sans-serif" font-size="11" fill="#64748b" text-anchor="middle">多种邮箱域名可选</text>
+    <text x="122" y="75" font-family="system-ui, sans-serif" font-size="11" fill="#64748b" text-anchor="middle">支持自定义前缀</text>
+    <text x="122" y="95" font-family="system-ui, sans-serif" font-size="11" fill="#06b6d4" text-anchor="middle">Custom Domain</text>
+  </g>
+
+  <g transform="translate(540, 200)">
+    <rect x="0" y="0" width="245" height="120" rx="12" fill="white" filter="url(#sh)"/>
+    <circle cx="40" cy="35" r="24" fill="#f0fdfa"/>
+    <text x="40" y="42" font-family="system-ui, sans-serif" font-size="20" text-anchor="middle">🚫</text>
+    <text x="140" y="30" font-family="system-ui, sans-serif" font-size="14" font-weight="600" fill="#0f172a" text-anchor="middle">零垃圾邮件</text>
+    <text x="122" y="55" font-family="system-ui, sans-serif" font-size="11" fill="#64748b" text-anchor="middle">邮箱过期后无法投递</text>
+    <text x="122" y="75" font-family="system-ui, sans-serif" font-size="11" fill="#64748b" text-anchor="middle">从根源杜绝垃圾邮件</text>
+    <text x="122" y="95" font-family="system-ui, sans-serif" font-size="11" fill="#06b6d4" text-anchor="middle">Zero Spam</text>
+  </g>
+
+  <!-- Stats bar -->
+  <rect x="50" y="350" width="700" height="110" rx="16" fill="white" filter="url(#sh)"/>
+  <text x="400" y="385" font-family="system-ui, sans-serif" font-size="15" font-weight="700" fill="#0e7490" text-anchor="middle">为什么数百万用户选择临时邮箱？</text>
+
+  <g transform="translate(70, 400)">
+    <rect x="0" y="0" width="145" height="45" rx="8" fill="#ecfeff"/>
+    <text x="72" y="18" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#0e7490" text-anchor="middle">500K+</text>
+    <text x="72" y="36" font-family="system-ui, sans-serif" font-size="10" fill="#64748b" text-anchor="middle">每日使用次数</text>
+  </g>
+  <g transform="translate(225, 400)">
+    <rect x="0" y="0" width="145" height="45" rx="8" fill="#f0fdfa"/>
+    <text x="72" y="18" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#06b6d4" text-anchor="middle">180+</text>
+    <text x="72" y="36" font-family="system-ui, sans-serif" font-size="10" fill="#64748b" text-anchor="middle">覆盖国家</text>
+  </g>
+  <g transform="translate(380, 400)">
+    <rect x="0" y="0" width="145" height="45" rx="8" fill="#ecfeff"/>
+    <text x="72" y="18" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#0e7490" text-anchor="middle">99.9%</text>
+    <text x="72" y="36" font-family="system-ui, sans-serif" font-size="10" fill="#64748b" text-anchor="middle">邮件到达率</text>
+  </g>
+  <g transform="translate(535, 400)">
+    <rect x="0" y="0" width="145" height="45" rx="8" fill="#f0fdfa"/>
+    <text x="72" y="18" font-family="system-ui, sans-serif" font-size="16" font-weight="700" fill="#06b6d4" text-anchor="middle">&lt;3s</text>
+    <text x="72" y="36" font-family="system-ui, sans-serif" font-size="10" fill="#64748b" text-anchor="middle">平均到达时间</text>
+  </g>
+</svg>

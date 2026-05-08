@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ToolBoxNova</title>
+  <style>
+    body { width: 360px; min-height: 480px; margin: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; }
+    .popup-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; padding: 16px; }
+    .popup-item { display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 12px 8px;
+      border-radius: 8px; cursor: pointer; transition: background 0.15s; text-decoration: none; color: inherit; }
+    .popup-item:hover { background: #f0f0f0; }
+    .popup-icon { font-size: 24px; }
+    .popup-label { font-size: 12px; text-align: center; line-height: 1.3; }
+    .popup-header { padding: 16px; border-bottom: 1px solid #e0e0e0; display: flex; align-items: center; gap: 8px; }
+    .popup-header h1 { font-size: 16px; margin: 0; }
+    .popup-footer { padding: 12px 16px; border-top: 1px solid #e0e0e0; text-align: center; }
+    .popup-footer a { color: #666; font-size: 12px; text-decoration: none; }
+    .popup-badge { font-size: 9px; background: #e8f5e9; color: #2e7d32; padding: 1px 5px; border-radius: 6px; }
+  </style>
+</head>
+<body>
+  <div class="popup-header">
+    <span style="font-size:20px">🛠</span>
+    <h1>ToolBoxNova</h1>
+  </div>
+
+  <div class="popup-grid">
+    <!-- Sidepanel tools (no external CDN needed) -->
+    <a class="popup-item" data-page="password" data-target="panel">
+      <span class="popup-icon">🔑</span>
+      <span class="popup-label">Password</span>
+      <span class="popup-badge">offline</span>
+    </a>
+    <a class="popup-item" data-page="timestamp" data-target="panel">
+      <span class="popup-icon">⏱</span>
+      <span class="popup-label">Timestamp</span>
+      <span class="popup-badge">offline</span>
+    </a>
+    <a class="popup-item" data-page="ai-detect" data-target="panel">
+      <span class="popup-icon">🤖</span>
+      <span class="popup-label">AI Detect</span>
+    </a>
+    <a class="popup-item" data-page="ai-humanize" data-target="panel">
+      <span class="popup-icon">✍️</span>
+      <span class="popup-label">Humanize</span>
+    </a>
+
+    <!-- New tab tools (need external CDN libs) -->
+    <a class="popup-item" data-page="json" data-target="tab">
+      <span class="popup-icon">{ }</span>
+      <span class="popup-label">JSON Tools</span>
+      <span class="popup-badge">40+</span>
+    </a>
+    <a class="popup-item" data-page="color" data-target="tab">
+      <span class="popup-icon">🎨</span>
+      <span class="popup-label">Color Tools</span>
+    </a>
+    <a class="popup-item" data-page="image-compress" data-target="tab">
+      <span class="popup-icon">🖼</span>
+      <span class="popup-label">Image</span>
+      <span class="popup-badge">offline</span>
+    </a>
+    <a class="popup-item" data-page="qrcode" data-target="tab">
+      <span class="popup-icon">📱</span>
+      <span class="popup-label">QR Code</span>
+    </a>
+  </div>
+
+  <div class="popup-footer">
+    <a href="https://toolboxnova.com" target="_blank">toolboxnova.com →</a>
+  </div>
+
+  <script src="popup.js"></script>
+</body>
+</html>

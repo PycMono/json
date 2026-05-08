@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>ToolBoxNova</title>
+  <style>
+    * { box-sizing: border-box; }
+    body { margin: 0; font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #fafafa; height: 100vh; display: flex; flex-direction: column; }
+
+    /* ── Top nav ── */
+    .sp-nav { display: flex; flex-wrap: wrap; gap: 4px; padding: 8px 12px; border-bottom: 1px solid #e0e0e0;
+      background: #fff; position: sticky; top: 0; z-index: 10; flex-shrink: 0; }
+    .sp-nav button { padding: 4px 10px; border: 1px solid #ddd; border-radius: 4px; background: #fff;
+      cursor: pointer; font-size: 12px; transition: all 0.15s; white-space: nowrap; }
+    .sp-nav button:hover { background: #f0f0f0; }
+    .sp-nav button.active { background: #1a73e8; color: white; border-color: #1a73e8; }
+
+    /* ── Content: full iframe ── */
+    .sp-frame-wrap { flex: 1; overflow: hidden; position: relative; }
+    .sp-frame-wrap iframe { width: 100%; height: 100%; border: none; }
+
+    /* ── Welcome screen ── */
+    .sp-welcome { padding: 24px 16px; text-align: center; }
+    .sp-welcome h1 { font-size: 20px; margin: 0 0 8px; }
+    .sp-welcome p { font-size: 13px; color: #888; margin: 0 0 20px; }
+    .sp-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; max-width: 360px; margin: 0 auto; }
+    .sp-card { display: flex; flex-direction: column; align-items: center; gap: 6px; padding: 14px 8px;
+      border-radius: 8px; background: #fff; box-shadow: 0 1px 3px rgba(0,0,0,0.08); cursor: pointer;
+      text-decoration: none; color: inherit; transition: all 0.15s; border: 1px solid transparent; }
+    .sp-card:hover { border-color: #1a73e8; box-shadow: 0 2px 8px rgba(0,0,0,0.12); }
+    .sp-card__icon { font-size: 22px; }
+    .sp-card__name { font-size: 11px; font-weight: 500; text-align: center; line-height: 1.3; }
+    .sp-card__badge { font-size: 9px; background: #e8f5e9; color: #2e7d32; padding: 1px 6px;
+      border-radius: 8px; }
+    .sp-footer { padding: 12px; text-align: center; font-size: 11px; color: #aaa; flex-shrink: 0; }
+    .sp-footer a { color: #1a73e8; text-decoration: none; }
+  </style>
+</head>
+<body>
+  <nav class="sp-nav">
+    <button class="active" data-tool="home">🏠 Home</button>
+    <button data-tool="json">{ } JSON</button>
+    <button data-tool="password">🔑 Password</button>
+    <button data-tool="timestamp">⏱ Timestamp</button>
+    <button data-tool="color">🎨 Color</button>
+    <button data-tool="image-compress">🖼 Image</button>
+    <button data-tool="qrcode">📱 QR</button>
+    <button data-tool="ai-detect">🤖 AI Detect</button>
+    <button data-tool="ai-humanize">✍️ Humanize</button>
+  </nav>
+
+  <!-- Welcome / Home (no iframe) -->
+  <div id="spHome" class="sp-welcome" style="flex:1;overflow:auto;">
+    <h1>🛠 ToolBoxNova</h1>
+    <p>Privacy-focused tools for developers. A-class tools work offline!</p>
+    <div class="sp-grid">
+      <a class="sp-card" data-goto="json">
+        <span class="sp-card__icon">{ }</span>
+        <span class="sp-card__name">JSON Tools</span>
+        <span class="sp-card__badge">40+</span>
+      </a>
+      <a class="sp-card" data-goto="password">
+        <span class="sp-card__icon">🔑</span>
+        <span class="sp-card__name">Password Gen</span>
+        <span class="sp-card__badge">offline</span>
+      </a>
+      <a class="sp-card" data-goto="timestamp">
+        <span class="sp-card__icon">⏱</span>
+        <span class="sp-card__name">Timestamp</span>
+        <span class="sp-card__badge">offline</span>
+      </a>
+      <a class="sp-card" data-goto="color">
+        <span class="sp-card__icon">🎨</span>
+        <span class="sp-card__name">Color Tools</span>
+        <span class="sp-card__badge">11 tools</span>
+      </a>
+      <a class="sp-card" data-goto="image-compress">
+        <span class="sp-card__icon">🖼</span>
+        <span class="sp-card__name">Image Compress</span>
+        <span class="sp-card__badge">offline</span>
+      </a>
+      <a class="sp-card" data-goto="qrcode">
+        <span class="sp-card__icon">📱</span>
+        <span class="sp-card__name">QR Code</span>
+      </a>
+      <a class="sp-card" data-goto="ai-detect">
+        <span class="sp-card__icon">🤖</span>
+        <span class="sp-card__name">AI Detect</span>
+      </a>
+      <a class="sp-card" data-goto="ai-humanize">
+        <span class="sp-card__icon">✍️</span>
+        <span class="sp-card__name">Humanizer</span>
+      </a>
+    </div>
+    <div class="sp-footer" style="margin-top:20px;">
+      <a href="https://toolboxnova.com" target="_blank">toolboxnova.com ↗</a>
+    </div>
+  </div>
+
+  <!-- Tool iframe (hidden until a tool is selected) -->
+  <div id="spFrameWrap" class="sp-frame-wrap" style="display:none">
+    <iframe id="spFrame" src="about:blank"></iframe>
+  </div>
+
+  <script src="sidepanel.js"></script>
+</body>
+</html>

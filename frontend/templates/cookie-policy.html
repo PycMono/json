@@ -1,0 +1,159 @@
+{{ template "base" . }}
+{{ define "content" }}
+<div class="container cookie-policy-page" data-ga="cookie_policy_page">
+  <h1>{{ call .T "cookie.h1" }}</h1>
+  <p class="last-updated">{{ call .T "cookie.last_updated" }}</p>
+  <div class="static-content card">
+    <section>
+      <h2>{{ call .T "cookie.s1.title" }}</h2>
+      <p>{{ call .T "cookie.s1.intro" }}</p>
+      <p>{{ call .T "cookie.s1.p1" }}</p>
+      <p>{{ call .T "cookie.s1.p2" }}</p>
+    </section>
+
+    <section>
+      <h2>{{ call .T "cookie.s2.title" }}</h2>
+      <p>{{ call .T "cookie.s2.intro" }}</p>
+      <ul>
+        <li><strong>{{ call .T "cookie.category.necessary" }}</strong> — {{ call .T "cookie.s2.necessary_desc" }}</li>
+        <li><strong>{{ call .T "cookie.category.analytics" }}</strong> — {{ call .T "cookie.s2.analytics_desc" }}</li>
+        <li><strong>{{ call .T "cookie.category.ads" }}</strong> — {{ call .T "cookie.s2.ads_desc" }}</li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>{{ call .T "cookie.s3.title" }}</h2>
+      <p>{{ call .T "cookie.s3.intro" }}</p>
+      <p>{{ safeHTML (call .T "cookie.s3.browser") }}</p>
+    </section>
+
+    <section>
+      <h2>{{ call .T "cookie.s4.title" }}</h2>
+      <p>{{ call .T "cookie.s4.intro" }}</p>
+      <div class="cookie-table-wrap">
+        <table class="cookie-table">
+          <thead>
+            <tr>
+              <th>{{ call .T "cookie.table.type" }}</th>
+              <th>{{ call .T "cookie.table.name" }}</th>
+              <th>{{ call .T "cookie.table.purpose" }}</th>
+              <th>{{ call .T "cookie.table.expires" }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td><span class="cookie-badge cookie-badge--necessary">{{ call .T "cookie.category.necessary" }}</span></td>
+              <td>cky_consent</td>
+              <td>{{ call .T "cookie.row.cky_consent" }}</td>
+              <td>1 year</td>
+            </tr>
+            <tr>
+              <td><span class="cookie-badge cookie-badge--analytics">{{ call .T "cookie.category.analytics" }}</span></td>
+              <td>_ga, _ga_*</td>
+              <td>{{ call .T "cookie.row.ga" }}</td>
+              <td>2 years</td>
+            </tr>
+            <tr>
+              <td><span class="cookie-badge cookie-badge--analytics">{{ call .T "cookie.category.analytics" }}</span></td>
+              <td>_gid</td>
+              <td>{{ call .T "cookie.row.gid" }}</td>
+              <td>24 hours</td>
+            </tr>
+            <tr>
+              <td><span class="cookie-badge cookie-badge--ads">{{ call .T "cookie.category.ads" }}</span></td>
+              <td>__gads</td>
+              <td>{{ call .T "cookie.row.gads" }}</td>
+              <td>1 year 24 days</td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
+
+    <section>
+      <h2>{{ call .T "cookie.s5.title" }}</h2>
+      <p>{{ call .T "cookie.s5.desc" }}</p>
+    </section>
+
+    <section>
+      <h2>{{ call .T "cookie.s6.title" }}</h2>
+      <p>{{ call .T "cookie.s6.desc" }}</p>
+    </section>
+
+    <section>
+      <h2>{{ call .T "cookie.s7.title" }}</h2>
+      <p>{{ safeHTML (call .T "cookie.s7.contact") }}</p>
+    </section>
+  </div>
+</div>
+
+<!-- Bottom Ad -->
+<div style="text-align:center;margin:24px 0">
+  {{- template "partials/ad_slot.html" (dict "Ctx" . "SlotID" "cookie-policy-bottom" "Size" "728x90" "Mobile" "320x50") }}
+</div>
+
+{{ end }}
+{{ define "extraHead" }}
+<style>
+.page-cookie-policy .main-content { min-height: auto; }
+.cookie-policy-page {
+  padding: 24px 20px;
+  max-width: 900px;
+}
+.cookie-policy-page h1 {
+  font-size: 28px;
+  font-weight: 800;
+  margin-bottom: 4px;
+}
+.cookie-policy-page .last-updated {
+  font-size: 13px;
+  color: var(--gray-400);
+  margin-bottom: 16px;
+}
+.cookie-policy-page .static-content {
+  padding: 24px;
+}
+.cookie-policy-page .static-content section {
+  margin-bottom: 20px;
+}
+.cookie-policy-page .static-content h2 {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 8px;
+  color: var(--gray-800);
+  border-bottom: 2px solid var(--gray-100);
+  padding-bottom: 6px;
+}
+.cookie-policy-page .static-content p {
+  font-size: 14px;
+  color: var(--gray-700);
+  line-height: 1.65;
+  margin-bottom: 8px;
+}
+.cookie-policy-page .static-content ul {
+  padding-left: 20px;
+}
+.cookie-policy-page .static-content ul li {
+  font-size: 14px;
+  color: var(--gray-700);
+  margin-bottom: 4px;
+  list-style: disc;
+}
+.cookie-table-wrap { overflow-x: auto; margin: 12px 0; }
+.cookie-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+.cookie-table th, .cookie-table td { padding: 10px 12px; text-align: left; border-bottom: 1px solid var(--border, #e5e5e5); }
+.cookie-table th { background: var(--bg-2, #f5f5f5); font-weight: 600; }
+.cookie-table tr:hover td { background: var(--bg-2, #f9f9f9); }
+.cookie-badge { display: inline-block; padding: 2px 8px; border-radius: 4px; font-size: 11px; font-weight: 600; text-transform: uppercase; }
+.cookie-badge--necessary { background: #dcfce7; color: #166534; }
+.cookie-badge--analytics { background: #dbeafe; color: #1e40af; }
+.cookie-badge--ads { background: #fef3c7; color: #92400e; }
+@media (max-width: 600px) {
+  .cookie-policy-page { padding: 16px 12px; }
+  .cookie-policy-page .static-content { padding: 16px; }
+  .cookie-table { font-size: 12px; }
+  .cookie-table th, .cookie-table td { padding: 8px 6px; }
+}
+</style>
+{{ end }}
+{{ define "extraScript" }}{{ end }}

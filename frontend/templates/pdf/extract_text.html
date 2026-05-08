@@ -1,0 +1,157 @@
+{{ template "base" . }}
+
+{{ define "extraHead" }}
+<link rel="stylesheet" href="/static/css/pdf-tools.css?v={{ .AssetVer }}">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{{- range $i,$f := .FAQs }}{{if $i}},{{end}}{"@type":"Question","name":{{ $f.Q | html }},"acceptedAnswer":{"@type":"Answer","text":{{ $f.A | html }}}}{{- end}}]}
+</script>
+{{ end }}
+
+{{ define "content" }}
+{{ template "pdf_tabs" . }}
+<div class="pdf-tool-page">
+  <header class="pdf-hero">
+    <div class="pdf-hero__inner">
+      <span class="pdf-hero__logo">{{ call .T "pdf.extract.header.logo" }}</span>
+      <h1 class="pdf-hero__title">{{ call .T "pdf.extract.header.title" }} <em>{{ call .T "pdf.extract.header.title_em" }}</em></h1>
+      <p class="pdf-hero__sub">{{ call .T "pdf.extract.header.sub" }}</p>
+      <div class="pdf-hero__badges">
+        <span class="pdf-hero__badge">{{ call .T "pdf.extract.header.badge1" }}</span>
+        <span class="pdf-hero__badge">{{ call .T "pdf.extract.header.badge2" }}</span>
+        <span class="pdf-hero__badge">{{ call .T "pdf.extract.header.badge3" }}</span>
+      </div>
+    </div>
+  </header>
+
+  <div class="pdf-upload-zone" id="extractUploadZone">
+    <div class="pdf-upload-idle">
+      <div class="pdf-upload-idle__icon">📄</div>
+      <p class="pdf-upload-idle__title">{{ call .T "pdf.extract.upload.title" }}</p>
+      <p class="pdf-upload-idle__hint">{{ call .T "pdf.extract.upload.hint" }}</p>
+      <span class="pdf-upload-btn" onclick="event.stopPropagation(); document.getElementById('extractFileInput').click()" data-ga data-ga-action="upload" data-ga-category="pdf-extract" data-ga-label="select-file">{{ call .T "pdf.extract.upload.btn" }}</span>
+      <input type="file" id="extractFileInput" accept=".pdf,application/pdf" style="display:none" data-ga data-ga-action="upload" data-ga-category="pdf-extract" data-ga-label="file-input">
+    </div>
+    <div class="pdf-drop-overlay">{{ call .T "pdf.extract.upload.drop" }}</div>
+  </div>
+
+  <div id="extractFileCard" class="pdf-file-card" style="display:none">
+    <div class="pdf-file-card__inner">
+      <span class="pdf-file-card__icon">📄</span>
+      <div class="pdf-file-card__info">
+        <div class="pdf-file-card__name" id="extractFileName"></div>
+        <div class="pdf-file-card__meta" id="extractFileMeta"></div>
+      </div>
+      <button class="pdf-file-card__remove" onclick="extractReset()" data-ga data-ga-action="remove" data-ga-category="pdf-extract" data-ga-label="remove-file">{{ call .T "pdf.extract.file.remove" }}</button>
+    </div>
+  </div>
+
+  <div id="extractSettings" class="pdf-settings" style="display:none">
+    <div class="pdf-settings-card">
+      <h3>{{ call .T "pdf.extract.settings.title" }}</h3>
+      <div class="pdf-settings-grid">
+        <div class="pdf-field">
+          <label class="pdf-label">{{ call .T "pdf.extract.settings.range" }}</label>
+          <input type="text" id="extractRange" class="pdf-input" placeholder='{{ call .T "pdf.extract.settings.range_ph" }}'>
+        </div>
+        <div class="pdf-field">
+          <label class="pdf-label">{{ call .T "pdf.extract.settings.format" }}</label>
+          <select id="extractFormat" class="pdf-select">
+            <option value="full">{{ call .T "pdf.extract.settings.format_full" }}</option>
+            <option value="paged">{{ call .T "pdf.extract.settings.format_paged" }}</option>
+          </select>
+        </div>
+      </div>
+      <button class="pdf-action-btn" id="extractRunBtn" onclick="runExtract()" data-ga data-ga-action="extract" data-ga-category="pdf-extract" data-ga-label="run-extract">{{ call .T "pdf.extract.run_btn" }}</button>
+    </div>
+  </div>
+
+  <div id="extractLoading" class="pdf-loading" style="display:none">
+    <div class="pdf-spinner"></div><p id="extractLoadingMsg">{{ call .T "pdf.extract.loading" }}</p>
+  </div>
+
+  <div id="extractResult" class="pdf-result-wrap" style="display:none">
+    <div class="pdf-result-header">
+      <h3 class="pdf-result-title">{{ call .T "pdf.extract.result.title" }}</h3>
+      <div class="pdf-result-actions">
+        <button class="pdf-result-btn" id="extractCopyBtn" onclick="extractCopy()" data-ga data-ga-action="copy" data-ga-category="pdf-extract" data-ga-label="copy-text">{{ call .T "pdf.extract.result.copy" }}</button>
+        <button class="pdf-result-btn" id="extractDlBtn" onclick="extractDownload()" data-ga data-ga-action="download" data-ga-category="pdf-extract" data-ga-label="download-text">{{ call .T "pdf.extract.result.download" }}</button>
+        <button class="pdf-result-btn" onclick="extractReset()" data-ga data-ga-action="reset" data-ga-category="pdf-extract" data-ga-label="reset-tool">{{ call .T "pdf.extract.result.clear" }}</button>
+      </div>
+    </div>
+    <textarea id="extractOutput" class="pdf-result-output" spellcheck="false"></textarea>
+    <div class="pdf-result-stats" id="extractStats"></div>
+  </div>
+
+  <!-- How it works -->
+  <section class="pdf-howto">
+    <h2>{{ call .T "pdf.extract.howto.title" }}</h2>
+    <div class="pdf-steps">
+      <div class="pdf-step"><span class="pdf-step__num">1</span><p>{{ call .T "pdf.extract.howto.step1" }}</p></div>
+      <div class="pdf-step"><span class="pdf-step__num">2</span><p>{{ call .T "pdf.extract.howto.step2" }}</p></div>
+      <div class="pdf-step"><span class="pdf-step__num">3</span><p>{{ call .T "pdf.extract.howto.step3" }}</p></div>
+      <div class="pdf-step"><span class="pdf-step__num">4</span><p>{{ call .T "pdf.extract.howto.step4" }}</p></div>
+    </div>
+  </section>
+
+  <section class="pdf-section"><div class="pdf-section-inner">
+    <span class="pdf-section-label">{{ call .T "pdf.extract.s1.label" }}</span>
+    <h2 class="pdf-section-title">{{ call .T "pdf.extract.s1.title" }}</h2>
+    <p class="pdf-section-body">{{ call .T "pdf.extract.s1.body" }}</p>
+  </div></section>
+
+  <section class="pdf-section"><div class="pdf-section-inner">
+    <span class="pdf-section-label">{{ call .T "pdf.extract.s2.label" }}</span>
+    <h2 class="pdf-section-title">{{ call .T "pdf.extract.s2.title" }}</h2>
+    <p class="pdf-section-body">{{ call .T "pdf.extract.s2.body1" }}</p>
+    <p class="pdf-section-body">{{ call .T "pdf.extract.s2.body2" }}</p>
+  </div></section>
+
+  <section class="pdf-section"><div class="pdf-section-inner">
+    <span class="pdf-section-label">{{ call .T "pdf.extract.s3.label" }}</span>
+    <h2 class="pdf-section-title">{{ call .T "pdf.extract.s3.title" }}</h2>
+    <p class="pdf-section-body">{{ call .T "pdf.extract.s3.body" }}</p>
+  </div></section>
+
+  <section class="pdf-section"><div class="pdf-section-inner">
+    <span class="pdf-section-label">{{ call .T "pdf.extract.s4.label" }}</span>
+    <h2 class="pdf-section-title">{{ call .T "pdf.extract.s4.title" }}</h2>
+    <p class="pdf-section-body">{{ call .T "pdf.extract.s4.body1" }}</p>
+    <p class="pdf-section-body">{{ call .T "pdf.extract.s4.body2" }}</p>
+  </div></section>
+
+  <section class="pdf-section"><div class="pdf-section-inner">
+    <span class="pdf-section-label">{{ call .T "pdf.extract.s5.label" }}</span>
+    <h2 class="pdf-section-title">{{ call .T "pdf.extract.s5.title" }}</h2>
+    <p class="pdf-section-body">{{ call .T "pdf.extract.s5.body1" }}</p>
+    <p class="pdf-section-body">{{ call .T "pdf.extract.s5.body2" }}</p>
+  </div></section>
+
+  <section class="pdf-section"><div class="pdf-section-inner">
+    <span class="pdf-section-label">{{ call .T "pdf.extract.s6.label" }}</span>
+    <h2 class="pdf-section-title">{{ call .T "pdf.extract.s6.title" }}</h2>
+    <p class="pdf-section-body">{{ call .T "pdf.extract.s6.body1" }}</p>
+    <p class="pdf-section-body">{{ call .T "pdf.extract.s6.body2" }}</p>
+    <p class="pdf-section-body">{{ call .T "pdf.extract.s6.body3" }}</p>
+  </div></section>
+
+  <!-- FAQ -->
+  <section class="pdf-section"><div class="pdf-section-inner">
+    <span class="pdf-section-label">{{ call .T "pdf.extract.faq.title" }}</span>
+    <h2 class="pdf-section-title">{{ call .T "pdf.extract.faq.title" }}</h2>
+    <div class="pdf-faq-list">
+      {{ range .FAQs }}
+      <div class="pdf-faq-item">
+        <button class="pdf-faq-q" onclick="this.parentElement.classList.toggle('open')" data-ga data-ga-action="toggle" data-ga-category="pdf-extract" data-ga-label="faq">
+          <span>{{ .Q }}</span>
+          <svg class="pdf-faq-chevron" width="20" height="20" viewBox="0 0 20 20"><path d="M5 8l5 5 5-5" stroke="currentColor" fill="none"/></svg>
+        </button>
+        <div class="pdf-faq-a"><p>{{ .A }}</p></div>
+      </div>
+      {{ end }}
+    </div>
+  </div></section>
+
+</div>
+<script src="/static/js/pdf-extract.js?v={{ .AssetVer }}"></script>
+{{ end }}

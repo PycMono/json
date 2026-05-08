@@ -1,0 +1,90 @@
+{{ define "partials/ai_tool_nav.html" }}
+<nav class="hub-tabs" role="tablist" aria-label="Tool sections">
+  <div class="hub-tabs__inner">
+
+    <!-- 1. Home -->
+    {{ if .IsHubPage }}
+    <a href="#home" class="hub-tab{{ if eq .ActiveTool "ai-humanize" }} active{{ end }}" role="tab" data-tab="home">
+    {{ else }}
+    <a href="/ai/humanize#home" class="hub-tab{{ if eq .ActiveTool "ai-humanize" }} active{{ end }}">
+    {{ end }}
+      <i class="fa-solid fa-house"></i>
+      <span>{{ call .T "humanize.tab.home" }}</span>
+    </a>
+
+    <!-- 2. AI Detector -->
+    <a href="/ai/detector" class="hub-tab{{ if eq .ActiveTool "ai-detector" }} active{{ end }}">
+      <i class="fa-solid fa-magnifying-glass-chart"></i>
+      <span>{{ call .T "humanize.tab.detector" }}</span>
+    </a>
+
+    <!-- 3. Plagiarism Checker -->
+    <a href="/ai/humanize?tab=plagiarism" class="hub-tab{{ if eq .ActiveTool "ai-plagiarism" }} active{{ end }}">
+      <i class="fa-solid fa-file-shield"></i>
+      <span>{{ call .T "humanize.tab.plagiarism" }}</span>
+    </a>
+
+    <!-- 4. Humanizer -->
+    <a href="/ai/humanizer" class="hub-tab{{ if eq .ActiveTool "ai-humanizer" }} active{{ end }}">
+      <i class="fa-solid fa-wand-sparkles"></i>
+      <span>{{ call .T "humanize.tab.humanizer" }}</span>
+    </a>
+
+    <!-- 5. Essay Writer -->
+    <a href="/ai/essay" class="hub-tab{{ if eq .ActiveTool "ai-essay" }} active{{ end }}">
+      <i class="fa-solid fa-pen-fancy"></i>
+      <span>{{ call .T "humanize.tab.essay" }}</span>
+    </a>
+
+    <!-- 6. Sentence Rewriter -->
+    <a href="/ai/sentence-rewriter" class="hub-tab{{ if eq .ActiveTool "ai-sentence-rewriter" }} active{{ end }}">
+      <i class="fa-solid fa-align-left"></i>
+      <span>{{ call .T "humanize.tab.sentence_rewriter" }}</span>
+    </a>
+
+    <!-- 7. Paragraph Rewriter -->
+    <a href="/ai/paragraph-rewriter" class="hub-tab{{ if eq .ActiveTool "ai-paragraph-rewriter" }} active{{ end }}">
+      <i class="fa-solid fa-paragraph"></i>
+      <span>{{ call .T "humanize.tab.paragraph_rewriter" }}</span>
+    </a>
+
+    <!-- 8. Article Rewriter -->
+    <a href="/ai/article-rewriter" class="hub-tab{{ if eq .ActiveTool "ai-article-rewriter" }} active{{ end }}">
+      <i class="fa-solid fa-newspaper"></i>
+      <span>{{ call .T "humanize.tab.article_rewriter" }}</span>
+    </a>
+
+    <!-- More Dropdown -->
+    <div class="hub-tabs__more" id="hubTabsMore">
+      <button class="hub-tab hub-tab--more{{ if or (eq .ActiveTool "ai-for-college") (eq .ActiveTool "ai-for-professors") (eq .ActiveTool "ai-detector-academic") }} active{{ end }}" type="button" aria-haspopup="true" aria-expanded="false">
+        <i class="fa-solid fa-grid-2"></i>
+        <span>{{ call .T "humanize.tab.more_tools" }}</span>
+        <i class="fa-solid fa-chevron-down hub-tabs__more-arrow"></i>
+      </button>
+      <div class="hub-tabs__dropdown" id="hubTabsDropdown">
+        <!-- For College -->
+        <a href="/ai/for-college" class="hub-tabs__dropdown-item{{ if eq .ActiveTool "ai-for-college" }} hub-tabs__dropdown-item--active{{ end }}">
+          <i class="fa-solid fa-graduation-cap"></i>
+          <span>{{ call .T "humanize.tab.for_college" }}</span>
+        </a>
+        <!-- For Professors -->
+        <a href="/ai/for-professors" class="hub-tabs__dropdown-item{{ if eq .ActiveTool "ai-for-professors" }} hub-tabs__dropdown-item--active{{ end }}">
+          <i class="fa-solid fa-chalkboard-user"></i>
+          <span>{{ call .T "humanize.tab.for_professors" }}</span>
+        </a>
+        <!-- Detector Academic -->
+        <a href="/ai/detector/for-academic-writing" class="hub-tabs__dropdown-item{{ if eq .ActiveTool "ai-detector-academic" }} hub-tabs__dropdown-item--active{{ end }}">
+          <i class="fa-solid fa-microscope"></i>
+          <span>{{ call .T "humanize.tab.detector_academic" }}</span>
+        </a>
+        <!-- AI Image Generator -->
+        <a href="/ai/image" class="hub-tabs__dropdown-item{{ if eq .ActiveTool "ai-image" }} hub-tabs__dropdown-item--active{{ end }}">
+          <i class="fa-solid fa-image"></i>
+          <span>{{ call .T "ai-image.nav.name" }}</span>
+        </a>
+      </div>
+    </div>
+
+  </div>
+</nav>
+{{ end }}

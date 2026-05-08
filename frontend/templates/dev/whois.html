@@ -1,0 +1,346 @@
+{{ template "base" . }}
+
+{{ define "extraHead" }}
+<link rel="stylesheet" href="/static/css/dev-tools.css?v={{ .AssetVer }}">
+<link rel="stylesheet" href="/static/css/dev-whois.css?v={{ .AssetVer }}">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="alternate" hreflang="zh" href="{{ .HreflangZH }}">
+<link rel="alternate" hreflang="en" href="{{ .HreflangEN }}">
+<link rel="alternate" hreflang="x-default" href="{{ .Canonical }}">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "WHOIS Lookup — Domain Registrar, Expiry & Nameserver",
+  "url": "{{ .Canonical }}",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "Any",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "description": "{{ .Description }}"
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "ToolboxNova", "item": "https://toolboxnova.com/" },
+    { "@type": "ListItem", "position": 2, "name": "{{ call .T "whois.hero.title" }}", "item": "{{ .Canonical }}" }
+  ]
+}
+</script>
+
+{{ if .FAQs }}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {{ range $i, $faq := .FAQs }}{{ if $i }},{{ end }}
+    {"@type":"Question","name":{{ $faq.Q | toJSON }},"acceptedAnswer":{"@type":"Answer","text":{{ $faq.A | toJSON }}}}
+    {{ end }}
+  ]
+}
+</script>
+{{ end }}
+{{ end }}
+
+{{ define "content" }}
+<div class="page-whois">
+
+<!-- Hero -->
+<section class="wh-hero" aria-labelledby="wh-hero-title">
+  <div class="wh-hero__inner">
+    <div class="wh-hero__eyebrow">{{ call .T "whois.hero.eyebrow" }}</div>
+    <h1 class="wh-hero__title" id="wh-hero-title">{{ call .T "whois.hero.title" }}</h1>
+    <p class="wh-hero__subtitle">{{ call .T "whois.hero.subtitle" }}</p>
+    <div class="wh-hero__badges">
+      <span class="wh-badge wh-badge--green">{{ call .T "whois.hero.badge1" }}</span>
+      <span class="wh-badge wh-badge--blue">{{ call .T "whois.hero.badge2" }}</span>
+      <span class="wh-badge wh-badge--purple">{{ call .T "whois.hero.badge3" }}</span>
+      <span class="wh-badge wh-badge--orange">{{ call .T "whois.hero.badge4" }}</span>
+      <span class="wh-badge wh-badge--slate">{{ call .T "whois.hero.badge5" }}</span>
+    </div>
+    <div class="wh-hero__cta">
+      <a href="#whWorkspace" class="wh-btn wh-btn--primary"
+         data-ga data-ga-action="navigate" data-ga-category="dev-tool" data-ga-label="whois-cta-workspace">{{ call .T "whois.hero.cta_primary" }}</a>
+      <a href="/dev/whois-guide?lang={{ .Lang }}" class="wh-btn wh-btn--ghost"
+         data-ga data-ga-action="navigate" data-ga-category="dev-tool" data-ga-label="whois-cta-guide">{{ call .T "whois.hero.cta_guide" }}</a>
+    </div>
+  </div>
+</section>
+
+<!-- Top ad -->
+<div style="text-align:center;margin:12px auto;max-width:970px;padding:0 16px">
+  {{- template "partials/ad_slot.html" (dict "Ctx" . "SlotID" "dev-whois-top" "Size" "728x90" "Mobile" "320x50") }}
+</div>
+
+<!-- Sidebar layout -->
+<div class="wh-sidebar-layout">
+  <aside class="wh-sidebar-ad">
+    {{- template "partials/ad_slot.html" (dict "Ctx" . "SlotID" "dev-whois-left" "Size" "160x600" "MobileHide" true) }}
+  </aside>
+
+  <div class="wh-main-area">
+
+    <!-- Workspace -->
+    <section class="wh-workspace" id="whWorkspace">
+      <div class="wh-workspace__header">
+        <h2>{{ call .T "whois.input.label" }}</h2>
+      </div>
+
+      <div class="wh-input-row">
+        <input type="text" id="whoisInput" class="wh-input"
+               placeholder="{{ call .T "whois.input.placeholder" }}"
+               autocomplete="off" spellcheck="false">
+        <button id="whoisBtn" class="wh-btn wh-btn--primary" type="button"
+                data-ga data-ga-action="lookup" data-ga-category="dev-tool" data-ga-label="whois-lookup">{{ call .T "whois.input.btn_lookup" }}</button>
+        <button id="whoisClearBtn" class="wh-btn wh-btn--ghost" type="button"
+                data-ga data-ga-action="clear" data-ga-category="dev-tool" data-ga-label="whois-clear">{{ call .T "whois.input.btn_clear" }}</button>
+      </div>
+
+      <div class="wh-examples">
+        <span class="wh-examples__label">{{ call .T "whois.examples.title" }}:</span>
+        <button class="wh-example-chip" data-domain="google.com"
+                data-ga data-ga-action="use_example" data-ga-category="dev-tool" data-ga-label="whois-example-google">{{ call .T "whois.examples.google" }}</button>
+        <button class="wh-example-chip" data-domain="github.com"
+                data-ga data-ga-action="use_example" data-ga-category="dev-tool" data-ga-label="whois-example-github">{{ call .T "whois.examples.github" }}</button>
+        <button class="wh-example-chip" data-domain="cloudflare.com"
+                data-ga data-ga-action="use_example" data-ga-category="dev-tool" data-ga-label="whois-example-cloudflare">{{ call .T "whois.examples.cloudflare" }}</button>
+        <button class="wh-example-chip" data-domain="toolboxnova.com"
+                data-ga data-ga-action="use_example" data-ga-category="dev-tool" data-ga-label="whois-example-toolboxnova">{{ call .T "whois.examples.toolboxnova" }}</button>
+        <button class="wh-example-chip" data-domain="openai.com"
+                data-ga data-ga-action="use_example" data-ga-category="dev-tool" data-ga-label="whois-example-openai">{{ call .T "whois.examples.openai" }}</button>
+      </div>
+
+      <!-- Status area -->
+      <div id="whoisStatus" class="wh-status" style="display:none"></div>
+
+      <!-- Results area -->
+      <div id="whoisResults" style="display:none">
+        <!-- Overview card -->
+        <div class="wh-overview">
+          <div class="wh-overview__domain">
+            <h2 id="ov-domain">—</h2>
+            <span id="ov-status-badge" class="wh-badge">—</span>
+          </div>
+          <div class="wh-grid">
+            <div class="wh-field"><span class="wh-field__label">{{ call .T "whois.overview.tld" }}</span><span class="wh-field__value" id="ov-tld">—</span></div>
+            <div class="wh-field"><span class="wh-field__label">{{ call .T "whois.overview.registrar" }}</span><span class="wh-field__value" id="ov-registrar">—</span></div>
+            <div class="wh-field"><span class="wh-field__label">{{ call .T "whois.overview.creation_date" }}</span><span class="wh-field__value" id="ov-created">—</span></div>
+            <div class="wh-field"><span class="wh-field__label">{{ call .T "whois.overview.expiry_date" }}</span><span class="wh-field__value" id="ov-expires">—</span></div>
+            <div class="wh-field"><span class="wh-field__label">{{ call .T "whois.overview.updated_date" }}</span><span class="wh-field__value" id="ov-updated">—</span></div>
+            <div class="wh-field"><span class="wh-field__label">{{ call .T "whois.overview.days_remaining" }}</span><span class="wh-field__value" id="ov-days">—</span></div>
+            <div class="wh-field"><span class="wh-field__label">{{ call .T "whois.overview.ns_count" }}</span><span class="wh-field__value" id="ov-ns-count">—</span></div>
+            <div class="wh-field"><span class="wh-field__label">{{ call .T "whois.overview.privacy" }}</span><span class="wh-field__value" id="ov-privacy">—</span></div>
+          </div>
+          <div class="wh-overview__time" id="ov-time"></div>
+        </div>
+
+        <!-- Registration details -->
+        <div class="wh-card">
+          <h3 class="wh-card__title">{{ call .T "whois.registration.title" }}</h3>
+          <div class="wh-grid">
+            <div class="wh-field" id="f-registrar-wrap"><span class="wh-field__label">{{ call .T "whois.registration.registrar" }}</span><span class="wh-field__value" id="f-registrar">—</span></div>
+            <div class="wh-field" id="f-registrar-url-wrap"><span class="wh-field__label">{{ call .T "whois.registration.registrar_url" }}</span><span class="wh-field__value" id="f-registrar-url">—</span></div>
+            <div class="wh-field" id="f-iana-wrap"><span class="wh-field__label">{{ call .T "whois.registration.registrar_iana" }}</span><span class="wh-field__value" id="f-iana">—</span></div>
+            <div class="wh-field" id="f-created-wrap"><span class="wh-field__label">{{ call .T "whois.registration.creation_date" }}</span><span class="wh-field__value" id="f-created">—</span></div>
+            <div class="wh-field" id="f-updated-wrap"><span class="wh-field__label">{{ call .T "whois.registration.updated_date" }}</span><span class="wh-field__value" id="f-updated">—</span></div>
+            <div class="wh-field" id="f-expires-wrap"><span class="wh-field__label">{{ call .T "whois.registration.expiry_date" }}</span><span class="wh-field__value" id="f-expires">—</span></div>
+            <div class="wh-field" id="f-registry-id-wrap"><span class="wh-field__label">{{ call .T "whois.registration.registry_id" }}</span><span class="wh-field__value" id="f-registry-id">—</span></div>
+            <div class="wh-field" id="f-org-wrap"><span class="wh-field__label">{{ call .T "whois.registration.org" }}</span><span class="wh-field__value" id="f-org">—</span></div>
+            <div class="wh-field" id="f-country-wrap"><span class="wh-field__label">{{ call .T "whois.registration.country" }}</span><span class="wh-field__value" id="f-country">—</span></div>
+            <div class="wh-field" id="f-abuse-email-wrap"><span class="wh-field__label">{{ call .T "whois.registration.abuse_email" }}</span><span class="wh-field__value" id="f-abuse-email">—</span></div>
+            <div class="wh-field" id="f-abuse-phone-wrap"><span class="wh-field__label">{{ call .T "whois.registration.abuse_phone" }}</span><span class="wh-field__value" id="f-abuse-phone">—</span></div>
+          </div>
+          <p class="wh-privacy-note">{{ call .T "whois.registration.privacy_notice" }}</p>
+        </div>
+
+        <!-- Domain status -->
+        <div class="wh-card">
+          <h3 class="wh-card__title">{{ call .T "whois.domain_status.title" }}</h3>
+          <div id="statusList"></div>
+          <div id="statusExpiry"></div>
+        </div>
+
+        <!-- Nameservers -->
+        <div class="wh-card">
+          <h3 class="wh-card__title">{{ call .T "whois.ns.title" }}</h3>
+          <div id="nsList"></div>
+          <div class="wh-ns-actions">
+            <button class="wh-btn wh-btn--ghost" id="nsCopyAll"
+                    data-ga data-ga-action="copy" data-ga-category="dev-tool" data-ga-label="whois-copy-ns">{{ call .T "whois.ns.copy_all" }}</button>
+            <a href="/dev/dns?lang={{ .Lang }}" class="wh-btn wh-btn--ghost"
+               data-ga data-ga-action="navigate" data-ga-category="dev-tool" data-ga-label="whois-view-dns">{{ call .T "whois.ns.view_dns" }}</a>
+          </div>
+          <p class="wh-hint">{{ call .T "whois.ns.hint" }}</p>
+        </div>
+
+        <!-- Registrar / Registry -->
+        <div class="wh-card">
+          <h3 class="wh-card__title">{{ call .T "whois.registry.title" }}</h3>
+          <div class="wh-grid">
+            <div class="wh-field"><span class="wh-field__label">{{ call .T "whois.registry.registrar" }}</span><span class="wh-field__value" id="r-registrar">—</span></div>
+            <div class="wh-field"><span class="wh-field__label">{{ call .T "whois.registry.registry" }}</span><span class="wh-field__value" id="r-registry">—</span></div>
+            <div class="wh-field"><span class="wh-field__label">{{ call .T "whois.registry.tld" }}</span><span class="wh-field__value" id="r-tld">—</span></div>
+            <div class="wh-field"><span class="wh-field__label">{{ call .T "whois.registry.whois_server" }}</span><span class="wh-field__value" id="r-whois-server">—</span></div>
+            <div class="wh-field"><span class="wh-field__label">{{ call .T "whois.registry.rdap_url" }}</span><span class="wh-field__value" id="r-rdap">—</span></div>
+            <div class="wh-field"><span class="wh-field__label">{{ call .T "whois.registry.abuse_contact" }}</span><span class="wh-field__value" id="r-abuse">—</span></div>
+            <div class="wh-field"><span class="wh-field__label">{{ call .T "whois.registry.official_url" }}</span><span class="wh-field__value" id="r-official">—</span></div>
+          </div>
+          <p class="wh-hint">{{ call .T "whois.registry.hint" }}</p>
+        </div>
+
+        <!-- Raw WHOIS / RDAP panel -->
+        <div class="wh-card wh-raw-panel">
+          <div class="wh-raw-header">
+            <h3 class="wh-card__title">{{ call .T "whois.raw.title" }}</h3>
+            <div class="wh-tabs">
+              <button class="wh-tab wh-tab--active" data-tab="structured"
+                      data-ga data-ga-action="switch_tab" data-ga-category="dev-tool" data-ga-label="whois-tab-structured">{{ call .T "whois.raw.tab_structured" }}</button>
+              <button class="wh-tab" data-tab="raw"
+                      data-ga data-ga-action="switch_tab" data-ga-category="dev-tool" data-ga-label="whois-tab-raw">{{ call .T "whois.raw.tab_raw" }}</button>
+              <button class="wh-tab" data-tab="rdap"
+                      data-ga data-ga-action="switch_tab" data-ga-category="dev-tool" data-ga-label="whois-tab-rdap">{{ call .T "whois.raw.tab_rdap" }}</button>
+            </div>
+          </div>
+          <div class="wh-raw-body">
+            <div class="wh-raw-content" id="raw-structured"></div>
+            <div class="wh-raw-content" id="raw-whois" style="display:none"><pre id="raw-whois-pre"></pre></div>
+            <div class="wh-raw-content" id="raw-rdap" style="display:none"><pre id="raw-rdap-pre"></pre></div>
+          </div>
+          <div class="wh-raw-actions">
+            <button class="wh-btn wh-btn--ghost" id="rawCopyBtn"
+                    data-ga data-ga-action="copy" data-ga-category="dev-tool" data-ga-label="whois-copy-raw">{{ call .T "whois.raw.copy" }}</button>
+          </div>
+          <p class="wh-hint">{{ call .T "whois.raw.hint" }}</p>
+        </div>
+
+        <!-- Batch lookup -->
+        <div class="wh-card wh-batch">
+          <h3 class="wh-card__title">{{ call .T "whois.batch.title" }}</h3>
+          <p>{{ call .T "whois.batch.description" }}</p>
+          <textarea id="batchInput" class="wh-input wh-input--textarea" rows="5" placeholder="example.com
+github.com
+cloudflare.com"></textarea>
+          <div class="wh-batch-actions">
+            <button class="wh-btn wh-btn--primary" id="batchBtn"
+                    data-ga data-ga-action="batch_lookup" data-ga-category="dev-tool" data-ga-label="whois-batch">{{ call .T "whois.batch.btn_lookup" }}</button>
+            <button class="wh-btn wh-btn--ghost" id="batchCopyBtn"
+                    data-ga data-ga-action="copy" data-ga-category="dev-tool" data-ga-label="whois-batch-copy">{{ call .T "whois.batch.btn_copy" }}</button>
+            <button class="wh-btn wh-btn--ghost" id="batchCsvBtn"
+                    data-ga data-ga-action="download" data-ga-category="dev-tool" data-ga-label="whois-batch-csv">{{ call .T "whois.batch.btn_csv" }}</button>
+            <button class="wh-btn wh-btn--ghost" id="batchClearBtn"
+                    data-ga data-ga-action="clear" data-ga-category="dev-tool" data-ga-label="whois-batch-clear">{{ call .T "whois.batch.btn_clear" }}</button>
+          </div>
+          <div id="batchProgress"></div>
+          <div id="batchResults" style="overflow-x:auto"></div>
+        </div>
+      </div>
+
+      <!-- Empty state -->
+      <div id="whoisEmpty" class="wh-empty">
+        <p class="wh-empty__title">{{ call .T "whois.empty.title" }}</p>
+        <p class="wh-empty__desc">{{ call .T "whois.empty.desc" }}</p>
+        <div class="wh-empty__actions">
+          <button class="wh-btn wh-btn--primary" id="emptyExampleBtn"
+                  data-ga data-ga-action="use_example" data-ga-category="dev-tool" data-ga-label="whois-empty-example">{{ call .T "whois.empty.btn_example" }}</button>
+          <a href="/dev/whois-guide?lang={{ .Lang }}" class="wh-btn wh-btn--ghost"
+             data-ga data-ga-action="navigate" data-ga-category="dev-tool" data-ga-label="whois-empty-guide">{{ call .T "whois.empty.btn_guide" }}</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- Privacy notice -->
+    <section class="wh-card wh-privacy">
+      <h3>{{ call .T "whois.privacy.title" }}</h3>
+      <p>{{ call .T "whois.privacy.body" }}</p>
+      <p class="wh-hint">{{ call .T "whois.privacy.supplement" }}</p>
+    </section>
+
+    <!-- FAQ -->
+    <section class="wh-faq">
+      <h2>{{ call .T "whois.faq.title" }}</h2>
+      <details class="wh-faq__item">
+        <summary>{{ call .T "whois.faq.q1" }}</summary>
+        <p>{{ call .T "whois.faq.a1" }}</p>
+      </details>
+      <details class="wh-faq__item">
+        <summary>{{ call .T "whois.faq.q2" }}</summary>
+        <p>{{ call .T "whois.faq.a2" }}</p>
+      </details>
+      <details class="wh-faq__item">
+        <summary>{{ call .T "whois.faq.q3" }}</summary>
+        <p>{{ call .T "whois.faq.a3" }}</p>
+      </details>
+      <details class="wh-faq__item">
+        <summary>{{ call .T "whois.faq.q4" }}</summary>
+        <p>{{ call .T "whois.faq.a4" }}</p>
+      </details>
+      <details class="wh-faq__item">
+        <summary>{{ call .T "whois.faq.q5" }}</summary>
+        <p>{{ call .T "whois.faq.a5" }}</p>
+      </details>
+    </section>
+
+    <!-- Related tools -->
+    <section class="wh-related">
+      <h2>{{ call .T "whois.related.title" }}</h2>
+      <div class="wh-related__grid">
+        <a href="/dev/dns?lang={{ .Lang }}" class="wh-related__card"
+           data-ga data-ga-action="navigate" data-ga-category="dev-tool" data-ga-label="whois-related-dns"><span class="wh-related__icon">🌐</span><span class="wh-related__name">{{ call .T "whois.related.dns" }}</span></a>
+        <a href="/dev/ip?lang={{ .Lang }}" class="wh-related__card"
+           data-ga data-ga-action="navigate" data-ga-category="dev-tool" data-ga-label="whois-related-ip"><span class="wh-related__icon">📍</span><span class="wh-related__name">{{ call .T "whois.related.ip" }}</span></a>
+        <a href="/dev/http-headers?lang={{ .Lang }}" class="wh-related__card"
+           data-ga data-ga-action="navigate" data-ga-category="dev-tool" data-ga-label="whois-related-http"><span class="wh-related__icon">📡</span><span class="wh-related__name">{{ call .T "whois.related.http" }}</span></a>
+        <a href="/dev/ssl-checker?lang={{ .Lang }}" class="wh-related__card"
+           data-ga data-ga-action="navigate" data-ga-category="dev-tool" data-ga-label="whois-related-ssl"><span class="wh-related__icon">🔒</span><span class="wh-related__name">{{ call .T "whois.related.ssl" }}</span></a>
+        <a href="/dev/ping?lang={{ .Lang }}" class="wh-related__card"
+           data-ga data-ga-action="navigate" data-ga-category="dev-tool" data-ga-label="whois-related-ping"><span class="wh-related__icon">📶</span><span class="wh-related__name">{{ call .T "whois.related.ping" }}</span></a>
+        <a href="/dev/port-check?lang={{ .Lang }}" class="wh-related__card"
+           data-ga data-ga-action="navigate" data-ga-category="dev-tool" data-ga-label="whois-related-port"><span class="wh-related__icon">🔌</span><span class="wh-related__name">{{ call .T "whois.related.port" }}</span></a>
+        <a href="/dev/user-agent?lang={{ .Lang }}" class="wh-related__card"
+           data-ga data-ga-action="navigate" data-ga-category="dev-tool" data-ga-label="whois-related-ua"><span class="wh-related__icon">🖥️</span><span class="wh-related__name">{{ call .T "whois.related.ua" }}</span></a>
+        <a href="/dev/timestamp?lang={{ .Lang }}" class="wh-related__card"
+           data-ga data-ga-action="navigate" data-ga-category="dev-tool" data-ga-label="whois-related-timestamp"><span class="wh-related__icon">⏱️</span><span class="wh-related__name">{{ call .T "whois.related.timestamp" }}</span></a>
+        <a href="/dev/json-formatter?lang={{ .Lang }}" class="wh-related__card"
+           data-ga data-ga-action="navigate" data-ga-category="dev-tool" data-ga-label="whois-related-json"><span class="wh-related__icon">📋</span><span class="wh-related__name">{{ call .T "whois.related.json" }}</span></a>
+        <a href="/dev/base64?lang={{ .Lang }}" class="wh-related__card"
+           data-ga data-ga-action="navigate" data-ga-category="dev-tool" data-ga-label="whois-related-base64"><span class="wh-related__icon">🔤</span><span class="wh-related__name">{{ call .T "whois.related.base64" }}</span></a>
+        <a href="/dev/url-encode?lang={{ .Lang }}" class="wh-related__card"
+           data-ga data-ga-action="navigate" data-ga-category="dev-tool" data-ga-label="whois-related-url"><span class="wh-related__icon">🔗</span><span class="wh-related__name">{{ call .T "whois.related.url" }}</span></a>
+        <a href="/dev/hash?lang={{ .Lang }}" class="wh-related__card"
+           data-ga data-ga-action="navigate" data-ga-category="dev-tool" data-ga-label="whois-related-hash"><span class="wh-related__icon">🔐</span><span class="wh-related__name">{{ call .T "whois.related.hash" }}</span></a>
+      </div>
+    </section>
+
+    <!-- Guide CTA -->
+    <section class="wh-cta">
+      <h3>{{ call .T "whois.guide_cta.title" }}</h3>
+      <p>{{ call .T "whois.guide_cta.subtitle" }}</p>
+      <a href="/dev/whois-guide?lang={{ .Lang }}" class="wh-btn wh-btn--primary"
+         data-ga data-ga-action="navigate" data-ga-category="dev-tool" data-ga-label="whois-guide-cta">{{ call .T "whois.guide_cta.btn" }}</a>
+    </section>
+
+  </div><!-- /wh-main-area -->
+
+  <aside class="wh-sidebar-ad">
+    {{- template "partials/ad_slot.html" (dict "Ctx" . "SlotID" "dev-whois-right" "Size" "160x600" "MobileHide" true) }}
+  </aside>
+</div>
+
+<!-- Bottom ad -->
+<div style="text-align:center;margin:20px auto;max-width:970px;padding:0 16px">
+  {{- template "partials/ad_slot.html" (dict "Ctx" . "SlotID" "dev-whois-bottom" "Size" "728x90" "Mobile" "320x50") }}
+</div>
+
+<div id="toastContainer" class="wh-toast-container"></div>
+</div>
+{{ end }}
+
+{{ define "extraScript" }}
+<script src="/static/js/dev-whois.js?v={{ .AssetVer }}"></script>
+{{ end }}

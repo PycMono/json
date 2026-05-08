@@ -1,0 +1,310 @@
+{{ template "base" . }}
+
+{{ define "extraHead" }}
+<link rel="stylesheet" href="/static/css/dev-tools.css?v={{ .AssetVer }}">
+<link rel="stylesheet" href="/static/css/dev-whois-guide.css?v={{ .AssetVer }}">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="alternate" hreflang="zh" href="{{ .HreflangZH }}">
+<link rel="alternate" hreflang="en" href="{{ .HreflangEN }}">
+<link rel="alternate" hreflang="x-default" href="{{ .Canonical }}">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "{{ call .T "whois.guide.hero.title" }}",
+  "description": "{{ call .T "seo.whois.guide.description" }}",
+  "url": "{{ .Canonical }}",
+  "author": { "@type": "Organization", "name": "ToolboxNova" },
+  "publisher": { "@type": "Organization", "name": "ToolboxNova", "url": "https://toolboxnova.com/" }
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "ToolboxNova", "item": "https://toolboxnova.com/" },
+    { "@type": "ListItem", "position": 2, "name": "{{ call .T "whois.hero.title" }}", "item": "https://toolboxnova.com/dev/whois" },
+    { "@type": "ListItem", "position": 3, "name": "{{ call .T "whois.guide.hero.title" }}", "item": "{{ .Canonical }}" }
+  ]
+}
+</script>
+{{ end }}
+
+{{ define "content" }}
+<div class="page-whois-guide">
+
+<!-- Hero -->
+<section class="wg-hero" aria-labelledby="wg-hero-title">
+  <div class="wg-hero__inner">
+    <div class="wg-hero__eyebrow">{{ call .T "whois.guide.hero.eyebrow" }}</div>
+    <h1 class="wg-hero__title" id="wg-hero-title">{{ call .T "whois.guide.hero.title" }}</h1>
+    <p class="wg-hero__subtitle">{{ call .T "whois.guide.hero.subtitle" }}</p>
+    <a href="/dev/whois?lang={{ .Lang }}" class="wg-btn wg-btn--primary" data-ga="guide_cta">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      {{ call .T "whois.guide.hero.cta" }}
+    </a>
+  </div>
+</section>
+
+<div style="text-align:center;margin:12px auto;max-width:970px;padding:0 16px">
+  {{- template "partials/ad_slot.html" (dict "Ctx" . "SlotID" "dev-whois-guide-top" "Size" "728x90" "Mobile" "320x50") }}
+</div>
+
+<div class="wg-sidebar-layout">
+  <aside class="wg-sidebar-ad">
+    {{- template "partials/ad_slot.html" (dict "Ctx" . "SlotID" "dev-whois-guide-left" "Size" "160x600" "MobileHide" true) }}
+  </aside>
+
+  <div class="wg-main-area">
+
+  <!-- TOC -->
+  <nav class="wg-toc" aria-labelledby="wg-toc-title">
+    <h2 class="wg-toc__title" id="wg-toc-title">{{ call .T "whois.guide.toc.title" }}</h2>
+    <ol class="wg-toc__list">
+      <li><a href="#wg-s1">{{ call .T "whois.guide.toc.s1" }}</a></li>
+      <li><a href="#wg-s2">{{ call .T "whois.guide.toc.s2" }}</a></li>
+      <li><a href="#wg-s3">{{ call .T "whois.guide.toc.s3" }}</a></li>
+      <li><a href="#wg-s4">{{ call .T "whois.guide.toc.s4" }}</a></li>
+      <li><a href="#wg-s5">{{ call .T "whois.guide.toc.s5" }}</a></li>
+      <li><a href="#wg-s6">{{ call .T "whois.guide.toc.s6" }}</a></li>
+      <li><a href="#wg-s7">{{ call .T "whois.guide.toc.s7" }}</a></li>
+      <li><a href="#wg-s8">{{ call .T "whois.guide.toc.s8" }}</a></li>
+      <li><a href="#wg-s9">{{ call .T "whois.guide.toc.s9" }}</a></li>
+      <li><a href="#wg-s10">{{ call .T "whois.guide.toc.s10" }}</a></li>
+      <li><a href="#wg-s11">{{ call .T "whois.guide.toc.s11" }}</a></li>
+      <li><a href="#wg-s12">{{ call .T "whois.guide.toc.s12" }}</a></li>
+      <li><a href="#wg-s13">{{ call .T "whois.guide.toc.s13" }}</a></li>
+      <li><a href="#wg-s14">{{ call .T "whois.guide.toc.s14" }}</a></li>
+    </ol>
+  </nav>
+
+  <!-- S1 -->
+  <section class="wg-section" aria-labelledby="wg-s1">
+    <div class="wg-section__inner">
+      <h2 class="wg-section__title" id="wg-s1">{{ call .T "whois.guide.s1.title" }}</h2>
+      <div class="wg-card">
+        <div class="wg-card__body">
+          <p>{{ call .T "whois.guide.s1.p1" }}</p>
+          <p>{{ call .T "whois.guide.s1.p2" }}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- S2 -->
+  <section class="wg-section wg-section--alt" aria-labelledby="wg-s2">
+    <div class="wg-section__inner">
+      <h2 class="wg-section__title" id="wg-s2">{{ call .T "whois.guide.s2.title" }}</h2>
+      <div class="wg-card">
+        <div class="wg-card__body">
+          <p>{{ call .T "whois.guide.s2.p1" }}</p>
+          <p>{{ call .T "whois.guide.s2.p2" }}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- S3 -->
+  <section class="wg-section" aria-labelledby="wg-s3">
+    <div class="wg-section__inner">
+      <h2 class="wg-section__title" id="wg-s3">{{ call .T "whois.guide.s3.title" }}</h2>
+      <div class="wg-card">
+        <div class="wg-card__body">
+          <p>{{ call .T "whois.guide.s3.p1" }}</p>
+          <p>{{ call .T "whois.guide.s3.p2" }}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- S4 -->
+  <section class="wg-section wg-section--alt" aria-labelledby="wg-s4">
+    <div class="wg-section__inner">
+      <h2 class="wg-section__title" id="wg-s4">{{ call .T "whois.guide.s4.title" }}</h2>
+      <div class="wg-card">
+        <div class="wg-card__body">
+          <p>{{ call .T "whois.guide.s4.p1" }}</p>
+          <p>{{ call .T "whois.guide.s4.p2" }}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- S5 -->
+  <section class="wg-section" aria-labelledby="wg-s5">
+    <div class="wg-section__inner">
+      <h2 class="wg-section__title" id="wg-s5">{{ call .T "whois.guide.s5.title" }}</h2>
+      <div class="wg-card">
+        <div class="wg-card__body">
+          <p>{{ call .T "whois.guide.s5.p1" }}</p>
+          <p>{{ call .T "whois.guide.s5.p2" }}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- S6 -->
+  <section class="wg-section wg-section--alt" aria-labelledby="wg-s6">
+    <div class="wg-section__inner">
+      <h2 class="wg-section__title" id="wg-s6">{{ call .T "whois.guide.s6.title" }}</h2>
+      <div class="wg-card">
+        <div class="wg-card__body">
+          <p>{{ call .T "whois.guide.s6.p1" }}</p>
+          <p>{{ call .T "whois.guide.s6.p2" }}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- S7 -->
+  <section class="wg-section" aria-labelledby="wg-s7">
+    <div class="wg-section__inner">
+      <h2 class="wg-section__title" id="wg-s7">{{ call .T "whois.guide.s7.title" }}</h2>
+      <div class="wg-card">
+        <div class="wg-card__body">
+          <p>{{ call .T "whois.guide.s7.p1" }}</p>
+          <p>{{ call .T "whois.guide.s7.p2" }}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- S8 -->
+  <section class="wg-section wg-section--alt" aria-labelledby="wg-s8">
+    <div class="wg-section__inner">
+      <h2 class="wg-section__title" id="wg-s8">{{ call .T "whois.guide.s8.title" }}</h2>
+      <div class="wg-card">
+        <div class="wg-card__body">
+          <p>{{ call .T "whois.guide.s8.p1" }}</p>
+          <p>{{ call .T "whois.guide.s8.p2" }}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- S9 -->
+  <section class="wg-section" aria-labelledby="wg-s9">
+    <div class="wg-section__inner">
+      <h2 class="wg-section__title" id="wg-s9">{{ call .T "whois.guide.s9.title" }}</h2>
+      <div class="wg-card">
+        <div class="wg-card__body">
+          <p>{{ call .T "whois.guide.s9.p1" }}</p>
+          <p>{{ call .T "whois.guide.s9.p2" }}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- S10 -->
+  <section class="wg-section wg-section--alt" aria-labelledby="wg-s10">
+    <div class="wg-section__inner">
+      <h2 class="wg-section__title" id="wg-s10">{{ call .T "whois.guide.s10.title" }}</h2>
+      <div class="wg-card">
+        <div class="wg-card__body">
+          <p>{{ call .T "whois.guide.s10.p1" }}</p>
+          <p>{{ call .T "whois.guide.s10.p2" }}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- S11 -->
+  <section class="wg-section" aria-labelledby="wg-s11">
+    <div class="wg-section__inner">
+      <h2 class="wg-section__title" id="wg-s11">{{ call .T "whois.guide.s11.title" }}</h2>
+      <div class="wg-card">
+        <div class="wg-card__body">
+          <p>{{ call .T "whois.guide.s11.p1" }}</p>
+          <p>{{ call .T "whois.guide.s11.p2" }}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- S12 -->
+  <section class="wg-section wg-section--alt" aria-labelledby="wg-s12">
+    <div class="wg-section__inner">
+      <h2 class="wg-section__title" id="wg-s12">{{ call .T "whois.guide.s12.title" }}</h2>
+      <div class="wg-card">
+        <div class="wg-card__body">
+          <p>{{ call .T "whois.guide.s12.p1" }}</p>
+          <p>{{ call .T "whois.guide.s12.p2" }}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- S13 -->
+  <section class="wg-section" aria-labelledby="wg-s13">
+    <div class="wg-section__inner">
+      <h2 class="wg-section__title" id="wg-s13">{{ call .T "whois.guide.s13.title" }}</h2>
+      <div class="wg-card">
+        <div class="wg-card__body">
+          <p>{{ call .T "whois.guide.s13.p1" }}</p>
+          <p>{{ call .T "whois.guide.s13.p2" }}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- S14 -->
+  <section class="wg-section wg-section--alt" aria-labelledby="wg-s14">
+    <div class="wg-section__inner">
+      <h2 class="wg-section__title" id="wg-s14">{{ call .T "whois.guide.s14.title" }}</h2>
+      <div class="wg-card">
+        <div class="wg-card__body">
+          <p>{{ call .T "whois.guide.s14.p1" }}</p>
+          <p>{{ call .T "whois.guide.s14.p2" }}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="wg-cta" aria-label="Call to action">
+    <div class="wg-cta__inner">
+      <h3 class="wg-cta__title">{{ call .T "whois.guide.cta.title" }}</h3>
+      <p class="wg-cta__subtitle">{{ call .T "whois.guide.cta.subtitle" }}</p>
+      <a href="/dev/whois?lang={{ .Lang }}" class="wg-btn wg-btn--primary" data-ga="guide_cta">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        {{ call .T "whois.guide.cta.btn" }}
+      </a>
+    </div>
+  </section>
+
+  </div><!-- /wg-main-area -->
+
+  <aside class="wg-sidebar-ad">
+    {{- template "partials/ad_slot.html" (dict "Ctx" . "SlotID" "dev-whois-guide-right" "Size" "160x600" "MobileHide" true) }}
+  </aside>
+</div><!-- /wg-sidebar-layout -->
+
+<!-- Bottom Ad -->
+<div style="text-align:center;margin:20px auto;max-width:970px;padding:0 16px">
+  {{- template "partials/ad_slot.html" (dict "Ctx" . "SlotID" "dev-whois-guide-bottom" "Size" "728x90" "Mobile" "320x50") }}
+</div>
+
+</div><!-- /page-whois-guide -->
+{{ end }}
+
+{{ define "extraScript" }}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  document.querySelectorAll('.wg-toc__list a').forEach(function(link) {
+    link.addEventListener('click', function(e) {
+      const id = link.getAttribute('href');
+      if (!id || !id.startsWith('#')) return;
+      const target = document.querySelector(id);
+      if (!target) return;
+      e.preventDefault();
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      history.replaceState(null, '', id);
+    });
+  });
+});
+</script>
+{{ end }}

@@ -1,0 +1,359 @@
+{{ template "base" . }}
+
+{{ define "extraHead" }}
+<link rel="stylesheet" href="/static/css/dev-tools.css?v={{ .AssetVer }}">
+<link rel="stylesheet" href="/static/css/dev-hash-guide.css?v={{ .AssetVer }}">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="alternate" hreflang="zh" href="{{ .HreflangZH }}">
+<link rel="alternate" hreflang="en" href="{{ .HreflangEN }}">
+<link rel="alternate" hreflang="x-default" href="{{ .Canonical }}">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "{{ call .T "hash.guide.hero.title" }}",
+  "description": "{{ call .T "seo.hash.guide.description" }}",
+  "url": "{{ .Canonical }}",
+  "author": { "@type": "Organization", "name": "ToolboxNova" },
+  "publisher": { "@type": "Organization", "name": "ToolboxNova", "url": "https://toolboxnova.com/" }
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "ToolboxNova", "item": "https://toolboxnova.com/" },
+    { "@type": "ListItem", "position": 2, "name": "{{ call .T "hash.hero.title" }}", "item": "https://toolboxnova.com/dev/hash" },
+    { "@type": "ListItem", "position": 3, "name": "{{ call .T "hash.guide.hero.title" }}", "item": "{{ .Canonical }}" }
+  ]
+}
+</script>
+{{ end }}
+
+{{ define "content" }}
+<div class="page-hash-guide">
+
+<!-- Hero -->
+<section class="hg-hero" aria-labelledby="hg-hero-title">
+  <div class="hg-hero__inner">
+    <div class="hg-hero__eyebrow">{{ call .T "hash.guide.hero.eyebrow" }}</div>
+    <h1 class="hg-hero__title" id="hg-hero-title">{{ call .T "hash.guide.hero.title" }}</h1>
+    <p class="hg-hero__subtitle">{{ call .T "hash.guide.hero.subtitle" }}</p>
+    <a href="/dev/hash?lang={{ .Lang }}" class="hg-btn hg-btn--primary" data-ga="guide_cta">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      {{ call .T "hash.guide.hero.cta" }}
+    </a>
+  </div>
+</section>
+
+<div style="text-align:center;margin:12px auto;max-width:970px;padding:0 16px">
+  {{- template "partials/ad_slot.html" (dict "Ctx" . "SlotID" "dev-hash-guide-top" "Size" "728x90" "Mobile" "320x50") }}
+</div>
+
+<div class="hg-sidebar-layout">
+  <aside class="hg-sidebar-ad">
+    {{- template "partials/ad_slot.html" (dict "Ctx" . "SlotID" "dev-hash-guide-left" "Size" "160x600" "MobileHide" true) }}
+  </aside>
+
+  <div class="hg-main-area">
+
+  <!-- TOC -->
+  <nav class="hg-toc" aria-labelledby="hg-toc-title">
+    <h2 class="hg-toc__title" id="hg-toc-title">{{ call .T "hash.guide.toc.title" }}</h2>
+    <ol class="hg-toc__list">
+      <li><a href="#hg-s1">{{ call .T "hash.guide.toc.s1" }}</a></li>
+      <li><a href="#hg-s2">{{ call .T "hash.guide.toc.s2" }}</a></li>
+      <li><a href="#hg-s3">{{ call .T "hash.guide.toc.s3" }}</a></li>
+      <li><a href="#hg-s4">{{ call .T "hash.guide.toc.s4" }}</a></li>
+      <li><a href="#hg-s5">{{ call .T "hash.guide.toc.s5" }}</a></li>
+      <li><a href="#hg-s6">{{ call .T "hash.guide.toc.s6" }}</a></li>
+      <li><a href="#hg-s7">{{ call .T "hash.guide.toc.s7" }}</a></li>
+      <li><a href="#hg-s8">{{ call .T "hash.guide.toc.s8" }}</a></li>
+      <li><a href="#hg-s9">{{ call .T "hash.guide.toc.s9" }}</a></li>
+      <li><a href="#hg-s10">{{ call .T "hash.guide.toc.s10" }}</a></li>
+      <li><a href="#hg-s11">{{ call .T "hash.guide.toc.s11" }}</a></li>
+      <li><a href="#hg-s12">{{ call .T "hash.guide.toc.s12" }}</a></li>
+      <li><a href="#hg-s13">{{ call .T "hash.guide.toc.s13" }}</a></li>
+      <li><a href="#hg-s14">{{ call .T "hash.guide.toc.s14" }}</a></li>
+      <li><a href="#hg-s15">{{ call .T "hash.guide.toc.s15" }}</a></li>
+    </ol>
+  </nav>
+
+  <!-- S1 -->
+  <section class="hg-section" aria-labelledby="hg-s1">
+    <div class="hg-section__inner">
+      <h2 class="hg-section__title" id="hg-s1">{{ call .T "hash.guide.s1.title" }}</h2>
+      <div class="hg-card">
+        <div class="hg-card__body">
+          <p>{{ call .T "hash.guide.s1.p1" }}</p>
+          <p>{{ call .T "hash.guide.s1.p2" }}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- S2 -->
+  <section class="hg-section hg-section--alt" aria-labelledby="hg-s2">
+    <div class="hg-section__inner">
+      <h2 class="hg-section__title" id="hg-s2">{{ call .T "hash.guide.s2.title" }}</h2>
+      <div class="hg-card">
+        <div class="hg-card__body">
+          <p>{{ call .T "hash.guide.s2.p1" }}</p>
+          <p>{{ call .T "hash.guide.s2.p2" }}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- S3 -->
+  <section class="hg-section" aria-labelledby="hg-s3">
+    <div class="hg-section__inner">
+      <h2 class="hg-section__title" id="hg-s3">{{ call .T "hash.guide.s3.title" }}</h2>
+      <div class="hg-card">
+        <div class="hg-card__body">
+          <div class="hg-box hg-box--danger">
+            <div class="hg-box__title">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+              {{ call .T "hash.tag.weak" }}
+            </div>
+            <p>{{ call .T "hash.algo.md5.desc" }}</p>
+          </div>
+          <p>{{ call .T "hash.guide.s3.p1" }}</p>
+          <p>{{ call .T "hash.guide.s3.p2" }}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- S4 -->
+  <section class="hg-section hg-section--alt" aria-labelledby="hg-s4">
+    <div class="hg-section__inner">
+      <h2 class="hg-section__title" id="hg-s4">{{ call .T "hash.guide.s4.title" }}</h2>
+      <div class="hg-card">
+        <div class="hg-card__body">
+          <div class="hg-box hg-box--danger">
+            <div class="hg-box__title">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+              {{ call .T "hash.tag.weak" }}
+            </div>
+            <p>{{ call .T "hash.algo.sha1.desc" }}</p>
+          </div>
+          <p>{{ call .T "hash.guide.s4.p1" }}</p>
+          <p>{{ call .T "hash.guide.s4.p2" }}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- S5 -->
+  <section class="hg-section" aria-labelledby="hg-s5">
+    <div class="hg-section__inner">
+      <h2 class="hg-section__title" id="hg-s5">{{ call .T "hash.guide.s5.title" }}</h2>
+      <div class="hg-card">
+        <div class="hg-card__body">
+          <div class="hg-box hg-box--ok">
+            <div class="hg-box__title">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"/><polyline points="22 4 12 14.01 9 11.01"/></svg>
+              {{ call .T "hash.tag.recommended" }}
+            </div>
+            <p>{{ call .T "hash.algo.sha256.desc" }}</p>
+          </div>
+          <p>{{ call .T "hash.guide.s5.p1" }}</p>
+          <p>{{ call .T "hash.guide.s5.p2" }}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- S6 -->
+  <section class="hg-section hg-section--alt" aria-labelledby="hg-s6">
+    <div class="hg-section__inner">
+      <h2 class="hg-section__title" id="hg-s6">{{ call .T "hash.guide.s6.title" }}</h2>
+      <div class="hg-card">
+        <div class="hg-card__body">
+          <p>{{ call .T "hash.guide.s6.p1" }}</p>
+          <p>{{ call .T "hash.guide.s6.p2" }}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- S7 -->
+  <section class="hg-section" aria-labelledby="hg-s7">
+    <div class="hg-section__inner">
+      <h2 class="hg-section__title" id="hg-s7">{{ call .T "hash.guide.s7.title" }}</h2>
+      <div class="hg-card">
+        <div class="hg-card__body">
+          <div class="hg-box hg-box--info">
+            <div class="hg-box__title">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+              {{ call .T "hash.tag.checksum_only" }}
+            </div>
+            <p>{{ call .T "hash.algo.crc32.desc" }}</p>
+          </div>
+          <p>{{ call .T "hash.guide.s7.p1" }}</p>
+          <p>{{ call .T "hash.guide.s7.p2" }}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- S8 -->
+  <section class="hg-section hg-section--alt" aria-labelledby="hg-s8">
+    <div class="hg-section__inner">
+      <h2 class="hg-section__title" id="hg-s8">{{ call .T "hash.guide.s8.title" }}</h2>
+      <div class="hg-card">
+        <div class="hg-card__body">
+          <p>{{ call .T "hash.guide.s8.p1" }}</p>
+          <p>{{ call .T "hash.guide.s8.p2" }}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- S9 -->
+  <section class="hg-section" aria-labelledby="hg-s9">
+    <div class="hg-section__inner">
+      <h2 class="hg-section__title" id="hg-s9">{{ call .T "hash.guide.s9.title" }}</h2>
+      <div class="hg-card">
+        <div class="hg-card__body">
+          <p>{{ call .T "hash.guide.s9.p1" }}</p>
+          <p>{{ call .T "hash.guide.s9.p2" }}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- S10 -->
+  <section class="hg-section hg-section--alt" aria-labelledby="hg-s10">
+    <div class="hg-section__inner">
+      <h2 class="hg-section__title" id="hg-s10">{{ call .T "hash.guide.s10.title" }}</h2>
+      <div class="hg-card">
+        <div class="hg-card__body">
+          <p>{{ call .T "hash.guide.s10.p1" }}</p>
+          <p>{{ call .T "hash.guide.s10.p2" }}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- S11 -->
+  <section class="hg-section" aria-labelledby="hg-s11">
+    <div class="hg-section__inner">
+      <h2 class="hg-section__title" id="hg-s11">{{ call .T "hash.guide.s11.title" }}</h2>
+      <div class="hg-card">
+        <div class="hg-card__body">
+          <p>{{ call .T "hash.guide.s11.p1" }}</p>
+          <p>{{ call .T "hash.guide.s11.p2" }}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- S12 -->
+  <section class="hg-section hg-section--alt" aria-labelledby="hg-s12">
+    <div class="hg-section__inner">
+      <h2 class="hg-section__title" id="hg-s12">{{ call .T "hash.guide.s12.title" }}</h2>
+      <div class="hg-card">
+        <div class="hg-card__body">
+          <div class="hg-box hg-box--danger">
+            <div class="hg-box__title">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+              {{ call .T "hash.tag.not_for_passwords" }}
+            </div>
+            <p>{{ call .T "hash.security.body3" }}</p>
+          </div>
+          <p>{{ call .T "hash.guide.s12.p1" }}</p>
+          <p>{{ call .T "hash.guide.s12.p2" }}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- S13 -->
+  <section class="hg-section" aria-labelledby="hg-s13">
+    <div class="hg-section__inner">
+      <h2 class="hg-section__title" id="hg-s13">{{ call .T "hash.guide.s13.title" }}</h2>
+      <div class="hg-card">
+        <div class="hg-card__body">
+          <p>{{ call .T "hash.guide.s13.p1" }}</p>
+          <p>{{ call .T "hash.guide.s13.p2" }}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- S14 -->
+  <section class="hg-section hg-section--alt" aria-labelledby="hg-s14">
+    <div class="hg-section__inner">
+      <h2 class="hg-section__title" id="hg-s14">{{ call .T "hash.guide.s14.title" }}</h2>
+      <div class="hg-card">
+        <div class="hg-card__body">
+          <p>{{ call .T "hash.guide.s14.p1" }}</p>
+          <p>{{ call .T "hash.guide.s14.p2" }}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- S15 -->
+  <section class="hg-section" aria-labelledby="hg-s15">
+    <div class="hg-section__inner">
+      <h2 class="hg-section__title" id="hg-s15">{{ call .T "hash.guide.s15.title" }}</h2>
+      <div class="hg-card">
+        <div class="hg-card__body">
+          <p>{{ call .T "hash.guide.s15.p1" }}</p>
+          <p>{{ call .T "hash.guide.s15.p2" }}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="hg-cta" aria-label="Call to action">
+    <div class="hg-cta__inner">
+      <h3 class="hg-cta__title">{{ call .T "hash.guide.cta.title" }}</h3>
+      <p class="hg-cta__subtitle">{{ call .T "hash.guide.cta.subtitle" }}</p>
+      <a href="/dev/hash?lang={{ .Lang }}" class="hg-btn hg-btn--primary" data-ga="guide_cta">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        {{ call .T "hash.guide.cta.btn" }}
+      </a>
+    </div>
+  </section>
+
+  </div><!-- /hg-main-area -->
+
+  <aside class="hg-sidebar-ad">
+    {{- template "partials/ad_slot.html" (dict "Ctx" . "SlotID" "dev-hash-guide-right" "Size" "160x600" "MobileHide" true) }}
+  </aside>
+</div><!-- /hg-sidebar-layout -->
+
+<!-- Bottom Ad -->
+<div style="text-align:center;margin:20px auto;max-width:970px;padding:0 16px">
+  {{- template "partials/ad_slot.html" (dict "Ctx" . "SlotID" "dev-hash-guide-bottom" "Size" "728x90" "Mobile" "320x50") }}
+</div>
+
+</div><!-- /page-hash-guide -->
+{{ end }}
+
+{{ define "extraScript" }}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  document.querySelectorAll('.hg-toc__list a').forEach(function(link) {
+    link.addEventListener('click', function(e) {
+      const id = link.getAttribute('href');
+      if (!id || !id.startsWith('#')) return;
+      const target = document.querySelector(id);
+      if (!target) return;
+      e.preventDefault();
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      history.replaceState(null, '', id);
+    });
+  });
+});
+</script>
+{{ end }}

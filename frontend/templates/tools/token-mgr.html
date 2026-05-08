@@ -1,0 +1,241 @@
+{{ template "base" . }}
+
+{{ define "extraHead" }}
+<meta name="robots" content="noindex, nofollow">
+<link rel="stylesheet" href="/static/css/token-mgr.css?v={{ .AssetVer }}">
+{{ end }}
+
+{{ define "content" }}
+<div class="page-token-mgr">
+
+  {{/* Hero */}}
+  <section class="tm-hero">
+    <div class="tm-hero-inner">
+      <div class="tm-hero-icon">🪙</div>
+      <div class="tm-hero-text">
+        <h1>{{ call .T "token-mgr.hero.title" }}</h1>
+        <p class="tm-hero-subtitle">{{ call .T "token-mgr.hero.subtitle" }}</p>
+        <div class="tm-hero-badges">
+          <span class="tm-badge">{{ call .T "token-mgr.hero.badge1" }}</span>
+          <span class="tm-badge">{{ call .T "token-mgr.hero.badge2" }}</span>
+          <span class="tm-badge">{{ call .T "token-mgr.hero.badge3" }}</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {{/* Low Balance Banner */}}
+  <div id="balanceLowBanner" class="balance-low-banner" style="display:none" role="alert">
+    <span class="banner-icon">⚠️</span>
+    <span class="banner-msg" id="balanceBannerMsg"></span>
+    <button class="banner-close" id="closeLowBanner" aria-label="close" data-ga data-ga-action="click" data-ga-category="token_mgr" data-ga-label="close_low_banner">✕</button>
+  </div>
+
+  {{/* Dashboard Grid */}}
+  <div class="tm-dashboard">
+
+    {{/* Left Column */}}
+    <div class="tm-col-left">
+
+      {{/* Balance Card */}}
+      <div class="tm-card" id="balanceCard">
+        <div class="tm-card-header">
+          <h2 class="tm-card-title">{{ call .T "token-mgr.section.balance" }}</h2>
+          <button class="tm-icon-btn" id="btnRefreshBalance" title="{{ call .T "token-mgr.btn.refresh" }}">
+            <span class="refresh-icon">↻</span>
+          </button>
+        </div>
+        <div class="tm-card-body">
+          <div class="tm-balance-ring-wrap">
+            <svg class="tm-balance-ring" viewBox="0 0 140 140" aria-hidden="true">
+              <circle class="ring-bg" cx="70" cy="70" r="58" fill="none" stroke-width="10"/>
+              <circle class="ring-used" cx="70" cy="70" r="58" fill="none" stroke-width="10"
+                      stroke-dasharray="364.42" stroke-dashoffset="364.42"
+                      stroke-linecap="round" id="ringUsed"
+                      transform="rotate(-90 70 70)"/>
+            </svg>
+            <div class="ring-center">
+              <span class="balance-num" id="balanceNum">—</span>
+              <span class="balance-label">{{ call .T "token-mgr.balance.remaining" }}</span>
+            </div>
+          </div>
+          <div class="tm-balance-stats">
+            <div class="tm-stat">
+              <span class="tm-stat-val" id="totalGranted">—</span>
+              <span class="tm-stat-label">{{ call .T "token-mgr.balance.granted" }}</span>
+            </div>
+            <div class="tm-stat-divider"></div>
+            <div class="tm-stat">
+              <span class="tm-stat-val" id="totalConsumed">—</span>
+              <span class="tm-stat-label">{{ call .T "token-mgr.balance.consumed" }}</span>
+            </div>
+            <div class="tm-stat-divider"></div>
+            <div class="tm-stat">
+              <span class="tm-stat-val" id="totalRefunded">—</span>
+              <span class="tm-stat-label">{{ call .T "token-mgr.balance.refunded" }}</span>
+            </div>
+            <div class="tm-stat-divider"></div>
+            <div class="tm-stat">
+              <span class="tm-stat-val" id="usedPct">—</span>
+              <span class="tm-stat-label">{{ call .T "token-mgr.balance.used_pct" }}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {{/* Rules Card */}}
+      <div class="tm-card">
+        <div class="tm-card-header">
+          <h2 class="tm-card-title">{{ call .T "token-mgr.section.rules" }}</h2>
+        </div>
+        <div class="tm-card-body tm-rules">
+          <div class="tm-rule-item">
+            <span class="tm-rule-dot"></span>
+            <span class="tm-rule-text">{{ call .T "token-mgr.rules.1" }}</span>
+          </div>
+          <div class="tm-rule-item">
+            <span class="tm-rule-dot"></span>
+            <span class="tm-rule-text">{{ call .T "token-mgr.rules.2" }}</span>
+          </div>
+          <div class="tm-rule-item">
+            <span class="tm-rule-dot"></span>
+            <span class="tm-rule-text">{{ call .T "token-mgr.rules.3" }}</span>
+          </div>
+          <div class="tm-rule-item">
+            <span class="tm-rule-dot"></span>
+            <span class="tm-rule-text">{{ call .T "token-mgr.rules.4" }}</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+    {{/* Right Column */}}
+    <div class="tm-col-right">
+
+      {{/* History Card */}}
+      <div class="tm-card tm-history-card">
+        <div class="tm-card-header">
+          <h2 class="tm-card-title">{{ call .T "token-mgr.section.history" }}</h2>
+          <div class="tm-card-actions">
+            <button class="tm-btn tm-btn-ghost" id="btnExportCSV">
+              <span>📥</span> {{ call .T "token-mgr.btn.export" }}
+            </button>
+          </div>
+        </div>
+        <div class="tm-card-body">
+          <div class="tm-table-wrap">
+            <table class="tm-table" id="historyTable">
+              <thead>
+                <tr>
+                  <th>{{ call .T "token-mgr.history.col_date" }}</th>
+                  <th>{{ call .T "token-mgr.history.col_type" }}</th>
+                  <th>{{ call .T "token-mgr.history.col_tool" }}</th>
+                  <th>{{ call .T "token-mgr.history.col_tokens" }}</th>
+                  <th>{{ call .T "token-mgr.history.col_balance" }}</th>
+                  <th>{{ call .T "token-mgr.history.col_note" }}</th>
+                </tr>
+              </thead>
+              <tbody id="historyTbody"></tbody>
+            </table>
+            <div class="tm-empty" id="historyEmpty" style="display:none">
+              <div class="tm-empty-icon">📋</div>
+              <p>{{ call .T "token-mgr.history.empty" }}</p>
+            </div>
+            <div class="tm-loading" id="historyLoading" style="display:none">
+              <div class="tm-spinner"></div>
+              <p>{{ call .T "token-mgr.loading" }}</p>
+            </div>
+          </div>
+          <div class="tm-pagination" id="historyPagination"></div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  {{/* Charts Section */}}
+  <div class="tm-charts">
+    <div class="tm-card">
+      <div class="tm-card-header">
+        <h2 class="tm-card-title">{{ call .T "token-mgr.chart.daily_title" }}</h2>
+      </div>
+      <div class="tm-card-body">
+        <div class="tm-chart-wrap">
+          <canvas id="dailyChart" width="800" height="220" aria-label="daily token usage chart"></canvas>
+          <div class="tm-empty" id="dailyChartEmpty" style="display:none">
+            <div class="tm-empty-icon">📊</div>
+            <p>{{ call .T "token-mgr.chart.empty" }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="tm-card">
+      <div class="tm-card-header">
+        <h2 class="tm-card-title">{{ call .T "token-mgr.chart.breakdown_title" }}</h2>
+      </div>
+      <div class="tm-card-body">
+        <div class="tm-pie-wrap">
+          <svg id="breakdownPie" viewBox="0 0 200 200" width="180" height="180"
+               aria-label="token usage by tool"></svg>
+          <div class="tm-pie-legend" id="pieLegend"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  {{/* Feature Cards */}}
+  <section class="tm-features">
+    <div class="tm-feature-card">
+      <div class="tm-feature-icon">⚡</div>
+      <h3>{{ call .T "token-mgr.feature.1.title" }}</h3>
+      <p>{{ call .T "token-mgr.feature.1.desc" }}</p>
+    </div>
+    <div class="tm-feature-card">
+      <div class="tm-feature-icon">🔍</div>
+      <h3>{{ call .T "token-mgr.feature.2.title" }}</h3>
+      <p>{{ call .T "token-mgr.feature.2.desc" }}</p>
+    </div>
+    <div class="tm-feature-card">
+      <div class="tm-feature-icon">🎁</div>
+      <h3>{{ call .T "token-mgr.feature.3.title" }}</h3>
+      <p>{{ call .T "token-mgr.feature.3.desc" }}</p>
+    </div>
+  </section>
+
+  {{/* Mobile Balance Bar */}}
+  <div class="mobile-balance-bar" id="mobileBalanceBar">
+    <span class="mbb-label">{{ call .T "token-mgr.balance.remaining" }}:</span>
+    <span class="mbb-val" id="mbbVal">—</span>
+  </div>
+
+  {{/* Toast */}}
+  <div id="token-mgr-toast" class="tm-toast" role="alert" aria-live="assertive"></div>
+
+  {{/* i18n for JS */}}
+  <script>
+    window.__TOKEN_I18N__ = {
+      balanceLow:    "{{ call .T "token-mgr.balance.low_warn" }}",
+      balanceEmpty:  "{{ call .T "token-mgr.balance.empty_warn" }}",
+      loadFailed:    "{{ call .T "token-mgr.error.load_failed" }}",
+      chartEmpty:    "{{ call .T "token-mgr.chart.empty" }}",
+      historyEmpty:  "{{ call .T "token-mgr.history.empty" }}",
+      pagePrev:      "{{ call .T "token-mgr.history.prev" }}",
+      pageNext:      "{{ call .T "token-mgr.history.next" }}",
+      pageOf:        "{{ call .T "token-mgr.history.page_of" }}",
+      statusGrant:   "{{ call .T "token-mgr.status.grant" }}",
+      statusConsume: "{{ call .T "token-mgr.status.consume" }}",
+      statusRefund:  "{{ call .T "token-mgr.status.refund" }}",
+      toolHumanizer: "{{ call .T "token-mgr.chart.humanizer" }}",
+      toolDetector:  "{{ call .T "token-mgr.chart.detector" }}",
+      toolOther:     "{{ call .T "token-mgr.chart.other" }}",
+      exportFilename:"{{ call .T "token-mgr.export.filename" }}",
+      exportSuccess: "{{ call .T "token-mgr.export.success" }}"
+    };
+  </script>
+</div>
+{{ end }}
+
+{{ define "extraScript" }}
+<script src="/static/js/token-mgr.js?v={{ .AssetVer }}"></script>
+{{ end }}

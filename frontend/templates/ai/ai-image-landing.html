@@ -1,0 +1,191 @@
+{{ template "base" . }}
+
+{{ define "extraHead" }}
+<link rel="stylesheet" href="/static/css/ai-tool-page.css?v={{ .AssetVer }}">
+<link rel="stylesheet" href="/static/css/ai-tool-nav.css?v={{ .AssetVer }}">
+<link rel="stylesheet" href="/static/css/ai-image-landing.css?v={{ .AssetVer }}">
+
+<link rel="canonical" href="{{ .Canonical }}">
+<link rel="alternate" hreflang="zh"        href="{{ .HreflangZH }}">
+<link rel="alternate" hreflang="en"        href="{{ .HreflangEN }}">
+<link rel="alternate" hreflang="ja"        href="{{ .HreflangJA }}">
+<link rel="alternate" hreflang="ko"        href="{{ .HreflangKO }}">
+<link rel="alternate" hreflang="es"        href="{{ .HreflangSPA }}">
+<link rel="alternate" hreflang="x-default" href="{{ .Canonical }}">
+{{ end }}
+
+{{ define "content" }}
+{{ template "partials/ai_tool_nav.html" . }}
+
+<div class="page-ai-image-landing">
+
+  {{/* ─── Hero ─────────────────────────────────────────────────────── */}}
+  <section class="ail-hero">
+    <div class="ail-hero__inner">
+      <span class="ail-hero__eyebrow">{{ call .T "ai-image.landing.hero.eyebrow" }}</span>
+      <h1 class="ail-hero__title">{{ call .T "ai-image.landing.hero.title" }}</h1>
+      <p class="ail-hero__subtitle">{{ call .T "ai-image.landing.hero.subtitle" }}</p>
+      <div class="ail-hero__cta">
+        <a class="atp-btn atp-btn--primary atp-btn--lg" href="{{ .ToolURL }}"
+           data-ga data-ga-action="navigate" data-ga-category="ai-image" data-ga-label="landing_hero_cta">
+          {{ call .T "ai-image.landing.hero.cta" }}
+        </a>
+        <span class="ail-hero__alt">{{ call .T "ai-image.landing.hero.alt" }}</span>
+      </div>
+    </div>
+  </section>
+
+  {{/* ─── Feature Cards ────────────────────────────────────────────── */}}
+  <section class="ail-section ail-features">
+    <div class="ail-section__inner">
+      <h2 class="ail-section__title">{{ call .T "ai-image.landing.features.title" }}</h2>
+      <div class="ail-feature-grid">
+        <div class="ail-feature-card">
+          <div class="ail-feature-card__icon" aria-hidden="true">🎨</div>
+          <h3>{{ call .T "ai-image.landing.feature.1.title" }}</h3>
+          <p>{{ call .T "ai-image.landing.feature.1.desc" }}</p>
+        </div>
+        <div class="ail-feature-card">
+          <div class="ail-feature-card__icon" aria-hidden="true">⚡</div>
+          <h3>{{ call .T "ai-image.landing.feature.2.title" }}</h3>
+          <p>{{ call .T "ai-image.landing.feature.2.desc" }}</p>
+        </div>
+        <div class="ail-feature-card">
+          <div class="ail-feature-card__icon" aria-hidden="true">🖼️</div>
+          <h3>{{ call .T "ai-image.landing.feature.3.title" }}</h3>
+          <p>{{ call .T "ai-image.landing.feature.3.desc" }}</p>
+        </div>
+        <div class="ail-feature-card">
+          <div class="ail-feature-card__icon" aria-hidden="true">🔒</div>
+          <h3>{{ call .T "ai-image.landing.feature.4.title" }}</h3>
+          <p>{{ call .T "ai-image.landing.feature.4.desc" }}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {{/* ─── Use Cases ────────────────────────────────────────────────── */}}
+  <section class="ail-section ail-usecases">
+    <div class="ail-section__inner">
+      <h2 class="ail-section__title">{{ call .T "ai-image.landing.usecase.title" }}</h2>
+      <div class="ail-usecase-grid">
+        <div class="ail-usecase-card">
+          <div class="ail-usecase-card__thumb ail-usecase-card__thumb--1" aria-hidden="true"></div>
+          <h3>{{ call .T "ai-image.landing.usecase.1.title" }}</h3>
+          <p>{{ call .T "ai-image.landing.usecase.1.desc" }}</p>
+        </div>
+        <div class="ail-usecase-card">
+          <div class="ail-usecase-card__thumb ail-usecase-card__thumb--2" aria-hidden="true"></div>
+          <h3>{{ call .T "ai-image.landing.usecase.2.title" }}</h3>
+          <p>{{ call .T "ai-image.landing.usecase.2.desc" }}</p>
+        </div>
+        <div class="ail-usecase-card">
+          <div class="ail-usecase-card__thumb ail-usecase-card__thumb--3" aria-hidden="true"></div>
+          <h3>{{ call .T "ai-image.landing.usecase.3.title" }}</h3>
+          <p>{{ call .T "ai-image.landing.usecase.3.desc" }}</p>
+        </div>
+        <div class="ail-usecase-card">
+          <div class="ail-usecase-card__thumb ail-usecase-card__thumb--4" aria-hidden="true"></div>
+          <h3>{{ call .T "ai-image.landing.usecase.4.title" }}</h3>
+          <p>{{ call .T "ai-image.landing.usecase.4.desc" }}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {{/* ─── How It Works ─────────────────────────────────────────────── */}}
+  <section class="ail-section ail-howto">
+    <div class="ail-section__inner">
+      <h2 class="ail-section__title">{{ call .T "ai-image.landing.howto.title" }}</h2>
+      <p class="ail-section__subtitle">{{ call .T "ai-image.landing.howto.subtitle" }}</p>
+      <div class="ail-howto-grid">
+        <div class="ail-howto-step">
+          <span class="ail-howto-step__num">1</span>
+          <h3>{{ call .T "ai-image.landing.howto.step1.title" }}</h3>
+          <p>{{ call .T "ai-image.landing.howto.step1.desc" }}</p>
+        </div>
+        <div class="ail-howto-step">
+          <span class="ail-howto-step__num">2</span>
+          <h3>{{ call .T "ai-image.landing.howto.step2.title" }}</h3>
+          <p>{{ call .T "ai-image.landing.howto.step2.desc" }}</p>
+        </div>
+        <div class="ail-howto-step">
+          <span class="ail-howto-step__num">3</span>
+          <h3>{{ call .T "ai-image.landing.howto.step3.title" }}</h3>
+          <p>{{ call .T "ai-image.landing.howto.step3.desc" }}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {{/* ─── Style Gallery ────────────────────────────────────────────── */}}
+  <section class="ail-section ail-styles">
+    <div class="ail-section__inner">
+      <h2 class="ail-section__title">{{ call .T "ai-image.landing.styles.title" }}</h2>
+      <p class="ail-section__subtitle">{{ call .T "ai-image.landing.styles.subtitle" }}</p>
+      <div class="ail-style-grid">
+        <div class="ail-style-item">
+          <div class="ail-style-item__thumb ail-style-item__thumb--photoreal" aria-hidden="true"></div>
+          <span>{{ call .T "ai-image.style.photoreal" }}</span>
+        </div>
+        <div class="ail-style-item">
+          <div class="ail-style-item__thumb ail-style-item__thumb--cinematic" aria-hidden="true"></div>
+          <span>{{ call .T "ai-image.style.cinematic" }}</span>
+        </div>
+        <div class="ail-style-item">
+          <div class="ail-style-item__thumb ail-style-item__thumb--anime" aria-hidden="true"></div>
+          <span>{{ call .T "ai-image.style.anime" }}</span>
+        </div>
+        <div class="ail-style-item">
+          <div class="ail-style-item__thumb ail-style-item__thumb--render3d" aria-hidden="true"></div>
+          <span>{{ call .T "ai-image.style.render3d" }}</span>
+        </div>
+        <div class="ail-style-item">
+          <div class="ail-style-item__thumb ail-style-item__thumb--watercolor" aria-hidden="true"></div>
+          <span>{{ call .T "ai-image.style.watercolor" }}</span>
+        </div>
+        <div class="ail-style-item">
+          <div class="ail-style-item__thumb ail-style-item__thumb--flat" aria-hidden="true"></div>
+          <span>{{ call .T "ai-image.style.flat" }}</span>
+        </div>
+        <div class="ail-style-item">
+          <div class="ail-style-item__thumb ail-style-item__thumb--cyberpunk" aria-hidden="true"></div>
+          <span>{{ call .T "ai-image.style.cyberpunk" }}</span>
+        </div>
+        <div class="ail-style-item">
+          <div class="ail-style-item__thumb ail-style-item__thumb--product" aria-hidden="true"></div>
+          <span>{{ call .T "ai-image.style.product" }}</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {{/* ─── FAQ ──────────────────────────────────────────────────────── */}}
+  <section class="ail-section ail-faq">
+    <div class="ail-section__inner">
+      <h2 class="ail-section__title">{{ call .T "ai-image.landing.faq.title" }}</h2>
+      <div class="ail-faq-list">
+        {{ range .FAQs }}
+        <details class="ail-faq-item">
+          <summary class="ail-faq-item__q">{{ .Q }}</summary>
+          <div class="ail-faq-item__a">{{ .A }}</div>
+        </details>
+        {{ end }}
+      </div>
+    </div>
+  </section>
+
+  {{/* ─── Bottom CTA ───────────────────────────────────────────────── */}}
+  <section class="ail-cta">
+    <div class="ail-cta__inner">
+      <h2 class="ail-cta__title">{{ call .T "ai-image.landing.cta.title" }}</h2>
+      <p class="ail-cta__subtitle">{{ call .T "ai-image.landing.cta.subtitle" }}</p>
+      <a class="atp-btn atp-btn--primary atp-btn--lg" href="{{ .ToolURL }}"
+         data-ga data-ga-action="navigate" data-ga-category="ai-image" data-ga-label="landing_bottom_cta">
+        {{ call .T "ai-image.landing.cta.btn" }}
+      </a>
+    </div>
+  </section>
+
+</div>
+{{ end }}

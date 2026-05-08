@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Timestamp Converter - ToolBoxNova</title>
+  <link rel="stylesheet" href="shared.css">
+  <link rel="stylesheet" href="../static/css/dev-tools.css">
+  <style>
+    .ts-now-card { background: linear-gradient(135deg, #1a73e8, #34a853); color: #fff; border-radius: 12px;
+      padding: 20px; text-align: center; margin-bottom: 20px; }
+    .ts-now-label { font-size: 13px; opacity: 0.85; }
+    .ts-now-value { font-size: 36px; font-family: 'SF Mono', 'Consolas', monospace; font-weight: 700; margin: 8px 0; }
+    .ts-now-ms { font-size: 13px; opacity: 0.75; }
+    .ts-now-human { font-size: 14px; margin-top: 8px; opacity: 0.85; }
+    .ts-now-card .btn { background: rgba(255,255,255,0.2); color: #fff; border: 1px solid rgba(255,255,255,0.3);
+      margin-top: 10px; }
+    .ts-now-card .btn:hover { background: rgba(255,255,255,0.3); }
+    .ts-converters { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    @media (max-width: 600px) { .ts-converters { grid-template-columns: 1fr; } }
+    .ts-card { background: #fff; border-radius: 12px; padding: 16px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+    .ts-card h3 { margin: 0 0 12px; font-size: 15px; color: #333; }
+    .ts-input-row { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+    .form-input { padding: 8px 12px; border: 1px solid #ddd; border-radius: 6px; font-size: 14px; flex: 1; min-width: 120px; }
+    .form-select { padding: 8px 12px; border: 1px solid #ddd; border-radius: 6px; font-size: 14px; }
+    .btn { padding: 8px 16px; border: 1px solid #ddd; border-radius: 6px; background: #fff; cursor: pointer; font-size: 14px; }
+    .btn:hover { background: #f0f0f0; }
+    .btn-primary { background: #1a73e8; color: #fff; border-color: #1a73e8; }
+    .btn-primary:hover { background: #1557b0; }
+    .btn-sm { padding: 4px 10px; font-size: 12px; }
+    .btn-outline { background: transparent; }
+    .ts-result { margin-top: 12px; }
+    .ts-result.hidden { display: none; }
+    .ts-result-table { width: 100%; border-collapse: collapse; font-size: 13px; }
+    .ts-result-table td { padding: 6px 8px; border-bottom: 1px solid #f0f0f0; }
+    .ts-result-table td:first-child { color: #888; width: 100px; }
+    .ts-batch { grid-column: 1 / -1; }
+    .batch-ts-result { margin-top: 12px; }
+    .hidden { display: none; }
+    .btn-xs { padding: 2px 6px; font-size: 12px; border: 1px solid #ddd; border-radius: 4px; background: #fff; cursor: pointer; }
+  </style>
+</head>
+<body>
+  <nav class="ext-topbar">
+    <a href="#" class="ext-topbar__back">← Back</a>
+    <h1 class="ext-topbar__title">Timestamp Converter</h1>
+    <a href="https://toolboxnova.com/timestamp-converter" target="_blank" class="ext-topbar__site">Web ↗</a>
+  </nav>
+
+  <div class="ext-container">
+    <div class="ts-now-card">
+      <div class="ts-now-label">Current Unix Timestamp (seconds)</div>
+      <div class="ts-now-value" id="tsNow">--</div>
+      <div class="ts-now-ms">Milliseconds: <span id="tsNowMs">--</span></div>
+      <div class="ts-now-human" id="tsNowHuman">--</div>
+      <button id="copyTsNow" class="btn btn-sm">📋 Copy</button>
+    </div>
+
+    <div class="ts-converters">
+      <!-- Timestamp → Date -->
+      <div class="ts-card">
+        <h3>Timestamp → Date</h3>
+        <div class="ts-input-row">
+          <input type="text" id="ts2dateInput" class="form-input" placeholder="e.g. 1741737600">
+          <select id="ts2dateUnit" class="form-select" style="width:auto">
+            <option value="s">Seconds</option>
+            <option value="ms">Milliseconds</option>
+          </select>
+          <button id="ts2dateBtn" class="btn btn-primary">Convert</button>
+        </div>
+        <div id="ts2dateResult" class="ts-result hidden">
+          <table class="ts-result-table">
+            <tr><td>Local</td><td id="ts2dateLocal"></td></tr>
+            <tr><td>UTC</td><td id="ts2dateUtc"></td></tr>
+            <tr><td>ISO 8601</td><td id="ts2dateIso"></td></tr>
+            <tr><td>Relative</td><td id="ts2dateRelative"></td></tr>
+          </table>
+        </div>
+      </div>
+
+      <!-- Date → Timestamp -->
+      <div class="ts-card">
+        <h3>Date → Timestamp</h3>
+        <div class="ts-input-row">
+          <input type="datetime-local" id="date2tsInput" class="form-input">
+          <button id="date2tsBtn" class="btn btn-primary">Convert</button>
+        </div>
+        <div id="date2tsResult" class="ts-result hidden">
+          <table class="ts-result-table">
+            <tr><td>Seconds</td><td id="date2tsSec"></td><td><button class="btn-xs copy-btn">📋</button></td></tr>
+            <tr><td>Milliseconds</td><td id="date2tsMs"></td><td><button class="btn-xs copy-btn">📋</button></td></tr>
+            <tr><td>UTC</td><td id="date2tsUtc"></td><td></td></tr>
+          </table>
+        </div>
+      </div>
+
+      <!-- Timezone -->
+      <div class="ts-card">
+        <h3>Timezone Conversion</h3>
+        <div class="ts-input-row">
+          <select id="tzFrom" class="form-select">
+            <option value="UTC">UTC</option>
+            <option value="Asia/Shanghai" selected>Asia/Shanghai (CST +8)</option>
+            <option value="America/New_York">America/New_York (EST -5)</option>
+            <option value="Europe/London">Europe/London (GMT 0)</option>
+            <option value="Asia/Tokyo">Asia/Tokyo (JST +9)</option>
+          </select>
+          <span>→</span>
+          <select id="tzTo" class="form-select">
+            <option value="UTC" selected>UTC</option>
+            <option value="Asia/Shanghai">Asia/Shanghai</option>
+            <option value="America/New_York">America/New_York</option>
+            <option value="Europe/London">Europe/London</option>
+            <option value="Asia/Tokyo">Asia/Tokyo</option>
+          </select>
+        </div>
+        <div id="tzResult" class="ts-result">
+          <p id="tzNowResult" style="margin-top:12px;font-size:14px;"></p>
+        </div>
+      </div>
+
+      <!-- Batch -->
+      <div class="ts-card ts-batch">
+        <h3>Batch Convert (one per line)</h3>
+        <textarea id="batchTsInput" class="form-input" rows="4" placeholder="1741737600&#10;1741824000&#10;1741910400" style="width:100%"></textarea>
+        <button id="batchTsBtn" class="btn btn-primary" style="margin-top:8px">Batch Convert</button>
+        <div id="batchTsResult" class="batch-ts-result hidden"></div>
+      </div>
+    </div>
+  </div>
+
+  <script src="shared.js"></script>
+  <script src="../static/js/tools_timestamp.js"></script>
+</body>
+</html>

@@ -1,0 +1,310 @@
+{{ template "base" . }}
+
+{{ define "extraHead" }}
+<link rel="canonical" href="https://toolboxnova.com/img/to-pdf">
+<link rel="alternate" hreflang="zh" href="https://toolboxnova.com/img/to-pdf?lang=zh">
+<link rel="alternate" hreflang="en" href="https://toolboxnova.com/img/to-pdf?lang=en">
+<link rel="alternate" hreflang="ja" href="https://toolboxnova.com/img/to-pdf?lang=ja">
+<link rel="alternate" hreflang="ko" href="https://toolboxnova.com/img/to-pdf?lang=ko">
+<link rel="alternate" hreflang="spa" href="https://toolboxnova.com/img/to-pdf?lang=spa">
+<link rel="alternate" hreflang="x-default" href="https://toolboxnova.com/img/to-pdf">
+<link rel="stylesheet" href="/static/css/img-toolbox.css?v={{ .AssetVer }}">
+<link rel="stylesheet" href="/static/css/img-tabs.css?v={{ .AssetVer }}">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"{{ .Title }}","applicationCategory":"MultimediaApplication","operatingSystem":"Web Browser","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"description":"{{ .Description }}","url":"https://toolboxnova.com/img/to-pdf","featureList":["Combine multiple images into one PDF","Custom page size and orientation","Adjustable margins and image fit","Drag-and-drop reordering","Browser-side processing - no upload required"]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{{- range $i,$f := .FAQs }}{{if $i}},{{end}}{"@type":"Question","name":{{ $f.Q | html }},"acceptedAnswer":{"@type":"Answer","text":{{ $f.A | html }}}}{{- end}}]}</script>
+{{ end }}
+
+{{ define "content" }}
+{{ template "img_tabs" . }}
+<div class="itb-page" data-tool="to-pdf">
+  <header class="itb-header">
+    <div class="itb-header__inner">
+      <span class="itb-header__logo">{{ call .T "ipdf.header.logo" }}</span>
+      <h1 class="itb-header__title">{{ call .T "ipdf.header.title" }} <em>{{ call .T "ipdf.header.title_em" }}</em></h1>
+      <p class="itb-header__sub">{{ call .T "ipdf.header.sub" }}</p>
+      <div class="itb-hero__badges" style="margin-top:16px">
+        <span class="itb-badge itb-badge--green">{{ call .T "ipdf.header.badge1" }}</span>
+        <span class="itb-badge itb-badge--blue">{{ call .T "ipdf.header.badge2" }}</span>
+        <span class="itb-badge itb-badge--orange">{{ call .T "ipdf.header.badge3" }}</span>
+      </div>
+    </div>
+  </header>
+
+  <div style="text-align:center;margin:12px auto;max-width:970px">
+    {{- template "partials/ad_slot.html" (dict "Ctx" . "SlotID" "img-to-pdf-top" "Size" "970x90" "Mobile" "320x50") }}
+  </div>
+
+  <div class="itb-drop-layout">
+    <aside class="itb-ad-sidebar">
+      {{- template "partials/ad_slot.html" (dict "Ctx" . "SlotID" "img-to-pdf-left" "Size" "160x600" "MobileHide" true) }}
+    </aside>
+    <div class="itb-drop-main">
+      <div class="itb-container">
+
+        <!-- Upload Zone -->
+        <div id="itbUploadZone" class="itb-upload-zone" ondragover="itbDragOver(event)" ondragleave="itbDragLeave(event)" ondrop="itbDrop(event)" onclick="document.getElementById('itbFileInput').click()" role="button" tabindex="0">
+          <div class="itb-upload-zone__idle" id="itbUploadIdle">
+            <div class="itb-upload-icon"><svg width="64" height="64" viewBox="0 0 64 64" fill="none"><rect width="64" height="64" rx="16" fill="#FFF3ED"/><path d="M32 20v16M24 28l8-8 8 8" stroke="#FF6B35" stroke-width="2.5" stroke-linecap="round"/><path d="M20 44h24" stroke="#FF6B35" stroke-width="2" stroke-linecap="round" opacity=".4"/></svg></div>
+            <p class="itb-upload-zone__text">{{ call .T "upload.common.drag_hint" }} <span class="itb-upload-zone__browse">{{ call .T "upload.common.browse_btn" }}</span></p>
+            <p class="itb-upload-zone__hint">{{ call .T "ipdf.upload.hint" }}</p>
+          </div>
+          <div class="itb-upload-zone__drop-active" id="itbUploadDrop" hidden><div class="itb-upload-zone__drop-icon">📂</div><p>{{ call .T "upload.common.drop_active" }}</p></div>
+          <input type="file" id="itbFileInput" multiple accept="image/*" style="display:none" onchange="ipdfAddFiles(this.files)" data-ga data-ga-action="upload" data-ga-category="img_to_pdf_tool" data-ga-label="file_select">
+        </div>
+
+        <!-- Image Queue Grid -->
+        <div id="itbQueueWrap" class="itb-options" hidden>
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;flex-wrap:wrap;gap:8px">
+            <h2 class="itb-options__title" style="margin:0">{{ call .T "ipdf.grid.title" }} <span id="itbQueueCount"></span></h2>
+            <div style="display:flex;gap:8px">
+              <button class="itb-btn-ghost" style="padding:8px 16px;font-size:13px" onclick="ipdfAddMore()" data-ga data-ga-action="upload" data-ga-category="img_to_pdf_tool" data-ga-label="add_more">{{ call .T "ipdf.grid.add_more" }}</button>
+              <button class="itb-btn-ghost" style="padding:8px 16px;font-size:13px;color:var(--itb-error);border-color:var(--itb-error)" onclick="ipdfClearQueue()" data-ga data-ga-action="clear" data-ga-category="img_to_pdf_tool" data-ga-label="clear_queue">{{ call .T "ipdf.grid.clear_all" }}</button>
+            </div>
+          </div>
+          <div class="itb-pdf-queue" id="itbPdfQueue"></div>
+          <p style="font-size:13px;color:var(--itb-text-muted);margin:12px 0 0">{{ call .T "ipdf.grid.drag_hint" }}</p>
+        </div>
+
+        <!-- Settings + Preview -->
+        <div id="itbSettingsWrap" class="itb-pdf-workspace" hidden>
+          <div class="itb-pdf-settings">
+            <h3 class="itb-options__title">{{ call .T "ipdf.settings.title" }}</h3>
+            <div class="itb-settings-grid">
+              <div class="itb-form-group">
+                <label class="itb-form-label">{{ call .T "ipdf.settings.page_size" }}</label>
+                <select id="ipdfPageSize" class="itb-form-select" onchange="ipdfDrawPreview()">
+                  <option value="a4" selected>{{ call .T "ipdf.settings.a4" }}</option>
+                  <option value="letter">{{ call .T "ipdf.settings.letter" }}</option>
+                  <option value="legal">{{ call .T "ipdf.settings.legal" }}</option>
+                  <option value="a3">{{ call .T "ipdf.settings.a3" }}</option>
+                  <option value="a5">{{ call .T "ipdf.settings.a5" }}</option>
+                  <option value="fit">{{ call .T "ipdf.settings.fit" }}</option>
+                </select>
+              </div>
+              <div class="itb-form-group">
+                <label class="itb-form-label">{{ call .T "ipdf.settings.orientation" }}</label>
+                <div class="itb-seg-ctrl">
+                  <button type="button" class="itb-seg-btn itb-seg-btn--active" id="ipdfOrientP" onclick="ipdfSetOrient('portrait')" data-ga data-ga-action="tab_switch" data-ga-category="img_to_pdf_tool" data-ga-label="orientation_portrait">{{ call .T "ipdf.settings.portrait" }}</button>
+                  <button type="button" class="itb-seg-btn" id="ipdfOrientL" onclick="ipdfSetOrient('landscape')" data-ga data-ga-action="tab_switch" data-ga-category="img_to_pdf_tool" data-ga-label="orientation_landscape">{{ call .T "ipdf.settings.landscape" }}</button>
+                </div>
+              </div>
+              <div class="itb-form-group">
+                <label class="itb-form-label">{{ call .T "ipdf.settings.margin" }}</label>
+                <select id="ipdfMargin" class="itb-form-select" onchange="ipdfDrawPreview()">
+                  <option value="0">{{ call .T "ipdf.settings.margin_none" }}</option>
+                  <option value="5">{{ call .T "ipdf.settings.margin_small" }}</option>
+                  <option value="10" selected>{{ call .T "ipdf.settings.margin_medium" }}</option>
+                  <option value="20">{{ call .T "ipdf.settings.margin_large" }}</option>
+                </select>
+              </div>
+              <div class="itb-form-group">
+                <label class="itb-form-label">{{ call .T "ipdf.settings.image_fit" }}</label>
+                <select id="ipdfFit" class="itb-form-select" onchange="ipdfDrawPreview()">
+                  <option value="contain" selected>{{ call .T "ipdf.settings.fit_contain" }}</option>
+                  <option value="fill">{{ call .T "ipdf.settings.fit_fill" }}</option>
+                  <option value="original">{{ call .T "ipdf.settings.fit_original" }}</option>
+                </select>
+              </div>
+              <div class="itb-form-group">
+                <label class="itb-form-label">{{ call .T "ipdf.settings.quality" }}</label>
+                <div class="itb-slider-wrap">
+                  <input type="range" id="ipdfQuality" class="itb-slider" min="50" max="100" step="5" value="90" oninput="document.getElementById('ipdfQualityLabel').textContent=this.value+'%';ipdfDrawPreview()" data-ga data-ga-action="adjust" data-ga-category="img_to_pdf_tool" data-ga-label="quality_slider">
+                  <span id="ipdfQualityLabel" class="itb-slider-val">90%</span>
+                </div>
+              </div>
+              <div class="itb-form-group" style="display:flex;align-items:flex-end">
+                <label class="itb-form-label--inline">
+                  <input type="checkbox" id="ipdfOnePerPage" checked class="itb-checkbox">
+                  {{ call .T "ipdf.settings.one_per_page" }}
+                </label>
+              </div>
+            </div>
+            <div class="itb-form-group" style="margin-top:16px;margin-bottom:0">
+              <label class="itb-form-label">{{ call .T "ipdf.settings.filename" }}</label>
+              <input type="text" id="ipdfFilename" class="itb-form-input" value="images" placeholder='{{ call .T "ipdf.settings.filename_placeholder" }}'>
+            </div>
+            <button class="itb-btn-primary" id="ipdfConvertBtn" onclick="ipdfStartConvert()" style="margin-top:20px" data-ga data-ga-action="process" data-ga-category="img_to_pdf_tool" data-ga-label="convert">
+              {{ call .T "ipdf.convert_btn" }}
+            </button>
+          </div>
+
+          <div class="itb-pdf-preview">
+            <h3 class="itb-options__title">{{ call .T "ipdf.preview.title" }}</h3>
+            <canvas id="ipdfPreviewCanvas" class="itb-preview-canvas"></canvas>
+            <div class="itb-preview-nav">
+              <button class="itb-btn-icon" onclick="ipdfPrevPage()" title="Previous" data-ga data-ga-action="navigate" data-ga-category="img_to_pdf_tool" data-ga-label="prev_page">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="15 18 9 12 15 6"/></svg>
+              </button>
+              <span id="ipdfPageInfo">Page 1 / 1</span>
+              <button class="itb-btn-icon" onclick="ipdfNextPage()" title="Next" data-ga data-ga-action="navigate" data-ga-category="img_to_pdf_tool" data-ga-label="next_page">
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="9 18 15 12 9 6"/></svg>
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Progress -->
+        <div id="itbProgressWrap" class="itb-progress-panel" hidden>
+          <div class="itb-progress-panel__header">
+            <h3 class="itb-progress-panel__title">{{ call .T "ipdf.progress.label" }}</h3>
+          </div>
+          <div class="itb-progress-bar--global" style="margin-bottom:12px">
+            <div class="itb-progress-fill--global" id="ipdfProgressBar" style="width:0%"></div>
+          </div>
+          <p id="ipdfProgressLabel" style="font-size:13px;color:var(--itb-text-secondary);margin:0;text-align:center">0%</p>
+        </div>
+
+        <!-- Download -->
+        <div id="itbDownloadWrap" class="itb-download-card" hidden>
+          <div class="itb-download-card__icon" style="font-size:40px">✅</div>
+          <div class="itb-download-card__text">
+            <h3>{{ call .T "ipdf.download.ready" }}</h3>
+            <p id="ipdfDownloadInfo"></p>
+          </div>
+          <button class="itb-btn-primary" style="width:auto;margin-top:0" onclick="ipdfSave()" data-ga data-ga-action="download" data-ga-category="img_to_pdf_tool" data-ga-label="save_pdf">{{ call .T "ipdf.download.btn" }}</button>
+          <button class="itb-btn-ghost" onclick="ipdfReset()" data-ga data-ga-action="reset" data-ga-category="img_to_pdf_tool" data-ga-label="reset">{{ call .T "ipdf.download.reset" }}</button>
+        </div>
+
+      </div><!-- /itb-container -->
+    </div><!-- /itb-drop-main -->
+    <aside class="itb-ad-sidebar">
+      {{- template "partials/ad_slot.html" (dict "Ctx" . "SlotID" "img-to-pdf-right" "Size" "160x600" "MobileHide" true) }}
+    </aside>
+  </div><!-- /itb-drop-layout -->
+
+  <div class="itb-container">
+    <!-- How It Works -->
+    <section class="itb-section itb-section--alt">
+      <div class="itb-section-inner">
+        <span class="itb-section-label">{{ call .T "ipdf.howto.title" }}</span>
+        <h2 class="itb-section-title">{{ call .T "ipdf.howto.title" }}</h2>
+        <div class="itb-steps">
+          <div class="itb-step">
+            <div class="itb-step__num">1</div>
+            <h3 class="itb-step__title">{{ call .T "ipdf.howto.step1" }}</h3>
+          </div>
+          <div class="itb-step">
+            <div class="itb-step__num">2</div>
+            <h3 class="itb-step__title">{{ call .T "ipdf.howto.step2" }}</h3>
+          </div>
+          <div class="itb-step">
+            <div class="itb-step__num">3</div>
+            <h3 class="itb-step__title">{{ call .T "ipdf.howto.step3" }}</h3>
+          </div>
+          <div class="itb-step">
+            <div class="itb-step__num">4</div>
+            <h3 class="itb-step__title">{{ call .T "ipdf.howto.step4" }}</h3>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Editorial S1 -->
+    <section class="itb-section">
+      <div class="itb-section-inner">
+        <span class="itb-section-label">{{ call .T "ipdf.s1.label" }}</span>
+        <h2 class="itb-section-title">{{ call .T "ipdf.s1.title" }}</h2>
+        <p class="itb-section-body">{{ call .T "ipdf.s1.body1" }}</p>
+        <p class="itb-section-body">{{ call .T "ipdf.s1.body2" }}</p>
+      </div>
+    </section>
+
+    <!-- Editorial S2 -->
+    <section class="itb-section itb-section--alt">
+      <div class="itb-section-inner">
+        <span class="itb-section-label">{{ call .T "ipdf.s2.label" }}</span>
+        <h2 class="itb-section-title">{{ call .T "ipdf.s2.title" }}</h2>
+        <p class="itb-section-body">{{ call .T "ipdf.s2.body1" }}</p>
+        <p class="itb-section-body">{{ call .T "ipdf.s2.body2" }}</p>
+      </div>
+    </section>
+
+    <!-- Editorial S3 -->
+    <section class="itb-section">
+      <div class="itb-section-inner">
+        <span class="itb-section-label">{{ call .T "ipdf.s3.label" }}</span>
+        <h2 class="itb-section-title">{{ call .T "ipdf.s3.title" }}</h2>
+        <p class="itb-section-body">{{ call .T "ipdf.s3.body1" }}</p>
+        <p class="itb-section-body">{{ call .T "ipdf.s3.body2" }}</p>
+      </div>
+    </section>
+
+    <!-- Editorial S4 -->
+    <section class="itb-section itb-section--alt">
+      <div class="itb-section-inner">
+        <div class="itb-split">
+          <div class="itb-split-text">
+            <span class="itb-section-label">{{ call .T "ipdf.s4.label" }}</span>
+            <h2 class="itb-section-title">{{ call .T "ipdf.s4.title" }}</h2>
+            <p class="itb-section-body">{{ call .T "ipdf.s4.body1" }}</p>
+            <p class="itb-section-body">{{ call .T "ipdf.s4.body2" }}</p>
+          </div>
+          <div class="itb-split-visual">
+            <div class="itb-visual-box">
+              <div class="itb-visual-box__icon">🔒</div>
+              <div class="itb-visual-stat">
+                <span class="itb-visual-stat__num">0 bytes</span>
+                <span class="itb-visual-stat__lbl">{{ call .T "hero.editor.privacy.stat.lbl" }}</span>
+              </div>
+              <div class="itb-visual-box__label">{{ call .T "hero.editor.privacy.stat.sub" }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Editorial S5 -->
+    <section class="itb-section">
+      <div class="itb-section-inner">
+        <span class="itb-section-label">{{ call .T "ipdf.s5.label" }}</span>
+        <h2 class="itb-section-title">{{ call .T "ipdf.s5.title" }}</h2>
+        <p class="itb-section-body">{{ call .T "ipdf.s5.body1" }}</p>
+        <p class="itb-section-body">{{ call .T "ipdf.s5.body2" }}</p>
+      </div>
+    </section>
+
+    <!-- Editorial S6 -->
+    <section class="itb-section itb-section--alt">
+      <div class="itb-section-inner">
+        <span class="itb-section-label">{{ call .T "ipdf.s6.label" }}</span>
+        <h2 class="itb-section-title">{{ call .T "ipdf.s6.title" }}</h2>
+        <p class="itb-section-body">{{ call .T "ipdf.s6.body1" }}</p>
+        <p class="itb-section-body">{{ call .T "ipdf.s6.body2" }}</p>
+        <p class="itb-section-body">{{ call .T "ipdf.s6.body3" }}</p>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="itb-section">
+      <div class="itb-section-inner">
+        <span class="itb-section-label">{{ call .T "ipdf.faq.title" }}</span>
+        <h2 class="itb-section-title">{{ call .T "ipdf.faq.title" }}</h2>
+        <div class="itb-faq-list">
+          {{ range $i,$f := .FAQs }}
+          <div class="itb-faq-item" id="itbFaq-{{ $i }}">
+            <button class="itb-faq-item__q" onclick="itbToggleFAQ({{ $i }})" aria-expanded="false" data-ga data-ga-action="tab_switch" data-ga-category="img_to_pdf_tool" data-ga-label="faq_{{ $i }}">
+              <span>{{ .Q }}</span>
+              <span class="itb-faq-item__arrow">▾</span>
+            </button>
+            <div class="itb-faq-item__a"><p>{{ .A }}</p></div>
+          </div>
+          {{ end }}
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <div id="itbToasts" class="itb-toasts"></div>
+</div>
+{{ end }}
+
+{{ define "extraScript" }}
+<script src="/static/js/img-tabs.js?v={{ .AssetVer }}"></script>
+<script src="/static/js/img-toolbox-engine.js?v={{ .AssetVer }}"></script>
+<script src="/static/js/img-pdf.js?v={{ .AssetVer }}"></script>
+<script>
+window.ITB_LANG = '{{ .Lang }}';
+window.ITB_I18N = {{ toJSON .Translations }};
+</script>
+{{ end }}

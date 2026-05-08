@@ -1,0 +1,56 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 200">
+  <!-- Background -->
+  <rect width="800" height="200" fill="#f4f3ff" rx="12"/>
+
+  <!-- Standard Mode Icon -->
+  <g transform="translate(60, 100)">
+    <circle cx="0" cy="0" r="35" fill="#6c47ff" opacity="0.15"/>
+    <text x="0" y="5" text-anchor="middle" fill="#6c47ff" font-size="24" font-weight="bold">⚖️</text>
+    <text x="0" y="60" text-anchor="middle" fill="#1a0a4e" font-size="14" font-weight="600">Standard</text>
+  </g>
+
+  <!-- Academic Mode Icon -->
+  <g transform="translate(160, 100)">
+    <circle cx="0" cy="0" r="35" fill="#6c47ff" opacity="0.15"/>
+    <text x="0" y="5" text-anchor="middle" fill="#6c47ff" font-size="24" font-weight="bold">🎓</text>
+    <text x="0" y="60" text-anchor="middle" fill="#1a0a4e" font-size="14" font-weight="600">Academic</text>
+  </g>
+
+  <!-- Creative Mode Icon -->
+  <g transform="translate(260, 100)">
+    <circle cx="0" cy="0" r="35" fill="#f59e0b" opacity="0.15"/>
+    <text x="0" y="5" text-anchor="middle" fill="#f59e0b" font-size="24" font-weight="bold">🎨</text>
+    <text x="0" y="60" text-anchor="middle" fill="#1a0a4e" font-size="14" font-weight="600">Creative</text>
+  </g>
+
+  <!-- Casual Mode Icon -->
+  <g transform="translate(360, 100)">
+    <circle cx="0" cy="0" r="35" fill="#22c55e" opacity="0.15"/>
+    <text x="0" y="5" text-anchor="middle" fill="#22c55e" font-size="24" font-weight="bold">😊</text>
+    <text x="0" y="60" text-anchor="middle" fill="#1a0a4e" font-size="14" font-weight="600">Casual</text>
+  </g>
+
+  <!-- Formal Mode Icon -->
+  <g transform="translate(460, 100)">
+    <circle cx="0" cy="0" r="35" fill="#3b82f6" opacity="0.15"/>
+    <text x="0" y="5" text-anchor="middle" fill="#3b82f6" font-size="24" font-weight="bold">💼</text>
+    <text x="0" y="60" text-anchor="middle" fill="#1a0a4e" font-size="14" font-weight="600">Formal</text>
+  </g>
+
+  <!-- Aggressive Mode Icon -->
+  <g transform="translate(560, 100)">
+    <circle cx="0" cy="0" r="35" fill="#ef4444" opacity="0.15"/>
+    <text x="0" y="5" text-anchor="middle" fill="#ef4444" font-size="24" font-weight="bold">🔥</text>
+    <text x="0" y="60" text-anchor="middle" fill="#1a0a4e" font-size="14" font-weight="600">Aggressive</text>
+  </g>
+
+  <!-- Ultra Mode Icon -->
+  <g transform="translate(660, 100)">
+    <circle cx="0" cy="0" r="35" fill="#6c47ff" opacity="0.15"/>
+    <text x="0" y="5" text-anchor="middle" fill="#6c47ff" font-size="24" font-weight="bold">🚀</text>
+    <text x="0" y="60" text-anchor="middle" fill="#1a0a4e" font-size="14" font-weight="600">Ultra</text>
+  </g>
+
+  <!-- Title -->
+  <text x="400" y="30" text-anchor="middle" fill="#1a0a4e" font-size="18" font-weight="bold">Supported Humanization Modes</text>
+</svg>

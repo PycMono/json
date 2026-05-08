@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 300">
+  <rect width="800" height="300" fill="#f9fafb"/>
+  <text x="400" y="40" fill="#111827" font-size="20" font-weight="bold" text-anchor="middle">5 Writing Styles for Every Article Type</text>
+  <g transform="translate(80, 80)">
+    <circle cx="50" cy="50" r="45" fill="#10b981"/>
+    <text x="50" y="60" text-anchor="middle" fill="#fff" font-size="24">🌿</text>
+    <text x="50" y="130" text-anchor="middle" fill="#111827" font-size="14" font-weight="bold">Natural</text>
+    <text x="50" y="150" text-anchor="middle" fill="#6b7280" font-size="10">Smooth &amp; readable</text>
+  </g>
+  <g transform="translate(240, 80)">
+    <circle cx="50" cy="50" r="45" fill="#1e3a5f"/>
+    <text x="50" y="60" text-anchor="middle" fill="#fff" font-size="24">💼</text>
+    <text x="50" y="130" text-anchor="middle" fill="#111827" font-size="14" font-weight="bold">Professional</text>
+    <text x="50" y="150" text-anchor="middle" fill="#6b7280" font-size="10">Business tone</text>
+  </g>
+  <g transform="translate(400, 80)">
+    <circle cx="50" cy="50" r="45" fill="#f59e0b"/>
+    <text x="50" y="60" text-anchor="middle" fill="#fff" font-size="24">📝</text>
+    <text x="50" y="130" text-anchor="middle" fill="#111827" font-size="14" font-weight="bold">Blog</text>
+    <text x="50" y="150" text-anchor="middle" fill="#6b7280" font-size="10">Engaging style</text>
+  </g>
+  <g transform="translate(560, 80)">
+    <circle cx="50" cy="50" r="45" fill="#6366f1"/>
+    <text x="50" y="60" text-anchor="middle" fill="#fff" font-size="24">📰</text>
+    <text x="50" y="130" text-anchor="middle" fill="#111827" font-size="14" font-weight="bold">Journalistic</text>
+    <text x="50" y="150" text-anchor="middle" fill="#6b7280" font-size="10">News style</text>
+  </g>
+  <g transform="translate(720, 80)">
+    <circle cx="50" cy="50" r="45" fill="#ec4899"/>
+    <text x="50" y="60" text-anchor="middle" fill="#fff" font-size="24">🎨</text>
+    <text x="50" y="130" text-anchor="middle" fill="#111827" font-size="14" font-weight="bold">Creative</text>
+    <text x="50" y="150" text-anchor="middle" fill="#6b7280" font-size="10">Expressive</text>
+  </g>
+  <rect x="100" y="220" width="600" height="60" rx="8" fill="#fff" stroke="#e5e7eb" stroke-width="1"/>
+  <text x="400" y="250" fill="#111827" font-size="12" font-weight="bold" text-anchor="middle">4 Purposes: SEO • Clarity • Engagement • Originality</text>
+  <text x="400" y="270" fill="#6b7280" font-size="11" text-anchor="middle">Match your article rewriting to specific goals</text>
+</svg>

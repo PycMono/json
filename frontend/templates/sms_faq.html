@@ -1,0 +1,213 @@
+{{ template "base" . }}
+
+{{- define "extraHead" }}
+<link rel="canonical" href="https://toolboxnova.com/sms/faq">
+<link rel="stylesheet" href="/static/css/sms.css?v={{ .AssetVer }}">
+{{- end }}
+
+{{- define "content" }}
+<!-- ── 顶部导航 ──────────────────────────── -->
+<nav class="sms-navbar">
+  <div class="sms-container">
+    <a class="sms-logo" href="/sms" data-ga data-ga-action="nav_home" data-ga-category="sms-tool" data-ga-label="sms_faq">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none"
+           stroke="currentColor" stroke-width="2">
+        <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 14a19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 3.6 3h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 10.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 17v-.08z"/>
+      </svg>
+      <span>{{ call .T "sms.name" }}</span>
+    </a>
+
+    <div class="sms-navbar__links">
+      <a href="/sms" data-ga data-ga-action="nav_home" data-ga-category="sms-tool" data-ga-label="sms_faq">{{ call .T "sms.nav.home" }}</a>
+      <a href="/sms/buy" data-ga data-ga-action="nav_buy" data-ga-category="sms-tool" data-ga-label="sms_faq">{{ call .T "sms.nav.buy" }}</a>
+      <a href="/sms/prices" data-ga data-ga-action="nav_prices" data-ga-category="sms-tool" data-ga-label="sms_faq">{{ call .T "sms.nav.prices" }}</a>
+      <a href="/sms/history" data-ga data-ga-action="nav_history" data-ga-category="sms-tool" data-ga-label="sms_faq">{{ call .T "sms.history.title" }}</a>
+      <a href="/sms/faq" class="sms-nav-active" data-ga data-ga-action="nav_faq" data-ga-category="sms-tool" data-ga-label="sms_faq">{{ call .T "sms.nav.faq" }}</a>
+    </div>
+  </div>
+</nav>
+
+<!-- ── FAQ Header ──────────────────────────── -->
+<section class="sms-faq-hero">
+  <div class="sms-container">
+    <h1>{{ call .T "sms.faq.page.title" }}</h1>
+    <p>{{ call .T "sms.faq.page.desc" }}</p>
+  </div>
+</section>
+
+<!-- ── FAQ Content ─────────────────────────── -->
+<section class="sms-faq-content">
+  <div class="sms-container">
+
+    <!-- Category: General -->
+    <div class="faq-category">
+      <h2 class="faq-category__title">{{ call .T "sms.faq.cat.general" }}</h2>
+
+      <div class="faq-item">
+        <button class="faq-item__q" data-ga data-ga-action="faq_toggle" data-ga-category="sms-tool" data-ga-label="q1" onclick="toggleFaqItem(this)">
+          <span>{{ call .T "sms.faq.q1" }}</span>
+          <svg class="faq-item__chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="faq-item__a">{{ call .T "sms.faq.a1" }}</div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-item__q" data-ga data-ga-action="faq_toggle" data-ga-category="sms-tool" data-ga-label="q2" onclick="toggleFaqItem(this)">
+          <span>{{ call .T "sms.faq.q2" }}</span>
+          <svg class="faq-item__chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="faq-item__a">{{ call .T "sms.faq.a2" }}</div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-item__q" data-ga data-ga-action="faq_toggle" data-ga-category="sms-tool" data-ga-label="q3" onclick="toggleFaqItem(this)">
+          <span>{{ call .T "sms.faq.q3" }}</span>
+          <svg class="faq-item__chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="faq-item__a">{{ call .T "sms.faq.a3" }}</div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-item__q" data-ga data-ga-action="faq_toggle" data-ga-category="sms-tool" data-ga-label="q4" onclick="toggleFaqItem(this)">
+          <span>{{ call .T "sms.faq.q4" }}</span>
+          <svg class="faq-item__chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="faq-item__a">{{ call .T "sms.faq.a4" }}</div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-item__q" data-ga data-ga-action="faq_toggle" data-ga-category="sms-tool" data-ga-label="q5" onclick="toggleFaqItem(this)">
+          <span>{{ call .T "sms.faq.q5" }}</span>
+          <svg class="faq-item__chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="faq-item__a">{{ call .T "sms.faq.a5" }}</div>
+      </div>
+    </div>
+
+    <!-- Category: Numbers & Verification -->
+    <div class="faq-category">
+      <h2 class="faq-category__title">{{ call .T "sms.faq.cat.numbers" }}</h2>
+
+      <div class="faq-item">
+        <button class="faq-item__q" data-ga data-ga-action="faq_toggle" data-ga-category="sms-tool" data-ga-label="q6" onclick="toggleFaqItem(this)">
+          <span>{{ call .T "sms.faq.q6" }}</span>
+          <svg class="faq-item__chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="faq-item__a">{{ call .T "sms.faq.a6" }}</div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-item__q" data-ga data-ga-action="faq_toggle" data-ga-category="sms-tool" data-ga-label="q7" onclick="toggleFaqItem(this)">
+          <span>{{ call .T "sms.faq.q7" }}</span>
+          <svg class="faq-item__chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="faq-item__a">{{ call .T "sms.faq.a7" }}</div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-item__q" data-ga data-ga-action="faq_toggle" data-ga-category="sms-tool" data-ga-label="q8" onclick="toggleFaqItem(this)">
+          <span>{{ call .T "sms.faq.q8" }}</span>
+          <svg class="faq-item__chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="faq-item__a">{{ call .T "sms.faq.a8" }}</div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-item__q" data-ga data-ga-action="faq_toggle" data-ga-category="sms-tool" data-ga-label="q9" onclick="toggleFaqItem(this)">
+          <span>{{ call .T "sms.faq.q9" }}</span>
+          <svg class="faq-item__chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="faq-item__a">{{ call .T "sms.faq.a9" }}</div>
+      </div>
+    </div>
+
+    <!-- Category: Payments & Pricing -->
+    <div class="faq-category">
+      <h2 class="faq-category__title">{{ call .T "sms.faq.cat.payments" }}</h2>
+
+      <div class="faq-item">
+        <button class="faq-item__q" data-ga data-ga-action="faq_toggle" data-ga-category="sms-tool" data-ga-label="q10" onclick="toggleFaqItem(this)">
+          <span>{{ call .T "sms.faq.q10" }}</span>
+          <svg class="faq-item__chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="faq-item__a">{{ call .T "sms.faq.a10" }}</div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-item__q" data-ga data-ga-action="faq_toggle" data-ga-category="sms-tool" data-ga-label="q11" onclick="toggleFaqItem(this)">
+          <span>{{ call .T "sms.faq.q11" }}</span>
+          <svg class="faq-item__chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="faq-item__a">{{ call .T "sms.faq.a11" }}</div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-item__q" data-ga data-ga-action="faq_toggle" data-ga-category="sms-tool" data-ga-label="q12" onclick="toggleFaqItem(this)">
+          <span>{{ call .T "sms.faq.q12" }}</span>
+          <svg class="faq-item__chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="faq-item__a">{{ call .T "sms.faq.a12" }}</div>
+      </div>
+    </div>
+
+    <!-- Category: Technical & API -->
+    <div class="faq-category">
+      <h2 class="faq-category__title">{{ call .T "sms.faq.cat.technical" }}</h2>
+
+      <div class="faq-item">
+        <button class="faq-item__q" data-ga data-ga-action="faq_toggle" data-ga-category="sms-tool" data-ga-label="q13" onclick="toggleFaqItem(this)">
+          <span>{{ call .T "sms.faq.q13" }}</span>
+          <svg class="faq-item__chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="faq-item__a">{{ call .T "sms.faq.a13" }}</div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-item__q" data-ga data-ga-action="faq_toggle" data-ga-category="sms-tool" data-ga-label="q14" onclick="toggleFaqItem(this)">
+          <span>{{ call .T "sms.faq.q14" }}</span>
+          <svg class="faq-item__chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="faq-item__a">{{ call .T "sms.faq.a14" }}</div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-item__q" data-ga data-ga-action="faq_toggle" data-ga-category="sms-tool" data-ga-label="q15" onclick="toggleFaqItem(this)">
+          <span>{{ call .T "sms.faq.q15" }}</span>
+          <svg class="faq-item__chevron" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+        </button>
+        <div class="faq-item__a">{{ call .T "sms.faq.a15" }}</div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── CTA Section ─────────────────────────── -->
+<section class="sms-faq-cta">
+  <div class="sms-container">
+    <h2>{{ call .T "sms.faq.cta.title" }}</h2>
+    <p>{{ call .T "sms.faq.cta.desc" }}</p>
+    <a href="/sms/buy" class="faq-cta-btn" data-ga data-ga-action="buy" data-ga-category="sms-tool" data-ga-label="faq_cta">{{ call .T "sms.hero.cta_btn" }}</a>
+  </div>
+</section>
+
+<script>
+function toggleFaqItem(btn) {
+  const item = btn.parentElement;
+  const answer = item.querySelector('.faq-item__a');
+  const isOpen = item.classList.contains('faq-item--open');
+
+  // Close all
+  document.querySelectorAll('.faq-item--open').forEach(el => {
+    el.classList.remove('faq-item--open');
+    el.querySelector('.faq-item__a').style.maxHeight = null;
+  });
+
+  // Toggle current
+  if (!isOpen) {
+    item.classList.add('faq-item--open');
+    answer.style.maxHeight = answer.scrollHeight + 'px';
+  }
+}
+</script>
+{{- end }}

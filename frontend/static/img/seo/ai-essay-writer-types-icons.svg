@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 200">
+  <!-- Background -->
+  <rect width="800" height="200" fill="#f9fafb"/>
+
+  <!-- Title -->
+  <text x="400" y="30" text-anchor="middle" fill="#111827" font-size="20" font-weight="bold">Supported Essay Types</text>
+
+  <!-- Argumentative -->
+  <g transform="translate(60, 70)">
+    <rect width="120" height="110" rx="10" fill="#fff" stroke="#6366f1" stroke-width="2"/>
+    <text x="60" y="40" text-anchor="middle" font-size="30">⚖️</text>
+    <text x="60" y="65" text-anchor="middle" fill="#111827" font-size="13" font-weight="bold">Argumentative</text>
+    <text x="60" y="82" text-anchor="middle" fill="#6b7280" font-size="10">Present &amp; defend</text>
+    <text x="60" y="95" text-anchor="middle" fill="#6b7280" font-size="10">a position</text>
+  </g>
+
+  <!-- Expository -->
+  <g transform="translate(200, 70)">
+    <rect width="120" height="110" rx="10" fill="#fff" stroke="#8b5cf6" stroke-width="2"/>
+    <text x="60" y="40" text-anchor="middle" font-size="30">📖</text>
+    <text x="60" y="65" text-anchor="middle" fill="#111827" font-size="13" font-weight="bold">Expository</text>
+    <text x="60" y="82" text-anchor="middle" fill="#6b7280" font-size="10">Explain &amp; inform</text>
+    <text x="60" y="95" text-anchor="middle" fill="#6b7280" font-size="10">with facts</text>
+  </g>
+
+  <!-- Narrative -->
+  <g transform="translate(340, 70)">
+    <rect width="120" height="110" rx="10" fill="#fff" stroke="#10b981" stroke-width="2"/>
+    <text x="60" y="40" text-anchor="middle" font-size="30">📝</text>
+    <text x="60" y="65" text-anchor="middle" fill="#111827" font-size="13" font-weight="bold">Narrative</text>
+    <text x="60" y="82" text-anchor="middle" fill="#6b7280" font-size="10">Tell a story</text>
+    <text x="60" y="95" text-anchor="middle" fill="#6b7280" font-size="10">personal experience</text>
+  </g>
+
+  <!-- Descriptive -->
+  <g transform="translate(480, 70)">
+    <rect width="120" height="110" rx="10" fill="#fff" stroke="#f59e0b" stroke-width="2"/>
+    <text x="60" y="40" text-anchor="middle" font-size="30">🎨</text>
+    <text x="60" y="65" text-anchor="middle" fill="#111827" font-size="13" font-weight="bold">Descriptive</text>
+    <text x="60" y="82" text-anchor="middle" fill="#6b7280" font-size="10">Paint a picture</text>
+    <text x="60" y="95" text-anchor="middle" fill="#6b7280" font-size="10">with words</text>
+  </g>
+
+  <!-- Compare -->
+  <g transform="translate(620, 70)">
+    <rect width="120" height="110" rx="10" fill="#fff" stroke="#ef4444" stroke-width="2"/>
+    <text x="60" y="40" text-anchor="middle" font-size="30">🤝</text>
+    <text x="60" y="65" text-anchor="middle" fill="#111827" font-size="13" font-weight="bold">Compare</text>
+    <text x="60" y="82" text-anchor="middle" fill="#6b7280" font-size="10">Analyze &amp; contrast</text>
+    <text x="60" y="95" text-anchor="middle" fill="#6b7280" font-size="10">two subjects</text>
+  </g>
+</svg>

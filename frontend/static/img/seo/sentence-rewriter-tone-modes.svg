@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 300">
+  <!-- Background -->
+  <rect width="800" height="300" fill="#f9fafb"/>
+  <text x="400" y="40" fill="#111827" font-size="20" font-weight="bold" text-anchor="middle">5 Tone Modes for Perfect Rewriting</text>
+
+  <!-- Neutral -->
+  <g transform="translate(80, 80)">
+    <circle cx="50" cy="50" r="45" fill="#64748b"/>
+    <text x="50" y="60" text-anchor="middle" fill="#fff" font-size="24">⚖️</text>
+    <text x="50" y="130" text-anchor="middle" fill="#111827" font-size="14" font-weight="bold">Neutral</text>
+    <text x="50" y="150" text-anchor="middle" fill="#6b7280" font-size="10">Balanced &amp; clear</text>
+  </g>
+
+  <!-- Formal -->
+  <g transform="translate(240, 80)">
+    <circle cx="50" cy="50" r="45" fill="#1e3a5f"/>
+    <text x="50" y="60" text-anchor="middle" fill="#fff" font-size="24">👔</text>
+    <text x="50" y="130" text-anchor="middle" fill="#111827" font-size="14" font-weight="bold">Formal</text>
+    <text x="50" y="150" text-anchor="middle" fill="#6b7280" font-size="10">Professional tone</text>
+  </g>
+
+  <!-- Casual -->
+  <g transform="translate(400, 80)">
+    <circle cx="50" cy="50" r="45" fill="#f59e0b"/>
+    <text x="50" y="60" text-anchor="middle" fill="#fff" font-size="24">😊</text>
+    <text x="50" y="130" text-anchor="middle" fill="#111827" font-size="14" font-weight="bold">Casual</text>
+    <text x="50" y="150" text-anchor="middle" fill="#6b7280" font-size="10">Friendly &amp; relaxed</text>
+  </g>
+
+  <!-- Academic -->
+  <g transform="translate(560, 80)">
+    <circle cx="50" cy="50" r="45" fill="#7c3aed"/>
+    <text x="50" y="60" text-anchor="middle" fill="#fff" font-size="24">🎓</text>
+    <text x="50" y="130" text-anchor="middle" fill="#111827" font-size="14" font-weight="bold">Academic</text>
+    <text x="50" y="150" text-anchor="middle" fill="#6b7280" font-size="10">Scholarly style</text>
+  </g>
+
+  <!-- Creative -->
+  <g transform="translate(720, 80)">
+    <circle cx="50" cy="50" r="45" fill="#ec4899"/>
+    <text x="50" y="60" text-anchor="middle" fill="#fff" font-size="24">🎨</text>
+    <text x="50" y="130" text-anchor="middle" fill="#111827" font-size="14" font-weight="bold">Creative</text>
+    <text x="50" y="150" text-anchor="middle" fill="#6b7280" font-size="10">Artistic flair</text>
+  </g>
+
+  <!-- Bottom note -->
+  <rect x="100" y="220" width="600" height="60" rx="8" fill="#fff" stroke="#e5e7eb" stroke-width="1"/>
+  <text x="400" y="250" fill="#111827" font-size="12" font-weight="bold" text-anchor="middle">4 Purposes: Clarity • Engagement • Simplicity • Professional</text>
+  <text x="400" y="270" fill="#6b7280" font-size="11" text-anchor="middle">Match your exact writing needs with precision</text>
+</svg>

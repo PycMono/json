@@ -1,0 +1,188 @@
+{{ template "base" . }}
+
+{{ define "extraHead" }}
+<link rel="canonical" href="https://toolboxnova.com/img/to-video-guide">
+<link rel="alternate" hreflang="zh" href="https://toolboxnova.com/img/to-video-guide?lang=zh">
+<link rel="alternate" hreflang="en" href="https://toolboxnova.com/img/to-video-guide?lang=en">
+<link rel="alternate" hreflang="ja" href="https://toolboxnova.com/img/to-video-guide?lang=ja">
+<link rel="alternate" hreflang="ko" href="https://toolboxnova.com/img/to-video-guide?lang=ko">
+<link rel="alternate" hreflang="spa" href="https://toolboxnova.com/img/to-video-guide?lang=spa">
+<link rel="alternate" hreflang="x-default" href="https://toolboxnova.com/img/to-video-guide">
+<link rel="stylesheet" href="/static/css/img-toolbox.css?v={{ .AssetVer }}">
+<link rel="stylesheet" href="/static/css/img-tabs.css?v={{ .AssetVer }}">
+<link rel="stylesheet" href="/static/css/img-video.css?v={{ .AssetVer }}">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{{- range $i,$f := .FAQs }}{{if $i}},{{end}}{"@type":"Question","name":{{ $f.Q | html }},"acceptedAnswer":{"@type":"Answer","text":{{ $f.A | html }}}}{{- end}}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"HowTo","name":"{{ call .T "guide.itv.howto.name" }}","description":"{{ call .T "guide.itv.howto.desc" }}","step":[{"@type":"HowToStep","name":"{{ call .T "guide.itv.howto.step1.name" }}","text":"{{ call .T "guide.itv.howto.step1.text" }}","url":"https://toolboxnova.com/img/to-video-guide#step1"},{"@type":"HowToStep","name":"{{ call .T "guide.itv.howto.step2.name" }}","text":"{{ call .T "guide.itv.howto.step2.text" }}","url":"https://toolboxnova.com/img/to-video-guide#step2"},{"@type":"HowToStep","name":"{{ call .T "guide.itv.howto.step3.name" }}","text":"{{ call .T "guide.itv.howto.step3.text" }}","url":"https://toolboxnova.com/img/to-video-guide#step3"}]}</script>
+{{ end }}
+
+{{ define "content" }}
+{{ template "img_tabs" . }}
+<div class="itb-page" data-tool="to-video-guide">
+  <header class="itb-header itb-header--video">
+    <div class="itb-header__inner">
+      <span class="itb-header__badge">{{ call .T "guide.itv.hero.eyebrow" }}</span>
+      <h1 class="itb-header__title">{{ call .T "guide.itv.hero.title" }}</h1>
+      <p class="itb-header__sub">{{ call .T "guide.itv.hero.subtitle" }}</p>
+      <div class="itb-hero__actions" style="margin-top:20px">
+        <a href="/img/to-video?lang={{ .Lang }}" class="itb-btn-primary itb-btn-primary--hero">{{ call .T "guide.itv.hero.cta" }}</a>
+      </div>
+    </div>
+  </header>
+
+  <div class="itb-container">
+    <!-- CTA to tool -->
+    <div class="itb-guide-cta itb-guide-cta--indigo" style="margin-bottom:32px">
+      <div class="itb-guide-cta__text">
+        <h3 class="itb-guide-cta__title">{{ call .T "guide.itv.cta.title" }}</h3>
+        <p class="itb-guide-cta__desc">{{ call .T "guide.itv.cta.desc" }}</p>
+      </div>
+      <a href="/img/to-video?lang={{ .Lang }}" class="itb-guide-cta__btn" data-ga="guide_cta">{{ call .T "guide.itv.cta.btn" }}</a>
+    </div>
+
+    <!-- What is AI Image to Video -->
+    <section class="itb-section" style="padding-top:0">
+      <div class="itb-section-inner">
+        <span class="itb-section-label">{{ call .T "guide.itv.s1.label" }}</span>
+        <h2 class="itb-section-title">{{ call .T "guide.itv.s1.title" }}</h2>
+        <p class="itb-section-body">{{ call .T "guide.itv.s1.body1" }}</p>
+        <p class="itb-section-body">{{ call .T "guide.itv.s1.body2" }}</p>
+      </div>
+    </section>
+
+    <!-- How to use -->
+    <section class="itb-section itb-section--alt" id="step1">
+      <div class="itb-section-inner">
+        <span class="itb-section-label">{{ call .T "guide.itv.s2.label" }}</span>
+        <h2 class="itb-section-title">{{ call .T "guide.itv.s2.title" }}</h2>
+        <p class="itb-section-body">{{ call .T "guide.itv.s2.body" }}</p>
+        <div class="itb-steps" style="margin-top:24px">
+          <div class="itb-step">
+            <div class="itb-step__num">1</div>
+            <h3 class="itb-step__title">{{ call .T "guide.itv.s2.step1.title" }}</h3>
+            <p class="itb-step__desc">{{ call .T "guide.itv.s2.step1.desc" }}</p>
+          </div>
+          <div class="itb-step">
+            <div class="itb-step__num">2</div>
+            <h3 class="itb-step__title">{{ call .T "guide.itv.s2.step2.title" }}</h3>
+            <p class="itb-step__desc">{{ call .T "guide.itv.s2.step2.desc" }}</p>
+          </div>
+          <div class="itb-step">
+            <div class="itb-step__num">3</div>
+            <h3 class="itb-step__title">{{ call .T "guide.itv.s2.step3.title" }}</h3>
+            <p class="itb-step__desc">{{ call .T "guide.itv.s2.step3.desc" }}</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Suitable Scenes -->
+    <section class="itb-section">
+      <div class="itb-section-inner">
+        <span class="itb-section-label">{{ call .T "guide.itv.s3.label" }}</span>
+        <h2 class="itb-section-title">{{ call .T "guide.itv.s3.title" }}</h2>
+        <p class="itb-section-body">{{ call .T "guide.itv.s3.body1" }}</p>
+        <p class="itb-section-body">{{ call .T "guide.itv.s3.body2" }}</p>
+      </div>
+    </section>
+
+    <!-- Prompt Writing -->
+    <section class="itb-section itb-section--alt">
+      <div class="itb-section-inner">
+        <span class="itb-section-label">{{ call .T "guide.itv.s4.label" }}</span>
+        <h2 class="itb-section-title">{{ call .T "guide.itv.s4.title" }}</h2>
+        <p class="itb-section-body">{{ call .T "guide.itv.s4.body1" }}</p>
+        <p class="itb-section-body">{{ call .T "guide.itv.s4.body2" }}</p>
+      </div>
+    </section>
+
+    <!-- Camera Motion -->
+    <section class="itb-section">
+      <div class="itb-section-inner">
+        <span class="itb-section-label">{{ call .T "guide.itv.s5.label" }}</span>
+        <h2 class="itb-section-title">{{ call .T "guide.itv.s5.title" }}</h2>
+        <p class="itb-section-body">{{ call .T "guide.itv.s5.body1" }}</p>
+        <p class="itb-section-body">{{ call .T "guide.itv.s5.body2" }}</p>
+      </div>
+    </section>
+
+    <!-- Aspect Ratios -->
+    <section class="itb-section itb-section--alt">
+      <div class="itb-section-inner">
+        <span class="itb-section-label">{{ call .T "guide.itv.s6.label" }}</span>
+        <h2 class="itb-section-title">{{ call .T "guide.itv.s6.title" }}</h2>
+        <p class="itb-section-body">{{ call .T "guide.itv.s6.body1" }}</p>
+        <p class="itb-section-body">{{ call .T "guide.itv.s6.body2" }}</p>
+      </div>
+    </section>
+
+    <!-- Deformation -->
+    <section class="itb-section">
+      <div class="itb-section-inner">
+        <span class="itb-section-label">{{ call .T "guide.itv.s7.label" }}</span>
+        <h2 class="itb-section-title">{{ call .T "guide.itv.s7.title" }}</h2>
+        <p class="itb-section-body">{{ call .T "guide.itv.s7.body1" }}</p>
+        <p class="itb-section-body">{{ call .T "guide.itv.s7.body2" }}</p>
+      </div>
+    </section>
+
+    <!-- Quality Improvement -->
+    <section class="itb-section itb-section--alt">
+      <div class="itb-section-inner">
+        <span class="itb-section-label">{{ call .T "guide.itv.s8.label" }}</span>
+        <h2 class="itb-section-title">{{ call .T "guide.itv.s8.title" }}</h2>
+        <p class="itb-section-body">{{ call .T "guide.itv.s8.body1" }}</p>
+        <p class="itb-section-body">{{ call .T "guide.itv.s8.body2" }}</p>
+      </div>
+    </section>
+
+    <!-- Privacy -->
+    <section class="itb-section">
+      <div class="itb-section-inner">
+        <span class="itb-section-label">{{ call .T "guide.itv.s9.label" }}</span>
+        <h2 class="itb-section-title">{{ call .T "guide.itv.s9.title" }}</h2>
+        <p class="itb-section-body">{{ call .T "guide.itv.s9.body1" }}</p>
+        <p class="itb-section-body">{{ call .T "guide.itv.s9.body2" }}</p>
+      </div>
+    </section>
+
+    <!-- Common Mistakes -->
+    <section class="itb-section itb-section--alt">
+      <div class="itb-section-inner">
+        <span class="itb-section-label">{{ call .T "guide.itv.s10.label" }}</span>
+        <h2 class="itb-section-title">{{ call .T "guide.itv.s10.title" }}</h2>
+        <p class="itb-section-body">{{ call .T "guide.itv.s10.body" }}</p>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="itb-section">
+      <div class="itb-section-inner">
+        <span class="itb-section-label">{{ call .T "itv.faq.title" }}</span>
+        <h2 class="itb-section-title">{{ call .T "itv.faq.title" }}</h2>
+        <div class="itv-faq-list">
+          {{ range .FAQs }}
+          <div class="itv-faq-item">
+            <button class="itv-faq-q" onclick="this.parentElement.classList.toggle('open')">
+              <span>{{ .Q }}</span>
+              <svg class="itv-faq-chevron" width="20" height="20" viewBox="0 0 20 20"><path d="M5 8l5 5 5-5" stroke="currentColor" fill="none"/></svg>
+            </button>
+            <div class="itv-faq-a"><p>{{ .A }}</p></div>
+          </div>
+          {{ end }}
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA 2 -->
+    <div class="itb-guide-cta itb-guide-cta--indigo" style="margin-top:32px">
+      <div class="itb-guide-cta__text">
+        <h3 class="itb-guide-cta__title">{{ call .T "guide.itv.cta2.title" }}</h3>
+        <p class="itb-guide-cta__desc">{{ call .T "guide.itv.cta2.desc" }}</p>
+      </div>
+      <a href="/img/to-video?lang={{ .Lang }}" class="itb-guide-cta__btn" data-ga="guide_cta">{{ call .T "guide.itv.cta2.btn" }}</a>
+    </div>
+  </div>
+</div>
+
+<script src="/static/js/img-tabs.js?v={{ .AssetVer }}"></script>
+{{ end }}

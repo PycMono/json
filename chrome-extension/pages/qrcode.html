@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QR Code Generator - ToolBoxNova</title>
+  <link rel="stylesheet" href="shared.css">
+  <link rel="stylesheet" href="../static/css/media-qr.css">
+  <style>
+    body { padding-top: 0; }
+    .qr-workspace { display: grid; grid-template-columns: 1fr 300px; gap: 20px; margin: 16px 0; }
+    @media (max-width: 768px) { .qr-workspace { grid-template-columns: 1fr; } }
+    .qr-types { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 16px; }
+    .qr-type-btn { padding: 6px 14px; border: 1px solid #ddd; border-radius: 20px; background: #fff;
+      cursor: pointer; font-size: 13px; transition: all 0.15s; }
+    .qr-type-btn:hover { background: #f0f0f0; }
+    .qr-type-btn.active { background: #1a73e8; color: #fff; border-color: #1a73e8; }
+    .qr-preview-card { background: #fff; border-radius: 12px; padding: 20px; text-align: center;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.1); position: sticky; top: 56px; }
+    .qr-preview-empty { color: #ccc; padding: 40px; }
+    .qr-canvas-wrap { margin: 16px auto; }
+    .qr-actions { display: flex; flex-wrap: wrap; gap: 8px; justify-content: center; margin-top: 16px; }
+    .btn { padding: 8px 16px; border: 1px solid #ddd; border-radius: 6px; background: #fff;
+      cursor: pointer; font-size: 13px; }
+    .btn:hover { background: #f0f0f0; }
+    .btn-primary { background: #1a73e8; color: #fff; border-color: #1a73e8; }
+    .btn-primary:hover { background: #1557b0; }
+    .btn-success { background: #34a853; color: #fff; border-color: #34a853; }
+  </style>
+</head>
+<body>
+  <nav class="ext-topbar">
+    <a href="#" class="ext-topbar__back">← Back</a>
+    <h1 class="ext-topbar__title">QR Code Generator</h1>
+    <a href="https://toolboxnova.com/media/qr" target="_blank" class="ext-topbar__site">Web ↗</a>
+  </nav>
+
+  <div class="ext-container">
+    <!-- Type selector -->
+    <div class="qr-types" id="qrTypes">
+      <button class="qr-type-btn active" data-type="url">🔗 URL</button>
+      <button class="qr-type-btn" data-type="vcard">👤 vCard</button>
+      <button class="qr-type-btn" data-type="text">📝 Text</button>
+      <button class="qr-type-btn" data-type="sms">💬 SMS</button>
+      <button class="qr-type-btn" data-type="email">✉️ Email</button>
+      <button class="qr-type-btn" data-type="wifi">📶 WiFi</button>
+    </div>
+
+    <div class="qr-workspace">
+      <!-- Left: content + options -->
+      <div class="qr-content-panel">
+        <div id="qrFormContent">
+          <!-- media-qr-forms.js renders forms here based on selected type -->
+          <div style="padding:20px;background:#fff;border-radius:12px;box-shadow:0 1px 3px rgba(0,0,0,0.1);">
+            <label style="display:block;margin-bottom:8px;font-size:14px;font-weight:500;">URL</label>
+            <input type="url" id="qrInput" class="form-input" placeholder="https://example.com"
+              style="width:100%;padding:10px;border:1px solid #ddd;border-radius:8px;font-size:14px;">
+          </div>
+        </div>
+        <button class="btn btn-primary" id="qrGenerateBtn" style="margin-top:12px;width:100%;padding:12px;font-size:15px;">
+          Generate QR Code
+        </button>
+      </div>
+
+      <!-- Right: preview -->
+      <div class="qr-preview-card">
+        <div id="qrPreview" class="qr-preview-empty">
+          <div style="font-size:48px;margin-bottom:8px;">📱</div>
+          <p>Your QR code will appear here</p>
+        </div>
+        <div id="qrCanvasWrap" class="qr-canvas-wrap" style="display:none;"></div>
+        <div id="qrActions" class="qr-actions" style="display:none;">
+          <button class="btn btn-success" data-action="png">⬇ PNG</button>
+          <button class="btn" data-action="svg">⬇ SVG</button>
+          <button class="btn" data-action="copy">📋 Copy</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="../static/vendor/qr-code-styling.js"></script>
+  <script src="../static/vendor/file-saver.min.js"></script>
+  <script src="shared.js"></script>
+  <script src="../static/js/media-qr-engine.js"></script>
+  <script src="../static/js/media-qr-ui.js"></script>
+  <script src="../static/js/media-qr-forms.js"></script>
+  <script src="../static/js/media-qr-design.js"></script>
+  <script src="../static/js/media-qr-frames.js"></script>
+  <script src="ext-qrcode.js"></script>
+</body>
+</html>

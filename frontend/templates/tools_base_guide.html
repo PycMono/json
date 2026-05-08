@@ -1,0 +1,351 @@
+{{ template "base" . }}
+
+{{ define "extraHead" }}
+<link rel="stylesheet" href="/static/css/tools-base-guide.css?v={{ .AssetVer }}">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "{{ call .T "tools.base-guide.seo.title" }}",
+  "description": "{{ call .T "tools.base-guide.seo.description" }}",
+  "url": "{{ .Canonical }}"
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "ToolboxNova", "item": "https://toolboxnova.com/" },
+    { "@type": "ListItem", "position": 2, "name": "{{ call .T "tools.base.hero.title" }}", "item": "https://toolboxnova.com/tools/base-converter" },
+    { "@type": "ListItem", "position": 3, "name": "{{ call .T "tools.base-guide.seo.title" }}", "item": "{{ .Canonical }}" }
+  ]
+}
+</script>
+{{ end }}
+
+{{ define "content" }}
+<div class="page-base-converter-guide">
+
+<!-- Hero -->
+<section class="bcg-hero" aria-labelledby="bcg-hero-title">
+  <div class="bcg-hero__inner">
+    <div class="bcg-hero__eyebrow">ToolboxNova</div>
+    <h1 class="bcg-hero__title" id="bcg-hero-title">{{ call .T "tools.base-guide.hero.title" }}</h1>
+    <p class="bcg-hero__subtitle">{{ call .T "tools.base-guide.hero.subtitle" }}</p>
+    <a href="/tools/base-converter?lang={{ .Lang }}" class="bc-btn bc-btn--primary" data-ga="guide_cta">{{ call .T "tools.base-guide.hero.cta" }}</a>
+  </div>
+</section>
+
+<div style="text-align:center;margin:12px auto;max-width:970px;padding:0 16px">
+  {{- template "partials/ad_slot.html" (dict "Ctx" . "SlotID" "tools-base-guide-top" "Size" "728x90" "Mobile" "320x50") }}
+</div>
+
+<div class="hash-sidebar-layout">
+  <aside class="hash-sidebar-ad">
+    {{- template "partials/ad_slot.html" (dict "Ctx" . "SlotID" "tools-base-guide-left" "Size" "160x600" "MobileHide" true) }}
+  </aside>
+
+  <div class="hash-main-area">
+
+    <!-- What is base conversion -->
+    <section class="bcg-section" aria-labelledby="bcg-whatis">
+      <div class="bcg-section__inner">
+        <h2 class="bcg-section__title" id="bcg-whatis">{{ call .T "tools.base-guide.whatis.title" }}</h2>
+        <div class="bcg-card">
+          <div class="bcg-card__body">
+            <p>{{ call .T "tools.base-guide.whatis.p1" }}</p>
+            <p>{{ call .T "tools.base-guide.whatis.p2" }}</p>
+            <p>{{ call .T "tools.base-guide.whatis.p3" }}</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Base systems comparison -->
+    <section class="bcg-section" aria-labelledby="bcg-systems" style="background:linear-gradient(180deg,transparent 0%,rgba(59,130,246,0.03) 50%,transparent 100%)">
+      <div class="bcg-section__inner">
+        <h2 class="bcg-section__title" id="bcg-systems">{{ call .T "tools.base-guide.systems.title" }}</h2>
+        <p class="bcg-section__subtitle">{{ call .T "tools.base-guide.systems.subtitle" }}</p>
+
+        <div class="bcg-table-wrap">
+          <table class="bcg-table">
+            <thead>
+              <tr>
+                <th>{{ call .T "tools.base-guide.systems.col_system" }}</th>
+                <th>{{ call .T "tools.base-guide.systems.col_base" }}</th>
+                <th>{{ call .T "tools.base-guide.systems.col_digits" }}</th>
+                <th>{{ call .T "tools.base-guide.systems.col_prefix" }}</th>
+                <th>{{ call .T "tools.base-guide.systems.col_use" }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>{{ call .T "tools.base-guide.systems.row_bin" }}</td>
+                <td><code>2</code></td>
+                <td><code>0-1</code></td>
+                <td><code>0b</code></td>
+                <td>{{ call .T "tools.base-guide.systems.row_bin_use" }}</td>
+              </tr>
+              <tr>
+                <td>{{ call .T "tools.base-guide.systems.row_oct" }}</td>
+                <td><code>8</code></td>
+                <td><code>0-7</code></td>
+                <td><code>0o</code></td>
+                <td>{{ call .T "tools.base-guide.systems.row_oct_use" }}</td>
+              </tr>
+              <tr>
+                <td>{{ call .T "tools.base-guide.systems.row_dec" }}</td>
+                <td><code>10</code></td>
+                <td><code>0-9</code></td>
+                <td>—</td>
+                <td>{{ call .T "tools.base-guide.systems.row_dec_use" }}</td>
+              </tr>
+              <tr>
+                <td>{{ call .T "tools.base-guide.systems.row_hex" }}</td>
+                <td><code>16</code></td>
+                <td><code>0-9 A-F</code></td>
+                <td><code>0x</code></td>
+                <td>{{ call .T "tools.base-guide.systems.row_hex_use" }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- Decimal -> Binary -->
+    <section class="bcg-section" aria-labelledby="bcg-d2b">
+      <div class="bcg-section__inner">
+        <h2 class="bcg-section__title" id="bcg-d2b">{{ call .T "tools.base-guide.d2b.title" }}</h2>
+        <div class="bcg-card">
+          <div class="bcg-card__body">
+            <p>{{ call .T "tools.base-guide.d2b.p1" }}</p>
+            <p>{{ call .T "tools.base-guide.d2b.p2" }}</p>
+            <p><strong>{{ call .T "tools.base-guide.d2b.example_label" }}</strong></p>
+            <pre><code>13 ÷ 2 = 6 r 1
+ 6 ÷ 2 = 3 r 0
+ 3 ÷ 2 = 1 r 1
+ 1 ÷ 2 = 0 r 1
+→ 1101 (binary)</code></pre>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Binary -> Decimal -->
+    <section class="bcg-section" aria-labelledby="bcg-b2d" style="background:linear-gradient(180deg,transparent 0%,rgba(59,130,246,0.03) 50%,transparent 100%)">
+      <div class="bcg-section__inner">
+        <h2 class="bcg-section__title" id="bcg-b2d">{{ call .T "tools.base-guide.b2d.title" }}</h2>
+        <div class="bcg-card">
+          <div class="bcg-card__body">
+            <p>{{ call .T "tools.base-guide.b2d.p1" }}</p>
+            <p><strong>{{ call .T "tools.base-guide.b2d.example_label" }}</strong></p>
+            <pre><code>1101 = 1·2³ + 1·2² + 0·2¹ + 1·2⁰
+     = 8 + 4 + 0 + 1
+     = 13</code></pre>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Hex guide -->
+    <section class="bcg-section" aria-labelledby="bcg-hex">
+      <div class="bcg-section__inner">
+        <h2 class="bcg-section__title" id="bcg-hex">{{ call .T "tools.base-guide.hex.title" }}</h2>
+        <div class="bcg-card">
+          <div class="bcg-card__body">
+            <p>{{ call .T "tools.base-guide.hex.p1" }}</p>
+            <p>{{ call .T "tools.base-guide.hex.p2" }}</p>
+            <p>{{ call .T "tools.base-guide.hex.p3" }}</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Prefixes 0b/0o/0x -->
+    <section class="bcg-section" aria-labelledby="bcg-prefix" style="background:linear-gradient(180deg,transparent 0%,rgba(59,130,246,0.03) 50%,transparent 100%)">
+      <div class="bcg-section__inner">
+        <h2 class="bcg-section__title" id="bcg-prefix">{{ call .T "tools.base-guide.prefix.title" }}</h2>
+        <div class="bcg-card">
+          <div class="bcg-card__body">
+            <p>{{ call .T "tools.base-guide.prefix.p1" }}</p>
+            <p>{{ call .T "tools.base-guide.prefix.p2" }}</p>
+            <p>{{ call .T "tools.base-guide.prefix.p3" }}</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Two's complement -->
+    <section class="bcg-section" aria-labelledby="bcg-twos">
+      <div class="bcg-section__inner">
+        <h2 class="bcg-section__title" id="bcg-twos">{{ call .T "tools.base-guide.twos.title" }}</h2>
+        <div class="bcg-card">
+          <div class="bcg-card__body">
+            <div class="bcg-box bcg-box--info">
+              <div class="bcg-box__title">ℹ️ {{ call .T "tools.base-guide.twos.info_title" }}</div>
+              <p>{{ call .T "tools.base-guide.twos.info_text" }}</p>
+            </div>
+            <p>{{ call .T "tools.base-guide.twos.p1" }}</p>
+            <p>{{ call .T "tools.base-guide.twos.p2" }}</p>
+            <p><strong>{{ call .T "tools.base-guide.twos.example_label" }}</strong></p>
+            <pre><code>+5  (8-bit) → 00000101
+-5  (8-bit) → 11111011  (~00000101 + 1)
+-1  (8-bit) → 11111111
+unsigned 11111111 → 255
+signed   11111111 → -1</code></pre>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Code examples -->
+    <section class="bcg-section" aria-labelledby="bcg-code" style="background:linear-gradient(180deg,transparent 0%,rgba(59,130,246,0.03) 50%,transparent 100%)">
+      <div class="bcg-section__inner">
+        <h2 class="bcg-section__title" id="bcg-code">{{ call .T "tools.base-guide.code.title" }}</h2>
+        <p class="bcg-section__subtitle">{{ call .T "tools.base-guide.code.subtitle" }}</p>
+
+        <div class="bcg-code-block">
+          <div class="bcg-code-block__header">
+            <span class="bcg-code-block__lang">JavaScript</span>
+            <button class="bcg-code-block__copy" type="button" aria-label="Copy"><svg class="bc-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button>
+          </div>
+          <pre><code>// Decimal to other bases
+(255).toString(2);    // "11111111"
+(255).toString(8);    // "377"
+(255).toString(16);   // "ff"
+
+// Parse from any base
+parseInt("ff", 16);   // 255
+parseInt("1010", 2);  // 10
+
+// BigInt for large numbers
+const big = BigInt("0xffffffffffffffff");
+big.toString(2);</code></pre>
+        </div>
+
+        <div class="bcg-code-block">
+          <div class="bcg-code-block__header">
+            <span class="bcg-code-block__lang">Python</span>
+            <button class="bcg-code-block__copy" type="button" aria-label="Copy"><svg class="bc-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button>
+          </div>
+          <pre><code># Decimal to other bases
+bin(255)   # '0b11111111'
+oct(255)   # '0o377'
+hex(255)   # '0xff'
+
+# Parse from any base
+int("ff", 16)    # 255
+int("1010", 2)   # 10
+
+# Format without prefix
+format(255, 'b')   # '11111111'
+format(255, 'x')   # 'ff'</code></pre>
+        </div>
+
+        <div class="bcg-code-block">
+          <div class="bcg-code-block__header">
+            <span class="bcg-code-block__lang">C / C++</span>
+            <button class="bcg-code-block__copy" type="button" aria-label="Copy"><svg class="bc-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button>
+          </div>
+          <pre><code>// Literals
+int dec = 255;
+int hex = 0xFF;
+int oct = 0377;
+int bin = 0b11111111; // C23/C++14
+
+// Print in different bases
+printf("%d %x %o\n", dec, hex, oct);</code></pre>
+        </div>
+
+        <div class="bcg-code-block">
+          <div class="bcg-code-block__header">
+            <span class="bcg-code-block__lang">Go</span>
+            <button class="bcg-code-block__copy" type="button" aria-label="Copy"><svg class="bc-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button>
+          </div>
+          <pre><code>import "strconv"
+
+// Decimal to other bases
+strconv.FormatInt(255, 2)  // "11111111"
+strconv.FormatInt(255, 16) // "ff"
+
+// Parse from any base
+strconv.ParseInt("ff", 16, 64)
+strconv.ParseInt("1010", 2, 64)</code></pre>
+        </div>
+
+        <div class="bcg-code-block">
+          <div class="bcg-code-block__header">
+            <span class="bcg-code-block__lang">Shell</span>
+            <button class="bcg-code-block__copy" type="button" aria-label="Copy"><svg class="bc-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button>
+          </div>
+          <pre><code># Bash arithmetic
+echo $((2#11111111))   # 255
+echo $((16#ff))         # 255
+printf "%x\n" 255       # ff
+printf "%o\n" 255       # 377</code></pre>
+        </div>
+      </div>
+    </section>
+
+    <!-- Common errors -->
+    <section class="bcg-section" aria-labelledby="bcg-errors">
+      <div class="bcg-section__inner">
+        <h2 class="bcg-section__title" id="bcg-errors">{{ call .T "tools.base-guide.errors.title" }}</h2>
+        <div class="bcg-card">
+          <div class="bcg-card__body">
+            <p><strong>{{ call .T "tools.base-guide.errors.e1_title" }}</strong> — {{ call .T "tools.base-guide.errors.e1_text" }}</p>
+            <p><strong>{{ call .T "tools.base-guide.errors.e2_title" }}</strong> — {{ call .T "tools.base-guide.errors.e2_text" }}</p>
+            <p><strong>{{ call .T "tools.base-guide.errors.e3_title" }}</strong> — {{ call .T "tools.base-guide.errors.e3_text" }}</p>
+            <p><strong>{{ call .T "tools.base-guide.errors.e4_title" }}</strong> — {{ call .T "tools.base-guide.errors.e4_text" }}</p>
+            <p><strong>{{ call .T "tools.base-guide.errors.e5_title" }}</strong> — {{ call .T "tools.base-guide.errors.e5_text" }}</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CTA -->
+    <section class="bcg-cta" aria-label="Call to action">
+      <div class="bcg-cta__inner">
+        <h3 class="bcg-cta__title">{{ call .T "tools.base-guide.cta.title" }}</h3>
+        <p class="bcg-cta__subtitle">{{ call .T "tools.base-guide.cta.subtitle" }}</p>
+        <a href="/tools/base-converter?lang={{ .Lang }}" class="bc-btn bc-btn--primary" data-ga="guide_cta">{{ call .T "tools.base-guide.cta.btn" }}</a>
+      </div>
+    </section>
+
+  </div><!-- /hash-main-area -->
+
+  <aside class="hash-sidebar-ad">
+    {{- template "partials/ad_slot.html" (dict "Ctx" . "SlotID" "tools-base-guide-right" "Size" "160x600" "MobileHide" true) }}
+  </aside>
+</div><!-- /hash-sidebar-layout -->
+
+<div style="text-align:center;margin:20px auto;max-width:970px;padding:0 16px">
+  {{- template "partials/ad_slot.html" (dict "Ctx" . "SlotID" "tools-base-guide-bottom" "Size" "728x90" "Mobile" "320x50") }}
+</div>
+
+</div><!-- /page-base-converter-guide -->
+{{ end }}
+
+{{ define "extraScript" }}
+<script>
+document.addEventListener('DOMContentLoaded', function () {
+  var CHECK_ICON = '<svg class="bc-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 6 9 17 4 12"></polyline></svg>';
+  document.querySelectorAll('.bcg-code-block__copy').forEach(function (btn) {
+    btn.addEventListener('click', function () {
+      var code = btn.closest('.bcg-code-block').querySelector('pre code');
+      if (!code) return;
+      navigator.clipboard.writeText(code.textContent).then(function () {
+        var prev = btn.innerHTML;
+        btn.classList.add('copied');
+        btn.innerHTML = CHECK_ICON;
+        setTimeout(function () { btn.innerHTML = prev; btn.classList.remove('copied'); }, 1500);
+      });
+    });
+  });
+});
+</script>
+{{ end }}

@@ -1,0 +1,210 @@
+{{ template "base" . }}
+
+{{ define "extraHead" }}
+<link rel="canonical" href="https://toolboxnova.com/img/jpg-to-image-guide">
+<link rel="alternate" hreflang="zh" href="https://toolboxnova.com/img/jpg-to-image-guide?lang=zh">
+<link rel="alternate" hreflang="en" href="https://toolboxnova.com/img/jpg-to-image-guide?lang=en">
+<link rel="alternate" hreflang="ja" href="https://toolboxnova.com/img/jpg-to-image-guide?lang=ja">
+<link rel="alternate" hreflang="ko" href="https://toolboxnova.com/img/jpg-to-image-guide?lang=ko">
+<link rel="alternate" hreflang="spa" href="https://toolboxnova.com/img/jpg-to-image-guide?lang=spa">
+<link rel="alternate" hreflang="x-default" href="https://toolboxnova.com/img/jpg-to-image-guide">
+<link rel="stylesheet" href="/static/css/img-toolbox.css?v={{ .AssetVer }}">
+<link rel="stylesheet" href="/static/css/img-tabs.css?v={{ .AssetVer }}">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{{- range $i,$f := .FAQs }}{{if $i}},{{end}}{"@type":"Question","name":{{ $f.Q | html }},"acceptedAnswer":{"@type":"Answer","text":{{ $f.A | html }}}}{{- end}}]}</script>
+{{ end }}
+
+{{ define "content" }}
+{{ template "img_tabs" . }}
+<div class="itb-page" data-tool="jpg-to-guide">
+  <header class="itb-header">
+    <div class="itb-header__inner">
+      <span class="itb-header__logo">📖</span>
+      <h1 class="itb-header__title">{{ call .T "guide.jpg_to.hero.title" }}</h1>
+      <p class="itb-header__sub">{{ call .T "guide.jpg_to.hero.subtitle" }}</p>
+    </div>
+  </header>
+
+  <div class="itb-container">
+    <!-- CTA to tool -->
+    <div class="itb-guide-cta" style="margin-bottom:32px">
+      <div class="itb-guide-cta__text">
+        <h3 class="itb-guide-cta__title">{{ call .T "guide.jpg_to.cta.title" }}</h3>
+        <p class="itb-guide-cta__desc">{{ call .T "guide.jpg_to.cta.desc" }}</p>
+      </div>
+      <a href="/img/jpg-to-image?lang={{ .Lang }}" class="itb-guide-cta__btn" data-ga="guide_cta">{{ call .T "guide.jpg_to.cta.btn" }}</a>
+    </div>
+
+    <!-- What is JPG format conversion -->
+    <section class="itb-section" style="padding-top:0">
+      <div class="itb-section-inner">
+        <span class="itb-section-label">{{ call .T "guide.jpg_to.s1.label" }}</span>
+        <h2 class="itb-section-title">{{ call .T "guide.jpg_to.s1.title" }}</h2>
+        <p class="itb-section-body">{{ call .T "guide.jpg_to.s1.body1" }}</p>
+        <p class="itb-section-body">{{ call .T "guide.jpg_to.s1.body2" }}</p>
+      </div>
+    </section>
+
+    <!-- JPG vs JPEG -->
+    <section class="itb-section itb-section--alt">
+      <div class="itb-section-inner">
+        <span class="itb-section-label">{{ call .T "guide.jpg_to.s2.label" }}</span>
+        <h2 class="itb-section-title">{{ call .T "guide.jpg_to.s2.title" }}</h2>
+        <p class="itb-section-body">{{ call .T "guide.jpg_to.s2.body" }}</p>
+      </div>
+    </section>
+
+    <!-- JPG to PNG guide -->
+    <section class="itb-section">
+      <div class="itb-section-inner">
+        <div class="itb-split">
+          <div class="itb-split-text">
+            <span class="itb-section-label">{{ call .T "guide.jpg_to.s3.label" }}</span>
+            <h2 class="itb-section-title">{{ call .T "guide.jpg_to.s3.title" }}</h2>
+            <p class="itb-section-body">{{ call .T "guide.jpg_to.s3.body1" }}</p>
+            <p class="itb-section-body">{{ call .T "guide.jpg_to.s3.body2" }}</p>
+          </div>
+          <div class="itb-split-visual">
+            <div class="itb-visual-box">
+              <div class="itb-visual-box__icon">🖼️</div>
+              <div class="itb-visual-stat">
+                <span class="itb-visual-stat__num">PNG</span>
+                <span class="itb-visual-stat__lbl">{{ call .T "guide.jpg_to.s3.stat.lbl" }}</span>
+              </div>
+              <div class="itb-visual-box__label">{{ call .T "guide.jpg_to.s3.stat.sub" }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- JPG to WebP guide -->
+    <section class="itb-section itb-section--alt">
+      <div class="itb-section-inner">
+        <div class="itb-split itb-split--reverse">
+          <div class="itb-split-text">
+            <span class="itb-section-label">{{ call .T "guide.jpg_to.s4.label" }}</span>
+            <h2 class="itb-section-title">{{ call .T "guide.jpg_to.s4.title" }}</h2>
+            <p class="itb-section-body">{{ call .T "guide.jpg_to.s4.body1" }}</p>
+            <p class="itb-section-body">{{ call .T "guide.jpg_to.s4.body2" }}</p>
+          </div>
+          <div class="itb-split-visual">
+            <div class="itb-visual-box">
+              <div class="itb-visual-box__icon">⚡</div>
+              <div class="itb-visual-stat">
+                <span class="itb-visual-stat__num">WebP</span>
+                <span class="itb-visual-stat__lbl">{{ call .T "guide.jpg_to.s4.stat.lbl" }}</span>
+              </div>
+              <div class="itb-visual-box__label">{{ call .T "guide.jpg_to.s4.stat.sub" }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Format comparison -->
+    <section class="itb-section">
+      <div class="itb-section-inner">
+        <span class="itb-section-label">{{ call .T "guide.jpg_to.s5.label" }}</span>
+        <h2 class="itb-section-title">{{ call .T "guide.jpg_to.s5.title" }}</h2>
+        <p class="itb-section-body">{{ call .T "guide.jpg_to.s5.body1" }}</p>
+        <p class="itb-section-body">{{ call .T "guide.jpg_to.s5.body2" }}</p>
+        <div class="itb-format-grid" style="margin-top:24px">
+          <div class="itb-format-card">
+            <div class="itb-format-card__icon">📷</div>
+            <h3 class="itb-format-card__name">JPG / JPEG</h3>
+            <p class="itb-format-card__desc">{{ call .T "guide.jpg_to.fmt.jpg" }}</p>
+          </div>
+          <div class="itb-format-card">
+            <div class="itb-format-card__icon">🖼️</div>
+            <h3 class="itb-format-card__name">PNG</h3>
+            <p class="itb-format-card__desc">{{ call .T "guide.jpg_to.fmt.png" }}</p>
+          </div>
+          <div class="itb-format-card">
+            <div class="itb-format-card__icon">⚡</div>
+            <h3 class="itb-format-card__name">WebP</h3>
+            <p class="itb-format-card__desc">{{ call .T "guide.jpg_to.fmt.webp" }}</p>
+          </div>
+          <div class="itb-format-card">
+            <div class="itb-format-card__icon">💾</div>
+            <h3 class="itb-format-card__name">BMP</h3>
+            <p class="itb-format-card__desc">{{ call .T "guide.jpg_to.fmt.bmp" }}</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Quality and file size guide -->
+    <section class="itb-section itb-section--alt">
+      <div class="itb-section-inner">
+        <span class="itb-section-label">{{ call .T "guide.jpg_to.s6.label" }}</span>
+        <h2 class="itb-section-title">{{ call .T "guide.jpg_to.s6.title" }}</h2>
+        <p class="itb-section-body">{{ call .T "guide.jpg_to.s6.body" }}</p>
+        <div class="itb-steps" style="margin-top:24px">
+          <div class="itb-step">
+            <div class="itb-step__num">95%</div>
+            <h3 class="itb-step__title">{{ call .T "guide.jpg_to.s6.hd.title" }}</h3>
+            <p class="itb-step__desc">{{ call .T "guide.jpg_to.s6.hd.desc" }}</p>
+          </div>
+          <div class="itb-step">
+            <div class="itb-step__num">85%</div>
+            <h3 class="itb-step__title">{{ call .T "guide.jpg_to.s6.balanced.title" }}</h3>
+            <p class="itb-step__desc">{{ call .T "guide.jpg_to.s6.balanced.desc" }}</p>
+          </div>
+          <div class="itb-step">
+            <div class="itb-step__num">70%</div>
+            <h3 class="itb-step__title">{{ call .T "guide.jpg_to.s6.small.title" }}</h3>
+            <p class="itb-step__desc">{{ call .T "guide.jpg_to.s6.small.desc" }}</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Common misunderstandings -->
+    <section class="itb-section">
+      <div class="itb-section-inner">
+        <span class="itb-section-label">{{ call .T "guide.jpg_to.s7.label" }}</span>
+        <h2 class="itb-section-title">{{ call .T "guide.jpg_to.s7.title" }}</h2>
+        <p class="itb-section-body">{{ call .T "guide.jpg_to.s7.body1" }}</p>
+        <p class="itb-section-body">{{ call .T "guide.jpg_to.s7.body2" }}</p>
+        <p class="itb-section-body">{{ call .T "guide.jpg_to.s7.body3" }}</p>
+      </div>
+    </section>
+
+    <!-- Common mistakes -->
+    <section class="itb-section itb-section--alt">
+      <div class="itb-section-inner">
+        <span class="itb-section-label">{{ call .T "guide.jpg_to.s8.label" }}</span>
+        <h2 class="itb-section-title">{{ call .T "guide.jpg_to.s8.title" }}</h2>
+        <p class="itb-section-body">{{ call .T "guide.jpg_to.s8.body" }}</p>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="itb-section">
+      <div class="itb-section-inner">
+        <span class="itb-section-label">{{ call .T "jpg_to.faq.title" }}</span>
+        <h2 class="itb-section-title">{{ call .T "guide.jpg_to.faq.title" }}</h2>
+        {{ range $i,$f := .FAQs }}
+        <div class="itb-faq-item" id="itbFaq-{{ $i }}">
+          <button class="itb-faq-item__q" onclick="itbToggleFAQ({{ $i }})" aria-expanded="false">{{ $f.Q }}<span class="itb-faq-item__arrow">▾</span></button>
+          <div class="itb-faq-item__a"><p>{{ $f.A }}</p></div>
+        </div>
+        {{ end }}
+      </div>
+    </section>
+
+    <!-- Bottom CTA -->
+    <div class="itb-guide-cta" style="margin-top:32px;margin-bottom:48px">
+      <div class="itb-guide-cta__text">
+        <h3 class="itb-guide-cta__title">{{ call .T "guide.jpg_to.cta2.title" }}</h3>
+        <p class="itb-guide-cta__desc">{{ call .T "guide.jpg_to.cta2.desc" }}</p>
+      </div>
+      <a href="/img/jpg-to-image?lang={{ .Lang }}" class="itb-guide-cta__btn" data-ga="guide_cta">{{ call .T "guide.jpg_to.cta2.btn" }}</a>
+    </div>
+  </div>
+</div>
+{{ end }}
+
+{{ define "extraScript" }}
+<script src="/static/js/img-tabs.js?v={{ .AssetVer }}"></script>
+{{ end }}

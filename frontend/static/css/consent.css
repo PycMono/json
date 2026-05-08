@@ -1,0 +1,326 @@
+/* ================================================================
+   consent.css  —  Minimal Cookie Bar + Preferences Modal
+   ================================================================ */
+
+:root {
+  --cky-primary:       var(--color-primary, #1a9b6c);
+  --cky-primary-h:     #158a5e;
+  --cky-bg:            #18181f;
+  --cky-text:          #e8e8f0;
+  --cky-muted:         #9898a8;
+  --cky-border:        rgba(255,255,255,0.10);
+  --cky-r:             8px;
+  --cky-shadow:        0 -2px 20px rgba(0,0,0,0.28);
+  --cky-z-bar:         9000;
+  --cky-z-modal:       9001;
+  --cky-z-toast:       9002;
+}
+
+/* ── Bottom Bar ─────────────────────────────────────────────── */
+.cky-bar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: var(--cky-z-bar);
+  background: var(--cky-bg);
+  border-top: 1px solid var(--cky-border);
+  box-shadow: var(--cky-shadow);
+  animation: cky-up 0.28s ease-out;
+}
+/* 当 cookie bar 可见时，为 body 添加底部内边距防止遮挡页脚 */
+body.cky-bar-visible {
+  padding-bottom: 80px;
+}
+
+@keyframes cky-up {
+  from { transform: translateY(100%); opacity: 0; }
+  to   { transform: translateY(0);    opacity: 1; }
+}
+
+.cky-bar__inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 12px 20px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  flex-wrap: wrap;
+}
+
+.cky-bar__text {
+  flex: 1 1 280px;
+  margin: 0;
+  font-size: 13px;
+  color: var(--cky-muted);
+  line-height: 1.5;
+}
+
+.cky-bar__link {
+  color: var(--cky-primary);
+  text-decoration: none;
+  margin-left: 4px;
+  white-space: nowrap;
+}
+.cky-bar__link:hover { text-decoration: underline; }
+
+.cky-bar__btns {
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+/* ── Buttons ────────────────────────────────────────────────── */
+.cky-bar__btn {
+  padding: 7px 18px;
+  border-radius: var(--cky-r);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: background 0.18s, border-color 0.18s;
+  border: 1.5px solid transparent;
+}
+
+.cky-bar__btn--accept {
+  background: var(--cky-primary);
+  color: #fff;
+  border-color: var(--cky-primary);
+}
+.cky-bar__btn--accept:hover {
+  background: var(--cky-primary-h);
+  border-color: var(--cky-primary-h);
+}
+
+.cky-bar__btn--reject {
+  background: transparent;
+  color: var(--cky-muted);
+  border-color: var(--cky-border);
+}
+.cky-bar__btn--reject:hover {
+  color: var(--cky-text);
+  border-color: rgba(255,255,255,0.25);
+}
+
+/* ── Preferences Modal ──────────────────────────────────────── */
+.cky-modal {
+  position: fixed;
+  inset: 0;
+  z-index: var(--cky-z-modal);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+}
+
+@media (min-width: 600px) {
+  .cky-modal { align-items: center; }
+}
+
+.cky-modal__backdrop {
+  position: absolute;
+  inset: 0;
+  background: rgba(0,0,0,0.55);
+  backdrop-filter: blur(3px);
+  -webkit-backdrop-filter: blur(3px);
+}
+
+.cky-modal__box {
+  position: relative;
+  background: var(--cky-bg);
+  border-radius: 12px 12px 0 0;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.5);
+  width: 100%;
+  max-width: 480px;
+  padding: 20px;
+  max-height: 90vh;
+  overflow-y: auto;
+}
+
+@media (min-width: 600px) {
+  .cky-modal__box { border-radius: 12px; }
+}
+
+.cky-modal__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 16px;
+}
+
+.cky-modal__title {
+  margin: 0;
+  font-size: 15px;
+  font-weight: 700;
+  color: var(--cky-text);
+}
+
+.cky-modal__close {
+  background: none;
+  border: none;
+  color: var(--cky-muted);
+  cursor: pointer;
+  padding: 2px;
+  line-height: 1;
+  border-radius: 4px;
+  transition: color 0.15s;
+}
+.cky-modal__close:hover { color: var(--cky-text); }
+
+/* ── Category list ──────────────────────────────────────────── */
+.cky-modal__categories {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--cky-border);
+  border-radius: var(--cky-r);
+  overflow: hidden;
+  margin-bottom: 16px;
+}
+
+.cky-cat {
+  padding: 12px 14px;
+  background: rgba(255,255,255,0.02);
+}
+.cky-cat + .cky-cat {
+  border-top: 1px solid var(--cky-border);
+}
+
+.cky-cat__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+
+.cky-cat__name {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--cky-text);
+}
+
+.cky-cat__locked {
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--cky-primary);
+  background: rgba(26,155,108,0.15);
+  padding: 2px 8px;
+  border-radius: 20px;
+}
+
+.cky-cat__desc {
+  margin: 5px 0 0;
+  font-size: 12px;
+  color: var(--cky-muted);
+  line-height: 1.5;
+}
+
+/* ── Toggle Switch ──────────────────────────────────────────── */
+.cky-switch {
+  position: relative;
+  display: inline-block;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.cky-switch input {
+  display: none;
+}
+
+.cky-switch__track {
+  display: block;
+  width: 40px;
+  height: 22px;
+  background: #3a3a4a;
+  border-radius: 999px;
+  position: relative;
+  transition: background 0.2s;
+}
+
+.cky-switch__track::after {
+  content: '';
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 18px;
+  height: 18px;
+  background: #fff;
+  border-radius: 50%;
+  transition: transform 0.2s;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.3);
+}
+
+.cky-switch input:checked + .cky-switch__track {
+  background: var(--cky-primary);
+}
+
+.cky-switch input:checked + .cky-switch__track::after {
+  transform: translateX(18px);
+}
+
+/* ── Modal Footer ───────────────────────────────────────────── */
+.cky-modal__footer {
+  display: flex;
+  gap: 8px;
+  justify-content: flex-end;
+}
+
+/* ── Toast ──────────────────────────────────────────────────── */
+.cky-toast {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  z-index: var(--cky-z-toast);
+  background: var(--cky-primary);
+  color: #fff;
+  padding: 9px 14px;
+  border-radius: var(--cky-r);
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 13px;
+  font-weight: 600;
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 0.2s, transform 0.2s;
+  pointer-events: none;
+}
+
+.cky-toast--show {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ── Mobile ─────────────────────────────────────────────────── */
+@media (max-width: 599px) {
+  body.cky-bar-visible {
+    padding-bottom: 140px;
+  }
+
+  .cky-bar__inner {
+    flex-direction: column;
+    align-items: stretch;
+    padding: 14px 16px;
+    gap: 12px;
+  }
+
+  .cky-bar__btns {
+    width: 100%;
+  }
+
+  .cky-bar__btn {
+    flex: 1;
+    text-align: center;
+    padding: 10px;
+  }
+
+  .cky-toast {
+    bottom: 12px;
+    right: 12px;
+    left: 12px;
+    justify-content: center;
+  }
+}
+
+/* ── Body lock when modal open ──────────────────────────────── */
+body.cky-modal-open {
+  overflow: hidden;
+}

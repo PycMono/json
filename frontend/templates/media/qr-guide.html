@@ -1,0 +1,294 @@
+{{ template "base" . }}
+
+{{ define "extraHead" }}
+<link rel="stylesheet" href="/static/css/img-toolbox.css?v={{ .AssetVer }}">
+<link rel="stylesheet" href="/static/css/img-compress-guide.css?v={{ .AssetVer }}">
+<link rel="alternate" hreflang="zh" href="{{ .HreflangZH }}">
+<link rel="alternate" hreflang="en" href="{{ .HreflangEN }}">
+<link rel="alternate" hreflang="x-default" href="{{ .Canonical }}">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "{{ call .T "qr.guide.hero.title" }}",
+  "description": "{{ call .T "qr.guide.seo.desc" }}",
+  "url": "{{ .Canonical }}",
+  "author": { "@type": "Organization", "name": "ToolboxNova" },
+  "publisher": { "@type": "Organization", "name": "ToolboxNova", "url": "https://toolboxnova.com/" }
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "ToolboxNova", "item": "https://toolboxnova.com/" },
+    { "@type": "ListItem", "position": 2, "name": "{{ call .T "qr.name" }}", "item": "https://toolboxnova.com/media/qr" },
+    { "@type": "ListItem", "position": 3, "name": "{{ call .T "qr.guide.hero.title" }}", "item": "{{ .Canonical }}" }
+  ]
+}
+</script>
+{{ end }}
+
+{{ define "content" }}
+<div class="page-img-compress-guide">
+
+<!-- Hero -->
+<section class="ig-hero" aria-labelledby="ig-hero-title">
+  <div class="ig-hero__inner">
+    <div class="ig-hero__eyebrow">{{ call .T "qr.guide.hero.eyebrow" }}</div>
+    <h1 class="ig-hero__title" id="ig-hero-title">{{ call .T "qr.guide.hero.title" }}</h1>
+    <p class="ig-hero__subtitle">{{ call .T "qr.guide.hero.subtitle" }}</p>
+    <a href="/media/qr?lang={{ .Lang }}" class="ig-btn ig-btn--primary" data-ga="guide_cta">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      {{ call .T "qr.guide.hero.cta" }}
+    </a>
+  </div>
+</section>
+
+<div style="text-align:center;margin:12px auto;max-width:970px;padding:0 16px">
+  {{- template "partials/ad_slot.html" (dict "Ctx" . "SlotID" "qr-guide-top" "Size" "728x90" "Mobile" "320x50") }}
+</div>
+
+<div class="ig-sidebar-layout">
+  <aside class="ig-sidebar-ad">
+    {{- template "partials/ad_slot.html" (dict "Ctx" . "SlotID" "qr-guide-left" "Size" "160x600" "MobileHide" true) }}
+  </aside>
+
+  <div class="ig-main-area">
+
+  <!-- TOC -->
+  <nav class="ig-toc" aria-labelledby="ig-toc-title">
+    <h2 class="ig-toc__title" id="ig-toc-title">{{ call .T "qr.guide.toc.title" }}</h2>
+    <ol class="ig-toc__list">
+      <li><a href="#ig-s1">{{ call .T "qr.guide.toc.s1" }}</a></li>
+      <li><a href="#ig-s2">{{ call .T "qr.guide.toc.s2" }}</a></li>
+      <li><a href="#ig-s3">{{ call .T "qr.guide.toc.s3" }}</a></li>
+      <li><a href="#ig-s4">{{ call .T "qr.guide.toc.s4" }}</a></li>
+      <li><a href="#ig-s5">{{ call .T "qr.guide.toc.s5" }}</a></li>
+      <li><a href="#ig-s6">{{ call .T "qr.guide.toc.s6" }}</a></li>
+      <li><a href="#ig-s7">{{ call .T "qr.guide.toc.s7" }}</a></li>
+      <li><a href="#ig-s8">{{ call .T "qr.guide.toc.s8" }}</a></li>
+      <li><a href="#ig-s9">{{ call .T "qr.guide.toc.s9" }}</a></li>
+      <li><a href="#ig-s10">{{ call .T "qr.guide.toc.s10" }}</a></li>
+      <li><a href="#ig-s11">{{ call .T "qr.guide.toc.s11" }}</a></li>
+      <li><a href="#ig-s12">{{ call .T "qr.guide.toc.s12" }}</a></li>
+    </ol>
+  </nav>
+
+  <!-- S1: What is QR code -->
+  <section class="ig-section" aria-labelledby="ig-s1">
+    <div class="ig-section__inner">
+      <h2 class="ig-section__title" id="ig-s1">{{ call .T "qr.guide.s1.title" }}</h2>
+      <div class="ig-card">
+        <div class="ig-card__body">
+          <p>{{ call .T "qr.guide.s1.p1" }}</p>
+          <p>{{ call .T "qr.guide.s1.p2" }}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- S2: Static vs Dynamic -->
+  <section class="ig-section ig-section--alt" aria-labelledby="ig-s2">
+    <div class="ig-section__inner">
+      <h2 class="ig-section__title" id="ig-s2">{{ call .T "qr.guide.s2.title" }}</h2>
+      <div class="ig-card">
+        <div class="ig-card__body">
+          <p>{{ call .T "qr.guide.s2.p1" }}</p>
+          <p>{{ call .T "qr.guide.s2.p2" }}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- S3: QR Code Types -->
+  <section class="ig-section" aria-labelledby="ig-s3">
+    <div class="ig-section__inner">
+      <h2 class="ig-section__title" id="ig-s3">{{ call .T "qr.guide.s3.title" }}</h2>
+      <div class="ig-card">
+        <div class="ig-card__body">
+          <p>{{ call .T "qr.guide.s3.p1" }}</p>
+          <p>{{ call .T "qr.guide.s3.p2" }}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- S4: URL QR Code -->
+  <section class="ig-section ig-section--alt" aria-labelledby="ig-s4">
+    <div class="ig-section__inner">
+      <h2 class="ig-section__title" id="ig-s4">{{ call .T "qr.guide.s4.title" }}</h2>
+      <div class="ig-card">
+        <div class="ig-card__body">
+          <p>{{ call .T "qr.guide.s4.p1" }}</p>
+          <p>{{ call .T "qr.guide.s4.p2" }}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- S5: Wi-Fi QR Code -->
+  <section class="ig-section" aria-labelledby="ig-s5">
+    <div class="ig-section__inner">
+      <h2 class="ig-section__title" id="ig-s5">{{ call .T "qr.guide.s5.title" }}</h2>
+      <div class="ig-card">
+        <div class="ig-card__body">
+          <p>{{ call .T "qr.guide.s5.p1" }}</p>
+          <div class="ig-box ig-box--warn">
+            <div class="ig-box__title">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
+              {{ call .T "qr.guide.tag.privacy_warn" }}
+            </div>
+            <p>{{ call .T "qr.guide.s5.box" }}</p>
+          </div>
+          <p>{{ call .T "qr.guide.s5.p2" }}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- S6: vCard QR Code -->
+  <section class="ig-section ig-section--alt" aria-labelledby="ig-s6">
+    <div class="ig-section__inner">
+      <h2 class="ig-section__title" id="ig-s6">{{ call .T "qr.guide.s6.title" }}</h2>
+      <div class="ig-card">
+        <div class="ig-card__body">
+          <p>{{ call .T "qr.guide.s6.p1" }}</p>
+          <p>{{ call .T "qr.guide.s6.p2" }}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- S7: PNG vs SVG -->
+  <section class="ig-section" aria-labelledby="ig-s7">
+    <div class="ig-section__inner">
+      <h2 class="ig-section__title" id="ig-s7">{{ call .T "qr.guide.s7.title" }}</h2>
+      <div class="ig-card">
+        <div class="ig-card__body">
+          <p>{{ call .T "qr.guide.s7.p1" }}</p>
+          <p>{{ call .T "qr.guide.s7.p2" }}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- S8: Colors & Error Correction -->
+  <section class="ig-section ig-section--alt" aria-labelledby="ig-s8">
+    <div class="ig-section__inner">
+      <h2 class="ig-section__title" id="ig-s8">{{ call .T "qr.guide.s8.title" }}</h2>
+      <div class="ig-card">
+        <div class="ig-card__body">
+          <p>{{ call .T "qr.guide.s8.p1" }}</p>
+          <div class="ig-box ig-box--info">
+            <div class="ig-box__title">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+              {{ call .T "qr.guide.tag.tip" }}
+            </div>
+            <p>{{ call .T "qr.guide.s8.box" }}</p>
+          </div>
+          <p>{{ call .T "qr.guide.s8.p2" }}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- S9: Logo & Customization -->
+  <section class="ig-section" aria-labelledby="ig-s9">
+    <div class="ig-section__inner">
+      <h2 class="ig-section__title" id="ig-s9">{{ call .T "qr.guide.s9.title" }}</h2>
+      <div class="ig-card">
+        <div class="ig-card__body">
+          <p>{{ call .T "qr.guide.s9.p1" }}</p>
+          <p>{{ call .T "qr.guide.s9.p2" }}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- S10: Print Size -->
+  <section class="ig-section ig-section--alt" aria-labelledby="ig-s10">
+    <div class="ig-section__inner">
+      <h2 class="ig-section__title" id="ig-s10">{{ call .T "qr.guide.s10.title" }}</h2>
+      <div class="ig-card">
+        <div class="ig-card__body">
+          <p>{{ call .T "qr.guide.s10.p1" }}</p>
+          <p>{{ call .T "qr.guide.s10.p2" }}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- S11: Why QR Won't Scan -->
+  <section class="ig-section" aria-labelledby="ig-s11">
+    <div class="ig-section__inner">
+      <h2 class="ig-section__title" id="ig-s11">{{ call .T "qr.guide.s11.title" }}</h2>
+      <div class="ig-card">
+        <div class="ig-card__body">
+          <p>{{ call .T "qr.guide.s11.p1" }}</p>
+          <p>{{ call .T "qr.guide.s11.p2" }}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- S12: FAQ -->
+  <section class="ig-section ig-section--alt" aria-labelledby="ig-s12">
+    <div class="ig-section__inner">
+      <h2 class="ig-section__title" id="ig-s12">{{ call .T "qr.guide.s12.title" }}</h2>
+      <div class="ig-card">
+        <div class="ig-card__body">
+          <p>{{ call .T "qr.guide.s12.p1" }}</p>
+          <p>{{ call .T "qr.guide.s12.p2" }}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="ig-cta" aria-label="Call to action">
+    <div class="ig-cta__inner">
+      <h3 class="ig-cta__title">{{ call .T "qr.guide.cta.title" }}</h3>
+      <p class="ig-cta__subtitle">{{ call .T "qr.guide.cta.subtitle" }}</p>
+      <a href="/media/qr?lang={{ .Lang }}" class="ig-btn ig-btn--primary" data-ga="guide_cta">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        {{ call .T "qr.guide.cta.btn" }}
+      </a>
+    </div>
+  </section>
+
+  </div><!-- /ig-main-area -->
+
+  <aside class="ig-sidebar-ad">
+    {{- template "partials/ad_slot.html" (dict "Ctx" . "SlotID" "qr-guide-right" "Size" "160x600" "MobileHide" true) }}
+  </aside>
+</div><!-- /ig-sidebar-layout -->
+
+<!-- Bottom Ad -->
+<div style="text-align:center;margin:20px auto;max-width:970px;padding:0 16px">
+  {{- template "partials/ad_slot.html" (dict "Ctx" . "SlotID" "qr-guide-bottom" "Size" "728x90" "Mobile" "320x50") }}
+</div>
+
+</div><!-- /page-img-compress-guide -->
+{{ end }}
+
+{{ define "extraScript" }}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  document.querySelectorAll('.ig-toc__list a').forEach(function(link) {
+    link.addEventListener('click', function(e) {
+      const id = link.getAttribute('href');
+      if (!id || !id.startsWith('#')) return;
+      const target = document.querySelector(id);
+      if (target) {
+        e.preventDefault();
+        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      }
+    });
+  });
+});
+</script>
+{{ end }}

@@ -1,0 +1,87 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400" fill="none">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f8fafc"/>
+      <stop offset="100%" style="stop-color:#ecfdf5"/>
+    </linearGradient>
+  </defs>
+  <!-- Background -->
+  <rect width="800" height="400" rx="16" fill="url(#bg)"/>
+  <!-- Title -->
+  <text x="400" y="45" font-family="system-ui,-apple-system,sans-serif" font-size="18" font-weight="600" fill="#0f172a" text-anchor="middle">Who Uses Our Plagiarism Checker?</text>
+  <text x="400" y="70" font-family="system-ui,-apple-system,sans-serif" font-size="13" fill="#64748b" text-anchor="middle">Professionals across industries ensure content authenticity</text>
+  <!-- Row 1 -->
+  <!-- Students -->
+  <rect x="40" y="95" width="170" height="130" rx="12" fill="#fff" stroke="#e2e8f0"/>
+  <rect x="55" y="108" width="36" height="36" rx="8" fill="#6366f1" opacity="0.12"/>
+  <text x="73" y="132" font-family="system-ui,-apple-system,sans-serif" font-size="16" text-anchor="middle" fill="#6366f1" font-weight="700">St</text>
+  <text x="105" y="122" font-family="system-ui,-apple-system,sans-serif" font-size="12" font-weight="600" fill="#1e293b">Students</text>
+  <text x="55" y="160" font-family="system-ui,-apple-system,sans-serif" font-size="10" fill="#64748b">Verify assignments are</text>
+  <text x="55" y="175" font-family="system-ui,-apple-system,sans-serif" font-size="10" fill="#64748b">original before submission</text>
+  <rect x="55" y="200" width="60" height="16" rx="8" fill="#6366f1" opacity="0.08"/>
+  <text x="85" y="211" font-family="system-ui,-apple-system,sans-serif" font-size="9" fill="#6366f1" text-anchor="middle">Academic</text>
+  <!-- Teachers -->
+  <rect x="225" y="95" width="170" height="130" rx="12" fill="#fff" stroke="#e2e8f0"/>
+  <rect x="240" y="108" width="36" height="36" rx="8" fill="#10b981" opacity="0.12"/>
+  <text x="258" y="132" font-family="system-ui,-apple-system,sans-serif" font-size="16" text-anchor="middle" fill="#10b981" font-weight="700">Te</text>
+  <text x="290" y="122" font-family="system-ui,-apple-system,sans-serif" font-size="12" font-weight="600" fill="#1e293b">Teachers</text>
+  <text x="240" y="160" font-family="system-ui,-apple-system,sans-serif" font-size="10" fill="#64748b">Check student submissions</text>
+  <text x="240" y="175" font-family="system-ui,-apple-system,sans-serif" font-size="10" fill="#64748b">for authenticity and integrity</text>
+  <rect x="240" y="200" width="60" height="16" rx="8" fill="#10b981" opacity="0.08"/>
+  <text x="270" y="211" font-family="system-ui,-apple-system,sans-serif" font-size="9" fill="#059669" text-anchor="middle">Education</text>
+  <!-- Researchers -->
+  <rect x="410" y="95" width="170" height="130" rx="12" fill="#fff" stroke="#e2e8f0"/>
+  <rect x="425" y="108" width="36" height="36" rx="8" fill="#f59e0b" opacity="0.12"/>
+  <text x="443" y="132" font-family="system-ui,-apple-system,sans-serif" font-size="16" text-anchor="middle" fill="#f59e0b" font-weight="700">Re</text>
+  <text x="475" y="122" font-family="system-ui,-apple-system,sans-serif" font-size="12" font-weight="600" fill="#1e293b">Researchers</text>
+  <text x="425" y="160" font-family="system-ui,-apple-system,sans-serif" font-size="10" fill="#64748b">Ensure research papers</text>
+  <text x="425" y="175" font-family="system-ui,-apple-system,sans-serif" font-size="10" fill="#64748b">are original contributions</text>
+  <rect x="425" y="200" width="60" height="16" rx="8" fill="#f59e0b" opacity="0.08"/>
+  <text x="455" y="211" font-family="system-ui,-apple-system,sans-serif" font-size="9" fill="#d97706" text-anchor="middle">Research</text>
+  <!-- Writers -->
+  <rect x="595" y="95" width="170" height="130" rx="12" fill="#fff" stroke="#e2e8f0"/>
+  <rect x="610" y="108" width="36" height="36" rx="8" fill="#00d4ff" opacity="0.12"/>
+  <text x="628" y="132" font-family="system-ui,-apple-system,sans-serif" font-size="16" text-anchor="middle" fill="#00a8cc" font-weight="700">Wr</text>
+  <text x="660" y="122" font-family="system-ui,-apple-system,sans-serif" font-size="12" font-weight="600" fill="#1e293b">Writers</text>
+  <text x="610" y="160" font-family="system-ui,-apple-system,sans-serif" font-size="10" fill="#64748b">Verify content is</text>
+  <text x="610" y="175" font-family="system-ui,-apple-system,sans-serif" font-size="10" fill="#64748b">original before publishing</text>
+  <rect x="610" y="200" width="60" height="16" rx="8" fill="#00d4ff" opacity="0.08"/>
+  <text x="640" y="211" font-family="system-ui,-apple-system,sans-serif" font-size="9" fill="#00a8cc" text-anchor="middle">Publishing</text>
+  <!-- Row 2 -->
+  <!-- HR -->
+  <rect x="40" y="245" width="170" height="130" rx="12" fill="#fff" stroke="#e2e8f0"/>
+  <rect x="55" y="258" width="36" height="36" rx="8" fill="#ec4899" opacity="0.12"/>
+  <text x="73" y="282" font-family="system-ui,-apple-system,sans-serif" font-size="16" text-anchor="middle" fill="#ec4899" font-weight="700">HR</text>
+  <text x="105" y="272" font-family="system-ui,-apple-system,sans-serif" font-size="12" font-weight="600" fill="#1e293b">HR Teams</text>
+  <text x="55" y="310" font-family="system-ui,-apple-system,sans-serif" font-size="10" fill="#64748b">Check cover letters</text>
+  <text x="55" y="325" font-family="system-ui,-apple-system,sans-serif" font-size="10" fill="#64748b">and resumes for originality</text>
+  <rect x="55" y="350" width="55" height="16" rx="8" fill="#ec4899" opacity="0.08"/>
+  <text x="82" y="361" font-family="system-ui,-apple-system,sans-serif" font-size="9" fill="#ec4899" text-anchor="middle">Recruiting</text>
+  <!-- Legal -->
+  <rect x="225" y="245" width="170" height="130" rx="12" fill="#fff" stroke="#e2e8f0"/>
+  <rect x="240" y="258" width="36" height="36" rx="8" fill="#8b5cf6" opacity="0.12"/>
+  <text x="258" y="282" font-family="system-ui,-apple-system,sans-serif" font-size="16" text-anchor="middle" fill="#8b5cf6" font-weight="700">Le</text>
+  <text x="290" y="272" font-family="system-ui,-apple-system,sans-serif" font-size="12" font-weight="600" fill="#1e293b">Legal</text>
+  <text x="240" y="310" font-family="system-ui,-apple-system,sans-serif" font-size="10" fill="#64748b">Verify document</text>
+  <text x="240" y="325" font-family="system-ui,-apple-system,sans-serif" font-size="10" fill="#64748b">authenticity for compliance</text>
+  <rect x="240" y="350" width="65" height="16" rx="8" fill="#8b5cf6" opacity="0.08"/>
+  <text x="272" y="361" font-family="system-ui,-apple-system,sans-serif" font-size="9" fill="#7c3aed" text-anchor="middle">Compliance</text>
+  <!-- Publishers -->
+  <rect x="410" y="245" width="170" height="130" rx="12" fill="#fff" stroke="#e2e8f0"/>
+  <rect x="425" y="258" width="36" height="36" rx="8" fill="#f97316" opacity="0.12"/>
+  <text x="443" y="282" font-family="system-ui,-apple-system,sans-serif" font-size="16" text-anchor="middle" fill="#f97316" font-weight="700">Pu</text>
+  <text x="475" y="272" font-family="system-ui,-apple-system,sans-serif" font-size="12" font-weight="600" fill="#1e293b">Publishers</text>
+  <text x="425" y="310" font-family="system-ui,-apple-system,sans-serif" font-size="10" fill="#64748b">Maintain content</text>
+  <text x="425" y="325" font-family="system-ui,-apple-system,sans-serif" font-size="10" fill="#64748b">quality and originality</text>
+  <rect x="425" y="350" width="65" height="16" rx="8" fill="#f97316" opacity="0.08"/>
+  <text x="457" y="361" font-family="system-ui,-apple-system,sans-serif" font-size="9" fill="#ea580c" text-anchor="middle">Media</text>
+  <!-- SEO -->
+  <rect x="595" y="245" width="170" height="130" rx="12" fill="#fff" stroke="#e2e8f0"/>
+  <rect x="610" y="258" width="36" height="36" rx="8" fill="#14b8a6" opacity="0.12"/>
+  <text x="628" y="282" font-family="system-ui,-apple-system,sans-serif" font-size="16" text-anchor="middle" fill="#14b8a6" font-weight="700">SE</text>
+  <text x="660" y="272" font-family="system-ui,-apple-system,sans-serif" font-size="12" font-weight="600" fill="#1e293b">SEO Pros</text>
+  <text x="610" y="310" font-family="system-ui,-apple-system,sans-serif" font-size="10" fill="#64748b">Ensure unique content</text>
+  <text x="610" y="325" font-family="system-ui,-apple-system,sans-serif" font-size="10" fill="#64748b">for search rankings</text>
+  <rect x="610" y="350" width="55" height="16" rx="8" fill="#14b8a6" opacity="0.08"/>
+  <text x="637" y="361" font-family="system-ui,-apple-system,sans-serif" font-size="9" fill="#0d9488" text-anchor="middle">Marketing</text>
+</svg>

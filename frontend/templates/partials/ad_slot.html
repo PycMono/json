@@ -1,0 +1,112 @@
+{{ define "partials/ad_slot.html" }}
+{{/*
+  Ad Slot Partial Template
+
+  ── 推荐调用方式（只需传 3 个槽位专属参数）──
+  {{- template "partials/ad_slot.html" (dict "Ctx" . "SlotID" "page-top" "Size" "728x90" "Mobile" "320x50") }}
+  {{- template "partials/ad_slot.html" (dict "Ctx" . "SlotID" "sidebar" "Size" "160x600" "MobileHide" true) }}
+
+  ── 参数说明 ──
+    - Ctx:         完整页面上下文（传 . ），自动读取 AdsEnabled / AdsClientID / IsDev
+    - SlotID:      广告位 CSS 类名标识，如 "ai-detector-left"（页面内唯一）
+    - AdSlotNum:   Google AdSense 数字 Slot ID（可选，不传使用 Auto Ads）
+    - Size:        桌面端尺寸，如 "728x90" / "300x250" / "160x600"
+    - Mobile:      移动端尺寸（可选），如 "320x50"
+    - MobileHide:  true = 移动端隐藏（侧栏广告用）
+
+  ── 旧调用方式（仍兼容，无需改动）──
+    - ClientID:    Google Publisher ID（来自 .AdsClientID）
+    - Enabled:     广告总开关（来自 .AdsEnabled）
+*/}}
+
+{{ $slotID     := .SlotID }}
+{{ $adSlotNum  := .AdSlotNum }}
+{{ $size       := .Size }}
+{{ $mobile     := .Mobile }}
+{{ $mobileHide := .MobileHide }}
+
+{{/* ── 全局参数：优先从旧式显式参数读取，缺省则从 Ctx 页面上下文获取 ── */}}
+{{ $enabled  := or .Enabled .EnableAds }}
+{{ $clientID := or .ClientID .GoogleAdsID }}
+{{ $isDev    := .IsDev }}
+{{ with .Ctx }}
+  {{ if not $enabled  }}{{ $enabled  = .AdsEnabled  }}{{ end }}
+  {{ if not $clientID }}{{ $clientID = .AdsClientID }}{{ end }}
+  {{ if not $isDev    }}{{ $isDev    = .IsDev        }}{{ end }}
+{{ end }}
+
+<div class="ad-slot ad-slot-{{ $slotID }} {{ if and $enabled $clientID }}ad-slot--live{{ else }}ad-slot--placeholder{{ end }}"
+     data-slot-id="{{ $slotID }}"
+     data-size="{{ $size }}"
+     data-mobile="{{ $mobile }}"
+     data-mobile-hide="{{ if $mobileHide }}1{{ else }}0{{ end }}"
+     data-dev-log="{{ if $isDev }}1{{ else }}0{{ end }}"
+     data-ad-loaded="0"
+     role="complementary"
+     aria-label="Advertisement {{ $slotID }}"
+  {{- if $mobileHide }} style="--ad-mobile-display:none"{{ end -}}>
+  {{ if and $enabled $clientID }}
+    {{/* enable_ads=true：只渲染真实广告位，不渲染虚线框 */}}
+    {{ if $adSlotNum }}
+    <ins class="adsbygoogle"
+         style="display:block"
+         data-ad-client="{{ $clientID }}"
+         data-ad-slot="{{ $adSlotNum }}"
+         data-ad-format="auto"
+         data-full-width-responsive="true"></ins>
+    {{ else }}
+    <ins class="adsbygoogle"
+         style="display:block"
+         data-ad-client="{{ $clientID }}"
+         data-ad-format="auto"
+         data-full-width-responsive="true"></ins>
+    {{ end }}
+    <script>
+      (function () {
+        var slot = document.currentScript && document.currentScript.closest('.ad-slot');
+        var isDev = slot && slot.getAttribute('data-dev-log') === '1';
+        var slotName = slot ? slot.getAttribute('data-slot-id') : 'unknown';
+        function debugLog(status, extra) {
+          if (!isDev || !window.console) return;
+          if (extra) {
+            console.info('[ads][' + slotName + ']', status, extra);
+            return;
+          }
+          console.info('[ads][' + slotName + ']', status);
+        }
+        try {
+          (adsbygoogle = window.adsbygoogle || []).push({});
+        } catch (e) {
+          debugLog('unfilled', 'adsbygoogle push failed');
+          return;
+        }
+        if (!slot) return;
+
+        // Fallback for browsers that do not support :has(): detect iframe fill state.
+        var tries = 0;
+        var maxTries = 24;
+        var timer = setInterval(function () {
+          tries += 1;
+          if (slot.querySelector('.adsbygoogle iframe')) {
+            slot.setAttribute('data-ad-loaded', '1');
+            debugLog('loaded');
+            clearInterval(timer);
+            return;
+          }
+          if (tries >= maxTries) {
+            slot.setAttribute('data-ad-loaded', '-1');
+            debugLog('unfilled');
+            clearInterval(timer);
+          }
+        }, 500);
+      })();
+    </script>
+  {{ else }}
+    {{/* enable_ads=false：只渲染虚线框，模拟广告位调试用 */}}
+    <div class="ad-placeholder" aria-hidden="true">
+      <span>Google Ads</span>
+      <small>{{ $size }}{{ if $mobile }} / {{ $mobile }}{{ end }}</small>
+    </div>
+  {{ end }}
+</div>
+{{ end }}

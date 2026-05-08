@@ -1,0 +1,68 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400" fill="none">
+  <defs>
+    <linearGradient id="bar-gradient" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#00d4ff"/>
+      <stop offset="100%" style="stop-color:#00a8cc"/>
+    </linearGradient>
+    <linearGradient id="bg-gradient" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#f8fafc"/>
+      <stop offset="100%" style="stop-color:#e2e8f0"/>
+    </linearGradient>
+  </defs>
+  <!-- Background -->
+  <rect width="800" height="400" rx="16" fill="url(#bg-gradient)"/>
+  <!-- Title -->
+  <text x="400" y="45" font-family="system-ui" font-size="18" font-weight="600" fill="#0f172a" text-anchor="middle">AI Detector Bypass Success Rate</text>
+  <text x="400" y="70" font-family="system-ui" font-size="13" fill="#64748b" text-anchor="middle">Percentage of AI-detected texts successfully converted to human-like content</text>
+  <!-- Y-axis labels -->
+  <text x="50" y="110" font-family="system-ui" font-size="11" fill="#94a3b8" text-anchor="end">100%</text>
+  <text x="50" y="160" font-family="system-ui" font-size="11" fill="#94a3b8" text-anchor="end">80%</text>
+  <text x="50" y="210" font-family="system-ui" font-size="11" fill="#94a3b8" text-anchor="end">60%</text>
+  <text x="50" y="260" font-family="system-ui" font-size="11" fill="#94a3b8" text-anchor="end">40%</text>
+  <text x="50" y="310" font-family="system-ui" font-size="11" fill="#94a3b8" text-anchor="end">20%</text>
+  <text x="50" y="360" font-family="system-ui" font-size="11" fill="#94a3b8" text-anchor="end">0%</text>
+  <!-- Grid lines -->
+  <line x1="60" y1="105" x2="750" y2="105" stroke="#e2e8f0" stroke-width="1"/>
+  <line x1="60" y1="155" x2="750" y2="155" stroke="#e2e8f0" stroke-width="1"/>
+  <line x1="60" y1="205" x2="750" y2="205" stroke="#e2e8f0" stroke-width="1"/>
+  <line x1="60" y1="255" x2="750" y2="255" stroke="#e2e8f0" stroke-width="1"/>
+  <line x1="60" y1="305" x2="750" y2="305" stroke="#e2e8f0" stroke-width="1"/>
+  <line x1="60" y1="355" x2="750" y2="355" stroke="#e2e8f0" stroke-width="1"/>
+  <!-- Bars -->
+  <!-- GPTZero -->
+  <rect x="70" y="108" width="80" height="247" rx="4" fill="url(#bar-gradient)"/>
+  <text x="110" y="100" font-family="system-ui" font-size="12" font-weight="700" fill="#00a8cc" text-anchor="middle">98%</text>
+  <text x="110" y="375" font-family="system-ui" font-size="10" fill="#64748b" text-anchor="middle">GPTZero</text>
+  <!-- Turnitin -->
+  <rect x="165" y="115" width="80" height="240" rx="4" fill="url(#bar-gradient)" opacity="0.9"/>
+  <text x="205" y="107" font-family="system-ui" font-size="12" font-weight="700" fill="#00a8cc" text-anchor="middle">97%</text>
+  <text x="205" y="375" font-family="system-ui" font-size="10" fill="#64748b" text-anchor="middle">Turnitin</text>
+  <!-- Copyleaks -->
+  <rect x="260" y="112" width="80" height="243" rx="4" fill="url(#bar-gradient)" opacity="0.9"/>
+  <text x="300" y="104" font-family="system-ui" font-size="12" font-weight="700" fill="#00a8cc" text-anchor="middle">98%</text>
+  <text x="300" y="375" font-family="system-ui" font-size="10" fill="#64748b" text-anchor="middle">Copyleaks</text>
+  <!-- Originality -->
+  <rect x="355" y="120" width="80" height="235" rx="4" fill="url(#bar-gradient)" opacity="0.85"/>
+  <text x="395" y="112" font-family="system-ui" font-size="12" font-weight="700" fill="#00a8cc" text-anchor="middle">96%</text>
+  <text x="395" y="375" font-family="system-ui" font-size="10" fill="#64748b" text-anchor="middle">Originality</text>
+  <!-- ZeroGPT -->
+  <rect x="450" y="108" width="80" height="247" rx="4" fill="url(#bar-gradient)" opacity="0.95"/>
+  <text x="490" y="100" font-family="system-ui" font-size="12" font-weight="700" fill="#00a8cc" text-anchor="middle">98%</text>
+  <text x="490" y="375" font-family="system-ui" font-size="10" fill="#64748b" text-anchor="middle">ZeroGPT</text>
+  <!-- Winston AI -->
+  <rect x="545" y="125" width="80" height="230" rx="4" fill="url(#bar-gradient)" opacity="0.85"/>
+  <text x="585" y="117" font-family="system-ui" font-size="12" font-weight="700" fill="#00a8cc" text-anchor="middle">95%</text>
+  <text x="585" y="375" font-family="system-ui" font-size="10" fill="#64748b" text-anchor="middle">Winston</text>
+  <!-- Sapling -->
+  <rect x="640" y="115" width="80" height="240" rx="4" fill="url(#bar-gradient)" opacity="0.9"/>
+  <text x="680" y="107" font-family="system-ui" font-size="12" font-weight="700" fill="#00a8cc" text-anchor="middle">97%</text>
+  <text x="680" y="375" font-family="system-ui" font-size="10" fill="#64748b" text-anchor="middle">Sapling</text>
+  <!-- Average line -->
+  <line x1="60" y1="120" x2="750" y2="120" stroke="#10b981" stroke-width="2" stroke-dasharray="6,4"/>
+  <text x="760" y="124" font-family="system-ui" font-size="10" fill="#059669">Avg: 97%</text>
+  <!-- Stats box -->
+  <rect x="580" y="180" width="170" height="100" rx="12" fill="white" stroke="#e2e8f0"/>
+  <text x="665" y="210" font-family="system-ui" font-size="12" fill="#64748b" text-anchor="middle">Total Tests Run</text>
+  <text x="665" y="245" font-family="system-ui" font-size="28" font-weight="700" fill="#00a8cc" text-anchor="middle">2.5M+</text>
+  <text x="665" y="270" font-family="system-ui" font-size="11" fill="#94a3b8" text-anchor="middle">across all detectors</text>
+</svg>

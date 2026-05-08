@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400">
+  <rect width="800" height="400" fill="#f0fdfa" rx="16"/>
+  <text x="400" y="40" fill="#111827" font-size="22" font-weight="bold" text-anchor="middle">Humanize Your Text in 3 Steps</text>
+  <defs><marker id="arr" markerWidth="10" markerHeight="7" refX="9" refY="3.5" orient="auto"><polygon points="0 0, 10 3.5, 0 7" fill="#94a3b8"/></marker></defs>
+  <!-- Step 1 -->
+  <rect x="40" y="70" width="220" height="280" rx="12" fill="#fff" stroke="#e2e8f0" stroke-width="2"/>
+  <circle cx="150" cy="110" r="35" fill="#0d9488"/>
+  <text x="150" y="120" fill="#fff" font-size="28" font-weight="bold" text-anchor="middle">1</text>
+  <text x="150" y="175" fill="#111827" font-size="16" font-weight="bold" text-anchor="middle">Paste &amp; Select</text>
+  <text x="150" y="200" fill="#6b7280" font-size="12" text-anchor="middle">Paste your AI text and</text>
+  <text x="150" y="218" fill="#6b7280" font-size="12" text-anchor="middle">choose document type:</text>
+  <text x="150" y="250" fill="#0d9488" font-size="11" text-anchor="middle">Essay • Email</text>
+  <text x="150" y="268" fill="#0d9488" font-size="11" text-anchor="middle">Application • Report</text>
+  <text x="150" y="286" fill="#0d9488" font-size="11" text-anchor="middle">Assignment</text>
+  <rect x="80" y="305" width="140" height="30" rx="6" fill="#f0fdfa" stroke="#0d9488" stroke-width="1"/>
+  <text x="150" y="325" fill="#0d9488" font-size="11" text-anchor="middle">Up to 10,000 words</text>
+  <!-- Arrow 1 -->
+  <path d="M260 180 L290 180" stroke="#94a3b8" stroke-width="3" fill="none" marker-end="url(#arr)"/>
+  <!-- Step 2 -->
+  <rect x="290" y="70" width="220" height="280" rx="12" fill="#fff" stroke="#e2e8f0" stroke-width="2"/>
+  <circle cx="400" cy="110" r="35" fill="#0d9488"/>
+  <text x="400" y="120" fill="#fff" font-size="28" font-weight="bold" text-anchor="middle">2</text>
+  <text x="400" y="175" fill="#111827" font-size="16" font-weight="bold" text-anchor="middle">Humanize</text>
+  <text x="400" y="200" fill="#6b7280" font-size="12" text-anchor="middle">AI rewrites to sound</text>
+  <text x="400" y="218" fill="#6b7280" font-size="12" text-anchor="middle">natural while keeping</text>
+  <text x="400" y="236" fill="#6b7280" font-size="12" text-anchor="middle">your ideas intact.</text>
+  <text x="400" y="270" fill="#0d9488" font-size="11" text-anchor="middle">Tone options:</text>
+  <text x="400" y="288" fill="#0d9488" font-size="11" text-anchor="middle">Natural • Formal</text>
+  <text x="400" y="306" fill="#0d9488" font-size="11" text-anchor="middle">Academic • Casual</text>
+  <!-- Arrow 2 -->
+  <path d="M510 180 L540 180" stroke="#94a3b8" stroke-width="3" fill="none" marker-end="url(#arr)"/>
+  <!-- Step 3 -->
+  <rect x="540" y="70" width="220" height="280" rx="12" fill="#fff" stroke="#e2e8f0" stroke-width="2"/>
+  <circle cx="650" cy="110" r="35" fill="#059669"/>
+  <text x="650" y="120" fill="#fff" font-size="28" font-weight="bold" text-anchor="middle">3</text>
+  <text x="650" y="175" fill="#111827" font-size="16" font-weight="bold" text-anchor="middle">Copy &amp; Submit</text>
+  <text x="650" y="200" fill="#6b7280" font-size="12" text-anchor="middle">Review the humanized</text>
+  <text x="650" y="218" fill="#6b7280" font-size="12" text-anchor="middle">text, check AI score,</text>
+  <text x="650" y="236" fill="#6b7280" font-size="12" text-anchor="middle">and use it freely.</text>
+  <text x="650" y="270" fill="#059669" font-size="11" text-anchor="middle">✓ Passes Turnitin</text>
+  <text x="650" y="288" fill="#059669" font-size="11" text-anchor="middle">✓ Beats GPTZero</text>
+  <text x="650" y="306" fill="#059669" font-size="11" text-anchor="middle">✓ 100% Original</text>
+</svg>

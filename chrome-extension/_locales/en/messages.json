@@ -1,0 +1,31 @@
+{
+  "extName": {
+    "message": "ToolBoxNova - Developer & Privacy Tools"
+  },
+  "extDescription": {
+    "message": "JSON tools, password generator, AI detection, image tools, color picker and more. Privacy-focused, works offline."
+  },
+  "commandOpenPopup": {
+    "message": "Open ToolBoxNova popup"
+  },
+  "commandJsonTools": {
+    "message": "Open JSON Tools"
+  },
+  "contextFormatJson": {
+    "message": "Format JSON with ToolBoxNova"
+  },
+  "contextAiDetect": {
+    "message": "Detect AI content with ToolBoxNova"
+  },
+  "contextAiHumanize": {
+    "message": "Humanize text with ToolBoxNova"
+  },
+  "toolJson": { "message": "JSON Tools" },
+  "toolPassword": { "message": "Password" },
+  "toolColor": { "message": "Color Tools" },
+  "toolImage": { "message": "Image Tools" },
+  "toolTimestamp": { "message": "Timestamp" },
+  "toolQrcode": { "message": "QR Code" },
+  "toolAiDetect": { "message": "AI Detect" },
+  "toolAiHumanize": { "message": "Humanize" }
+}

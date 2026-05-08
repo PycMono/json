@@ -1,0 +1,352 @@
+{{ template "base" . }}
+
+{{ define "extraHead" }}
+<link rel="stylesheet" href="/static/css/dev-tools.css?v={{ .AssetVer }}">
+<link rel="stylesheet" href="/static/css/tools-timestamp.css?v={{ .AssetVer }}">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "{{ call .T "tools.timestamp.seo.title" }}",
+  "url": "{{ .Canonical }}",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "Any",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "description": "{{ call .T "tools.timestamp.seo.description" }}"
+}
+</script>
+
+{{ end }}
+
+{{ define "content" }}
+<div class="dev-page">
+
+<!-- Hero -->
+<section class="hero hero--dev" aria-labelledby="hero-title">
+  <div class="hero__inner container">
+    <h1 class="hero__title" id="hero-title">{{ call .T "tools.timestamp.hero.title" }}</h1>
+    <p class="hero__subtitle">{{ call .T "tools.timestamp.hero.subtitle" }}</p>
+    <div class="hero__badges" role="list">
+      <span class="badge badge--blue"  role="listitem">{{ call .T "tools.timestamp.hero.badge1" }}</span>
+      <span class="badge badge--green" role="listitem">{{ call .T "tools.timestamp.hero.badge2" }}</span>
+      <span class="badge badge--purple" role="listitem">{{ call .T "tools.timestamp.hero.badge3" }}</span>
+      <span class="badge badge--blue"  role="listitem">{{ call .T "tools.timestamp.hero.badge4" }}</span>
+    </div>
+  </div>
+</section>
+
+<div style="text-align:center;margin:12px auto;max-width:970px;padding:0 16px">
+  {{- template "partials/ad_slot.html" (dict "Ctx" . "SlotID" "tools-timestamp-top" "Size" "728x90" "Mobile" "320x50") }}
+</div>
+
+<div class="hash-sidebar-layout">
+  <aside class="hash-sidebar-ad">
+    {{- template "partials/ad_slot.html" (dict "Ctx" . "SlotID" "tools-timestamp-left" "Size" "160x600" "MobileHide" true) }}
+  </aside>
+
+  <div class="hash-main-area">
+    <div class="timestamp-page">
+
+      <!-- ===== 实时时间戳面板 ===== -->
+      <section class="ts-section" aria-label="{{ call .T "tools.timestamp.now.title" }}">
+        <div class="ts-live-panel">
+          <div class="ts-live-panel__header">
+            <div class="ts-live-panel__title">{{ call .T "tools.timestamp.now.title" }}</div>
+            <div class="ts-live-panel__actions">
+              <button id="tsPauseBtn" class="ts-btn ts-btn--ghost ts-btn--sm" type="button" data-ga data-ga-action="click" data-ga-category="timestamp_tool" data-ga-label="pause">
+                <span id="tsPauseIcon">⏸</span> <span id="tsPauseText">{{ call .T "tools.timestamp.now.pause" }}</span>
+              </button>
+              <button id="tsRefreshBtn" class="ts-btn ts-btn--ghost ts-btn--sm" type="button" data-ga data-ga-action="click" data-ga-category="timestamp_tool" data-ga-label="refresh">
+                🔄 {{ call .T "tools.timestamp.now.refresh" }}
+              </button>
+            </div>
+          </div>
+          <div class="ts-live-grid">
+            <div class="ts-live-item">
+              <div class="ts-live-item__label">
+                {{ call .T "tools.timestamp.now.sec_label" }}
+                <button class="ts-live-item__copy" data-copy-target="tsNowSec" aria-label="{{ call .T "tools.timestamp.now.copy" }}" data-ga data-ga-action="click" data-ga-category="timestamp_tool" data-ga-label="copy_now_sec">📋</button>
+              </div>
+              <div class="ts-live-item__value ts-live-item__value--large" id="tsNowSec">--</div>
+            </div>
+            <div class="ts-live-item">
+              <div class="ts-live-item__label">
+                {{ call .T "tools.timestamp.now.ms_label" }}
+                <button class="ts-live-item__copy" data-copy-target="tsNowMs" aria-label="{{ call .T "tools.timestamp.now.copy" }}" data-ga data-ga-action="click" data-ga-category="timestamp_tool" data-ga-label="copy_now_ms">📋</button>
+              </div>
+              <div class="ts-live-item__value" id="tsNowMs">--</div>
+            </div>
+            <div class="ts-live-item">
+              <div class="ts-live-item__label">
+                {{ call .T "tools.timestamp.now.local_label" }}
+                <button class="ts-live-item__copy" data-copy-target="tsNowLocal" aria-label="{{ call .T "tools.timestamp.now.copy" }}" data-ga data-ga-action="click" data-ga-category="timestamp_tool" data-ga-label="copy_now_local">📋</button>
+              </div>
+              <div class="ts-live-item__value" id="tsNowLocal" style="font-size:0.95rem">--</div>
+            </div>
+            <div class="ts-live-item">
+              <div class="ts-live-item__label">
+                {{ call .T "tools.timestamp.now.utc_label" }}
+                <button class="ts-live-item__copy" data-copy-target="tsNowUtc" aria-label="{{ call .T "tools.timestamp.now.copy" }}" data-ga data-ga-action="click" data-ga-category="timestamp_tool" data-ga-label="copy_now_utc">📋</button>
+              </div>
+              <div class="ts-live-item__value" id="tsNowUtc" style="font-size:0.95rem">--</div>
+            </div>
+            <div class="ts-live-item">
+              <div class="ts-live-item__label">
+                {{ call .T "tools.timestamp.now.iso_label" }}
+                <button class="ts-live-item__copy" data-copy-target="tsNowIso" aria-label="{{ call .T "tools.timestamp.now.copy" }}" data-ga data-ga-action="click" data-ga-category="timestamp_tool" data-ga-label="copy_now_iso">📋</button>
+              </div>
+              <div class="ts-live-item__value" id="tsNowIso" style="font-size:0.9rem">--</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== 智能转换工作台 ===== -->
+      <section class="ts-section" aria-label="{{ call .T "tools.timestamp.convert.title" }}">
+        <div class="ts-workbench">
+          <h2 class="ts-section__title">
+            <svg class="icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"></polyline><polyline points="1 20 1 14 7 14"></polyline><path d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"></path></svg>
+            {{ call .T "tools.timestamp.convert.title" }}
+          </h2>
+
+          <div class="ts-mode-tabs" role="tablist" aria-label="{{ call .T "tools.timestamp.convert.mode_label" }}">
+            <button class="ts-mode-tab active" role="tab" data-mode="auto" aria-selected="true" data-ga data-ga-action="click" data-ga-category="timestamp_tool" data-ga-label="mode_auto">{{ call .T "tools.timestamp.convert.auto_mode" }}</button>
+            <button class="ts-mode-tab" role="tab" data-mode="ts2date" aria-selected="false" data-ga data-ga-action="click" data-ga-category="timestamp_tool" data-ga-label="mode_ts2date">{{ call .T "tools.timestamp.convert.ts2date_mode" }}</button>
+            <button class="ts-mode-tab" role="tab" data-mode="date2ts" aria-selected="false" data-ga data-ga-action="click" data-ga-category="timestamp_tool" data-ga-label="mode_date2ts">{{ call .T "tools.timestamp.convert.date2ts_mode" }}</button>
+          </div>
+
+          <div class="ts-input-group">
+            <label class="ts-input-group__label" for="tsConvertInput">{{ call .T "tools.timestamp.convert.input_label" }}</label>
+            <div class="ts-input-wrap">
+              <input type="text" id="tsConvertInput" class="ts-input"
+                placeholder="{{ call .T "tools.timestamp.convert.placeholder" }}"
+                autocomplete="off" spellcheck="false">
+            </div>
+            <div class="ts-convert-actions">
+              <button id="tsUseNowBtn" class="ts-btn ts-btn--ghost ts-btn--sm" type="button" data-ga data-ga-action="click" data-ga-category="timestamp_tool" data-ga-label="use_now">{{ call .T "tools.timestamp.convert.use_now" }}</button>
+              <button id="tsExampleBtn" class="ts-btn ts-btn--ghost ts-btn--sm" type="button" data-ga data-ga-action="click" data-ga-category="timestamp_tool" data-ga-label="example">{{ call .T "tools.timestamp.convert.example" }}</button>
+              <button id="tsClearBtn" class="ts-btn ts-btn--ghost ts-btn--sm" type="button" data-ga data-ga-action="click" data-ga-category="timestamp_tool" data-ga-label="clear">{{ call .T "tools.timestamp.convert.clear" }}</button>
+            </div>
+            <p id="tsConvertError" class="ts-error-hint">{{ call .T "tools.timestamp.convert.error.unrecognized" }}</p>
+          </div>
+
+          <!-- 转换结果 -->
+          <div id="tsResultPanel" class="ts-result-panel ts-hidden">
+            <div class="ts-result-panel__header">
+              <span class="ts-result-panel__title">{{ call .T "tools.timestamp.result.title" }}</span>
+              <button id="tsCopyAllBtn" class="ts-btn ts-btn--ghost ts-btn--sm" type="button" data-ga data-ga-action="click" data-ga-category="timestamp_tool" data-ga-label="copy_all">{{ call .T "tools.timestamp.result.copy_all" }}</button>
+            </div>
+            <div class="ts-result-grid" id="tsResultGrid">
+              <div class="ts-result-row">
+                <span class="ts-result-row__label">{{ call .T "tools.timestamp.result.sec" }}</span>
+                <span class="ts-result-row__value" id="resSec">--</span>
+                <button class="ts-result-row__copy" data-copy-target="resSec" aria-label="{{ call .T "tools.timestamp.result.copy" }}" data-ga data-ga-action="click" data-ga-category="timestamp_tool" data-ga-label="copy_res_sec">📋</button>
+              </div>
+              <div class="ts-result-row">
+                <span class="ts-result-row__label">{{ call .T "tools.timestamp.result.ms" }}</span>
+                <span class="ts-result-row__value" id="resMs">--</span>
+                <button class="ts-result-row__copy" data-copy-target="resMs" aria-label="{{ call .T "tools.timestamp.result.copy" }}" data-ga data-ga-action="click" data-ga-category="timestamp_tool" data-ga-label="copy_res_ms">📋</button>
+              </div>
+              <div class="ts-result-row">
+                <span class="ts-result-row__label">{{ call .T "tools.timestamp.result.local" }}</span>
+                <span class="ts-result-row__value" id="resLocal">--</span>
+                <button class="ts-result-row__copy" data-copy-target="resLocal" aria-label="{{ call .T "tools.timestamp.result.copy" }}" data-ga data-ga-action="click" data-ga-category="timestamp_tool" data-ga-label="copy_res_local">📋</button>
+              </div>
+              <div class="ts-result-row">
+                <span class="ts-result-row__label">{{ call .T "tools.timestamp.result.utc" }}</span>
+                <span class="ts-result-row__value" id="resUtc">--</span>
+                <button class="ts-result-row__copy" data-copy-target="resUtc" aria-label="{{ call .T "tools.timestamp.result.copy" }}" data-ga data-ga-action="click" data-ga-category="timestamp_tool" data-ga-label="copy_res_utc">📋</button>
+              </div>
+              <div class="ts-result-row">
+                <span class="ts-result-row__label">{{ call .T "tools.timestamp.result.iso" }}</span>
+                <span class="ts-result-row__value" id="resIso">--</span>
+                <button class="ts-result-row__copy" data-copy-target="resIso" aria-label="{{ call .T "tools.timestamp.result.copy" }}" data-ga data-ga-action="click" data-ga-category="timestamp_tool" data-ga-label="copy_res_iso">📋</button>
+              </div>
+              <div class="ts-result-row">
+                <span class="ts-result-row__label">{{ call .T "tools.timestamp.result.rfc" }}</span>
+                <span class="ts-result-row__value" id="resRfc">--</span>
+                <button class="ts-result-row__copy" data-copy-target="resRfc" aria-label="{{ call .T "tools.timestamp.result.copy" }}" data-ga data-ga-action="click" data-ga-category="timestamp_tool" data-ga-label="copy_res_rfc">📋</button>
+              </div>
+              <div class="ts-result-row">
+                <span class="ts-result-row__label">{{ call .T "tools.timestamp.result.sql" }}</span>
+                <span class="ts-result-row__value" id="resSql">--</span>
+                <button class="ts-result-row__copy" data-copy-target="resSql" aria-label="{{ call .T "tools.timestamp.result.copy" }}" data-ga data-ga-action="click" data-ga-category="timestamp_tool" data-ga-label="copy_res_sql">📋</button>
+              </div>
+              <div class="ts-result-row">
+                <span class="ts-result-row__label">{{ call .T "tools.timestamp.result.relative" }}</span>
+                <span class="ts-result-row__value" id="resRelative">--</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== 多时区对照 ===== -->
+      <section class="ts-section" aria-label="{{ call .T "tools.timestamp.tz.title" }}">
+        <div class="ts-workbench">
+          <h2 class="ts-section__title">
+            <svg class="icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+            {{ call .T "tools.timestamp.tz.title" }}
+          </h2>
+          <p class="ts-muted" style="margin-bottom:14px">{{ call .T "tools.timestamp.tz.hint" }}</p>
+          <div class="ts-tz-grid" id="tsTzGrid">
+            <!-- JS 填充 -->
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== 批量转换 ===== -->
+      <section class="ts-section" aria-label="{{ call .T "tools.timestamp.batch.title" }}">
+        <div class="ts-workbench">
+          <h2 class="ts-section__title">
+            <svg class="icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+            {{ call .T "tools.timestamp.batch.title" }}
+          </h2>
+          <p class="ts-muted" style="margin-bottom:10px">{{ call .T "tools.timestamp.batch.hint" }}</p>
+          <textarea id="tsBatchInput" class="ts-batch-input" placeholder="1713340800
+1713340800000
+2026-05-02T12:00:00Z
+2026-05-02 20:00:00" rows="5"></textarea>
+          <div class="ts-convert-actions">
+            <button id="tsBatchConvertBtn" class="ts-btn ts-btn--primary ts-btn--sm" type="button" data-ga data-ga-action="click" data-ga-category="timestamp_tool" data-ga-label="batch_convert">{{ call .T "tools.timestamp.batch.convert" }}</button>
+            <button id="tsBatchClearBtn" class="ts-btn ts-btn--ghost ts-btn--sm" type="button" data-ga data-ga-action="click" data-ga-category="timestamp_tool" data-ga-label="batch_clear">{{ call .T "tools.timestamp.convert.clear" }}</button>
+          </div>
+          <div id="tsBatchResult" class="ts-batch-table-wrap ts-hidden">
+            <table class="ts-batch-table" id="tsBatchTable">
+              <thead>
+                <tr>
+                  <th>{{ call .T "tools.timestamp.batch.col_input" }}</th>
+                  <th>{{ call .T "tools.timestamp.batch.col_type" }}</th>
+                  <th>{{ call .T "tools.timestamp.batch.col_local" }}</th>
+                  <th>{{ call .T "tools.timestamp.batch.col_utc" }}</th>
+                  <th>{{ call .T "tools.timestamp.batch.col_iso" }}</th>
+                </tr>
+              </thead>
+              <tbody></tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== 常用代码示例 ===== -->
+      <section class="ts-section" aria-label="{{ call .T "tools.timestamp.code.title" }}">
+        <div class="ts-workbench">
+          <h2 class="ts-section__title">
+            <svg class="icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"></polyline><polyline points="8 6 2 12 8 18"></polyline></svg>
+            {{ call .T "tools.timestamp.code.title" }}
+          </h2>
+          <div class="ts-code-grid" id="tsCodeGrid">
+            <div class="ts-code-card">
+              <div class="ts-code-card__header">
+                <span class="ts-code-card__lang">Python</span>
+                <button class="ts-code-card__copy" data-lang="python" aria-label="{{ call .T "tools.timestamp.result.copy" }}" data-ga data-ga-action="click" data-ga-category="timestamp_tool" data-ga-label="copy_code_python">📋</button>
+              </div>
+              <pre class="ts-code-card__pre"><code id="codePython">import time
+int(time.time())      # seconds
+int(time.time()*1000) # milliseconds</code></pre>
+            </div>
+            <div class="ts-code-card">
+              <div class="ts-code-card__header">
+                <span class="ts-code-card__lang">JavaScript</span>
+                <button class="ts-code-card__copy" data-lang="js" aria-label="{{ call .T "tools.timestamp.result.copy" }}" data-ga data-ga-action="click" data-ga-category="timestamp_tool" data-ga-label="copy_code_js">📋</button>
+              </div>
+              <pre class="ts-code-card__pre"><code id="codeJs">Math.floor(Date.now()/1000)  // seconds
+Date.now()                    // milliseconds</code></pre>
+            </div>
+            <div class="ts-code-card">
+              <div class="ts-code-card__header">
+                <span class="ts-code-card__lang">Go</span>
+                <button class="ts-code-card__copy" data-lang="go" aria-label="{{ call .T "tools.timestamp.result.copy" }}" data-ga data-ga-action="click" data-ga-category="timestamp_tool" data-ga-label="copy_code_go">📋</button>
+              </div>
+              <pre class="ts-code-card__pre"><code id="codeGo">time.Now().Unix()      // seconds
+time.Now().UnixMilli() // milliseconds</code></pre>
+            </div>
+            <div class="ts-code-card">
+              <div class="ts-code-card__header">
+                <span class="ts-code-card__lang">Java</span>
+                <button class="ts-code-card__copy" data-lang="java" aria-label="{{ call .T "tools.timestamp.result.copy" }}" data-ga data-ga-action="click" data-ga-category="timestamp_tool" data-ga-label="copy_code_java">📋</button>
+              </div>
+              <pre class="ts-code-card__pre"><code id="codeJava">System.currentTimeMillis()/1000  // seconds
+System.currentTimeMillis()        // milliseconds</code></pre>
+            </div>
+            <div class="ts-code-card">
+              <div class="ts-code-card__header">
+                <span class="ts-code-card__lang">Shell</span>
+                <button class="ts-code-card__copy" data-lang="shell" aria-label="{{ call .T "tools.timestamp.result.copy" }}" data-ga data-ga-action="click" data-ga-category="timestamp_tool" data-ga-label="copy_code_shell">📋</button>
+              </div>
+              <pre class="ts-code-card__pre"><code id="codeShell">date +%s          # seconds
+$(date +%s)000   # milliseconds</code></pre>
+            </div>
+            <div class="ts-code-card">
+              <div class="ts-code-card__header">
+                <span class="ts-code-card__lang">SQL</span>
+                <button class="ts-code-card__copy" data-lang="sql" aria-label="{{ call .T "tools.timestamp.result.copy" }}" data-ga data-ga-action="click" data-ga-category="timestamp_tool" data-ga-label="copy_code_sql">📋</button>
+              </div>
+              <pre class="ts-code-card__pre"><code id="codeSql">SELECT UNIX_TIMESTAMP();     -- MySQL
+SELECT EXTRACT(EPOCH FROM NOW()); -- PostgreSQL</code></pre>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== 相关工具 ===== -->
+      <section class="ts-section" aria-label="{{ call .T "tools.timestamp.related.title" }}">
+        <div class="ts-workbench">
+          <h2 class="ts-section__title">
+            <svg class="icon" width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+            {{ call .T "tools.timestamp.related.title" }}
+          </h2>
+          <div class="ts-related-grid">
+            <a href="/tools/json?lang={{ .Lang }}" class="ts-related-card" data-ga data-ga-action="click" data-ga-category="timestamp_tool" data-ga-label="related_json">
+              <div class="ts-related-card__icon">{ }</div>
+              <h4 class="ts-related-card__title">JSON 工具</h4>
+              <p class="ts-related-card__desc">格式化、校验、压缩 JSON</p>
+            </a>
+            <a href="/tools/base-converter?lang={{ .Lang }}" class="ts-related-card" data-ga data-ga-action="click" data-ga-category="timestamp_tool" data-ga-label="related_base_converter">
+              <div class="ts-related-card__icon">01</div>
+              <h4 class="ts-related-card__title">进制转换</h4>
+              <p class="ts-related-card__desc">二进制、八进制、十六进制转换</p>
+            </a>
+            <a href="/tools/regex?lang={{ .Lang }}" class="ts-related-card" data-ga data-ga-action="click" data-ga-category="timestamp_tool" data-ga-label="related_regex">
+              <div class="ts-related-card__icon">.*</div>
+              <h4 class="ts-related-card__title">正则表达式</h4>
+              <p class="ts-related-card__desc">测试和验证正则表达式</p>
+            </a>
+            <a href="/tools/case-converter?lang={{ .Lang }}" class="ts-related-card" data-ga data-ga-action="click" data-ga-category="timestamp_tool" data-ga-label="related_case_converter">
+              <div class="ts-related-card__icon">Aa</div>
+              <h4 class="ts-related-card__title">大小写转换</h4>
+              <p class="ts-related-card__desc">camelCase、snake_case、kebab-case</p>
+            </a>
+          </div>
+        </div>
+      </section>
+
+      <!-- ===== 跳转到指南页 ===== -->
+      <div class="ts-guide-banner">
+        <h3 class="ts-guide-banner__title">{{ call .T "tools.timestamp.guide.title" }}</h3>
+        <p class="ts-guide-banner__text">{{ call .T "tools.timestamp.guide.text" }}</p>
+        <a href="/tools/timestamp-guide?lang={{ .Lang }}" class="ts-btn ts-btn--primary" data-ga data-ga-action="click" data-ga-category="timestamp_tool" data-ga-label="guide_btn">{{ call .T "tools.timestamp.guide.btn" }}</a>
+      </div>
+
+    </div><!-- /timestamp-page -->
+  </div><!-- /hash-main-area -->
+
+  <aside class="hash-sidebar-ad">
+    {{- template "partials/ad_slot.html" (dict "Ctx" . "SlotID" "tools-timestamp-right" "Size" "160x600" "MobileHide" true) }}
+  </aside>
+</div><!-- /hash-sidebar-layout -->
+
+<!-- Bottom Ad -->
+<div style="text-align:center;margin:20px auto;max-width:970px;padding:0 16px">
+  {{- template "partials/ad_slot.html" (dict "Ctx" . "SlotID" "tools-timestamp-bottom" "Size" "728x90" "Mobile" "320x50") }}
+</div>
+
+<!-- Toast -->
+<div id="tsToast" class="ts-toast"></div>
+
+{{ end }}
+
+{{ define "extraScript" }}
+<script src="/static/js/tools_timestamp.js?v={{ .AssetVer }}"></script>
+{{ end }}

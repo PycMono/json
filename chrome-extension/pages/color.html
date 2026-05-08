@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Color Tools - ToolBoxNova</title>
+  <link rel="stylesheet" href="shared.css">
+  <link rel="stylesheet" href="../static/css/color-tools.css">
+  <style>
+    body { padding-top: 0; }
+  </style>
+</head>
+<body>
+  <!--
+    Color tools — single-page app managed by color-tools.js.
+    Requires .ct-page element with data-tool and data-lang attributes.
+  -->
+  <div class="ct-page" data-tool="tools" data-lang="en" id="colorApp" style="min-height:100vh;background:#fff;">
+    <div style="text-align:center;padding:40px 20px;">
+      <p style="font-size:16px;color:#666;">Loading Color Tools...</p>
+    </div>
+  </div>
+
+  <script src="../static/vendor/chroma.min.js"></script>
+  <script src="../static/vendor/color.min.js"></script>
+  <script src="../static/vendor/file-saver.min.js"></script>
+  <script src="../static/vendor/sortable.min.js"></script>
+  <script src="ext-color.js"></script>
+  <script src="shared.js"></script>
+  <script src="../static/js/color-tools.js"></script>
+</body>
+</html>

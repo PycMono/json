@@ -1,0 +1,80 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" fill="none">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f8fafc"/>
+      <stop offset="100%" style="stop-color:#ecfdf5"/>
+    </linearGradient>
+    <linearGradient id="header" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#10b981"/>
+      <stop offset="100%" style="stop-color:#059669"/>
+    </linearGradient>
+  </defs>
+  <!-- Background -->
+  <rect width="1200" height="630" rx="16" fill="url(#bg)"/>
+  <!-- Header bar -->
+  <rect x="0" y="0" width="1200" height="60" rx="16" fill="url(#header)"/>
+  <rect x="0" y="16" width="1200" height="44" fill="url(#header)"/>
+  <!-- Logo -->
+  <text x="40" y="38" font-family="system-ui,-apple-system,sans-serif" font-size="18" font-weight="700" fill="#fff">Plagiarism Checker</text>
+  <!-- Tab indicators -->
+  <rect x="220" y="16" width="80" height="44" fill="#fff" opacity="0.2"/>
+  <text x="260" y="38" font-family="system-ui,-apple-system,sans-serif" font-size="11" fill="#fff" text-anchor="middle">Text</text>
+  <text x="360" y="38" font-family="system-ui,-apple-system,sans-serif" font-size="11" fill="#fff" opacity="0.7">File</text>
+  <!-- Left Panel - Input -->
+  <rect x="40" y="80" width="520" height="520" rx="12" fill="#fff" stroke="#d1d5db"/>
+  <!-- Input area header -->
+  <rect x="40" y="80" width="520" height="40" rx="12" fill="#f0fdf4"/>
+  <rect x="40" y="108" width="520" height="12" fill="#f0fdf4"/>
+  <text x="60" y="105" font-family="system-ui,-apple-system,sans-serif" font-size="13" font-weight="600" fill="#047857">Paste your text</text>
+  <!-- Textarea mock -->
+  <rect x="60" y="140" width="480" height="280" rx="8" fill="#f9fafb" stroke="#e5e7eb"/>
+  <text x="80" y="165" font-family="system-ui,-apple-system,sans-serif" font-size="11" fill="#6b7280">The development of artificial intelligence has revolutionized...</text>
+  <text x="80" y="185" font-family="system-ui,-apple-system,sans-serif" font-size="11" fill="#6b7280">many industries. Machine learning algorithms now enable...</text>
+  <text x="80" y="205" font-family="system-ui,-apple-system,sans-serif" font-size="11" fill="#6b7280">computers to perform complex tasks that previously...</text>
+  <text x="80" y="225" font-family="system-ui,-apple-system,sans-serif" font-size="11" fill="#6b7280">required human intelligence. Neural networks can...</text>
+  <text x="80" y="245" font-family="system-ui,-apple-system,sans-serif" font-size="11" fill="#6b7280">recognize patterns, process natural language, and...</text>
+  <rect x="80" y="260" width="200" height="16" rx="4" fill="#10b981" opacity="0.15"/>
+  <text x="90" y="273" font-family="system-ui,-apple-system,sans-serif" font-size="10" fill="#059669">AI-generated text detected</text>
+  <!-- Word count -->
+  <text x="60" y="440" font-family="system-ui,-apple-system,sans-serif" font-size="10" fill="#9ca3af">156 words | 1,024 characters</text>
+  <!-- Check button -->
+  <rect x="60" y="460" width="480" height="48" rx="8" fill="#10b981"/>
+  <text x="300" y="488" font-family="system-ui,-apple-system,sans-serif" font-size="14" font-weight="600" fill="#fff" text-anchor="middle">Check Plagiarism</text>
+  <!-- Right Panel - Results -->
+  <rect x="580" y="80" width="580" height="520" rx="12" fill="#fff" stroke="#d1d5db"/>
+  <!-- Results header -->
+  <rect x="580" y="80" width="580" height="40" rx="12" fill="#f0fdf4"/>
+  <rect x="580" y="108" width="580" height="12" fill="#f0fdf4"/>
+  <text x="600" y="105" font-family="system-ui,-apple-system,sans-serif" font-size="13" font-weight="600" fill="#047857">Analysis Results</text>
+  <!-- Plagiarism score card -->
+  <rect x="600" y="140" width="260" height="120" rx="8" fill="#fef2f2" stroke="#fecaca"/>
+  <text x="730" y="165" font-family="system-ui,-apple-system,sans-serif" font-size="10" fill="#991b1b" text-anchor="middle">Plagiarism Score</text>
+  <text x="730" y="220" font-family="system-ui,-apple-system,sans-serif" font-size="42" font-weight="700" fill="#dc2626" text-anchor="middle">12%</text>
+  <text x="730" y="250" font-family="system-ui,-apple-system,sans-serif" font-size="9" fill="#b91c1c" text-anchor="middle">Low Risk</text>
+  <!-- AI score card -->
+  <rect x="880" y="140" width="260" height="120" rx="8" fill="#fef3c7" stroke="#fde68a"/>
+  <text x="1010" y="165" font-family="system-ui,-apple-system,sans-serif" font-size="10" fill="#92400e" text-anchor="middle">AI Content Score</text>
+  <text x="1010" y="220" font-family="system-ui,-apple-system,sans-serif" font-size="42" font-weight="700" fill="#d97706" text-anchor="middle">45%</text>
+  <text x="1010" y="250" font-family="system-ui,-apple-system,sans-serif" font-size="9" fill="#b45309" text-anchor="middle">Mixed Content</text>
+  <!-- Sources section -->
+  <text x="600" y="290" font-family="system-ui,-apple-system,sans-serif" font-size="11" font-weight="600" fill="#374151">Matched Sources (3)</text>
+  <rect x="600" y="300" width="540" height="36" rx="6" fill="#f3f4f6"/>
+  <circle cx="618" cy="318" r="8" fill="#ef4444"/>
+  <text x="634" y="322" font-family="system-ui,-apple-system,sans-serif" font-size="10" fill="#374151">wikipedia.org - 8% match</text>
+  <rect x="600" y="344" width="540" height="36" rx="6" fill="#f3f4f6"/>
+  <circle cx="618" cy="362" r="8" fill="#f59e0b"/>
+  <text x="634" y="366" font-family="system-ui,-apple-system,sans-serif" font-size="10" fill="#374151">sciencedirect.com - 3% match</text>
+  <rect x="600" y="388" width="540" height="36" rx="6" fill="#f3f4f6"/>
+  <circle cx="618" cy="406" r="8" fill="#10b981"/>
+  <text x="634" y="410" font-family="system-ui,-apple-system,sans-serif" font-size="10" fill="#374151">researchgate.net - 1% match</text>
+  <!-- Highlighted text preview -->
+  <text x="600" y="450" font-family="system-ui,-apple-system,sans-serif" font-size="11" font-weight="600" fill="#374151">Highlighted Text</text>
+  <rect x="600" y="464" width="540" height="120" rx="8" fill="#f9fafb" stroke="#e5e7eb"/>
+  <!-- Color legend -->
+  <rect x="610" y="474" width="8" height="8" rx="2" fill="#ef4444"/>
+  <text x="624" y="482" font-family="system-ui,-apple-system,sans-serif" font-size="8" fill="#6b7280">Plagiarized</text>
+  <rect x="700" y="474" width="8" height="8" rx="2" fill="#f59e0b"/>
+  <text x="714" y="482" font-family="system-ui,-apple-system,sans-serif" font-size="8" fill="#6b7280">AI Content</text>
+  <rect x="790" y="474" width="8" height="8" rx="2" fill="#10b981"/>
+  <text x="804" y="482" font-family="system-ui,-apple-system,sans-serif" font-size="8" fill="#6b7280">Original</text>
+</svg>

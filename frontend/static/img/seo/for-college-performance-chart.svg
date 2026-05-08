@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450">
+  <rect width="800" height="450" fill="#f0fdfa" rx="16"/>
+  <text x="400" y="40" fill="#111827" font-size="22" font-weight="bold" text-anchor="middle">AI Detection Bypass Performance</text>
+  <!-- Radar-like comparison chart -->
+  <rect x="60" y="60" width="680" height="200" rx="12" fill="#fff" stroke="#e2e8f0" stroke-width="2"/>
+  <text x="400" y="85" fill="#111827" font-size="16" font-weight="bold" text-anchor="middle">Human Score After Processing (%)</text>
+  <rect x="100" y="100" width="70" height="140" rx="4" fill="#0d9488"/>
+  <text x="135" y="90" fill="#111827" font-size="11" font-weight="bold" text-anchor="middle">97%</text>
+  <text x="135" y="255" fill="#6b7280" font-size="10" text-anchor="middle">GPTZero</text>
+  <rect x="200" y="115" width="70" height="125" rx="4" fill="#14b8a6"/>
+  <text x="235" y="105" fill="#111827" font-size="11" font-weight="bold" text-anchor="middle">92%</text>
+  <text x="235" y="255" fill="#6b7280" font-size="10" text-anchor="middle">Turnitin</text>
+  <rect x="300" y="105" width="70" height="135" rx="4" fill="#2dd4bf"/>
+  <text x="335" y="95" fill="#111827" font-size="11" font-weight="bold" text-anchor="middle">95%</text>
+  <text x="335" y="255" fill="#6b7280" font-size="10" text-anchor="middle">Copyleaks</text>
+  <rect x="400" y="95" width="70" height="145" rx="4" fill="#0d9488"/>
+  <text x="435" y="85" fill="#111827" font-size="11" font-weight="bold" text-anchor="middle">98%</text>
+  <text x="435" y="255" fill="#6b7280" font-size="10" text-anchor="middle">Originality</text>
+  <rect x="500" y="120" width="70" height="120" rx="4" fill="#14b8a6"/>
+  <text x="535" y="110" fill="#111827" font-size="11" font-weight="bold" text-anchor="middle">88%</text>
+  <text x="535" y="255" fill="#6b7280" font-size="10" text-anchor="middle">Writer</text>
+  <rect x="600" y="110" width="70" height="130" rx="4" fill="#2dd4bf"/>
+  <text x="635" y="100" fill="#111827" font-size="11" font-weight="bold" text-anchor="middle">93%</text>
+  <text x="635" y="255" fill="#6b7280" font-size="10" text-anchor="middle">ZeroGPT</text>
+  <!-- Stats -->
+  <rect x="60" y="290" width="200" height="130" rx="12" fill="#fff" stroke="#e2e8f0" stroke-width="2"/>
+  <text x="160" y="325" fill="#0d9488" font-size="30" font-weight="bold" text-anchor="middle">2.8s</text>
+  <text x="160" y="352" fill="#111827" font-size="13" text-anchor="middle">Avg. Processing Time</text>
+  <text x="160" y="375" fill="#6b7280" font-size="10" text-anchor="middle">1000-word essays</text>
+  <text x="160" y="405" fill="#0d9488" font-size="10" text-anchor="middle">⚡ Fastest in class</text>
+  <rect x="300" y="290" width="200" height="130" rx="12" fill="#fff" stroke="#e2e8f0" stroke-width="2"/>
+  <text x="400" y="325" fill="#059669" font-size="30" font-weight="bold" text-anchor="middle">10K+</text>
+  <text x="400" y="352" fill="#111827" font-size="13" text-anchor="middle">Words Per Request</text>
+  <text x="400" y="375" fill="#6b7280" font-size="10" text-anchor="middle">Handle long essays easily</text>
+  <text x="400" y="405" fill="#059669" font-size="10" text-anchor="middle">📄 Full paper support</text>
+  <rect x="540" y="290" width="200" height="130" rx="12" fill="#fff" stroke="#e2e8f0" stroke-width="2"/>
+  <text x="640" y="325" fill="#f59e0b" font-size="30" font-weight="bold" text-anchor="middle">98%</text>
+  <text x="640" y="352" fill="#111827" font-size="13" text-anchor="middle">Avg. Human Score</text>
+  <text x="640" y="375" fill="#6b7280" font-size="10" text-anchor="middle">After humanization</text>
+  <text x="640" y="405" fill="#f59e0b" font-size="10" text-anchor="middle">🎯 Consistently high</text>
+</svg>

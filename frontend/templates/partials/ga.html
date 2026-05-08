@@ -1,0 +1,30 @@
+{{ define "partials/ga.html" }}
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('consent', 'default', {
+    ad_storage:            '{{ if .ConsentAds }}{{ .ConsentAds }}{{ else }}denied{{ end }}',
+    ad_user_data:          '{{ if .ConsentAds }}{{ .ConsentAds }}{{ else }}denied{{ end }}',
+    ad_personalization:    '{{ if .ConsentAds }}{{ .ConsentAds }}{{ else }}denied{{ end }}',
+    analytics_storage:     '{{ if .ConsentAnalytics }}{{ .ConsentAnalytics }}{{ else }}denied{{ end }}',
+    functionality_storage: 'granted',
+    security_storage:      'granted',
+    wait_for_update:       500
+  });
+  gtag('js', new Date());
+</script>
+{{- if .EnableGA }}
+<script async src="https://www.googletagmanager.com/gtag/js?id={{ .GAMeasurementID }}"></script>
+<script>
+  gtag('config', '{{ .GAMeasurementID }}', {
+    send_page_view: {{ if eq .ConsentAnalytics "granted" }}true{{ else }}false{{ end }},
+    page_path:      window.location.pathname,
+    page_title:     document.title,
+    anonymize_ip:   true
+  });
+  {{ if .GoogleAdsConversionID }}
+  gtag('config', '{{ .GoogleAdsConversionID }}');
+  {{ end }}
+</script>
+{{- end }}
+{{ end }}

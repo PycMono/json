@@ -1,0 +1,401 @@
+{{ template "base" . }}
+
+{{ define "extraHead" }}
+<title>{{ .Title }}</title>
+<meta name="description" content="{{ .Description }}">
+<meta name="keywords"    content="{{ .Keywords }}">
+<meta property="og:title"       content="{{ .Title }}">
+<meta property="og:description" content="{{ .Description }}">
+<meta property="og:type"        content="website">
+<meta property="og:url"         content="https://toolboxnova.com/img/compress">
+<meta property="og:image"       content="https://toolboxnova.com/static/og/img-compress.png">
+<link rel="canonical"    href="https://toolboxnova.com/img/compress">
+<link rel="alternate" hreflang="zh"        href="https://toolboxnova.com/img/compress?lang=zh">
+<link rel="alternate" hreflang="en"        href="https://toolboxnova.com/img/compress?lang=en">
+<link rel="alternate" hreflang="x-default" href="https://toolboxnova.com/img/compress">
+<link rel="stylesheet" href="/static/css/img-compress.css?v={{ .AssetVer }}">
+<link rel="stylesheet" href="/static/css/img-toolbox.css?v={{ .AssetVer }}">
+<link rel="stylesheet" href="/static/css/img-tabs.css?v={{ .AssetVer }}">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "{{ .Title }}",
+  "applicationCategory": "MultimediaApplication",
+  "operatingSystem": "Web Browser",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "description": "{{ .Description }}",
+  "url": "https://toolboxnova.com/img/compress"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "HowTo",
+  "name": "{{ .Title }}",
+  "description": "{{ .Description }}",
+  "totalTime": "PT2M",
+  "estimatedCost": { "@type": "MonetaryAmount", "currency": "USD", "value": "0" },
+  "step": [
+    {
+      "@type": "HowToStep",
+      "position": "1",
+      "name": "{{ call .T "img.compress.s1.step1.title" }}",
+      "text": "{{ call .T "img.compress.s1.step1.desc" }}",
+      "url": "https://toolboxnova.com/img/compress#step-upload"
+    },
+    {
+      "@type": "HowToStep",
+      "position": "2",
+      "name": "{{ call .T "img.compress.s1.step2.title" }}",
+      "text": "{{ call .T "img.compress.s1.step2.desc" }}",
+      "url": "https://toolboxnova.com/img/compress#step-adjust"
+    },
+    {
+      "@type": "HowToStep",
+      "position": "3",
+      "name": "{{ call .T "img.compress.s1.step3.title" }}",
+      "text": "{{ call .T "img.compress.s1.step3.desc" }}",
+      "url": "https://toolboxnova.com/img/compress#step-download"
+    }
+  ]
+}
+</script>
+{{ end }}
+
+
+{{ define "content" }}
+{{- template "img_tabs" . }}
+<div class="itb-page" data-tool="compress">
+
+  <!-- Hero -->
+  <header class="ic-hero">
+    <div class="ic-hero__inner">
+      <div class="ic-hero__badges">
+        <span class="ic-badge">{{ call .T "img.compress.hero.badge1" }}</span>
+        <span class="ic-badge">{{ call .T "img.compress.hero.badge2" }}</span>
+        <span class="ic-badge">{{ call .T "img.compress.hero.badge3" }}</span>
+      </div>
+      <h1 class="ic-hero__title">{{ call .T "img.compress.hero.title" }}</h1>
+      <p class="ic-hero__sub">{{ call .T "img.compress.hero.subtitle" }}</p>
+    </div>
+  </header>
+
+  <!-- Top Ad -->
+  <div class="ic-ad-top">
+    {{- template "partials/ad_slot.html" (dict "Ctx" . "SlotID" "img-compress-top" "Size" "970x90" "Mobile" "320x50") }}
+  </div>
+
+  <!-- Workspace -->
+  <div class="ic-sidebar-layout">
+    <aside class="ic-sidebar ic-sidebar--left">
+      {{- template "partials/ad_slot.html" (dict "Ctx" . "SlotID" "img-compress-left" "Size" "160x600" "MobileHide" true) }}
+    </aside>
+
+    <div class="ic-workspace">
+      <!-- Drop Zone -->
+      <div class="ic-drop-zone" id="dropZone"
+           ondragover="ICDrop.over(event)"
+           ondragleave="ICDrop.leave(event)"
+           ondrop="ICDrop.drop(event)"
+           onclick="document.getElementById('fileInput').click()">
+        <div class="ic-drop-zone__icon">
+          <svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+        </div>
+        <h2 class="ic-drop-zone__title">{{ call .T "img.compress.upload.title" }}</h2>
+        <p class="ic-drop-zone__hint">{{ call .T "img.compress.upload.hint" }}</p>
+        <button type="button" class="ic-btn ic-btn--primary" onclick="event.stopPropagation();document.getElementById('fileInput').click()" data-ga data-ga-action="upload" data-ga-category="img_compress_tool" data-ga-label="browse">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+          {{ call .T "img.compress.upload.btn" }}
+        </button>
+        <input type="file" id="fileInput" accept="image/*" multiple style="display:none" data-ga data-ga-action="upload" data-ga-category="img_compress_tool" data-ga-label="file_select">
+        <div class="ic-drop-zone__formats">
+          <span>JPG</span><span>PNG</span><span>WebP</span><span>GIF</span><span>BMP</span>
+          &nbsp;&middot; {{ call .T "img.compress.upload.multi" }}
+        </div>
+      </div>
+
+      <!-- Settings Panel -->
+      <div class="ic-settings" id="optsBar" style="display:none">
+        <div class="ic-settings__inner">
+          <div class="ic-settings__group">
+            <label class="ic-settings__label">{{ call .T "img.compress.options.quality.label" }}</label>
+            <div class="ic-slider-wrap">
+              <input type="range" id="qualitySlider" class="ic-slider" min="1" max="100" value="80" data-ga data-ga-action="adjust" data-ga-category="img_compress_tool" data-ga-label="quality_slider">
+              <span class="ic-slider__val" id="qualityValue">80%</span>
+            </div>
+            <p class="ic-settings__hint">{{ call .T "img.compress.options.quality.hint" }}</p>
+          </div>
+          <div class="ic-settings__group">
+            <label class="ic-settings__label">{{ call .T "img.compress.options.format.label" }}</label>
+            <select id="outputFormat" class="ic-select" data-ga data-ga-action="select" data-ga-category="img_compress_tool" data-ga-label="output_format">
+              <option value="auto">{{ call .T "img.compress.options.format.original" }}</option>
+              <option value="jpg">{{ call .T "img.compress.options.format.jpg" }}</option>
+              <option value="png">{{ call .T "img.compress.options.format.png" }}</option>
+              <option value="webp">{{ call .T "img.compress.options.format.webp" }}</option>
+              <option value="gif">{{ call .T "img.compress.options.format.gif" }}</option>
+              <option value="bmp">{{ call .T "img.compress.options.format.bmp" }}</option>
+              <option value="tiff">{{ call .T "img.compress.options.format.tiff" }}</option>
+            </select>
+          </div>
+          <div class="ic-settings__group">
+            <label class="ic-settings__label">{{ call .T "img.compress.options.maxwidth.label" }}</label>
+            <input type="number" id="maxWidth" class="ic-input" placeholder="1920">
+            <p class="ic-settings__hint">{{ call .T "img.compress.options.maxwidth.hint" }}</p>
+          </div>
+        </div>
+        <!-- Presets -->
+        <div class="ic-presets">
+          <span class="ic-presets__label">{{ call .T "img.compress.presets.label" }}</span>
+          <button type="button" class="ic-preset" data-q="90" data-f="auto" onclick="applyPreset(90,'auto')" data-ga data-ga-action="preset" data-ga-category="img_compress_tool" data-ga-label="preset_high">{{ call .T "img.compress.preset.high" }}</button>
+          <button type="button" class="ic-preset" data-q="80" data-f="auto" onclick="applyPreset(80,'auto')" data-ga data-ga-action="preset" data-ga-category="img_compress_tool" data-ga-label="preset_balanced">{{ call .T "img.compress.preset.balanced" }}</button>
+          <button type="button" class="ic-preset" data-q="60" data-f="webp" onclick="applyPreset(60,'webp')" data-ga data-ga-action="preset" data-ga-category="img_compress_tool" data-ga-label="preset_small">{{ call .T "img.compress.preset.small" }}</button>
+          <button type="button" class="ic-preset" data-q="40" data-f="webp" onclick="applyPreset(40,'webp')" data-ga data-ga-action="preset" data-ga-category="img_compress_tool" data-ga-label="preset_tiny">{{ call .T "img.compress.preset.tiny" }}</button>
+        </div>
+      </div>
+
+      <!-- Results -->
+      <div class="ic-results" id="resultsSection" style="display:none">
+        <div class="ic-results__header">
+          <span id="resultsHeader"></span>
+        </div>
+        <div class="ic-results__list" id="resultsList"></div>
+        <div class="ic-results__actions">
+          <button class="ic-btn ic-btn--primary" id="downloadAllBtn" onclick="downloadAll()" data-ga data-ga-action="download" data-ga-category="img_compress_tool" data-ga-label="download_all">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            {{ call .T "img.compress.download.all" }}
+          </button>
+          <button class="ic-btn ic-btn--ghost" onclick="clearAll()" data-ga data-ga-action="clear" data-ga-category="img_compress_tool" data-ga-label="clear_all">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="3 6 5 6 21 6"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/></svg>
+            {{ call .T "img.compress.download.clear" }}
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <aside class="ic-sidebar ic-sidebar--right">
+      {{- template "partials/ad_slot.html" (dict "Ctx" . "SlotID" "img-compress-right" "Size" "160x600" "MobileHide" true) }}
+    </aside>
+  </div>
+
+  <!-- Tips Section -->
+  <section class="ic-tips">
+    <div class="ic-tips__inner">
+      <span class="ic-section-label">{{ call .T "img.compress.tips.label" }}</span>
+      <h2 class="ic-section-title">{{ call .T "img.compress.tips.title" }}</h2>
+      <div class="ic-tips__grid">
+        <div class="ic-tip-card">
+          <div class="ic-tip-card__icon">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+          </div>
+          <h3 class="ic-tip-card__title">{{ call .T "img.compress.tip1.title" }}</h3>
+          <p class="ic-tip-card__desc">{{ call .T "img.compress.tip1.desc" }}</p>
+        </div>
+        <div class="ic-tip-card">
+          <div class="ic-tip-card__icon">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2L2 7l10 5 10-5-10-5z"/><path d="M2 17l10 5 10-5"/><path d="M2 12l10 5 10-5"/></svg>
+          </div>
+          <h3 class="ic-tip-card__title">{{ call .T "img.compress.tip2.title" }}</h3>
+          <p class="ic-tip-card__desc">{{ call .T "img.compress.tip2.desc" }}</p>
+        </div>
+        <div class="ic-tip-card">
+          <div class="ic-tip-card__icon">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+          </div>
+          <h3 class="ic-tip-card__title">{{ call .T "img.compress.tip3.title" }}</h3>
+          <p class="ic-tip-card__desc">{{ call .T "img.compress.tip3.desc" }}</p>
+        </div>
+        <div class="ic-tip-card">
+          <div class="ic-tip-card__icon">
+            <svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+          </div>
+          <h3 class="ic-tip-card__title">{{ call .T "img.compress.tip4.title" }}</h3>
+          <p class="ic-tip-card__desc">{{ call .T "img.compress.tip4.desc" }}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How it works -->
+  <section class="ic-steps" aria-labelledby="ic-steps-title">
+    <div class="ic-steps__inner">
+      <span class="ic-section-label">{{ call .T "img.compress.s1.label" }}</span>
+      <h2 class="ic-section-title" id="ic-steps-title">{{ call .T "img.compress.s1.title" }}</h2>
+      <p class="ic-steps__lead">{{ call .T "img.compress.s1.body" }}</p>
+      <div class="ic-steps__grid">
+        <div class="ic-step-card" id="step-upload">
+          <div class="ic-step-card__num">1</div>
+          <h3 class="ic-step-card__title">{{ call .T "img.compress.s1.step1.title" }}</h3>
+          <p class="ic-step-card__desc">{{ call .T "img.compress.s1.step1.desc" }}</p>
+        </div>
+        <div class="ic-step-card" id="step-adjust">
+          <div class="ic-step-card__num">2</div>
+          <h3 class="ic-step-card__title">{{ call .T "img.compress.s1.step2.title" }}</h3>
+          <p class="ic-step-card__desc">{{ call .T "img.compress.s1.step2.desc" }}</p>
+        </div>
+        <div class="ic-step-card" id="step-download">
+          <div class="ic-step-card__num">3</div>
+          <h3 class="ic-step-card__title">{{ call .T "img.compress.s1.step3.title" }}</h3>
+          <p class="ic-step-card__desc">{{ call .T "img.compress.s1.step3.desc" }}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Privacy Section -->
+  <section class="ic-privacy">
+    <div class="ic-privacy__inner">
+      <div class="ic-privacy__content">
+        <span class="ic-section-label">{{ call .T "img.compress.privacy.label" }}</span>
+        <h2 class="ic-section-title">{{ call .T "img.compress.privacy.title" }}</h2>
+        <p class="ic-section-body">{{ call .T "img.compress.privacy.body" }}</p>
+        <ul class="ic-privacy__list">
+          <li>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            {{ call .T "img.compress.privacy.item1" }}
+          </li>
+          <li>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            {{ call .T "img.compress.privacy.item2" }}
+          </li>
+          <li>
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+            {{ call .T "img.compress.privacy.item3" }}
+          </li>
+        </ul>
+      </div>
+      <div class="ic-privacy__visual">
+        <div class="ic-privacy__shield">
+          <svg width="80" height="80" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+          <span class="ic-privacy__shield-text">{{ call .T "img.compress.privacy.shield" }}</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Related Tools -->
+  <section class="ic-related">
+    <div class="ic-related__inner">
+      <span class="ic-section-label">{{ call .T "img.compress.related.label" }}</span>
+      <h2 class="ic-section-title">{{ call .T "img.compress.related.title" }}</h2>
+      <div class="ic-related__grid">
+        <a href="/img/resize?lang={{ .Lang }}" class="ic-related__card" data-ga data-ga-action="navigate" data-ga-category="img_compress_tool" data-ga-label="related_resize">
+          <div class="ic-related__icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><line x1="8" y1="3" x2="8" y2="21"/><line x1="16" y1="3" x2="16" y2="21"/><line x1="3" y1="8" x2="21" y2="8"/><line x1="3" y1="16" x2="21" y2="16"/></svg>
+          </div>
+          <h3>{{ call .T "img.compress.related.resize" }}</h3>
+          <p>{{ call .T "img.compress.related.resize.desc" }}</p>
+        </a>
+        <a href="/img/convert-to-jpg?lang={{ .Lang }}" class="ic-related__card" data-ga data-ga-action="navigate" data-ga-category="img_compress_tool" data-ga-label="related_convert">
+          <div class="ic-related__icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+          </div>
+          <h3>{{ call .T "img.compress.related.convert" }}</h3>
+          <p>{{ call .T "img.compress.related.convert.desc" }}</p>
+        </a>
+        <a href="/img/metadata?lang={{ .Lang }}" class="ic-related__card" data-ga data-ga-action="navigate" data-ga-category="img_compress_tool" data-ga-label="related_metadata">
+          <div class="ic-related__icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+          </div>
+          <h3>{{ call .T "img.compress.related.metadata" }}</h3>
+          <p>{{ call .T "img.compress.related.metadata.desc" }}</p>
+        </a>
+        <a href="/img/ocr?lang={{ .Lang }}" class="ic-related__card" data-ga data-ga-action="navigate" data-ga-category="img_compress_tool" data-ga-label="related_ocr">
+          <div class="ic-related__icon">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+          </div>
+          <h3>{{ call .T "img.compress.related.ocr" }}</h3>
+          <p>{{ call .T "img.compress.related.ocr.desc" }}</p>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Bottom CTA -->
+  <section class="ic-cta">
+    <div class="ic-cta__inner">
+      <h2 class="ic-cta__title">{{ call .T "img.compress.guide.cta.title" }}</h2>
+      <p class="ic-cta__subtitle">{{ call .T "img.compress.guide.cta.subtitle" }}</p>
+      <div class="ic-cta__actions">
+        <a href="#dropZone" class="ic-btn ic-btn--primary" data-ga data-ga-action="navigate" data-ga-category="img_compress_tool" data-ga-label="cta_upload">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+          {{ call .T "img.compress.guide.cta.btn" }}
+        </a>
+        <a href="/img/compress-guide?lang={{ .Lang }}" class="ic-btn ic-btn--ghost" data-ga data-ga-action="navigate" data-ga-category="img_compress_tool" data-ga-label="cta_guide">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+          {{ call .T "img.compress.guide_cta.btn" }}
+        </a>
+      </div>
+    </div>
+  </section>
+
+</div><!-- /itb-page -->
+{{ end }}
+
+
+{{ define "extraScript" }}
+<script src="/static/js/img-tabs.js?v={{ .AssetVer }}"></script>
+<script src="https://cdn.jsdelivr.net/npm/browser-image-compression@2.0.2/dist/browser-image-compression.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jszip/3.10.1/jszip.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+<script src="/static/js/img-compress-engine.js?v={{ .AssetVer }}"></script>
+<script src="/static/js/img-compress.js?v={{ .AssetVer }}"></script>
+
+<!-- Drag-and-drop shim -->
+<script>
+window.ICDrop = {
+  over:  function(e){ e.preventDefault(); document.getElementById('dropZone').classList.add('drag-over'); },
+  leave: function(e){ document.getElementById('dropZone').classList.remove('drag-over'); },
+  drop:  function(e){
+    e.preventDefault();
+    document.getElementById('dropZone').classList.remove('drag-over');
+    var files = e.dataTransfer.files;
+    if (files && files.length) { addFiles(files); }
+  }
+};
+
+function applyPreset(q, fmt) {
+  var qs = document.getElementById('qualitySlider');
+  var qv = document.getElementById('qualityValue');
+  var of = document.getElementById('outputFormat');
+  if (qs) { qs.value = q; qs.dispatchEvent(new Event('input')); }
+  if (qv) qv.textContent = q + '%';
+  if (of) { of.value = fmt; of.dispatchEvent(new Event('change')); }
+}
+</script>
+
+<!-- GA tracking -->
+<script>
+(function () {
+  var TOOL = 'img-compress', _t0 = 0;
+  var fi = document.getElementById('fileInput');
+  if (fi) fi.addEventListener('change', function(){
+    if (!fi.files||!fi.files.length) return;
+    _t0 = Date.now();
+    var mb=0; for(var i=0;i<fi.files.length;i++) mb+=fi.files[i].size;
+    if(typeof gaTrackUpload==='function') gaTrackUpload(TOOL,fi.files.length,mb/1048576);
+  });
+  var res = document.getElementById('resultsSection');
+  if (res && window.MutationObserver) {
+    new MutationObserver(function(ms){ ms.forEach(function(m){
+      if(m.attributeName==='style' && res.style.display!=='none' && _t0){
+        var n=document.querySelectorAll('.icc-card').length;
+        if(typeof gaTrackProcessDone==='function') gaTrackProcessDone(TOOL,n,Date.now()-_t0);
+        _t0=0;
+      }
+    });}).observe(res,{attributes:true});
+  }
+  document.addEventListener('click', function(e){
+    var b=e.target.closest('[data-download-single]');
+    if(b && typeof gaTrackDownload==='function') gaTrackDownload(TOOL, b.dataset.fileType||'image/jpeg');
+  });
+  var da=document.getElementById('downloadAllBtn');
+  if(da) da.addEventListener('click',function(){
+    var n=document.querySelectorAll('.icc-card').length;
+    if(typeof gaTrackDownloadAll==='function') gaTrackDownloadAll(TOOL,n);
+  });
+})();
+</script>
+
+{{ end }}

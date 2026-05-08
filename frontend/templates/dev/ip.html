@@ -1,0 +1,429 @@
+{{ template "base" . }}
+
+{{ define "extraHead" }}
+<link rel="stylesheet" href="/static/css/dev-tools.css?v={{ .AssetVer }}">
+<link rel="stylesheet" href="/static/css/dev-ip.css?v={{ .AssetVer }}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.css" crossorigin="anonymous">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="alternate" hreflang="zh" href="{{ .HreflangZH }}">
+<link rel="alternate" hreflang="en" href="{{ .HreflangEN }}">
+<link rel="alternate" hreflang="x-default" href="{{ .Canonical }}">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "{{ call .T "tools.ip.seo.title" }}",
+  "url": "{{ .Canonical }}",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "Any",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "description": "{{ call .T "tools.ip.seo.description" }}"
+}
+</script>
+{{ end }}
+
+{{ define "content" }}
+<div class="page-dev-ip">
+
+<!-- Hero -->
+<section class="hero hero--dev" aria-labelledby="hero-title">
+  <div class="hero__inner container">
+    <div class="badge badge--blue" style="margin-bottom:12px">{{ call .T "tools.ip.hero.eyebrow" }}</div>
+    <h1 class="hero__title" id="hero-title">{{ call .T "tools.ip.hero.title" }}</h1>
+    <p class="hero__subtitle">{{ call .T "tools.ip.hero.subtitle" }}</p>
+    <div class="hero__badges" role="list">
+      <span class="badge badge--blue"  role="listitem">{{ call .T "tools.ip.hero.badge1" }}</span>
+      <span class="badge badge--green" role="listitem">{{ call .T "tools.ip.hero.badge2" }}</span>
+      <span class="badge badge--purple" role="listitem">{{ call .T "tools.ip.hero.badge3" }}</span>
+      <span class="badge badge--blue"  role="listitem">{{ call .T "tools.ip.hero.badge4" }}</span>
+      <span class="badge badge--green" role="listitem">{{ call .T "tools.ip.hero.badge5" }}</span>
+    </div>
+  </div>
+</section>
+
+<!-- Top Ad -->
+<div style="text-align:center;margin:12px auto;max-width:970px;padding:0 16px">
+  {{- template "partials/ad_slot.html" (dict "Ctx" . "SlotID" "dev-ip-top" "Size" "728x90" "Mobile" "320x50") }}
+</div>
+
+<!-- Sidebar Layout -->
+<div class="hash-sidebar-layout">
+  <aside class="hash-sidebar-ad">
+    {{- template "partials/ad_slot.html" (dict "Ctx" . "SlotID" "dev-ip-left" "Size" "160x600" "MobileHide" true) }}
+  </aside>
+
+  <div class="hash-main-area">
+
+    <!-- ===== My Public IP Card ===== -->
+    <section class="ip-section" aria-label="{{ call .T "tools.ip.myip.title" }}">
+      <div class="ip-hero-card">
+        <div class="ip-hero-card__header">
+          <div>
+            <div class="ip-hero-card__label">{{ call .T "tools.ip.myip.label" }}</div>
+            <div class="ip-hero-card__ip" id="myIPv4">—</div>
+            <div class="ip-hero-card__ipv6 ip-hidden" id="myIPv6"></div>
+          </div>
+          <div class="ip-hero-card__actions">
+            <button class="btn btn--ghost btn--sm" id="copyMyIPBtn" type="button" title="{{ call .T "tools.ip.action.copy" }}"
+                    data-ga data-ga-action="copy" data-ga-category="dev-tool" data-ga-label="ip-copy-my-ip">📋 {{ call .T "tools.ip.action.copy" }}</button>
+            <button class="btn btn--ghost btn--sm" id="refreshMyIPBtn" type="button" title="{{ call .T "tools.ip.action.refresh" }}"
+                    data-ga data-ga-action="refresh" data-ga-category="dev-tool" data-ga-label="ip-refresh">🔄 {{ call .T "tools.ip.action.refresh" }}</button>
+          </div>
+        </div>
+        <div class="ip-hero-grid" id="myIPMeta">
+          <div class="ip-hero-grid__item">
+            <div class="ip-hero-grid__label">{{ call .T "tools.ip.myip.country" }}</div>
+            <div class="ip-hero-grid__value" id="heroCountry">—</div>
+          </div>
+          <div class="ip-hero-grid__item">
+            <div class="ip-hero-grid__label">{{ call .T "tools.ip.myip.city" }}</div>
+            <div class="ip-hero-grid__value" id="heroCity">—</div>
+          </div>
+          <div class="ip-hero-grid__item">
+            <div class="ip-hero-grid__label">{{ call .T "tools.ip.myip.isp" }}</div>
+            <div class="ip-hero-grid__value ip-hero-grid__value--mono" id="heroISP">—</div>
+          </div>
+          <div class="ip-hero-grid__item">
+            <div class="ip-hero-grid__label">{{ call .T "tools.ip.myip.asn" }}</div>
+            <div class="ip-hero-grid__value ip-hero-grid__value--mono" id="heroASN">—</div>
+          </div>
+          <div class="ip-hero-grid__item">
+            <div class="ip-hero-grid__label">{{ call .T "tools.ip.myip.timezone" }}</div>
+            <div class="ip-hero-grid__value" id="heroTimezone">—</div>
+          </div>
+          <div class="ip-hero-grid__item">
+            <div class="ip-hero-grid__label">{{ call .T "tools.ip.myip.local_time" }}</div>
+            <div class="ip-hero-grid__value" id="heroLocalTime">—</div>
+          </div>
+        </div>
+        <div class="ip-hero-card__hint" id="myIPHint">{{ call .T "tools.ip.myip.hint" }}</div>
+      </div>
+    </section>
+
+    <!-- ===== Lookup Workbench ===== -->
+    <section class="ip-section" aria-label="{{ call .T "tools.ip.lookup.title" }}">
+      <div class="ip-workbench">
+        <h2 class="ip-section__title">
+          <svg class="icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+          {{ call .T "tools.ip.lookup.title" }}
+        </h2>
+        <div class="ip-input-group">
+          <input type="text" id="ipInput" class="text-input"
+            placeholder="{{ call .T "tools.ip.lookup.placeholder" }}"
+            autocomplete="off" spellcheck="false">
+          <button class="btn btn--primary" id="lookupBtn" type="button"
+                  data-ga data-ga-action="lookup" data-ga-category="dev-tool" data-ga-label="ip-lookup">{{ call .T "tools.ip.lookup.btn" }}</button>
+        </div>
+        <div class="ip-chips">
+          <button class="ip-chip" data-example="8.8.8.8"
+                  data-ga data-ga-action="use_example" data-ga-category="dev-tool" data-ga-label="ip-example-8.8.8.8">8.8.8.8</button>
+          <button class="ip-chip" data-example="1.1.1.1"
+                  data-ga data-ga-action="use_example" data-ga-category="dev-tool" data-ga-label="ip-example-1.1.1.1">1.1.1.1</button>
+          <button class="ip-chip" data-example="github.com"
+                  data-ga data-ga-action="use_example" data-ga-category="dev-tool" data-ga-label="ip-example-github">github.com</button>
+          <button class="ip-chip" data-example="2001:4860:4860::8888"
+                  data-ga data-ga-action="use_example" data-ga-category="dev-tool" data-ga-label="ip-example-ipv6">2001:4860:4860::8888</button>
+        </div>
+        <div style="display:flex;gap:8px;margin-top:8px">
+          <button class="btn btn--ghost btn--sm" id="useMyIPBtn" type="button"
+                  data-ga data-ga-action="use_my_ip" data-ga-category="dev-tool" data-ga-label="ip-use-my-ip">{{ call .T "tools.ip.lookup.use_my_ip" }}</button>
+          <button class="btn btn--ghost btn--sm" id="clearInputBtn" type="button"
+                  data-ga data-ga-action="clear" data-ga-category="dev-tool" data-ga-label="ip-clear-input">{{ call .T "tools.ip.lookup.clear" }}</button>
+        </div>
+        <p id="lookupError" class="ip-error-hint">{{ call .T "tools.ip.lookup.error.invalid" }}</p>
+        <div class="ip-status" id="lookupStatus"></div>
+      </div>
+    </section>
+
+    <!-- ===== Result Panel ===== -->
+    <section class="ip-section ip-hidden" id="resultSection" aria-label="{{ call .T "tools.ip.result.title" }}">
+      <div class="ip-result-panel">
+        <h2 class="ip-section__title">
+          <svg class="icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+          {{ call .T "tools.ip.result.title" }}
+        </h2>
+        <div class="ip-result-grid">
+          <!-- IP Basic Info -->
+          <div class="ip-info-card">
+            <h3 class="ip-info-card__title">
+              <svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+              {{ call .T "tools.ip.result.basic.title" }}
+            </h3>
+            <div class="ip-field-row">
+              <span class="ip-field-row__label">{{ call .T "tools.ip.result.basic.ip" }}</span>
+              <span class="ip-field-row__value" id="resIP">—</span>
+            </div>
+            <div class="ip-field-row">
+              <span class="ip-field-row__label">{{ call .T "tools.ip.result.basic.type" }}</span>
+              <span class="ip-field-row__value ip-field-row__value--plain" id="resType">—</span>
+            </div>
+            <div class="ip-field-row">
+              <span class="ip-field-row__label">{{ call .T "tools.ip.result.basic.query_obj" }}</span>
+              <span class="ip-field-row__value ip-field-row__value--plain" id="resQueryObj">—</span>
+            </div>
+            <div class="ip-field-row">
+              <span class="ip-field-row__label">{{ call .T "tools.ip.result.basic.hostname" }}</span>
+              <span class="ip-field-row__value" id="resHostname">—</span>
+            </div>
+            <div class="ip-field-row">
+              <span class="ip-field-row__label">{{ call .T "tools.ip.result.basic.query_time" }}</span>
+              <span class="ip-field-row__value ip-field-row__value--plain" id="resQueryTime">—</span>
+            </div>
+          </div>
+
+          <!-- Geolocation -->
+          <div class="ip-info-card">
+            <h3 class="ip-info-card__title">
+              <svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0 1 18 0z"></path><circle cx="12" cy="10" r="3"></circle></svg>
+              {{ call .T "tools.ip.result.geo.title" }}
+            </h3>
+            <div class="ip-field-row">
+              <span class="ip-field-row__label">{{ call .T "tools.ip.result.geo.country" }}</span>
+              <span class="ip-field-row__value ip-field-row__value--plain" id="resCountry">—</span>
+            </div>
+            <div class="ip-field-row">
+              <span class="ip-field-row__label">{{ call .T "tools.ip.result.geo.region" }}</span>
+              <span class="ip-field-row__value ip-field-row__value--plain" id="resRegion">—</span>
+            </div>
+            <div class="ip-field-row">
+              <span class="ip-field-row__label">{{ call .T "tools.ip.result.geo.city" }}</span>
+              <span class="ip-field-row__value ip-field-row__value--plain" id="resCity">—</span>
+            </div>
+            <div class="ip-field-row">
+              <span class="ip-field-row__label">{{ call .T "tools.ip.result.geo.timezone" }}</span>
+              <span class="ip-field-row__value ip-field-row__value--plain" id="resTimezone">—</span>
+            </div>
+            <div class="ip-field-row">
+              <span class="ip-field-row__label">{{ call .T "tools.ip.result.geo.latlng" }}</span>
+              <span class="ip-field-row__value" id="resLatLng">—</span>
+            </div>
+            <div class="ip-map-wrap ip-hidden" id="resMapWrap">
+              <div id="ipMap"></div>
+            </div>
+            <p class="ip-muted" style="margin-top:8px">{{ call .T "tools.ip.result.geo.hint" }}</p>
+          </div>
+
+          <!-- Network Info -->
+          <div class="ip-info-card">
+            <h3 class="ip-info-card__title">
+              <svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"></polyline></svg>
+              {{ call .T "tools.ip.result.network.title" }}
+            </h3>
+            <div class="ip-field-row">
+              <span class="ip-field-row__label">{{ call .T "tools.ip.result.network.isp" }}</span>
+              <span class="ip-field-row__value ip-field-row__value--plain" id="resISP">—</span>
+            </div>
+            <div class="ip-field-row">
+              <span class="ip-field-row__label">{{ call .T "tools.ip.result.network.org" }}</span>
+              <span class="ip-field-row__value ip-field-row__value--plain" id="resOrg">—</span>
+            </div>
+            <div class="ip-field-row">
+              <span class="ip-field-row__label">{{ call .T "tools.ip.result.network.asn" }}</span>
+              <span class="ip-field-row__value" id="resASN">—</span>
+            </div>
+            <div class="ip-field-row">
+              <span class="ip-field-row__label">{{ call .T "tools.ip.result.network.net_type" }}</span>
+              <span class="ip-field-row__value ip-field-row__value--plain" id="resNetType">—</span>
+            </div>
+            <div class="ip-field-row">
+              <span class="ip-field-row__label">{{ call .T "tools.ip.result.network.proxy" }}</span>
+              <span class="ip-field-row__value ip-field-row__value--plain" id="resProxy">—</span>
+            </div>
+          </div>
+
+          <!-- DNS Info (domain only) -->
+          <div class="ip-info-card ip-hidden" id="dnsCard">
+            <h3 class="ip-info-card__title">
+              <svg class="icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"></path></svg>
+              {{ call .T "tools.ip.result.dns.title" }}
+            </h3>
+            <div class="ip-field-row">
+              <span class="ip-field-row__label">{{ call .T "tools.ip.result.dns.domain" }}</span>
+              <span class="ip-field-row__value" id="resDomain">—</span>
+            </div>
+            <div class="ip-field-row">
+              <span class="ip-field-row__label">{{ call .T "tools.ip.result.dns.ipv4" }}</span>
+              <span class="ip-field-row__value" id="resDnsIPv4">—</span>
+            </div>
+            <div class="ip-field-row">
+              <span class="ip-field-row__label">{{ call .T "tools.ip.result.dns.ipv6" }}</span>
+              <span class="ip-field-row__value" id="resDnsIPv6">—</span>
+            </div>
+            <div class="ip-field-row">
+              <span class="ip-field-row__label">{{ call .T "tools.ip.result.dns.cname" }}</span>
+              <span class="ip-field-row__value" id="resCNAME">—</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Raw JSON -->
+        <div class="ip-json-panel">
+          <button class="ip-json-toggle" id="jsonToggle" type="button" aria-expanded="false">
+            <span>{{ call .T "tools.ip.result.json.title" }}</span>
+            <svg class="ip-json-toggle__chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"></polyline></svg>
+          </button>
+          <div class="ip-json-body" id="jsonBody">
+            <div style="display:flex;justify-content:flex-end;margin-bottom:6px">
+              <button class="btn btn--ghost btn--sm" id="copyJsonBtn" type="button"
+                  data-ga data-ga-action="copy" data-ga-category="dev-tool" data-ga-label="ip-copy-json">📋 {{ call .T "tools.ip.result.json.copy" }}</button>
+            </div>
+            <pre class="ip-json-pre" id="jsonPre"><code>{}</code></pre>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Environment Diagnosis ===== -->
+    <section class="ip-section" aria-label="{{ call .T "tools.ip.env.title" }}">
+      <div class="ip-env-panel">
+        <h2 class="ip-section__title">
+          <svg class="icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+          {{ call .T "tools.ip.env.title" }}
+        </h2>
+        <div class="ip-env-grid" id="envGrid">
+          <div class="ip-env-item">
+            <div class="ip-env-item__label">{{ call .T "tools.ip.env.public_ip" }}</div>
+            <div class="ip-env-item__value" id="envPublicIP">—</div>
+          </div>
+          <div class="ip-env-item">
+            <div class="ip-env-item__label">{{ call .T "tools.ip.env.ua" }}</div>
+            <div class="ip-env-item__value" id="envUA">—</div>
+          </div>
+          <div class="ip-env-item">
+            <div class="ip-env-item__label">{{ call .T "tools.ip.env.browser" }}</div>
+            <div class="ip-env-item__value" id="envBrowser">—</div>
+          </div>
+          <div class="ip-env-item">
+            <div class="ip-env-item__label">{{ call .T "tools.ip.env.os" }}</div>
+            <div class="ip-env-item__value" id="envOS">—</div>
+          </div>
+          <div class="ip-env-item">
+            <div class="ip-env-item__label">{{ call .T "tools.ip.env.lang" }}</div>
+            <div class="ip-env-item__value" id="envLang">—</div>
+          </div>
+          <div class="ip-env-item">
+            <div class="ip-env-item__label">{{ call .T "tools.ip.env.timezone" }}</div>
+            <div class="ip-env-item__value" id="envTimezone">—</div>
+          </div>
+          <div class="ip-env-item">
+            <div class="ip-env-item__label">{{ call .T "tools.ip.env.protocol" }}</div>
+            <div class="ip-env-item__value" id="envProtocol">—</div>
+          </div>
+          <div class="ip-env-item">
+            <div class="ip-env-item__label">{{ call .T "tools.ip.env.screen" }}</div>
+            <div class="ip-env-item__value" id="envScreen">—</div>
+          </div>
+          <div class="ip-env-item">
+            <div class="ip-env-item__label">{{ call .T "tools.ip.env.referrer" }}</div>
+            <div class="ip-env-item__value" id="envReferrer">—</div>
+          </div>
+        </div>
+        <p class="ip-env-hint">{{ call .T "tools.ip.env.hint" }}</p>
+      </div>
+    </section>
+
+    <!-- ===== Batch Lookup ===== -->
+    <section class="ip-section" aria-label="{{ call .T "tools.ip.batch.title" }}">
+      <div class="ip-workbench">
+        <h2 class="ip-section__title">
+          <svg class="icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="8" y1="6" x2="21" y2="6"></line><line x1="8" y1="12" x2="21" y2="12"></line><line x1="8" y1="18" x2="21" y2="18"></line><line x1="3" y1="6" x2="3.01" y2="6"></line><line x1="3" y1="12" x2="3.01" y2="12"></line><line x1="3" y1="18" x2="3.01" y2="18"></line></svg>
+          {{ call .T "tools.ip.batch.title" }}
+        </h2>
+        <p class="ip-muted" style="margin-bottom:10px">{{ call .T "tools.ip.batch.hint" }}</p>
+        <textarea class="ip-batch-textarea" id="batchInput" placeholder="8.8.8.8
+1.1.1.1
+github.com
+2001:4860:4860::8888" rows="5"></textarea>
+        <div style="display:flex;gap:8px;margin-top:10px">
+          <button class="btn btn--primary btn--sm" id="batchBtn" type="button"
+                  data-ga data-ga-action="batch_lookup" data-ga-category="dev-tool" data-ga-label="ip-batch">{{ call .T "tools.ip.batch.btn" }}</button>
+          <button class="btn btn--ghost btn--sm" id="batchClearBtn" type="button"
+                  data-ga data-ga-action="clear" data-ga-category="dev-tool" data-ga-label="ip-batch-clear">{{ call .T "tools.ip.lookup.clear" }}</button>
+        </div>
+        <div class="ip-batch-table-wrap ip-hidden" id="batchResultWrap">
+          <table class="ip-batch-table" id="batchTable">
+            <thead>
+              <tr>
+                <th>{{ call .T "tools.ip.batch.col_input" }}</th>
+                <th>{{ call .T "tools.ip.batch.col_country" }}</th>
+                <th>{{ call .T "tools.ip.batch.col_city" }}</th>
+                <th>{{ call .T "tools.ip.batch.col_isp" }}</th>
+                <th>{{ call .T "tools.ip.batch.col_asn" }}</th>
+              </tr>
+            </thead>
+            <tbody></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Privacy Note ===== -->
+    <section class="ip-section" aria-label="{{ call .T "tools.ip.privacy.title" }}">
+      <div class="ip-privacy">
+        <h3 class="ip-privacy__title">{{ call .T "tools.ip.privacy.title" }}</h3>
+        <p class="ip-privacy__text">{{ call .T "tools.ip.privacy.text" }}</p>
+      </div>
+    </section>
+
+    <!-- ===== Related Tools ===== -->
+    <section class="ip-section" aria-label="{{ call .T "tools.ip.related.title" }}">
+      <div class="ip-workbench" style="padding-bottom:16px">
+        <h2 class="ip-section__title">
+          <svg class="icon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"></rect><line x1="8" y1="21" x2="16" y2="21"></line><line x1="12" y1="17" x2="12" y2="21"></line></svg>
+          {{ call .T "tools.ip.related.title" }}
+        </h2>
+        <div class="ip-related-grid">
+          <a href="/dev/whois?lang={{ .Lang }}" class="ip-related-card"
+             data-ga data-ga-action="navigate" data-ga-category="dev-tool" data-ga-label="ip-related-whois">
+            <div class="ip-related-card__icon">🔍</div>
+            <h4 class="ip-related-card__title">WHOIS 查询</h4>
+            <p class="ip-related-card__desc">查询域名注册信息和到期时间</p>
+          </a>
+          <a href="/tools/timestamp?lang={{ .Lang }}" class="ip-related-card"
+             data-ga data-ga-action="navigate" data-ga-category="dev-tool" data-ga-label="ip-related-timestamp">
+            <div class="ip-related-card__icon">⏱</div>
+            <h4 class="ip-related-card__title">时间戳转换</h4>
+            <p class="ip-related-card__desc">Unix 时间戳与日期互转</p>
+          </a>
+          <a href="/dev/base64?lang={{ .Lang }}" class="ip-related-card"
+             data-ga data-ga-action="navigate" data-ga-category="dev-tool" data-ga-label="ip-related-base64">
+            <div class="ip-related-card__icon">🔤</div>
+            <h4 class="ip-related-card__title">Base64 编解码</h4>
+            <p class="ip-related-card__desc">在线 Base64 编码和解码工具</p>
+          </a>
+          <a href="/dev/hash?lang={{ .Lang }}" class="ip-related-card"
+             data-ga data-ga-action="navigate" data-ga-category="dev-tool" data-ga-label="ip-related-hash">
+            <div class="ip-related-card__icon">#</div>
+            <h4 class="ip-related-card__title">Hash 生成器</h4>
+            <p class="ip-related-card__desc">MD5、SHA-1、SHA-256 哈希计算</p>
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <!-- ===== Guide Banner ===== -->
+    <!-- Guide banner placeholder -->
+
+  </div><!-- /hash-main-area -->
+
+  <aside class="hash-sidebar-ad">
+    {{- template "partials/ad_slot.html" (dict "Ctx" . "SlotID" "dev-ip-right" "Size" "160x600" "MobileHide" true) }}
+  </aside>
+</div><!-- /hash-sidebar-layout -->
+
+<!-- Bottom Ad -->
+<div style="text-align:center;margin:20px auto;max-width:970px;padding:0 16px">
+  {{- template "partials/ad_slot.html" (dict "Ctx" . "SlotID" "dev-ip-bottom" "Size" "728x90" "Mobile" "320x50") }}
+</div>
+
+<!-- Toast -->
+<div id="ipToast" class="ip-toast"></div>
+
+</div>
+{{ end }}
+
+{{ define "extraScript" }}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/leaflet.min.js" crossorigin="anonymous"></script>
+<script src="/static/js/dev-ip.js?v={{ .AssetVer }}"></script>
+{{ end }}

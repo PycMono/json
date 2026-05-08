@@ -1,0 +1,924 @@
+{{ template "base" . }}
+
+{{ define "extraHead" }}
+<link rel="stylesheet" href="/static/css/ai-humanizer.css?v={{ .AssetVer }}">
+<link rel="stylesheet" href="/static/css/ai-humanize.css?v={{ .AssetVer }}">
+<link rel="stylesheet" href="/static/css/ai-tool-page.css?v={{ .AssetVer }}">
+<link rel="stylesheet" href="/static/css/ai-tool-nav.css?v={{ .AssetVer }}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous">
+
+<!-- PWA -->
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#6c47ff">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+
+<!-- SEO -->
+<meta name="keywords" content="{{ .Keywords }}">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="{{ .Canonical }}">
+{{ range $lang, $url := .HreflangMap }}<link rel="alternate" hreflang="{{ $lang }}" href="{{ $url }}">
+{{ end }}<link rel="alternate" hreflang="x-default" href="https://toolboxnova.com/ai/humanizer">
+
+<!-- OG -->
+<meta property="og:type"        content="website">
+<meta property="og:title"       content="{{ .Title }}">
+<meta property="og:description" content="{{ .Description }}">
+<meta property="og:url"         content="{{ .Canonical }}">
+<meta property="og:image"       content="{{ .OGImage }}">
+<meta property="og:site_name"   content="json">
+<meta name="twitter:card"       content="summary_large_image">
+<meta name="twitter:title"      content="{{ .Title }}">
+<meta name="twitter:description" content="{{ .Description }}">
+<meta name="twitter:image"      content="{{ .OGImage }}">
+
+<!-- JSON-LD SoftwareApplication -->
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"AI Humanizer — json","applicationCategory":"UtilitiesApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"description":"{{ .Description }}","url":"{{ .Canonical }}","aggregateRating":{"@type":"AggregateRating","ratingValue":"4.9","ratingCount":"12847","bestRating":"5","worstRating":"1"}}</script>
+
+<!-- i18n bridge -->
+<script>
+window.__i18n__ = {{ toJSON .Translations }};
+window.__lang__ = "{{ .Lang }}";
+</script>
+
+<!-- CDN libs -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/docx/8.2.2/docx.umd.min.js" defer></script>
+{{ end }}
+
+{{ define "content" }}
+{{ template "partials/ai_tool_nav.html" dict "T" .T "ActiveTool" "ai-humanizer" "IsHubPage" false }}
+
+<!-- ① Hero -->
+<section class="ah-hero" aria-label="AI Humanizer">
+  <div class="ah-hero__particles" aria-hidden="true">
+    <span class="ah-particle"></span><span class="ah-particle"></span>
+    <span class="ah-particle"></span><span class="ah-particle"></span>
+    <span class="ah-particle"></span>
+  </div>
+  <div class="ah-hero__inner">
+    <div class="ah-hero__badges">
+      <span class="ah-badge ah-badge--glow">{{ call .T "ah.hero.badge.free" }}</span>
+      <span class="ah-badge">{{ call .T "ah.hero.badge.undetectable" }}</span>
+      <span class="ah-badge">{{ call .T "ah.hero.badge.modes" }}</span>
+      <span class="ah-badge ah-badge--new">{{ call .T "ah.hero.badge.streaming" }}</span>
+      <span class="ah-badge">{{ call .T "ah.hero.badge.words" }}</span>
+    </div>
+    <h1 class="ah-hero__title">{{ call .T "ah.hero.title" }}</h1>
+    <p class="ah-hero__sub">{{ call .T "ah.hero.subtitle" }}</p>
+    <div class="ah-trust-bar" aria-label="Bypasses">
+      <span class="ah-trust-item">GPTZero</span>
+      <span class="ah-trust-item">Turnitin</span>
+      <span class="ah-trust-item">Copyleaks</span>
+      <span class="ah-trust-item">ZeroGPT</span>
+      <span class="ah-trust-item">Originality.ai</span>
+    </div>
+  </div>
+</section>
+
+<!-- ② Mode selector -->
+<div class="ah-mode-bar">
+  <div class="ah-container">
+    <div class="ah-mode-scroll" role="tablist" aria-label="{{ call .T "ah.mode.label" }}">
+      <button class="ah-mode-btn active" role="tab" data-mode="free"
+              aria-selected="true" onclick="AIHumanizer.setMode('free')"
+              data-ga data-ga-action="mode_select" data-ga-category="ai-humanizer" data-ga-label="mode_free">
+        <span>⚡</span><span>{{ call .T "ah.mode.free" }}</span>
+      </button>
+      <button class="ah-mode-btn" role="tab" data-mode="standard"
+              aria-selected="false" onclick="AIHumanizer.setMode('standard')"
+              data-ga data-ga-action="mode_select" data-ga-category="ai-humanizer" data-ga-label="mode_standard">
+        <span>⚖️</span><span>{{ call .T "ah.mode.standard" }}</span>
+      </button>
+      <button class="ah-mode-btn" role="tab" data-mode="smart"
+              aria-selected="false" onclick="AIHumanizer.setMode('smart')"
+              data-ga data-ga-action="mode_select" data-ga-category="ai-humanizer" data-ga-label="mode_smart">
+        <span>🧠</span><span>{{ call .T "ah.mode.smart" }}</span>
+      </button>
+      <button class="ah-mode-btn" role="tab" data-mode="easy"
+              aria-selected="false" onclick="AIHumanizer.setMode('easy')"
+              data-ga data-ga-action="mode_select" data-ga-category="ai-humanizer" data-ga-label="mode_easy">
+        <span>☀️</span><span>{{ call .T "ah.mode.easy" }}</span>
+      </button>
+      <button class="ah-mode-btn" role="tab" data-mode="creative"
+              aria-selected="false" onclick="AIHumanizer.setMode('creative')"
+              data-ga data-ga-action="mode_select" data-ga-category="ai-humanizer" data-ga-label="mode_creative">
+        <span>🎨</span><span>{{ call .T "ah.mode.creative" }}</span>
+      </button>
+      <button class="ah-mode-btn" role="tab" data-mode="academic"
+              aria-selected="false" onclick="AIHumanizer.setMode('academic')"
+              data-ga data-ga-action="mode_select" data-ga-category="ai-humanizer" data-ga-label="mode_academic">
+        <span>🎓</span><span>{{ call .T "ah.mode.academic" }}</span>
+      </button>
+      <button class="ah-mode-btn" role="tab" data-mode="formal"
+              aria-selected="false" onclick="AIHumanizer.setMode('formal')"
+              data-ga data-ga-action="mode_select" data-ga-category="ai-humanizer" data-ga-label="mode_formal">
+        <span>💼</span><span>{{ call .T "ah.mode.formal" }}</span>
+      </button>
+      <button class="ah-mode-btn" role="tab" data-mode="casual"
+              aria-selected="false" onclick="AIHumanizer.setMode('casual')"
+              data-ga data-ga-action="mode_select" data-ga-category="ai-humanizer" data-ga-label="mode_casual">
+        <span>😊</span><span>{{ call .T "ah.mode.casual" }}</span>
+      </button>
+      <button class="ah-mode-btn" role="tab" data-mode="aggressive"
+              aria-selected="false" onclick="AIHumanizer.setMode('aggressive')"
+              data-ga data-ga-action="mode_select" data-ga-category="ai-humanizer" data-ga-label="mode_aggressive">
+        <span>🔥</span><span>{{ call .T "ah.mode.aggressive" }}</span>
+        <span class="ah-mode-btn__badge">Best</span>
+      </button>
+      <button class="ah-mode-btn" role="tab" data-mode="ultra"
+              aria-selected="false" onclick="AIHumanizer.setMode('ultra')"
+              data-ga data-ga-action="mode_select" data-ga-category="ai-humanizer" data-ga-label="mode_ultra">
+        <span>🚀</span><span>{{ call .T "ah.mode.ultra" }}</span>
+      </button>
+    </div>
+    <div class="ah-mode-desc" id="ah-mode-desc">{{ call .T "ah.mode.standard.desc" }}</div>
+    <!-- Purpose selector -->
+    <div class="ah-purpose-bar" id="ah-purpose-bar">
+      <div class="ah-container">
+        <div class="ah-purpose-scroll" role="tablist" aria-label="{{ call .T "ah.purpose.label" }}">
+          <button class="ah-purpose-btn active" role="tab" data-purpose="general"
+                  onclick="AIHumanizer.setPurpose('general')"
+                  data-ga data-ga-action="purpose_select" data-ga-category="ai-humanizer" data-ga-label="purpose_general">
+            <span>🌐</span><span>{{ call .T "ah.purpose.general" }}</span>
+          </button>
+          <button class="ah-purpose-btn" role="tab" data-purpose="high_school"
+                  onclick="AIHumanizer.setPurpose('high_school')"
+                  data-ga data-ga-action="purpose_select" data-ga-category="ai-humanizer" data-ga-label="purpose_high_school">
+            <span>🏫</span><span>{{ call .T "ah.purpose.high_school" }}</span>
+          </button>
+          <button class="ah-purpose-btn" role="tab" data-purpose="university"
+                  onclick="AIHumanizer.setPurpose('university')"
+                  data-ga data-ga-action="purpose_select" data-ga-category="ai-humanizer" data-ga-label="purpose_university">
+            <span>🎓</span><span>{{ call .T "ah.purpose.university" }}</span>
+          </button>
+          <button class="ah-purpose-btn" role="tab" data-purpose="academic"
+                  onclick="AIHumanizer.setPurpose('academic')"
+                  data-ga data-ga-action="purpose_select" data-ga-category="ai-humanizer" data-ga-label="purpose_academic">
+            <span>📚</span><span>{{ call .T "ah.purpose.academic" }}</span>
+          </button>
+          <button class="ah-purpose-btn" role="tab" data-purpose="journalist"
+                  onclick="AIHumanizer.setPurpose('journalist')"
+                  data-ga data-ga-action="purpose_select" data-ga-category="ai-humanizer" data-ga-label="purpose_journalist">
+            <span>📰</span><span>{{ call .T "ah.purpose.journalist" }}</span>
+          </button>
+          <button class="ah-purpose-btn" role="tab" data-purpose="marketing"
+                  onclick="AIHumanizer.setPurpose('marketing')"
+                  data-ga data-ga-action="purpose_select" data-ga-category="ai-humanizer" data-ga-label="purpose_marketing">
+            <span>📢</span><span>{{ call .T "ah.purpose.marketing" }}</span>
+          </button>
+          <button class="ah-purpose-btn" role="tab" data-purpose="business"
+                  onclick="AIHumanizer.setPurpose('business')"
+                  data-ga data-ga-action="purpose_select" data-ga-category="ai-humanizer" data-ga-label="purpose_business">
+            <span>💼</span><span>{{ call .T "ah.purpose.business" }}</span>
+          </button>
+          <button class="ah-purpose-btn" role="tab" data-purpose="story"
+                  onclick="AIHumanizer.setPurpose('story')"
+                  data-ga data-ga-action="purpose_select" data-ga-category="ai-humanizer" data-ga-label="purpose_story">
+            <span>✍️</span><span>{{ call .T "ah.purpose.story" }}</span>
+          </button>
+          <button class="ah-purpose-btn" role="tab" data-purpose="seo"
+                  onclick="AIHumanizer.setPurpose('seo')"
+                  data-ga data-ga-action="purpose_select" data-ga-category="ai-humanizer" data-ga-label="purpose_seo">
+            <span>🔍</span><span>{{ call .T "ah.purpose.seo" }}</span>
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ③ Privacy notice -->
+<div class="ah-privacy-bar">
+  <div class="ah-container">
+    <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+      <rect x="3" y="11" width="18" height="11" rx="2" ry="2"/><path d="M7 11V7a5 5 0 0110 0v4"/>
+    </svg>
+    <span>{{ call .T "ah.privacy.notice" }}</span>
+  </div>
+</div>
+
+<!-- ④ Advanced options (collapsible) -->
+<div class="ah-advanced-bar">
+  <div class="ah-container">
+    <button class="ah-advanced-toggle" onclick="AIHumanizer.toggleAdvanced()" type="button"
+            data-ga data-ga-action="toggle" data-ga-category="ai-humanizer" data-ga-label="advanced_options">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.65 1.65 0 00.33 1.82l.06.06a2 2 0 010 2.83 2 2 0 01-2.83 0l-.06-.06a1.65 1.65 0 00-1.82-.33 1.65 1.65 0 00-1 1.51V21a2 2 0 01-2 2h-.09a1.65 1.65 0 00-1.51-1 1.65 1.65 0 00-1 .82l-.06.06a2 2 0 01-2.83-2.83l.06-.06A1.65 1.65 0 004.68 15a1.65 1.65 0 00-1.51-1H3a2 2 0 01-2-2v-.09A1.65 1.65 0 004.6 9a1.65 1.65 0 00-.33-1.82l-.06-.06a2 2 0 012.83-2.83l.06.06A1.65 1.65 0 009 4.68a1.65 1.65 0 001-1.51V3a2 2 0 012-2h.09a1.65 1.65 0 001.51 1 1.65 1.65 0 001-.82l.06-.06a2 2 0 012.83 2.83l-.06.06A1.65 1.65 0 0019.4 9a1.65 1.65 0 001.51 1H21a2 2 0 012 2v.09a1.65 1.65 0 00-1 1.51z"/>
+      </svg>
+      <span>{{ call .T "ah.advanced.title" }}</span>
+      <svg class="ah-advanced-chevron" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <polyline points="6 9 12 15 18 9"/>
+      </svg>
+    </button>
+    <div class="ah-advanced-panel" id="ah-advanced-panel">
+      <div class="ah-advanced-grid">
+        <!-- Strength slider -->
+        <div class="ah-advanced-item">
+          <label class="ah-advanced-label">{{ call .T "ah.advanced.strength" }}</label>
+          <div class="ah-strength-wrap">
+            <input type="range" id="ah-strength" class="ah-strength-range" min="1" max="5" value="3"
+                   oninput="AIHumanizer.onStrengthChange(event)">
+            <div class="ah-strength-labels">
+              <span>1</span><span>2</span><span>3</span><span>4</span><span>5</span>
+            </div>
+          </div>
+          <span class="ah-strength-val" id="ah-strength-val">{{ call .T "ah.advanced.strength.default" }}</span>
+        </div>
+        <!-- Dialect selector -->
+        <div class="ah-advanced-item" id="ah-dialect-wrap">
+          <label class="ah-advanced-label">{{ call .T "ah.advanced.dialect" }}</label>
+          <select id="ah-dialect-sel" class="ah-select" onchange="AIHumanizer.onDialectChange(event)">
+            <option value="">{{ call .T "ah.advanced.dialect.default" }}</option>
+            <option value="us">American English</option>
+            <option value="uk">British English</option>
+            <option value="au">Australian English</option>
+            <option value="ca">Canadian English</option>
+          </select>
+        </div>
+        <!-- Keyword freeze -->
+        <div class="ah-advanced-item ah-advanced-item--full">
+          <label class="ah-advanced-label">{{ call .T "ah.advanced.keywords" }}</label>
+          <div class="ah-keywords-wrap" id="ah-keywords-wrap">
+            <div class="ah-keyword-tags" id="ah-keyword-tags"></div>
+            <input type="text" id="ah-keyword-input" class="ah-keyword-input"
+                   placeholder="{{ call .T "ah.advanced.keywords.placeholder" }}"
+                   onkeydown="AIHumanizer.onKeywordKeydown(event)">
+          </div>
+          <span class="ah-keyword-count" id="ah-keyword-count">0/20</span>
+        </div>
+        <!-- SEO Keywords -->
+        <div class="ah-advanced-item ah-advanced-item--full">
+          <label class="ah-advanced-label">{{ call .T "ah.advanced.seo_keywords" }}</label>
+          <div class="ah-keywords-wrap" id="ah-seo-keywords-wrap">
+            <div class="ah-keyword-tags" id="ah-seo-keyword-tags"></div>
+            <input type="text" id="ah-seo-keyword-input" class="ah-keyword-input"
+                   placeholder="{{ call .T "ah.advanced.seo_keywords.placeholder" }}"
+                   onkeydown="AIHumanizer.onSEOKeywordKeydown(event)">
+          </div>
+          <span class="ah-keyword-count" id="ah-seo-keyword-count">0/10</span>
+        </div>
+        <!-- Custom writing style -->
+        <div class="ah-advanced-item ah-advanced-item--full">
+          <label class="ah-advanced-label">{{ call .T "ah.advanced.style" }}</label>
+          <textarea id="ah-style-sample" class="ah-style-textarea"
+                    placeholder="{{ call .T "ah.advanced.style.placeholder" }}"
+                    oninput="AIHumanizer.onStyleChange(event)"
+                    rows="3"></textarea>
+          <span class="ah-keyword-count" id="ah-style-count">0/2000 {{ call .T "ah.advanced.style.chars" }}</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ⑤ Main workspace -->
+<div class="ah-outer-wrap">
+<div class="ah-workspace-wrap">
+  <div class="ah-container">
+
+    <div class="ah-workspace" id="ah-workspace">
+
+      <!-- LEFT: Input panel with tabs -->
+      <div class="ah-panel ah-panel--input" id="ah-panel-input"
+           ondragover="AIHumanizer.onDragOver(event)"
+           ondragleave="AIHumanizer.onDragLeave(event)"
+           ondrop="AIHumanizer.onDrop(event)">
+
+        <div class="ah-panel__hd">
+          <div class="ah-input-tabs">
+            <button class="ah-input-tab active" data-tab="paste" onclick="AIHumanizer.switchInputTab('paste')"
+                    data-ga data-ga-action="tab_switch" data-ga-category="ai-humanizer" data-ga-label="input_paste">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M16 4h2a2 2 0 012 2v14a2 2 0 01-2 2H6a2 2 0 01-2-2V6a2 2 0 012-2h2"/><rect x="8" y="2" width="8" height="4" rx="1"/></svg>
+              {{ call .T "ah.input.tab.paste" }}
+            </button>
+            <button class="ah-input-tab" data-tab="generate" onclick="AIHumanizer.switchInputTab('generate')"
+                    data-ga data-ga-action="tab_switch" data-ga-category="ai-humanizer" data-ga-label="input_generate">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/></svg>
+              {{ call .T "ah.input.tab.generate" }}
+            </button>
+            <button class="ah-input-tab" data-tab="url" onclick="AIHumanizer.switchInputTab('url')"
+                    data-ga data-ga-action="tab_switch" data-ga-category="ai-humanizer" data-ga-label="input_url">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+              {{ call .T "ah.input.tab.url" }}
+            </button>
+          </div>
+          <div class="ah-panel__actions">
+            <!-- AI score ring (input) -->
+            <div class="ah-score-ring" title="{{ call .T "ah.result.aiscore" }}">
+              <canvas id="ah-chart-input" width="52" height="52" aria-hidden="true"></canvas>
+              <div class="ah-score-ring__lbl">
+                <span class="ah-score-ring__val" id="ah-score-input-val">—</span>
+                <span class="ah-score-ring__unit">AI</span>
+              </div>
+            </div>
+            <button class="ah-btn ah-btn--sm ah-btn--outline" id="ah-detect-btn"
+                    onclick="AIHumanizer.detectAI('input')"
+                    data-ga data-ga-action="detect" data-ga-category="ai-humanizer" data-ga-label="detect_input">
+              {{ call .T "ah.action.detect" }}
+            </button>
+            <label class="ah-btn ah-btn--sm ah-btn--ghost" for="ah-file-upload"
+                   title="{{ call .T "ah.input.upload.hint" }}" style="cursor:pointer"
+                   data-ga data-ga-action="upload" data-ga-category="ai-humanizer" data-ga-label="file_upload">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M17 8l-5-5-5 5M12 3v12"/>
+              </svg>
+              {{ call .T "ah.input.upload" }}
+            </label>
+            <input type="file" id="ah-file-upload" class="sr-only"
+                   accept=".txt,.pdf,.docx"
+                   onchange="AIHumanizer.onFileSelect(event)">
+          </div>
+        </div>
+
+        <div class="ah-panel__body" style="position:relative">
+          <!-- Paste mode textarea -->
+          <textarea id="ah-input" class="ah-textarea"
+                    placeholder="{{ call .T "ah.input.placeholder" }}"
+                    oninput="AIHumanizer.onInputChange(event)"
+                    spellcheck="false" autocomplete="off"
+                    aria-label="{{ call .T "ah.input.panel_title" }}"></textarea>
+          <!-- AI Generate mode (hidden by default) -->
+          <div id="ah-generate-wrap" style="display:none">
+            <textarea id="ah-generate-input" class="ah-textarea"
+                      placeholder="{{ call .T "ah.input.generate.placeholder" }}"
+                      oninput="AIHumanizer.onGenerateInputChange(event)"
+                      spellcheck="false" autocomplete="off"
+                      aria-label="{{ call .T "ah.input.tab.generate" }}"></textarea>
+            <div class="ah-generate-bar">
+              <select id="ah-generate-length" class="ah-select" style="max-width:120px">
+                <option value="short">{{ call .T "ah.input.generate.short" }}</option>
+                <option value="medium" selected>{{ call .T "ah.input.generate.medium" }}</option>
+                <option value="long">{{ call .T "ah.input.generate.long" }}</option>
+              </select>
+              <button class="ah-btn ah-btn--sm ah-btn--primary" id="ah-generate-btn"
+                      onclick="AIHumanizer.generateContent()"
+                      data-ga data-ga-action="generate" data-ga-category="ai-humanizer" data-ga-label="generate_content">
+                <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <circle cx="12" cy="12" r="10"/><path d="M12 6v6l4 2"/>
+                </svg>
+                {{ call .T "ah.input.generate.btn" }}
+              </button>
+            </div>
+          </div>
+          <!-- URL input mode (hidden by default) -->
+          <div id="ah-url-wrap" style="display:none;padding:20px">
+            <input type="url" id="ah-url-input" class="ah-url-input"
+                   placeholder="{{ call .T "ah.input.url.placeholder" }}"
+                   spellcheck="false" autocomplete="off"
+                   aria-label="{{ call .T "ah.input.tab.url" }}">
+            <button class="ah-btn ah-btn--sm ah-btn--primary" id="ah-url-btn"
+                    onclick="AIHumanizer.fetchURL()" style="margin-top:12px"
+                    data-ga data-ga-action="fetch" data-ga-category="ai-humanizer" data-ga-label="fetch_url">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9"/>
+              </svg>
+              {{ call .T "ah.input.url.btn" }}
+            </button>
+          </div>
+          <div class="ah-drop-overlay" aria-hidden="true">
+            <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+              <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M17 8l-5-5-5 5M12 3v12"/>
+            </svg>
+            <span>Drop file here</span>
+          </div>
+        </div>
+
+        <div class="ah-panel__foot">
+          <span id="ah-input-wc">0 words</span>
+          <div class="ah-panel__foot-actions">
+            <button class="ah-btn ah-btn--icon ah-btn--ghost" onclick="AIHumanizer.clearInput()"
+                    title="Clear input"
+                    data-ga data-ga-action="clear" data-ga-category="ai-humanizer" data-ga-label="clear_input">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/>
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- MIDDLE: Controls + Humanize button -->
+      <div class="ah-divider">
+        <div class="ah-toggle-row">
+          <input type="checkbox" id="ah-preserve" checked
+                 onchange="AIHumanizer.onPreserveChange(event)">
+          <label for="ah-preserve">{{ call .T "ah.options.preserve_format" }}</label>
+        </div>
+        <button class="ah-btn-humanize" id="ah-humanize-btn"
+                onclick="AIHumanizer.humanize()"
+                data-ga data-ga-action="humanize" data-ga-category="ai-humanizer" data-ga-label="start_humanize">
+          <span class="ah-btn-humanize__icon">🧬</span>
+          {{ call .T "ah.action.humanize" }}
+        </button>
+      </div>
+
+      <!-- RIGHT: Output panel -->
+      <div class="ah-panel ah-panel--output" id="ah-panel-output">
+
+        <div class="ah-panel__hd">
+          <span class="ah-panel__title">{{ call .T "ah.result.panel_title" }}</span>
+          <div class="ah-panel__actions">
+            <!-- AI score ring (output) -->
+            <div class="ah-score-ring" title="{{ call .T "ah.result.aiscore" }}">
+              <canvas id="ah-chart-output" width="52" height="52" aria-hidden="true"></canvas>
+              <div class="ah-score-ring__lbl">
+                <span class="ah-score-ring__val" id="ah-score-output-val">—</span>
+                <span class="ah-score-ring__unit">AI</span>
+              </div>
+            </div>
+            <!-- Readability badge -->
+            <div class="ah-readability" id="ah-readability">
+              <span style="font-size:.7rem;color:var(--ah-tx3)">{{ call .T "ah.result.readability" }}</span>
+              <span class="ah-readability__val" id="ah-readability-val">—</span>
+            </div>
+            <!-- Grammar check button -->
+            <button class="ah-btn ah-btn--sm ah-btn--ghost" id="ah-grammar-btn"
+                    onclick="AIHumanizer.checkGrammar()"
+                    style="display:none"
+                    title="{{ call .T "ah.grammar.check" }}"
+                    data-ga data-ga-action="check" data-ga-category="ai-humanizer" data-ga-label="grammar_check">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+              </svg>
+              {{ call .T "ah.grammar.check" }}
+            </button>
+          </div>
+        </div>
+
+        <div class="ah-panel__body">
+          <div class="ah-output-wrap">
+            <!-- Output tabs: Text / Diff / Authorship -->
+            <div class="ah-output-tabs" id="ah-output-tabs" style="display:none">
+              <button class="ah-output-tab active" data-view="text" onclick="AIHumanizer.switchOutputView('text')"
+                      data-ga data-ga-action="tab_switch" data-ga-category="ai-humanizer" data-ga-label="output_text">{{ call .T "ah.output.tab.text" }}</button>
+              <button class="ah-output-tab" data-view="diff" onclick="AIHumanizer.switchOutputView('diff')"
+                      data-ga data-ga-action="tab_switch" data-ga-category="ai-humanizer" data-ga-label="output_diff">{{ call .T "ah.output.tab.diff" }}</button>
+              <button class="ah-output-tab" data-view="authorship" onclick="AIHumanizer.switchOutputView('authorship')"
+                      data-ga data-ga-action="tab_switch" data-ga-category="ai-humanizer" data-ga-label="output_authorship">{{ call .T "ah.output.tab.authorship" }}</button>
+            </div>
+            <!-- Variant tabs (hidden by default) -->
+            <div class="ah-variant-tabs" id="ah-variant-tabs" style="display:none">
+              <button class="ah-variant-tab active" data-variant="0" onclick="AIHumanizer.switchVariant(0)"
+                      data-ga data-ga-action="tab_switch" data-ga-category="ai-humanizer" data-ga-label="variant_a">{{ call .T "ah.variant.a" }}</button>
+              <button class="ah-variant-tab" data-variant="1" onclick="AIHumanizer.switchVariant(1)"
+                      data-ga data-ga-action="tab_switch" data-ga-category="ai-humanizer" data-ga-label="variant_b">{{ call .T "ah.variant.b" }}</button>
+              <button class="ah-variant-tab" data-variant="2" onclick="AIHumanizer.switchVariant(2)"
+                      data-ga data-ga-action="tab_switch" data-ga-category="ai-humanizer" data-ga-label="variant_c">{{ call .T "ah.variant.c" }}</button>
+            </div>
+            <!-- Variant count selector in global bar -->
+            <div class="ah-variant-selector" style="display:none" id="ah-variant-selector">
+              <label>{{ call .T "ah.variant.count" }}</label>
+              <select id="ah-variant-count" onchange="AIHumanizer.onVariantCountChange(event)">
+                <option value="1" selected>1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+              </select>
+            </div>
+            <div class="ah-output-empty" id="ah-output-empty">
+              <div class="ah-output-empty__icon">🧬</div>
+              <p class="ah-output-empty__text">{{ call .T "ah.result.empty" }}</p>
+            </div>
+            <div class="ah-output-proc" id="ah-output-proc" style="display:none">
+              <span class="ah-cursor"></span>
+              <span>{{ call .T "ah.status.streaming" }}</span>
+            </div>
+            <div class="ah-output-text" id="ah-output-text"
+                 style="display:none"
+                 aria-live="polite"
+                 aria-label="{{ call .T "ah.result.panel_title" }}"></div>
+            <!-- Diff view (hidden by default) -->
+            <div class="ah-diff-view" id="ah-diff-view" style="display:none">
+              <div class="ah-diff-toolbar">
+                <button class="ah-diff-btn active" data-diff-mode="side" onclick="AIHumanizer.setDiffMode('side')"
+                        data-ga data-ga-action="tab_switch" data-ga-category="ai-humanizer" data-ga-label="diff_side">{{ call .T "ah.diff.side" }}</button>
+                <button class="ah-diff-btn" data-diff-mode="inline" onclick="AIHumanizer.setDiffMode('inline')"
+                        data-ga data-ga-action="tab_switch" data-ga-category="ai-humanizer" data-ga-label="diff_inline">{{ call .T "ah.diff.inline" }}</button>
+              </div>
+              <div class="ah-diff-stats" id="ah-diff-stats"></div>
+              <div class="ah-diff-content" id="ah-diff-content"></div>
+            </div>
+            <!-- Authorship view (hidden by default) -->
+            <div class="ah-authorship-view" id="ah-authorship-view" style="display:none">
+              <div class="ah-authorship-legend">
+                <span class="ah-authorship-item ah-authorship-original">{{ call .T "ah.authorship.original" }}</span>
+                <span class="ah-authorship-item ah-authorship-ai">{{ call .T "ah.authorship.ai" }}</span>
+                <span class="ah-authorship-item ah-authorship-manual">{{ call .T "ah.authorship.manual" }}</span>
+              </div>
+              <div class="ah-authorship-content" id="ah-authorship-content"></div>
+              <div class="ah-authorship-stats" id="ah-authorship-stats"></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="ah-panel__foot">
+          <div style="display:flex;align-items:center;gap:8px;">
+            <span id="ah-output-wc">0 words</span>
+            <span class="ah-improve" id="ah-improve" style="display:none">
+              <span id="ah-improve-text"></span>
+            </span>
+          </div>
+          <div class="ah-panel__foot-actions">
+            <button class="ah-btn ah-btn--sm ah-btn--outline" id="ah-humanize-again"
+                    onclick="AIHumanizer.humanize(true)"
+                    style="display:none"
+                    data-ga data-ga-action="humanize" data-ga-category="ai-humanizer" data-ga-label="humanize_again">
+              {{ call .T "ah.action.humanize_again" }}
+            </button>
+            <!-- Autopilot deep rewrite button -->
+            <button class="ah-btn ah-btn--sm ah-btn--outline ah-btn--autopilot" id="ah-autopilot-btn"
+                    onclick="AIHumanizer.autopilot()"
+                    style="display:none"
+                    title="{{ call .T "ah.autopilot.desc" }}"
+                    data-ga data-ga-action="autopilot" data-ga-category="ai-humanizer" data-ga-label="autopilot">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 2v4m0 12v4M4.93 4.93l2.83 2.83m8.48 8.48l2.83 2.83M2 12h4m12 0h4M4.93 19.07l2.83-2.83m8.48-8.48l2.83-2.83"/>
+              </svg>
+              {{ call .T "ah.autopilot.title" }}
+            </button>
+            <!-- Cross-tool: send humanized text to AI Detector -->
+            <button class="ah-btn ah-btn--sm ah-btn--ghost ah-btn--cross" id="ah-goto-detector"
+                    onclick="AIHumanizer.goToDetector()"
+                    style="display:none"
+                    title="{{ call .T "ah.action.goto_detector" }}"
+                    data-ga data-ga-action="navigate" data-ga-category="ai-humanizer" data-ga-label="goto_detector">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+              </svg>
+              {{ call .T "ah.action.goto_detector" }}
+            </button>
+            <!-- Plagiarism check button -->
+            <button class="ah-btn ah-btn--sm ah-btn--ghost ah-btn--plagiarism" id="ah-plagiarism-btn"
+                    onclick="AIHumanizer.checkPlagiarism()"
+                    style="display:none"
+                    title="{{ call .T "ah.plagiarism.check" }}"
+                    data-ga data-ga-action="check" data-ga-category="ai-humanizer" data-ga-label="plagiarism_check">
+              <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
+              </svg>
+              {{ call .T "ah.plagiarism.title" }}
+            </button>
+            <button class="ah-btn ah-btn--sm ah-btn--primary" id="ah-copy-btn"
+                    onclick="AIHumanizer.copyOutput()"
+                    data-ga data-ga-action="copy" data-ga-category="ai-humanizer" data-ga-label="copy_output">
+              {{ call .T "ah.action.copy" }}
+            </button>
+            <div class="ah-dropdown" id="ah-dl-dropdown">
+              <button class="ah-btn ah-btn--sm ah-btn--ghost ah-btn--icon"
+                      data-dl-toggle onclick="AIHumanizer.toggleDownloadMenu()"
+                      aria-haspopup="true" aria-label="Download"
+                      data-ga data-ga-action="toggle" data-ga-category="ai-humanizer" data-ga-label="download_menu">
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/>
+                </svg>
+              </button>
+              <div class="ah-dropdown__menu">
+                <button class="ah-dropdown__item" id="btn-download-txt"
+                        onclick="AIHumanizer.downloadTxt()"
+                        data-ga data-ga-action="download" data-ga-category="ai-humanizer" data-ga-label="download_txt">{{ call .T "ah.action.download.txt" }}</button>
+                <button class="ah-dropdown__item" id="btn-download-docx"
+                        onclick="AIHumanizer.downloadDocx()"
+                        data-ga data-ga-action="download" data-ga-category="ai-humanizer" data-ga-label="download_docx">{{ call .T "ah.action.download.docx" }}</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+    </div><!-- /workspace -->
+
+    <!-- Progress bar -->
+    <div class="ah-progress" id="ah-progress" style="display:none">
+      <div class="ah-progress__fill" id="ah-progress-fill"></div>
+    </div>
+
+    <!-- Global action bar -->
+    <div class="ah-global-bar">
+      <button class="ah-btn ah-btn--ghost ah-btn--sm" onclick="AIHumanizer.clearAll()"
+              data-ga data-ga-action="clear" data-ga-category="ai-humanizer" data-ga-label="clear_all">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6M10 11v6M14 11v6M9 6V4h6v2"/>
+        </svg>
+        {{ call .T "ah.action.clear" }}
+      </button>
+      <button class="ah-btn ah-btn--ghost ah-btn--sm" onclick="AIHumanizer.toggleHistory()"
+              data-ga data-ga-action="toggle" data-ga-category="ai-humanizer" data-ga-label="history_drawer">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
+        </svg>
+        {{ call .T "ah.history.title" }}
+      </button>
+      <!-- Batch processing -->
+      <button class="ah-btn ah-btn--ghost ah-btn--sm" onclick="AIHumanizer.toggleBatch()" id="ah-batch-btn"
+              data-ga data-ga-action="toggle" data-ga-category="ai-humanizer" data-ga-label="batch_drawer">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="2" y="2" width="20" height="20" rx="2"/><path d="M7 7h10M7 12h10M7 17h10"/>
+        </svg>
+        {{ call .T "ah.batch.title" }}
+      </button>
+      <!-- Keyboard shortcuts -->
+      <button class="ah-btn ah-btn--ghost ah-btn--sm" onclick="AIHumanizer.toggleShortcuts()"
+              data-ga data-ga-action="toggle" data-ga-category="ai-humanizer" data-ga-label="shortcuts_modal">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <rect x="2" y="4" width="20" height="16" rx="2"/><path d="M6 8h.01M10 8h.01M14 8h.01M18 8h.01M8 12h8M6 16h.01M18 16h.01M10 16h4"/>
+        </svg>
+        {{ call .T "ah.shortcuts.title" }}
+      </button>
+      <!-- Paraphraser mode toggle -->
+      <button class="ah-btn ah-btn--ghost ah-btn--sm" id="ah-paraphrase-btn" onclick="AIHumanizer.toggleParaphrase()"
+              data-ga data-ga-action="toggle" data-ga-category="ai-humanizer" data-ga-label="paraphrase_mode">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/>
+        </svg>
+        <span id="ah-paraphrase-label">{{ call .T "ah.paraphrase.title" }}</span>
+      </button>
+      <button class="ah-btn ah-btn--ghost ah-btn--icon" onclick="AIHumanizer.toggleTheme()"
+              aria-label="Toggle theme"
+              data-ga data-ga-action="toggle" data-ga-category="ai-humanizer" data-ga-label="theme_toggle">
+        <svg id="ah-icon-sun" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <circle cx="12" cy="12" r="5"/>
+          <line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/>
+          <line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/>
+          <line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/>
+          <line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/>
+        </svg>
+        <svg id="ah-icon-moon" width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:none">
+          <path d="M21 12.79A9 9 0 1111.21 3a7 7 0 0010 9.79z"/>
+        </svg>
+      </button>
+    </div>
+
+  </div><!-- /container -->
+</div><!-- /workspace-wrap -->
+
+</div><!-- /outer-wrap -->
+
+
+<!-- ④ Bottom Editorial Section (humanizeai.pro style) -->
+<section class="ah-editorial">
+  <div class="ah-container">
+
+    <!-- Detection Results Panel (hidden by default) -->
+    <div class="ah-detection-panel" id="ah-detection-panel" style="display:none">
+      <h3 class="ah-detection-title">{{ call .T "ah.detection.title" }}</h3>
+      <!-- Detector cards row -->
+      <div class="ah-detector-cards" id="ah-detector-cards"></div>
+      <!-- Forensic evidence -->
+      <div class="ah-forensic-panel" id="ah-forensic-panel" style="display:none">
+        <h4>{{ call .T "ah.forensic.title" }}</h4>
+        <div class="ah-forensic-list" id="ah-forensic-list"></div>
+      </div>
+      <!-- Linguistic metrics -->
+      <div class="ah-metrics-panel" id="ah-metrics-panel" style="display:none">
+        <h4>{{ call .T "ah.metrics.title" }}</h4>
+        <div class="ah-metrics-grid" id="ah-metrics-grid"></div>
+      </div>
+      <!-- Model signature -->
+      <div class="ah-model-sig-panel" id="ah-model-sig-panel" style="display:none">
+        <h4>{{ call .T "ah.model_sig.title" }}</h4>
+        <div class="ah-model-sig-grid" id="ah-model-sig-grid"></div>
+      </div>
+      <!-- Verdict summary -->
+      <div class="ah-verdict-panel" id="ah-verdict-panel" style="display:none">
+        <div class="ah-verdict-summary" id="ah-verdict-summary"></div>
+        <div class="ah-verdict-reasoning" id="ah-verdict-reasoning"></div>
+      </div>
+      <!-- Plagiarism results -->
+      <div class="ah-plagiarism-panel" id="ah-plagiarism-panel" style="display:none">
+        <h4>{{ call .T "ah.plagiarism.title" }}</h4>
+        <div class="ah-plagiarism-score" id="ah-plagiarism-score"></div>
+        <div class="ah-plagiarism-sources" id="ah-plagiarism-sources"></div>
+        <div class="ah-plagiarism-sentences" id="ah-plagiarism-sentences"></div>
+      </div>
+    </div>
+
+    <!-- Stats row -->
+    <div class="ah-ed-stats">
+      <div class="ah-ed-stat">
+        <span class="ah-ed-stat__num">10,000+</span>
+        <span class="ah-ed-stat__lbl">{{ call .T "ah.ed.stat_words" }}</span>
+      </div>
+      <div class="ah-ed-stat">
+        <span class="ah-ed-stat__num">10</span>
+        <span class="ah-ed-stat__lbl">{{ call .T "ah.ed.stat_modes" }}</span>
+      </div>
+      <div class="ah-ed-stat">
+        <span class="ah-ed-stat__num">50+</span>
+        <span class="ah-ed-stat__lbl">{{ call .T "ah.ed.stat_langs" }}</span>
+      </div>
+      <div class="ah-ed-stat">
+        <span class="ah-ed-stat__num">100%</span>
+        <span class="ah-ed-stat__lbl">{{ call .T "ah.ed.stat_free" }}</span>
+      </div>
+    </div>
+
+    <!-- Content grid -->
+    <div class="ah-ed-grid">
+      <div class="ah-ed-card ah-ed-card--wide">
+        <h3>{{ call .T "ah.ed.h1" }}</h3>
+        <p>{{ call .T "ah.ed.p1" }}</p>
+      </div>
+      <div class="ah-ed-card">
+        <h3>{{ call .T "ah.ed.h2" }}</h3>
+        <p>{{ call .T "ah.ed.p2" }}</p>
+      </div>
+      <div class="ah-ed-card">
+        <h3>{{ call .T "ah.ed.h3" }}</h3>
+        <p>{{ call .T "ah.ed.p3" }}</p>
+      </div>
+      <div class="ah-ed-card">
+        <h3>{{ call .T "ah.ed.h4" }}</h3>
+        <p>{{ call .T "ah.ed.p4" }}</p>
+      </div>
+      <div class="ah-ed-card">
+        <h3>{{ call .T "ah.ed.h5" }}</h3>
+        <p>{{ call .T "ah.ed.p5" }}</p>
+      </div>
+      <div class="ah-ed-card">
+        <h3>{{ call .T "ah.ed.h6" }}</h3>
+        <p>{{ call .T "ah.ed.p6" }}</p>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- SEO Article Section -->
+{{ if .SEOArticle }}
+<section class="ah-seo-article container" aria-label="Learn more about AI Humanizer">
+  <div class="ah-seo-content">
+    {{ .SEOArticle }}
+  </div>
+</section>
+{{ end }}
+
+<!-- Bottom Tool Navigation -->
+<section class="atp-bottom-nav">
+  <div class="atp-section-inner">
+    <p class="atp-bottom-nav__desc">{{ call .T "bottom_nav.desc" }}</p>
+    <div class="atp-bottom-nav__grid">
+      <a class="atp-bottom-nav__card" href="/ai/humanize" data-ga data-ga-action="navigate" data-ga-category="ai-humanizer" data-ga-label="nav_humanize_hub"><i class="fa-solid fa-house"></i><span>{{ call .T "bottom_nav.humanizer" }} Hub</span></a>
+      <a class="atp-bottom-nav__card" href="/ai/detector" data-ga data-ga-action="navigate" data-ga-category="ai-humanizer" data-ga-label="nav_detector"><i class="fa-solid fa-magnifying-glass-chart"></i><span>{{ call .T "bottom_nav.detector" }}</span></a>
+      <a class="atp-bottom-nav__card" href="/ai/essay" data-ga data-ga-action="navigate" data-ga-category="ai-humanizer" data-ga-label="nav_essay"><i class="fa-solid fa-pen-fancy"></i><span>{{ call .T "bottom_nav.essay" }}</span></a>
+      <a class="atp-bottom-nav__card" href="/ai/sentence-rewriter" data-ga data-ga-action="navigate" data-ga-category="ai-humanizer" data-ga-label="nav_sentence_rewriter"><i class="fa-solid fa-rotate"></i><span>{{ call .T "bottom_nav.sentence_rewriter" }}</span></a>
+      <a class="atp-bottom-nav__card" href="/ai/paragraph-rewriter" data-ga data-ga-action="navigate" data-ga-category="ai-humanizer" data-ga-label="nav_paragraph_rewriter"><i class="fa-solid fa-align-left"></i><span>{{ call .T "bottom_nav.paragraph_rewriter" }}</span></a>
+      <a class="atp-bottom-nav__card" href="/ai/article-rewriter" data-ga data-ga-action="navigate" data-ga-category="ai-humanizer" data-ga-label="nav_article_rewriter"><i class="fa-solid fa-file-lines"></i><span>{{ call .T "bottom_nav.article_rewriter" }}</span></a>
+      <a class="atp-bottom-nav__card" href="/ai/detector/for-academic-writing" data-ga data-ga-action="navigate" data-ga-category="ai-humanizer" data-ga-label="nav_detector_academic"><i class="fa-solid fa-graduation-cap"></i><span>{{ call .T "bottom_nav.detector_academic" }}</span></a>
+      <a class="atp-bottom-nav__card" href="/ai/for-college" data-ga data-ga-action="navigate" data-ga-category="ai-humanizer" data-ga-label="nav_for_college"><i class="fa-solid fa-school"></i><span>{{ call .T "bottom_nav.for_college" }}</span></a>
+      <a class="atp-bottom-nav__card" href="/ai/for-professors" data-ga data-ga-action="navigate" data-ga-category="ai-humanizer" data-ga-label="nav_for_professors"><i class="fa-solid fa-chalkboard-user"></i><span>{{ call .T "bottom_nav.for_professors" }}</span></a>
+    </div>
+  </div>
+</section>
+
+<!-- History drawer -->
+<aside class="ah-history-drawer" id="ah-history-drawer" role="complementary"
+       aria-label="{{ call .T "ah.history.title" }}">
+  <div class="ah-history-hd">
+    <h3>{{ call .T "ah.history.title" }}</h3>
+    <div style="display:flex;gap:6px">
+      <button class="ah-btn ah-btn--ghost ah-btn--sm"
+              onclick="AIHumanizer.clearHistory()"
+              data-ga data-ga-action="clear" data-ga-category="ai-humanizer" data-ga-label="history_clear">{{ call .T "ah.history.clear" }}</button>
+      <button class="ah-btn ah-btn--icon ah-btn--ghost"
+              onclick="AIHumanizer.closeHistory()"
+              data-ga data-ga-action="close" data-ga-category="ai-humanizer" data-ga-label="history_drawer">✕</button>
+    </div>
+  </div>
+  <ul class="ah-history-list" id="ah-history-list" role="list"></ul>
+</aside>
+<div class="ah-history-overlay" id="ah-history-overlay"
+     onclick="AIHumanizer.closeHistory()"></div>
+
+<!-- Synonym panel -->
+<div class="ah-synonym-panel" id="ah-synonym-panel"
+     style="display:none" role="dialog" aria-modal="true">
+  <div class="ah-synonym-hd">
+    <span class="ah-synonym-word" id="ah-synonym-word"></span>
+    <button class="ah-btn ah-btn--icon ah-btn--ghost"
+            onclick="AIHumanizer.closeSynonymPanel()"
+            data-ga data-ga-action="close" data-ga-category="ai-humanizer" data-ga-label="synonym_panel">✕</button>
+  </div>
+  <div class="ah-synonym-list" id="ah-synonym-list" role="list"></div>
+</div>
+
+<!-- Sentence alternatives panel -->
+<div class="ah-sentence-panel" id="ah-sentence-panel"
+     style="display:none" role="dialog" aria-modal="true">
+  <div class="ah-sentence-hd">
+    <span>{{ call .T "ah.sentence.alternatives" }}</span>
+    <button class="ah-btn ah-btn--icon ah-btn--ghost"
+            onclick="AIHumanizer.closeSentencePanel()"
+            data-ga data-ga-action="close" data-ga-category="ai-humanizer" data-ga-label="sentence_panel">✕</button>
+  </div>
+  <div class="ah-sentence-original" id="ah-sentence-original" style="display:none">
+    <span class="ah-sentence-label">{{ call .T "ah.sentence.original" }}:</span>
+    <p id="ah-sentence-original-text"></p>
+  </div>
+  <div class="ah-sentence-list" id="ah-sentence-list" role="list"></div>
+</div>
+
+<!-- Toast container -->
+<div class="ah-toast-container" id="ah-toast-container"
+     role="alert" aria-live="assertive" aria-atomic="true"></div>
+
+<!-- Batch processing panel -->
+<aside class="ah-batch-drawer" id="ah-batch-drawer" role="complementary"
+       aria-label="{{ call .T "ah.batch.title" }}">
+  <div class="ah-batch-hd">
+    <h3>{{ call .T "ah.batch.title" }}</h3>
+    <div style="display:flex;gap:6px">
+      <button class="ah-btn ah-btn--ghost ah-btn--sm" id="ah-batch-upload-btn"
+              onclick="document.getElementById('ah-batch-files').click()"
+              data-ga data-ga-action="upload" data-ga-category="ai-humanizer" data-ga-label="batch_upload">{{ call .T "ah.batch.upload" }}</button>
+      <button class="ah-btn ah-btn--ghost ah-btn--sm"
+              id="ah-batch-start-btn" onclick="AIHumanizer.startBatch()" style="display:none"
+              data-ga data-ga-action="batch" data-ga-category="ai-humanizer" data-ga-label="batch_start">{{ call .T "ah.batch.start" }}</button>
+      <button class="ah-btn ah-btn--icon ah-btn--ghost"
+              onclick="AIHumanizer.closeBatch()"
+              data-ga data-ga-action="close" data-ga-category="ai-humanizer" data-ga-label="batch_drawer">✕</button>
+    </div>
+    <input type="file" id="ah-batch-files" class="sr-only" multiple
+           accept=".txt,.pdf,.docx" onchange="AIHumanizer.onBatchFiles(event)">
+  </div>
+  <div class="ah-batch-progress" id="ah-batch-progress" style="display:none">
+    <div class="ah-batch-progress-bar" id="ah-batch-progress-bar"></div>
+  </div>
+  <ul class="ah-batch-list" id="ah-batch-list" role="list"></ul>
+</aside>
+<div class="ah-batch-overlay" id="ah-batch-overlay"
+     onclick="AIHumanizer.closeBatch()"></div>
+
+<!-- Keyboard shortcuts modal -->
+<div class="ah-shortcuts-modal" id="ah-shortcuts-modal" style="display:none" role="dialog" aria-modal="true">
+  <div class="ah-shortcuts-inner">
+    <div class="ah-shortcuts-hd">
+      <h3>{{ call .T "ah.shortcuts.title" }}</h3>
+      <button class="ah-btn ah-btn--icon ah-btn--ghost" onclick="AIHumanizer.toggleShortcuts()"
+              data-ga data-ga-action="close" data-ga-category="ai-humanizer" data-ga-label="shortcuts_modal">✕</button>
+    </div>
+    <div class="ah-shortcuts-list">
+      <div class="ah-shortcut-row"><kbd>Ctrl+Enter</kbd><span>{{ call .T "ah.shortcuts.humanize" }}</span></div>
+      <div class="ah-shortcut-row"><kbd>Ctrl+Shift+Enter</kbd><span>{{ call .T "ah.shortcuts.autopilot" }}</span></div>
+      <div class="ah-shortcut-row"><kbd>Ctrl+D</kbd><span>{{ call .T "ah.shortcuts.detect" }}</span></div>
+      <div class="ah-shortcut-row"><kbd>Ctrl+Z</kbd><span>{{ call .T "ah.shortcuts.undo" }}</span></div>
+      <div class="ah-shortcut-row"><kbd>Ctrl+Shift+C</kbd><span>{{ call .T "ah.shortcuts.copy" }}</span></div>
+      <div class="ah-shortcut-row"><kbd>Ctrl+Shift+V</kbd><span>{{ call .T "ah.shortcuts.paste_clear" }}</span></div>
+    </div>
+  </div>
+</div>
+
+{{ end }}
+
+{{ define "extraScript" }}
+<script src="/static/js/ai-tool-nav.js?v={{ .AssetVer }}"></script>
+<script src="/static/js/ai-humanizer.js?v={{ .AssetVer }}"></script>
+<script>
+(function() {
+  var TOOL = 'ai-humanizer';
+
+  document.addEventListener('humanize:done', function(e) {
+    if (typeof gaTrackProcessDone === 'function')
+      gaTrackProcessDone(TOOL, 1, e.detail.durationMs);
+    if (typeof gaTrackAIRequest === 'function' && e.detail.provider)
+      gaTrackAIRequest(TOOL, e.detail.provider, e.detail.model || '', e.detail.inputTokens || 0, e.detail.outputTokens || 0);
+    if (typeof gaTrackSettingChange === 'function' && e.detail.aiScoreAfter != null)
+      gaTrackSettingChange(TOOL, 'ai_score_after', e.detail.aiScoreAfter);
+  });
+
+  document.addEventListener('humanize:error', function(e) {
+    if (typeof gaTrackError === 'function')
+      gaTrackError(TOOL, 'humanize_fail', e.detail.message);
+  });
+
+  document.addEventListener('detect:done', function(e) {
+    if (typeof gaTrackSettingChange === 'function')
+      gaTrackSettingChange(TOOL, 'ai_score_detected', e.detail.score);
+  });
+
+  var copyBtn = document.getElementById('ah-copy-btn');
+  if (copyBtn) copyBtn.addEventListener('click', function() {
+    if (typeof gaTrackDownload === 'function') gaTrackDownload(TOOL, 'text/plain');
+  });
+  var dlTxt = document.getElementById('btn-download-txt');
+  if (dlTxt) dlTxt.addEventListener('click', function() {
+    if (typeof gaTrackDownload === 'function') gaTrackDownload(TOOL, 'text/plain');
+  });
+  var dlDocx = document.getElementById('btn-download-docx');
+  if (dlDocx) dlDocx.addEventListener('click', function() {
+    if (typeof gaTrackDownload === 'function') gaTrackDownload(TOOL, 'application/vnd.openxmlformats-officedocument.wordprocessingml.document');
+  });
+
+  // Register Service Worker for PWA
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('/sw.js').then(function(reg) {
+      console.log('[SW] Registered:', reg.scope);
+    }).catch(function(err) {
+      console.log('[SW] Registration failed:', err);
+    });
+  }
+})();
+</script>
+{{ end }}
+

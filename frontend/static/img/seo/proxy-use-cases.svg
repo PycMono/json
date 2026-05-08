@@ -1,0 +1,58 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 440" fill="none">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0f172a"/>
+      <stop offset="100%" style="stop-color:#1e1b4b"/>
+    </linearGradient>
+    <linearGradient id="accent" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#4f46e5"/>
+      <stop offset="100%" style="stop-color:#818cf8"/>
+    </linearGradient>
+    <linearGradient id="card-bg" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#1e293b"/>
+      <stop offset="100%" style="stop-color:#0f172a"/>
+    </linearGradient>
+  </defs>
+  <rect width="800" height="440" rx="16" fill="url(#bg)"/>
+  <rect x="0" y="0" width="800" height="4" rx="2" fill="url(#accent)"/>
+  <!-- Title -->
+  <text x="400" y="44" font-family="system-ui,-apple-system,sans-serif" font-size="20" font-weight="700" fill="#e0e7ff" text-anchor="middle">Why Use an Anonymous Web Proxy?</text>
+  <text x="400" y="66" font-family="system-ui,-apple-system,sans-serif" font-size="13" fill="#94a3b8" text-anchor="middle">Real-world scenarios where proxy browsing protects you</text>
+  <!-- Row 1 -->
+  <rect x="40" y="90" width="350" height="140" rx="12" fill="url(#card-bg)" stroke="#334155"/>
+  <rect x="56" y="106" width="40" height="40" rx="10" fill="#4f46e5" opacity="0.2"/>
+  <text x="76" y="132" font-family="system-ui,-apple-system,sans-serif" font-size="20" text-anchor="middle" fill="#818cf8" font-weight="600">🔒</text>
+  <text x="110" y="122" font-family="system-ui,-apple-system,sans-serif" font-size="14" font-weight="700" fill="#e0e7ff">Privacy Protection</text>
+  <text x="60" y="156" font-family="system-ui,-apple-system,sans-serif" font-size="11" fill="#94a3b8">Hide your IP address from websites, advertisers,</text>
+  <text x="60" y="172" font-family="system-ui,-apple-system,sans-serif" font-size="11" fill="#94a3b8">and trackers. Browse without revealing your</text>
+  <text x="60" y="188" font-family="system-ui,-apple-system,sans-serif" font-size="11" fill="#94a3b8">physical location or digital identity.</text>
+  <text x="60" y="214" font-family="system-ui,-apple-system,sans-serif" font-size="10" fill="#22c55e" font-weight="600">✓ No browsing history stored ✓ Zero tracking</text>
+  <rect x="410" y="90" width="350" height="140" rx="12" fill="url(#card-bg)" stroke="#334155"/>
+  <rect x="426" y="106" width="40" height="40" rx="10" fill="#4f46e5" opacity="0.2"/>
+  <text x="446" y="132" font-family="system-ui,-apple-system,sans-serif" font-size="20" text-anchor="middle" fill="#818cf8" font-weight="600">🌍</text>
+  <text x="480" y="122" font-family="system-ui,-apple-system,sans-serif" font-size="14" font-weight="700" fill="#e0e7ff">Access Blocked Content</text>
+  <text x="430" y="156" font-family="system-ui,-apple-system,sans-serif" font-size="11" fill="#94a3b8">Bypass geo-restrictions and access websites</text>
+  <text x="430" y="172" font-family="system-ui,-apple-system,sans-serif" font-size="11" fill="#94a3b8">that may be blocked in your region. Choose</text>
+  <text x="430" y="188" font-family="system-ui,-apple-system,sans-serif" font-size="11" fill="#94a3b8">from US, EU, or Asia proxy nodes.</text>
+  <text x="430" y="214" font-family="system-ui,-apple-system,sans-serif" font-size="10" fill="#22c55e" font-weight="600">✓ 4 server regions ✓ Instant access</text>
+  <!-- Row 2 -->
+  <rect x="40" y="245" width="350" height="140" rx="12" fill="url(#card-bg)" stroke="#334155"/>
+  <rect x="56" y="261" width="40" height="40" rx="10" fill="#4f46e5" opacity="0.2"/>
+  <text x="76" y="287" font-family="system-ui,-apple-system,sans-serif" font-size="20" text-anchor="middle" fill="#818cf8" font-weight="600">🛡️</text>
+  <text x="110" y="277" font-family="system-ui,-apple-system,sans-serif" font-size="14" font-weight="700" fill="#e0e7ff">Secure Public Wi-Fi</text>
+  <text x="60" y="311" font-family="system-ui,-apple-system,sans-serif" font-size="11" fill="#94a3b8">Encrypt your traffic on unsecured networks.</text>
+  <text x="60" y="327" font-family="system-ui,-apple-system,sans-serif" font-size="11" fill="#94a3b8">Protect yourself from eavesdroppers in</text>
+  <text x="60" y="343" font-family="system-ui,-apple-system,sans-serif" font-size="11" fill="#94a3b8">cafes, airports, and hotels.</text>
+  <text x="60" y="369" font-family="system-ui,-apple-system,sans-serif" font-size="10" fill="#22c55e" font-weight="600">✓ AES-256 encrypted ✓ HTTPS everywhere</text>
+  <rect x="410" y="245" width="350" height="140" rx="12" fill="url(#card-bg)" stroke="#334155"/>
+  <rect x="426" y="261" width="40" height="40" rx="10" fill="#4f46e5" opacity="0.2"/>
+  <text x="446" y="287" font-family="system-ui,-apple-system,sans-serif" font-size="20" text-anchor="middle" fill="#818cf8" font-weight="600">⚡</text>
+  <text x="480" y="277" font-family="system-ui,-apple-system,sans-serif" font-size="14" font-weight="700" fill="#e0e7ff">No Software Needed</text>
+  <text x="430" y="311" font-family="system-ui,-apple-system,sans-serif" font-size="11" fill="#94a3b8">Use directly in your browser. No downloads,</text>
+  <text x="430" y="327" font-family="system-ui,-apple-system,sans-serif" font-size="11" fill="#94a3b8">extensions, or accounts required. Works on</text>
+  <text x="430" y="343" font-family="system-ui,-apple-system,sans-serif" font-size="11" fill="#94a3b8">any device — desktop, tablet, or phone.</text>
+  <text x="430" y="369" font-family="system-ui,-apple-system,sans-serif" font-size="10" fill="#22c55e" font-weight="600">✓ Zero install ✓ All browsers supported</text>
+  <!-- Row 3 -->
+  <rect x="225" y="400" width="350" height="28" rx="8" fill="#1e293b" stroke="#334155"/>
+  <text x="400" y="419" font-family="system-ui,-apple-system,sans-serif" font-size="12" fill="#818cf8" text-anchor="middle" font-weight="600">🛡️  Free · Anonymous · No Logs · AES-256 Encrypted</text>
+</svg>

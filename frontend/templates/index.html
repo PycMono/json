@@ -1,0 +1,788 @@
+{{ template "base" . }}
+
+{{ define "content" }}
+<!-- Hero Section -->
+<section class="hero-home">
+  <div class="hero-home__bg"></div>
+  <div class="hero-home__grid"></div>
+  <div class="container">
+    <div class="hero-home__content">
+      <div class="hero-home__badge">
+        <span class="badge-dot"></span>
+        {{ call .T "home.hero_badge" }}
+      </div>
+      <h1 class="hero-home__title">{{ call .T "home.hero_title" }}</h1>
+      <p class="hero-home__subtitle">{{ call .T "home.hero_sub" }}</p>
+      <div class="hero-home__search">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+        </svg>
+        <input type="text" id="heroSearch" class="hero-search-input" placeholder="{{ call .T "home.search_placeholder" }}" autocomplete="off">
+        <button class="hero-search-btn" onclick="heroSearchGo()" data-ga data-ga-action="click" data-ga-category="home" data-ga-label="hero_search">
+          <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/>
+          </svg>
+        </button>
+      </div>
+      <div class="hero-home__tags">
+        <span class="hero-tag">{{ call .T "home.tag_json" }}</span>
+        <span class="hero-tag">{{ call .T "home.tag_validate" }}</span>
+        <span class="hero-tag">{{ call .T "home.tag_convert" }}</span>
+        <span class="hero-tag">{{ call .T "home.tag_codegen" }}</span>
+        <span class="hero-tag">{{ call .T "home.tag_diff" }}</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- JSON Toolbox Section (Hero Feature) -->
+<section class="json-toolbox-section">
+  <div class="container">
+    <div class="section-header section-header--left">
+      <div class="section-header__meta">
+        <span class="section-badge">{ }</span>
+        <h2 class="section-title">{{ call .T "home.json_toolbox_title" }}</h2>
+      </div>
+      <p class="section-desc">{{ call .T "home.json_toolbox_desc" }}</p>
+    </div>
+    <div class="json-toolbox-grid">
+      <!-- Validate & Format -->
+      <div class="json-toolbox-card">
+        <div class="json-toolbox-card__header">
+          <span class="json-toolbox-card__icon">✓</span>
+          <h3>{{ call .T "json.home.group.validate" }}</h3>
+        </div>
+        <div class="json-toolbox-card__links">
+          <a href="/json/validate?lang={{ .Lang }}">{{ call .T "home.json.validate" }}</a>
+          <a href="/json/pretty?lang={{ .Lang }}">{{ call .T "home.json.pretty" }}</a>
+          <a href="/json/minify?lang={{ .Lang }}">{{ call .T "home.json.minify" }}</a>
+          <a href="/json/repair?lang={{ .Lang }}">{{ call .T "home.json.repair" }}</a>
+          <a href="/json/sort-keys?lang={{ .Lang }}">{{ call .T "home.json.sort_keys" }}</a>
+        </div>
+      </div>
+      <!-- View & Query -->
+      <div class="json-toolbox-card">
+        <div class="json-toolbox-card__header">
+          <span class="json-toolbox-card__icon">👁</span>
+          <h3>{{ call .T "json.home.group.view" }}</h3>
+        </div>
+        <div class="json-toolbox-card__links">
+          <a href="/json/tree?lang={{ .Lang }}">{{ call .T "home.json.tree" }}</a>
+          <a href="/json/table?lang={{ .Lang }}">{{ call .T "home.json.table" }}</a>
+          <a href="/json/diff?lang={{ .Lang }}">{{ call .T "home.json.diff" }}</a>
+          <a href="/json/path?lang={{ .Lang }}">{{ call .T "home.json.path" }}</a>
+          <a href="/json/search?lang={{ .Lang }}">{{ call .T "home.json.search" }}</a>
+        </div>
+      </div>
+      <!-- Data Converters -->
+      <div class="json-toolbox-card">
+        <div class="json-toolbox-card__header">
+          <span class="json-toolbox-card__icon">⇄</span>
+          <h3>{{ call .T "json.home.group.convert" }}</h3>
+        </div>
+        <div class="json-toolbox-card__links">
+          <a href="/json/to-csv?lang={{ .Lang }}">{{ call .T "home.json.to_csv" }}</a>
+          <a href="/json/to-yaml?lang={{ .Lang }}">{{ call .T "home.json.to_yaml" }}</a>
+          <a href="/json/to-xml?lang={{ .Lang }}">{{ call .T "home.json.to_xml" }}</a>
+          <a href="/json/from-csv?lang={{ .Lang }}">{{ call .T "home.json.from_csv" }}</a>
+          <a href="/json/from-yaml?lang={{ .Lang }}">{{ call .T "home.json.from_yaml" }}</a>
+        </div>
+      </div>
+      <!-- Code Generators -->
+      <div class="json-toolbox-card json-toolbox-card--highlight">
+        <div class="json-toolbox-card__header">
+          <span class="json-toolbox-card__icon">⌨</span>
+          <h3>{{ call .T "json.home.group.codegen" }}</h3>
+        </div>
+        <div class="json-toolbox-card__links">
+          <a href="/json/to-typescript?lang={{ .Lang }}">{{ call .T "home.json.to_typescript" }}</a>
+          <a href="/json/to-go?lang={{ .Lang }}">{{ call .T "home.json.to_go" }}</a>
+          <a href="/json/to-python?lang={{ .Lang }}">{{ call .T "home.json.to_python" }}</a>
+          <a href="/json/to-java?lang={{ .Lang }}">{{ call .T "home.json.to_java" }}</a>
+          <a href="/json/to-rust?lang={{ .Lang }}">{{ call .T "home.json.to_rust" }}</a>
+        </div>
+      </div>
+      <!-- Schema & Encode -->
+      <div class="json-toolbox-card">
+        <div class="json-toolbox-card__header">
+          <span class="json-toolbox-card__icon">🔐</span>
+          <h3>{{ call .T "json.home.group.schema" }} &amp; {{ call .T "json.home.group.encode" }}</h3>
+        </div>
+        <div class="json-toolbox-card__links">
+          <a href="/json/schema-validate?lang={{ .Lang }}">{{ call .T "home.json.schema_validate" }}</a>
+          <a href="/json/schema-generate?lang={{ .Lang }}">{{ call .T "home.json.schema_generate" }}</a>
+          <a href="/json/jwt?lang={{ .Lang }}">{{ call .T "home.json.jwt" }}</a>
+          <a href="/json/base64?lang={{ .Lang }}">{{ call .T "home.json.base64" }}</a>
+          <a href="/json/json-generator?lang={{ .Lang }}">{{ call .T "home.json.generator" }}</a>
+        </div>
+      </div>
+      <!-- More JSON Tools CTA -->
+      <a href="/json?lang={{ .Lang }}" class="json-toolbox-cta" data-ga="json_toolbox_all">
+        <div class="json-toolbox-cta__inner">
+          <span class="json-toolbox-cta__icon">→</span>
+          <div>
+            <h3>{{ call .T "home.json.all_tools" }}</h3>
+            <p>{{ call .T "home.json.all_tools_desc" }}</p>
+          </div>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- Developer Tools -->
+<section class="tools-section tools-section--alt">
+  <div class="container">
+    <div class="section-header">
+      <div class="section-header__meta">
+        <span class="section-badge">🛠</span>
+        <h2 class="section-title">{{ call .T "home.category_dev" }}</h2>
+      </div>
+      <p class="section-desc">{{ call .T "home.category_dev_desc" }}</p>
+    </div>
+    <div class="tools-grid" data-ga-category="home_tools">
+
+      <a href="/dev/hash?lang={{ .Lang }}" class="tool-card" data-ga="card_hash">
+        <div class="tool-card__icon">🔐</div>
+        <div class="tool-card__body">
+          <h3 class="tool-card__name">{{ call .T "nav.dev_hash" }}</h3>
+          <p class="tool-card__desc">{{ call .T "home.tool_hash_desc" }}</p>
+        </div>
+        <div class="tool-card__arrow">→</div>
+      </a>
+
+      <a href="/dev/base64?lang={{ .Lang }}" class="tool-card" data-ga="card_base64">
+        <div class="tool-card__icon">🔡</div>
+        <div class="tool-card__body">
+          <h3 class="tool-card__name">{{ call .T "nav.dev_base64" }}</h3>
+          <p class="tool-card__desc">{{ call .T "home.tool_base64_desc" }}</p>
+        </div>
+        <div class="tool-card__arrow">→</div>
+      </a>
+
+      <a href="/dev/url-encode?lang={{ .Lang }}" class="tool-card" data-ga="card_url_encode">
+        <div class="tool-card__icon">🔗</div>
+        <div class="tool-card__body">
+          <h3 class="tool-card__name">{{ call .T "nav.dev_url_encode" }}</h3>
+          <p class="tool-card__desc">{{ call .T "home.tool_url_encode_desc" }}</p>
+        </div>
+        <div class="tool-card__arrow">→</div>
+      </a>
+
+      <a href="/tools/timestamp?lang={{ .Lang }}" class="tool-card" data-ga="card_timestamp">
+        <div class="tool-card__icon">🕐</div>
+        <div class="tool-card__body">
+          <h3 class="tool-card__name">{{ call .T "nav.dev_timestamp" }}</h3>
+          <p class="tool-card__desc">{{ call .T "home.tool_timestamp_desc" }}</p>
+        </div>
+        <div class="tool-card__arrow">→</div>
+      </a>
+
+      <a href="/tools/regex?lang={{ .Lang }}" class="tool-card" data-ga="card_regex">
+        <div class="tool-card__icon">🔍</div>
+        <div class="tool-card__body">
+          <h3 class="tool-card__name">{{ call .T "nav.dev_regex" }}</h3>
+          <p class="tool-card__desc">{{ call .T "home.tool_regex_desc" }}</p>
+        </div>
+        <div class="tool-card__arrow">→</div>
+      </a>
+
+      <a href="/tools/markdown?lang={{ .Lang }}" class="tool-card" data-ga="card_markdown">
+        <div class="tool-card__icon">📝</div>
+        <div class="tool-card__body">
+          <h3 class="tool-card__name">{{ call .T "nav.dev_markdown" }}</h3>
+          <p class="tool-card__desc">{{ call .T "home.tool_markdown_desc" }}</p>
+        </div>
+        <div class="tool-card__arrow">→</div>
+      </a>
+
+      <a href="/tools/base-converter?lang={{ .Lang }}" class="tool-card" data-ga="card_base_converter">
+        <div class="tool-card__icon">🔢</div>
+        <div class="tool-card__body">
+          <h3 class="tool-card__name">{{ call .T "nav.dev_base" }}</h3>
+          <p class="tool-card__desc">{{ call .T "home.tool_base_converter_desc" }}</p>
+        </div>
+        <div class="tool-card__arrow">→</div>
+      </a>
+
+      <a href="/tools/case-converter?lang={{ .Lang }}" class="tool-card" data-ga="card_case_converter">
+        <div class="tool-card__icon">🔤</div>
+        <div class="tool-card__body">
+          <h3 class="tool-card__name">{{ call .T "nav.dev_case" }}</h3>
+          <p class="tool-card__desc">{{ call .T "home.tool_case_converter_desc" }}</p>
+        </div>
+        <div class="tool-card__arrow">→</div>
+      </a>
+
+      <a href="/dev/uuid?lang={{ .Lang }}" class="tool-card" data-ga="card_uuid">
+        <div class="tool-card__icon">🆔</div>
+        <div class="tool-card__body">
+          <h3 class="tool-card__name">{{ call .T "nav.dev_uuid" }}</h3>
+          <p class="tool-card__desc">{{ call .T "home.tool_uuid_desc" }}</p>
+        </div>
+        <div class="tool-card__arrow">→</div>
+      </a>
+
+      <a href="/dev/word-counter?lang={{ .Lang }}" class="tool-card" data-ga="card_word_counter">
+        <div class="tool-card__icon">📊</div>
+        <div class="tool-card__body">
+          <h3 class="tool-card__name">{{ call .T "nav.dev_word_counter" }}</h3>
+          <p class="tool-card__desc">{{ call .T "home.tool_word_counter_desc" }}</p>
+        </div>
+        <div class="tool-card__arrow">→</div>
+      </a>
+
+      <a href="/dev/diff?lang={{ .Lang }}" class="tool-card" data-ga="card_diff">
+        <div class="tool-card__icon">📑</div>
+        <div class="tool-card__body">
+          <h3 class="tool-card__name">{{ call .T "nav.dev_diff" }}</h3>
+          <p class="tool-card__desc">{{ call .T "home.tool_diff_desc" }}</p>
+        </div>
+        <div class="tool-card__arrow">→</div>
+      </a>
+
+      <a href="/dev/ip?lang={{ .Lang }}" class="tool-card" data-ga="card_ip">
+        <div class="tool-card__icon">🌐</div>
+        <div class="tool-card__body">
+          <h3 class="tool-card__name">{{ call .T "nav.dev_ip" }}</h3>
+          <p class="tool-card__desc">{{ call .T "home.tool_ip_desc" }}</p>
+        </div>
+        <div class="tool-card__arrow">→</div>
+      </a>
+
+    </div>
+  </div>
+</section>
+
+<!-- Features Section -->
+<section class="features-home">
+  <div class="container">
+    <div class="features-home__grid">
+      <div class="feature-home">
+        <div class="feature-home__icon">🛡</div>
+        <h3 class="feature-home__title">{{ call .T "home.feature.privacy.title" }}</h3>
+        <p class="feature-home__desc">{{ call .T "home.feature.privacy.desc" }}</p>
+      </div>
+      <div class="feature-home">
+        <div class="feature-home__icon">⚡</div>
+        <h3 class="feature-home__title">{{ call .T "home.feature.instant.title" }}</h3>
+        <p class="feature-home__desc">{{ call .T "home.feature.instant.desc" }}</p>
+      </div>
+      <div class="feature-home">
+        <div class="feature-home__icon">🆓</div>
+        <h3 class="feature-home__title">{{ call .T "home.feature.free.title" }}</h3>
+        <p class="feature-home__desc">{{ call .T "home.feature.free.desc" }}</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SEO Article Section -->
+<section class="seo-home">
+  <div class="container">
+    <article class="seo-home__content">
+      <h2 class="seo-home__title">{{ call .T "home.seo.title" }}</h2>
+      <p><strong>json</strong> {{ call .T "home.seo.intro" }}</p>
+
+      <h3 id="json-toolbox">{{ call .T "home.seo.json_title" }}</h3>
+      <p>{{ call .T "home.seo.json_desc" }}</p>
+      <ul>
+        <li><strong>{{ call .T "home.json.validate" }}</strong> — {{ call .T "home.seo.json_validate_detail" }}</li>
+        <li><strong>{{ call .T "home.json.pretty" }}</strong> — {{ call .T "home.seo.json_pretty_detail" }}</li>
+        <li><strong>{{ call .T "home.json.to_typescript" }}</strong> — {{ call .T "home.seo.json_codegen_detail" }}</li>
+        <li><strong>{{ call .T "home.json.diff" }}</strong> — {{ call .T "home.seo.json_diff_detail" }}</li>
+      </ul>
+
+      <h3 id="developer-tools">{{ call .T "home.seo.dev_title" }}</h3>
+      <p>{{ call .T "home.seo.dev_desc" }}</p>
+      <ul>
+        <li><strong>{{ call .T "nav.dev_hash" }}</strong> — {{ call .T "home.seo.hash_detail" }}</li>
+        <li><strong>{{ call .T "nav.dev_base64" }}</strong> — {{ call .T "home.seo.base64_detail" }}</li>
+        <li><strong>{{ call .T "nav.dev_regex" }}</strong> — {{ call .T "home.seo.regex_detail" }}</li>
+        <li><strong>{{ call .T "nav.dev_timestamp" }}</strong> — {{ call .T "home.seo.timestamp_detail" }}</li>
+      </ul>
+
+      <h3 id="why-choose">{{ call .T "home.seo.why_title" }}</h3>
+      <p>{{ call .T "home.seo.why_intro" }}</p>
+      <ul>
+        <li><strong>{{ call .T "home.seo.why_privacy" }}</strong> — {{ call .T "home.seo.why_privacy_desc" }}</li>
+        <li><strong>{{ call .T "home.seo.why_nosignup" }}</strong> — {{ call .T "home.seo.why_nosignup_desc" }}</li>
+        <li><strong>{{ call .T "home.seo.why_browser" }}</strong> — {{ call .T "home.seo.why_browser_desc" }}</li>
+        <li><strong>{{ call .T "home.seo.why_free" }}</strong> — {{ call .T "home.seo.why_free_desc" }}</li>
+      </ul>
+
+      <p>{{ call .T "home.seo.conclusion" }}</p>
+    </article>
+  </div>
+</section>
+
+<!-- FAQ Section -->
+<section class="faq-home">
+  <div class="container">
+    <h2 class="faq-home__title">{{ call .T "home.faq.title" }}</h2>
+    <div class="faq-home__grid">
+      {{ range .FAQs }}
+      <div class="faq-home__item">
+        <button class="faq-home__q" onclick="this.parentElement.classList.toggle('open')" data-ga data-ga-action="click" data-ga-category="home" data-ga-label="faq_toggle">
+          <span>{{ .Q }}</span>
+          <span class="faq-home__icon">▼</span>
+        </button>
+        <div class="faq-home__a"><p>{{ .A }}</p></div>
+      </div>
+      {{ end }}
+    </div>
+  </div>
+</section>
+
+<style>
+/* ═══════════════════════════════════════════════════════════
+   json Homepage — JSON-First Developer Tools Style
+   ═══════════════════════════════════════════════════════════ */
+
+/* Hero Section */
+.hero-home {
+  position: relative;
+  background: linear-gradient(135deg, #0f172a 0%, #1e293b 40%, #334155 100%);
+  color: #fff;
+  padding: 100px 0 120px;
+  overflow: hidden;
+}
+.hero-home__bg {
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(circle at 20% 80%, rgba(59, 130, 246, 0.08) 0%, transparent 50%),
+    radial-gradient(circle at 80% 20%, rgba(139, 92, 246, 0.06) 0%, transparent 40%),
+    radial-gradient(circle at 50% 50%, rgba(16, 185, 129, 0.04) 0%, transparent 60%);
+  pointer-events: none;
+}
+.hero-home__grid {
+  position: absolute;
+  inset: 0;
+  background-image:
+    linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+  background-size: 60px 60px;
+  pointer-events: none;
+  mask-image: radial-gradient(ellipse at center, black 0%, transparent 70%);
+  -webkit-mask-image: radial-gradient(ellipse at center, black 0%, transparent 70%);
+}
+.hero-home__content { position: relative; z-index: 1; text-align: center; max-width: 720px; margin: 0 auto; }
+.hero-home__badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  background: rgba(16, 185, 129, 0.15);
+  border: 1px solid rgba(16, 185, 129, 0.3);
+  color: #34d399;
+  padding: 6px 16px;
+  border-radius: 9999px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  margin-bottom: 24px;
+}
+.badge-dot {
+  width: 8px; height: 8px;
+  background: #34d399;
+  border-radius: 50%;
+  animation: pulse-dot 2s ease-in-out infinite;
+}
+@keyframes pulse-dot {
+  0%, 100% { opacity: 1; transform: scale(1); }
+  50% { opacity: 0.5; transform: scale(1.2); }
+}
+.hero-home__title {
+  font-size: clamp(2.2rem, 5vw, 3.5rem);
+  font-weight: 800;
+  margin: 0 0 16px;
+  line-height: 1.15;
+  letter-spacing: -0.02em;
+}
+.hero-home__subtitle {
+  font-size: clamp(1rem, 2.2vw, 1.25rem);
+  opacity: 0.7;
+  margin: 0 0 36px;
+  max-width: 560px;
+  margin-left: auto;
+  margin-right: auto;
+  line-height: 1.6;
+}
+.hero-home__search {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  max-width: 560px;
+  margin: 0 auto 24px;
+  background: rgba(255,255,255,0.08);
+  border: 1px solid rgba(255,255,255,0.12);
+  border-radius: 14px;
+  padding: 4px 4px 4px 16px;
+  transition: border-color 0.2s, background 0.2s;
+}
+.hero-home__search:focus-within {
+  border-color: rgba(59, 130, 246, 0.5);
+  background: rgba(255,255,255,0.12);
+}
+.hero-home__search svg {
+  color: rgba(255,255,255,0.4);
+  flex-shrink: 0;
+}
+.hero-search-input {
+  flex: 1;
+  padding: 12px 12px;
+  border: none;
+  background: transparent;
+  color: #fff;
+  font-size: 1rem;
+  outline: none;
+}
+.hero-search-input::placeholder { color: rgba(255,255,255,0.35); }
+.hero-search-btn {
+  padding: 12px 20px;
+  border-radius: 10px;
+  border: none;
+  background: #3b82f6;
+  color: #fff;
+  font-size: 0.9rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.2s, transform 0.15s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.hero-search-btn:hover { background: #2563eb; }
+.hero-search-btn:active { transform: scale(0.97); }
+.hero-home__tags {
+  display: flex;
+  justify-content: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.hero-tag {
+  padding: 6px 14px;
+  background: rgba(255,255,255,0.06);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 20px;
+  font-size: 0.8rem;
+  color: rgba(255,255,255,0.6);
+  font-family: 'SF Mono', 'Consolas', monospace;
+}
+
+/* JSON Toolbox Section */
+.json-toolbox-section { padding: 72px 0; background: var(--color-bg-alt, #f8fafc); }
+.section-header { margin-bottom: 40px; text-align: center; }
+.section-header--left { text-align: left; }
+.section-header__meta {
+  display: inline-flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+.section-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 36px; height: 36px;
+  background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+  color: #fff;
+  border-radius: 10px;
+  font-size: 0.9rem;
+  font-weight: 700;
+  font-family: 'SF Mono', 'Consolas', monospace;
+}
+.section-title { font-size: 1.75rem; font-weight: 700; color: var(--color-text, #1e293b); margin: 0; }
+.section-desc { font-size: 1rem; color: var(--color-text-muted, #64748b); margin: 8px 0 0; max-width: 600px; }
+.section-header--left .section-desc { margin-left: 0; }
+
+.json-toolbox-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 20px;
+}
+.json-toolbox-card {
+  background: var(--color-surface, #fff);
+  border-radius: 16px;
+  padding: 24px;
+  border: 1px solid var(--color-border, #e2e8f0);
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+}
+.json-toolbox-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 32px rgba(0,0,0,0.08);
+  border-color: rgba(59, 130, 246, 0.3);
+}
+.json-toolbox-card--highlight {
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.04) 0%, rgba(139, 92, 246, 0.04) 100%);
+  border-color: rgba(59, 130, 246, 0.25);
+}
+.json-toolbox-card__header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 16px;
+}
+.json-toolbox-card__icon {
+  width: 32px; height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, #3b82f6, #6366f1);
+  color: #fff;
+  border-radius: 8px;
+  font-size: 0.9rem;
+}
+.json-toolbox-card__header h3 {
+  font-size: 1rem;
+  font-weight: 700;
+  color: var(--color-text, #1e293b);
+  margin: 0;
+}
+.json-toolbox-card__links {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.json-toolbox-card__links a {
+  display: block;
+  padding: 8px 12px;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  color: var(--color-text-secondary, #475569);
+  text-decoration: none;
+  transition: all 0.15s;
+}
+.json-toolbox-card__links a:hover {
+  background: var(--color-bg-alt, #f1f5f9);
+  color: var(--color-primary, #3b82f6);
+}
+.json-toolbox-cta {
+  display: flex;
+  align-items: center;
+  background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+  border-radius: 16px;
+  padding: 24px;
+  color: #fff;
+  text-decoration: none;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 4px 16px rgba(59, 130, 246, 0.25);
+}
+.json-toolbox-cta:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 32px rgba(59, 130, 246, 0.35);
+  color: #fff;
+  text-decoration: none;
+}
+.json-toolbox-cta__inner {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+.json-toolbox-cta__icon {
+  width: 48px; height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255,255,255,0.2);
+  border-radius: 12px;
+  font-size: 1.5rem;
+  flex-shrink: 0;
+}
+.json-toolbox-cta h3 {
+  font-size: 1.1rem;
+  font-weight: 700;
+  margin: 0 0 4px;
+}
+.json-toolbox-cta p {
+  font-size: 0.85rem;
+  opacity: 0.85;
+  margin: 0;
+}
+
+/* Tools Sections */
+.tools-section { padding: 72px 0; }
+.tools-section--alt { background: var(--color-bg-alt, #f8fafc); }
+
+.tools-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 20px;
+}
+
+/* Tool Card — Modern Minimal */
+.tool-card {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background: var(--color-surface, #fff);
+  border-radius: 14px;
+  padding: 20px;
+  border: 1px solid var(--color-border, #e2e8f0);
+  text-decoration: none;
+  color: var(--color-text, #1e293b);
+  position: relative;
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  box-shadow: 0 1px 3px rgba(0,0,0,0.04);
+}
+.tool-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 28px rgba(0,0,0,0.08);
+  border-color: rgba(59, 130, 246, 0.25);
+  text-decoration: none;
+  color: var(--color-text, #1e293b);
+}
+.tool-card__icon {
+  font-size: 1.75rem;
+  flex-shrink: 0;
+  width: 44px; height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-bg-alt, #f1f5f9);
+  border-radius: 10px;
+}
+.tool-card__body { flex: 1; min-width: 0; }
+.tool-card__name {
+  font-size: 0.95rem;
+  font-weight: 700;
+  margin: 0 0 4px;
+  color: var(--color-text, #1e293b);
+}
+.tool-card__desc {
+  font-size: 0.8rem;
+  color: var(--color-text-muted, #64748b);
+  margin: 0;
+  line-height: 1.5;
+}
+.tool-card__arrow {
+  color: var(--color-text-muted, #94a3b8);
+  font-size: 1.1rem;
+  transition: all 0.25s ease;
+  opacity: 0.5;
+}
+.tool-card:hover .tool-card__arrow {
+  transform: translateX(4px);
+  color: var(--color-primary, #3b82f6);
+  opacity: 1;
+}
+
+/* Features */
+.features-home { padding: 72px 0; background: var(--color-bg-alt, #f8fafc); }
+.features-home__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 40px;
+}
+.feature-home { text-align: center; }
+.feature-home__icon { font-size: 2.5rem; margin-bottom: 16px; }
+.feature-home__title { font-size: 1.1rem; font-weight: 700; margin: 0 0 8px; color: var(--color-text, #1e293b); }
+.feature-home__desc { font-size: 0.9rem; color: var(--color-text-muted, #64748b); margin: 0; line-height: 1.6; }
+
+/* SEO Article */
+.seo-home { padding: 72px 0; }
+.seo-home__content { max-width: 800px; margin: 0 auto; }
+.seo-home__title { font-size: 1.75rem; font-weight: 700; margin: 0 0 24px; color: var(--color-text, #1e293b); text-align: center; }
+.seo-home__content p { font-size: 1rem; line-height: 1.8; color: var(--color-text-secondary, #475569); margin: 0 0 16px; }
+.seo-home__content h3 { font-size: 1.25rem; font-weight: 600; margin: 32px 0 12px; color: var(--color-text, #1e293b); }
+.seo-home__content ul { margin: 0 0 16px; padding-left: 24px; }
+.seo-home__content li { font-size: 1rem; line-height: 1.8; color: var(--color-text-secondary, #475569); margin-bottom: 8px; }
+
+/* FAQ Section */
+.faq-home { padding: 72px 0; background: var(--color-bg-alt, #f8fafc); }
+.faq-home__title { font-size: 1.75rem; font-weight: 700; text-align: center; margin: 0 0 40px; color: var(--color-text, #1e293b); }
+.faq-home__grid { max-width: 800px; margin: 0 auto; }
+.faq-home__item { margin-bottom: 12px; border: 1px solid var(--color-border, #e2e8f0); border-radius: 12px; overflow: hidden; background: var(--color-surface, #fff); }
+.faq-home__q {
+  width: 100%;
+  padding: 18px 20px;
+  text-align: left;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-weight: 600;
+  font-size: 1rem;
+  color: var(--color-text, #1e293b);
+}
+.faq-home__icon { font-size: 0.85rem; transition: transform 0.3s; color: var(--color-text-muted, #94a3b8); }
+.faq-home__a {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s, padding 0.3s;
+}
+.faq-home__a p { padding: 0 20px 18px; margin: 0; color: var(--color-text-muted, #64748b); line-height: 1.7; }
+.faq-home__item.open .faq-home__a { max-height: 500px; }
+.faq-home__item.open .faq-home__icon { transform: rotate(180deg); }
+
+/* Dark Theme */
+[data-theme="dark"] .hero-home { background: linear-gradient(135deg, #020617 0%, #0f172a 40%, #1e293b 100%); }
+[data-theme="dark"] .json-toolbox-card {
+  background: rgba(30, 41, 59, 0.6);
+  border-color: rgba(148, 163, 184, 0.1);
+}
+[data-theme="dark"] .json-toolbox-card:hover {
+  border-color: rgba(59, 130, 246, 0.4);
+}
+[data-theme="dark"] .json-toolbox-card--highlight {
+  background: linear-gradient(135deg, rgba(59, 130, 246, 0.1) 0%, rgba(139, 92, 246, 0.1) 100%);
+  border-color: rgba(59, 130, 246, 0.3);
+}
+[data-theme="dark"] .tool-card {
+  background: rgba(30, 41, 59, 0.6);
+  border-color: rgba(148, 163, 184, 0.1);
+}
+[data-theme="dark"] .tool-card:hover {
+  border-color: rgba(59, 130, 246, 0.3);
+}
+[data-theme="dark"] .tool-card__icon {
+  background: rgba(51, 65, 85, 0.6);
+}
+[data-theme="dark"] .hero-home__search {
+  background: rgba(255,255,255,0.05);
+  border-color: rgba(255,255,255,0.08);
+}
+[data-theme="dark"] .hero-home__search:focus-within {
+  background: rgba(255,255,255,0.08);
+  border-color: rgba(59, 130, 246, 0.4);
+}
+
+/* Responsive */
+@media (max-width: 1024px) {
+  .features-home__grid { grid-template-columns: 1fr; gap: 32px; }
+  .json-toolbox-grid { grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); }
+}
+@media (max-width: 768px) {
+  .hero-home { padding: 70px 0 90px; }
+  .hero-home__search { padding: 3px 3px 3px 12px; }
+  .hero-search-btn { padding: 10px 14px; }
+  .tools-grid { grid-template-columns: 1fr; }
+  .json-toolbox-grid { grid-template-columns: 1fr; }
+  .features-home__grid { grid-template-columns: 1fr; }
+}
+</style>
+{{ end }}
+
+{{ define "extraScript" }}
+<script>
+function heroSearchGo() {
+  const q = document.getElementById('heroSearch').value.trim();
+  if (q) {
+    fetch('/api/search?q=' + encodeURIComponent(q))
+      .then(r => r.json())
+      .then(data => {
+        if (typeof gaTrackSiteSearch === 'function') gaTrackSiteSearch('hero', q, data.results ? data.results.length : 0);
+        if (data.results && data.results.length > 0) {
+          window.location.href = data.results[0].url;
+        }
+      });
+  }
+}
+document.getElementById('heroSearch').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') heroSearchGo();
+});
+</script>
+{{ end }}

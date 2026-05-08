@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630">
+  <!-- Background -->
+  <rect width="1200" height="630" fill="#f9fafb"/>
+
+  <!-- Header -->
+  <rect x="0" y="0" width="1200" height="60" fill="#6366f1"/>
+  <text x="30" y="38" fill="#fff" font-size="20" font-weight="bold">AI Essay Writer — json</text>
+
+  <!-- Main Content Area -->
+  <rect x="20" y="80" width="560" height="500" rx="12" fill="#fff" stroke="#e5e7eb" stroke-width="2"/>
+
+  <!-- Input Panel Title -->
+  <text x="40" y="110" fill="#111827" font-size="18" font-weight="bold">📝 Write Your Essay</text>
+
+  <!-- Topic Input -->
+  <rect x="40" y="140" width="520" height="45" rx="6" fill="#f3f4f6" stroke="#d1d5db" stroke-width="1"/>
+  <text x="55" y="168" fill="#6b7280" font-size="14">Enter your essay topic...</text>
+
+  <!-- Essay Type Dropdown -->
+  <rect x="40" y="200" width="250" height="40" rx="6" fill="#f3f4f6" stroke="#d1d5db" stroke-width="1"/>
+  <text x="55" y="225" fill="#111827" font-size="13">Argumentative</text>
+  <text x="280" y="225" fill="#6b7280" font-size="13">▼</text>
+
+  <!-- Length Dropdown -->
+  <rect x="310" y="200" width="250" height="40" rx="6" fill="#f3f4f6" stroke="#d1d5db" stroke-width="1"/>
+  <text x="325" y="225" fill="#111827" font-size="13">Medium (800 words)</text>
+  <text x="550" y="225" fill="#6b7280" font-size="13">▼</text>
+
+  <!-- Sources textarea -->
+  <rect x="40" y="260" width="520" height="100" rx="6" fill="#f3f4f6" stroke="#d1d5db" stroke-width="1"/>
+  <text x="55" y="285" fill="#6b7280" font-size="12">Add sources or references...</text>
+
+  <!-- Citation Dropdown -->
+  <rect x="40" y="380" width="250" height="40" rx="6" fill="#f3f4f6" stroke="#d1d5db" stroke-width="1"/>
+  <text x="55" y="405" fill="#111827" font-size="13">APA Format</text>
+  <text x="280" y="405" fill="#6b7280" font-size="13">▼</text>
+
+  <!-- Tone Dropdown -->
+  <rect x="310" y="380" width="250" height="40" rx="6" fill="#f3f4f6" stroke="#d1d5db" stroke-width="1"/>
+  <text x="325" y="405" fill="#111827" font-size="13">Academic</text>
+  <text x="550" y="405" fill="#6b7280" font-size="13">▼</text>
+
+  <!-- Generate Button -->
+  <rect x="40" y="450" width="520" height="50" rx="8" fill="linear-gradient(135deg, #6366f1 0%, #8b5cf6 100%)"/>
+  <rect x="40" y="450" width="520" height="50" rx="8" fill="#6366f1"/>
+  <text x="300" y="480" fill="#fff" font-size="16" font-weight="bold" text-anchor="middle">✍️ Generate Essay</text>
+
+  <!-- Output Panel -->
+  <rect x="600" y="80" width="580" height="500" rx="12" fill="#fff" stroke="#e5e7eb" stroke-width="2"/>
+
+  <!-- Output Title -->
+  <text x="620" y="110" fill="#111827" font-size="18" font-weight="bold">📄 Generated Essay</text>
+
+  <!-- Copy/Download buttons -->
+  <rect x="1000" y="95" width="80" height="30" rx="4" fill="#f3f4f6" stroke="#d1d5db" stroke-width="1"/>
+  <text x="1040" y="115" fill="#6366f1" font-size="11" text-anchor="middle">📋 Copy</text>
+
+  <rect x="1090" y="95" width="80" height="30" rx="4" fill="#f3f4f6" stroke="#d1d5db" stroke-width="1"/>
+  <text x="1130" y="115" fill="#6366f1" font-size="11" text-anchor="middle">⬇️ DOCX</text>
+
+  <!-- Essay content preview -->
+  <rect x="620" y="140" width="540" height="350" rx="6" fill="#f9fafb" stroke="#e5e7eb" stroke-width="1"/>
+
+  <!-- Essay title preview -->
+  <text x="640" y="170" fill="#111827" font-size="16" font-weight="bold">The Impact of Artificial Intelligence on Modern Education</text>
+
+  <!-- Essay paragraphs preview -->
+  <text x="640" y="210" fill="#4b5563" font-size="11">
+    <tspan>Introduction</tspan>
+  </text>
+  <text x="640" y="235" fill="#6b7280" font-size="10">
+    <tspan x="640" dy="0">Artificial Intelligence has revolutionized the educational landscape,</tspan>
+    <tspan x="640" dy="15">offering new opportunities for personalized learning...</tspan>
+  </text>
+
+  <text x="640" y="280" fill="#4b5563" font-size="11">
+    <tspan>Body Paragraph 1</tspan>
+  </text>
+  <text x="640" y="305" fill="#6b7280" font-size="10">
+    <tspan x="640" dy="0">One significant impact of AI in education is adaptive learning.</tspan>
+    <tspan x="640" dy="15">According to Smith (2023), AI-powered systems can...</tspan>
+  </text>
+
+  <text x="640" y="350" fill="#4b5563" font-size="11">
+    <tspan>Conclusion</tspan>
+  </text>
+  <text x="640" y="375" fill="#6b7280" font-size="10">
+    <tspan x="640" dy="0">In conclusion, AI continues to transform educational...</tspan>
+  </text>
+
+  <!-- Citation note -->
+  <rect x="620" y="510" width="540" height="55" rx="6" fill="#ecfdf5" stroke="#10b981" stroke-width="1"/>
+  <text x="640" y="535" fill="#059669" font-size="12" font-weight="bold">✓ Citations: APA Format</text>
+  <text x="640" y="555" fill="#059669" font-size="10">Smith, J. (2023). AI in Education. Journal of Technology, 15(2), 45-67.</text>
+
+  <!-- Word count badge -->
+  <rect x="1100" y="160" width="60" height="25" rx="4" fill="#6366f1"/>
+  <text x="1130" y="178" fill="#fff" font-size="11" font-weight="bold" text-anchor="middle">856 w</text>
+</svg>

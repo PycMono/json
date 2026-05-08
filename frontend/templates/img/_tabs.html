@@ -1,0 +1,34 @@
+{{ define "img_tabs" }}
+<div class="img-tabs-wrap">
+  <nav class="img-tabs" role="tablist">
+    <a href="/img/crop?lang={{ .Lang }}"           class="img-tab {{ if eq .CurrentTool "crop"         }}img-tab--active{{ end }}">✂️ <span>{{ call .T "img.tab.crop" }}</span></a>
+    <a href="/img/convert-to-jpg?lang={{ .Lang }}"  class="img-tab {{ if eq .CurrentTool "to-jpg"       }}img-tab--active{{ end }}">🖼️ <span>{{ call .T "img.tab.to_jpg" }}</span></a>
+    <a href="/img/jpg-to-image?lang={{ .Lang }}"    class="img-tab {{ if eq .CurrentTool "jpg-to"       }}img-tab--active{{ end }}">🔄 <span>{{ call .T "img.tab.jpg_to" }}</span></a>
+    <a href="/img/compress?lang={{ .Lang }}"        class="img-tab {{ if eq .CurrentTool "compress"     }}img-tab--active{{ end }}">📦 <span>{{ call .T "img.tab.compress" }}</span></a>
+    <a href="/img/resize?lang={{ .Lang }}"          class="img-tab {{ if eq .CurrentTool "resize"       }}img-tab--active{{ end }}">📐 <span>{{ call .T "img.tab.resize" }}</span></a>
+    <a href="/img/metadata?lang={{ .Lang }}"        class="img-tab {{ if eq .CurrentTool "metadata"     }}img-tab--active{{ end }}">🔍 <span>{{ call .T "img.tab.metadata" }}</span></a>
+    <a href="/media/qr?lang={{ .Lang }}"            class="img-tab {{ if eq .CurrentTool "qr"           }}img-tab--active{{ end }}">📱 <span>{{ call .T "img.tab.qr" }}</span></a>
+
+    <div class="img-tabs-dropdown" id="imgTabsDropdown">
+      <button class="img-tab img-tab--more" type="button" id="imgTabsMoreBtn">
+        {{ $isMore := or (eq .CurrentTool "photo-editor") (eq .CurrentTool "remove_bg") (eq .CurrentTool "watermark") (eq .CurrentTool "rotate") (eq .CurrentTool "ocr") (eq .CurrentTool "to-video") (eq .CurrentTool "to-pdf") }}
+        {{ if $isMore }}
+        <span class="img-tab--more__active-dot"></span>{{ call .T "img.tab.more" }}
+        {{ else }}
+        ⋯
+        {{ end }}
+        <svg class="img-tab--more__chevron" width="12" height="12" viewBox="0 0 12 12"><path d="M3 5l3 3 3-3" stroke="currentColor" fill="none" stroke-width="1.5"/></svg>
+      </button>
+      <div class="img-tabs-dropdown__menu">
+        <a href="/img/photo-editor?lang={{ .Lang }}"    class="img-tabs-dropdown__item {{ if eq .CurrentTool "photo-editor" }}img-tabs-dropdown__item--active{{ end }}">🎨 {{ call .T "img.tab.photo_editor" }}</a>
+        <a href="/img/remove-bg?lang={{ .Lang }}"       class="img-tabs-dropdown__item {{ if eq .CurrentTool "remove_bg"    }}img-tabs-dropdown__item--active{{ end }}">🎭 {{ call .T "img.tab.remove_bg" }}</a>
+        <a href="/img/watermark?lang={{ .Lang }}"       class="img-tabs-dropdown__item {{ if eq .CurrentTool "watermark"    }}img-tabs-dropdown__item--active{{ end }}">💧 {{ call .T "img.tab.watermark" }}</a>
+        <a href="/img/rotate?lang={{ .Lang }}"          class="img-tabs-dropdown__item {{ if eq .CurrentTool "rotate"       }}img-tabs-dropdown__item--active{{ end }}">🔃 {{ call .T "img.tab.rotate" }}</a>
+        <a href="/img/ocr?lang={{ .Lang }}"             class="img-tabs-dropdown__item {{ if eq .CurrentTool "ocr"          }}img-tabs-dropdown__item--active{{ end }}">📝 {{ call .T "img.tab.ocr" }}</a>
+        <a href="/img/to-video?lang={{ .Lang }}"        class="img-tabs-dropdown__item {{ if eq .CurrentTool "to-video"     }}img-tabs-dropdown__item--active{{ end }}">🎬 {{ call .T "img.tab.to_video" }}</a>
+        <a href="/img/to-pdf?lang={{ .Lang }}"          class="img-tabs-dropdown__item {{ if eq .CurrentTool "to-pdf"       }}img-tabs-dropdown__item--active{{ end }}">📄 {{ call .T "img.tab.to_pdf" }}</a>
+      </div>
+    </div>
+  </nav>
+</div>
+{{ end }}

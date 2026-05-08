@@ -1,0 +1,228 @@
+{{ template "base" . }}
+
+{{ define "extraHead" }}
+<link rel="stylesheet" href="/static/css/dev-tools.css?v={{ .AssetVer }}">
+<link rel="stylesheet" href="/static/css/dev-user-agent-guide.css?v={{ .AssetVer }}">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="alternate" hreflang="zh" href="{{ .HreflangZH }}">
+<link rel="alternate" hreflang="en" href="{{ .HreflangEN }}">
+<link rel="alternate" hreflang="x-default" href="{{ .Canonical }}">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Article",
+  "headline": "{{ call .T "ua.guide.hero.title" }}",
+  "description": "{{ call .T "seo.ua.guide.description" }}",
+  "url": "{{ .Canonical }}",
+  "author": { "@type": "Organization", "name": "ToolboxNova" },
+  "publisher": { "@type": "Organization", "name": "ToolboxNova", "url": "https://toolboxnova.com/" }
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "ToolboxNova", "item": "https://toolboxnova.com/" },
+    { "@type": "ListItem", "position": 2, "name": "{{ call .T "ua.hero.title" }}", "item": "https://toolboxnova.com/dev/user-agent" },
+    { "@type": "ListItem", "position": 3, "name": "{{ call .T "ua.guide.hero.title" }}", "item": "{{ .Canonical }}" }
+  ]
+}
+</script>
+{{ end }}
+
+{{ define "content" }}
+<div class="page-user-agent-guide">
+
+<!-- Hero -->
+<section class="uag-hero" aria-labelledby="uag-hero-title">
+  <div class="uag-hero__inner">
+    <div class="uag-hero__eyebrow">{{ call .T "ua.guide.hero.eyebrow" }}</div>
+    <h1 class="uag-hero__title" id="uag-hero-title">{{ call .T "ua.guide.hero.title" }}</h1>
+    <p class="uag-hero__subtitle">{{ call .T "ua.guide.hero.subtitle" }}</p>
+    <a href="/dev/user-agent?lang={{ .Lang }}" class="uag-btn uag-btn--primary" data-ga="guide_cta">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+      {{ call .T "ua.guide.hero.cta" }}
+    </a>
+  </div>
+</section>
+
+<div style="text-align:center;margin:12px auto;max-width:970px;padding:0 16px">
+  {{- template "partials/ad_slot.html" (dict "Ctx" . "SlotID" "dev-user-agent-guide-top" "Size" "728x90" "Mobile" "320x50") }}
+</div>
+
+<div class="uag-sidebar-layout">
+  <aside class="uag-sidebar-ad">
+    {{- template "partials/ad_slot.html" (dict "Ctx" . "SlotID" "dev-user-agent-guide-left" "Size" "160x600" "MobileHide" true) }}
+  </aside>
+
+  <div class="uag-main-area">
+
+  <!-- TOC -->
+  <nav class="uag-toc" aria-labelledby="uag-toc-title">
+    <h2 class="uag-toc__title" id="uag-toc-title">{{ call .T "ua.guide.toc.title" }}</h2>
+    <ol class="uag-toc__list">
+      <li><a href="#uag-s1">{{ call .T "ua.guide.toc.s1" }}</a></li>
+      <li><a href="#uag-s2">{{ call .T "ua.guide.toc.s2" }}</a></li>
+      <li><a href="#uag-s3">{{ call .T "ua.guide.toc.s3" }}</a></li>
+      <li><a href="#uag-s4">{{ call .T "ua.guide.toc.s4" }}</a></li>
+      <li><a href="#uag-s5">{{ call .T "ua.guide.toc.s5" }}</a></li>
+      <li><a href="#uag-s6">{{ call .T "ua.guide.toc.s6" }}</a></li>
+      <li><a href="#uag-s7">{{ call .T "ua.guide.toc.s7" }}</a></li>
+    </ol>
+  </nav>
+
+  <!-- S1: What is a User-Agent -->
+  <section class="uag-section" aria-labelledby="uag-s1">
+    <div class="uag-section__inner">
+      <h2 class="uag-section__title" id="uag-s1">{{ call .T "ua.guide.s1.title" }}</h2>
+      <div class="uag-card">
+        <div class="uag-card__body">
+          <p>{{ call .T "ua.guide.s1.p1" }}</p>
+          <p>{{ call .T "ua.guide.s1.p2" }}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- S2: Anatomy -->
+  <section class="uag-section uag-section--alt" aria-labelledby="uag-s2">
+    <div class="uag-section__inner">
+      <h2 class="uag-section__title" id="uag-s2">{{ call .T "ua.guide.s2.title" }}</h2>
+      <div class="uag-card">
+        <div class="uag-card__body">
+          <p>{{ call .T "ua.guide.s2.p1" }}</p>
+          <pre class="uag-code"><code>{{ call .T "ua.guide.s2.code" }}</code></pre>
+          <ul class="uag-list">
+            <li>{{ call .T "ua.guide.s2.li1" }}</li>
+            <li>{{ call .T "ua.guide.s2.li2" }}</li>
+            <li>{{ call .T "ua.guide.s2.li3" }}</li>
+            <li>{{ call .T "ua.guide.s2.li4" }}</li>
+            <li>{{ call .T "ua.guide.s2.li5" }}</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- S3: Parsing rules -->
+  <section class="uag-section" aria-labelledby="uag-s3">
+    <div class="uag-section__inner">
+      <h2 class="uag-section__title" id="uag-s3">{{ call .T "ua.guide.s3.title" }}</h2>
+      <div class="uag-card">
+        <div class="uag-card__body">
+          <p>{{ call .T "ua.guide.s3.p1" }}</p>
+          <p>{{ call .T "ua.guide.s3.p2" }}</p>
+          <p>{{ call .T "ua.guide.s3.p3" }}</p>
+          <p>{{ call .T "ua.guide.s3.p4" }}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- S4: Bot detection -->
+  <section class="uag-section uag-section--alt" aria-labelledby="uag-s4">
+    <div class="uag-section__inner">
+      <h2 class="uag-section__title" id="uag-s4">{{ call .T "ua.guide.s4.title" }}</h2>
+      <div class="uag-card">
+        <div class="uag-card__body">
+          <p>{{ call .T "ua.guide.s4.p1" }}</p>
+          <p>{{ call .T "ua.guide.s4.p2" }}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- S5: Client Hints -->
+  <section class="uag-section" aria-labelledby="uag-s5">
+    <div class="uag-section__inner">
+      <h2 class="uag-section__title" id="uag-s5">{{ call .T "ua.guide.s5.title" }}</h2>
+      <div class="uag-card">
+        <div class="uag-card__body">
+          <p>{{ call .T "ua.guide.s5.p1" }}</p>
+          <p>{{ call .T "ua.guide.s5.p2" }}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- S6: Spoofing & limitations -->
+  <section class="uag-section uag-section--alt" aria-labelledby="uag-s6">
+    <div class="uag-section__inner">
+      <h2 class="uag-section__title" id="uag-s6">{{ call .T "ua.guide.s6.title" }}</h2>
+      <div class="uag-card">
+        <div class="uag-card__body">
+          <div class="uag-box uag-box--warning">
+            <div class="uag-box__title">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 9v4M12 17h.01M10.29 3.86 1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"/></svg>
+              {{ call .T "ua.guide.s6.title" }}
+            </div>
+            <p>{{ call .T "ua.guide.s6.p1" }}</p>
+          </div>
+          <p>{{ call .T "ua.guide.s6.p2" }}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- S7: Use cases -->
+  <section class="uag-section" aria-labelledby="uag-s7">
+    <div class="uag-section__inner">
+      <h2 class="uag-section__title" id="uag-s7">{{ call .T "ua.guide.s7.title" }}</h2>
+      <div class="uag-card">
+        <div class="uag-card__body">
+          <p>{{ call .T "ua.guide.s7.p1" }}</p>
+          <p>{{ call .T "ua.guide.s7.p2" }}</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="uag-cta" aria-label="Call to action">
+    <div class="uag-cta__inner">
+      <h3 class="uag-cta__title">{{ call .T "ua.guide.cta.title" }}</h3>
+      <p class="uag-cta__subtitle">{{ call .T "ua.guide.cta.subtitle" }}</p>
+      <a href="/dev/user-agent?lang={{ .Lang }}" class="uag-btn uag-btn--primary" data-ga="guide_cta">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg>
+        {{ call .T "ua.guide.cta.btn" }}
+      </a>
+    </div>
+  </section>
+
+  </div><!-- /uag-main-area -->
+
+  <aside class="uag-sidebar-ad">
+    {{- template "partials/ad_slot.html" (dict "Ctx" . "SlotID" "dev-user-agent-guide-right" "Size" "160x600" "MobileHide" true) }}
+  </aside>
+</div><!-- /uag-sidebar-layout -->
+
+<!-- Bottom Ad -->
+<div style="text-align:center;margin:20px auto;max-width:970px;padding:0 16px">
+  {{- template "partials/ad_slot.html" (dict "Ctx" . "SlotID" "dev-user-agent-guide-bottom" "Size" "728x90" "Mobile" "320x50") }}
+</div>
+
+</div><!-- /page-user-agent-guide -->
+{{ end }}
+
+{{ define "extraScript" }}
+<script>
+// Smooth scroll for TOC anchors
+document.addEventListener('DOMContentLoaded', function() {
+  document.querySelectorAll('.uag-toc__list a').forEach(function(link) {
+    link.addEventListener('click', function(e) {
+      const id = link.getAttribute('href');
+      if (!id || !id.startsWith('#')) return;
+      const target = document.querySelector(id);
+      if (!target) return;
+      e.preventDefault();
+      target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      history.replaceState(null, '', id);
+    });
+  });
+});
+</script>
+{{ end }}

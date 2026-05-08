@@ -1,0 +1,161 @@
+{{ template "base" . }}
+
+{{ define "extraHead" }}
+<link rel="stylesheet" href="/static/css/pdf-tools.css?v={{ .AssetVer }}">
+<script src="https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{{- range $i,$f := .FAQs }}{{if $i}},{{end}}{"@type":"Question","name":{{ $f.Q | html }},"acceptedAnswer":{"@type":"Answer","text":{{ $f.A | html }}}}{{- end}}]}
+</script>
+{{ end }}
+
+{{ define "content" }}
+{{ template "pdf_tabs" . }}
+<div class="pdf-tool-page">
+  <header class="pdf-hero">
+    <div class="pdf-hero__inner">
+      <span class="pdf-hero__logo">{{ call .T "pdf.merge.header.logo" }}</span>
+      <h1 class="pdf-hero__title">{{ call .T "pdf.merge.header.title" }}<em>{{ call .T "pdf.merge.header.title_em" }}</em>{{ call .T "pdf.merge.header.title_suffix" }}</h1>
+      <p class="pdf-hero__sub">{{ call .T "pdf.merge.header.sub" }}</p>
+      <div class="pdf-hero__badges">
+        <span class="pdf-hero__badge">{{ call .T "pdf.merge.header.badge1" }}</span>
+        <span class="pdf-hero__badge">{{ call .T "pdf.merge.header.badge2" }}</span>
+        <span class="pdf-hero__badge">{{ call .T "pdf.merge.header.badge3" }}</span>
+      </div>
+    </div>
+  </header>
+
+  <div class="pdf-upload-zone" id="mergeUploadZone">
+    <div class="pdf-upload-idle">
+      <div class="pdf-upload-idle__icon">📄</div>
+      <p class="pdf-upload-idle__title">{{ call .T "pdf.merge.upload.title" }}</p>
+      <p class="pdf-upload-idle__hint">{{ call .T "pdf.merge.upload.hint" }}</p>
+      <span class="pdf-upload-btn" onclick="event.stopPropagation(); document.getElementById('mergeFileInput').click()" data-ga data-ga-action="upload" data-ga-category="pdf-merge" data-ga-label="select-file">{{ call .T "pdf.merge.upload.btn" }}</span>
+      <input type="file" id="mergeFileInput" accept=".pdf,application/pdf" multiple style="display:none" data-ga data-ga-action="upload" data-ga-category="pdf-merge" data-ga-label="file-input">
+    </div>
+    <div class="pdf-drop-overlay">{{ call .T "pdf.merge.upload.drop" }}</div>
+  </div>
+
+  <div id="mergeList" class="pdf-thumb-grid-wrap" style="display:none">
+    <div class="pdf-thumb-grid-header">
+      <h3 class="pdf-thumb-grid-title">{{ call .T "pdf.merge.grid.title" }} <span id="mergeFileCount"></span></h3>
+      <div style="display:flex;gap:8px">
+        <button class="pdf-btn pdf-btn--sm" onclick="mergeAddMore()" data-ga data-ga-action="upload" data-ga-category="pdf-merge" data-ga-label="add-more">{{ call .T "pdf.merge.grid.add_more" }}</button>
+        <button class="pdf-btn pdf-btn--sm pdf-btn--danger" onclick="mergeClearAll()" data-ga data-ga-action="remove" data-ga-category="pdf-merge" data-ga-label="clear-all">{{ call .T "pdf.merge.grid.clear_all" }}</button>
+      </div>
+    </div>
+    <div id="mergeFileList" class="merge-file-list"></div>
+    <p class="pdf-drag-hint">{{ call .T "pdf.merge.grid.drag_hint" }}</p>
+    <div class="pdf-settings" style="margin-top:20px">
+      <div class="pdf-settings-card">
+        <div class="pdf-settings-grid">
+          <div class="pdf-field">
+            <label class="pdf-label">{{ call .T "pdf.merge.settings.filename" }}</label>
+            <input type="text" id="mergeFilename" class="pdf-input" value="merged" placeholder="merged">
+          </div>
+        </div>
+        <button class="pdf-action-btn" id="mergeRunBtn" onclick="runMerge()" data-ga data-ga-action="merge" data-ga-category="pdf-merge" data-ga-label="run-merge">{{ call .T "pdf.merge.run_btn" }}</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="mergeLoading" class="pdf-loading" style="display:none">
+    <div class="pdf-spinner"></div><p id="mergeLoadingMsg">{{ call .T "pdf.merge.loading" }}</p>
+  </div>
+  <div id="mergeProgress" class="pdf-progress-wrap" style="display:none">
+    <div class="pdf-progress-card">
+      <div class="pdf-progress-bar-wrap"><div class="pdf-progress-bar" id="mergeProgressBar"></div></div>
+      <p id="mergeProgressLabel">{{ call .T "pdf.merge.progress" }}</p>
+    </div>
+  </div>
+  <div id="mergeDownload" class="pdf-download-wrap" style="display:none">
+    <div class="pdf-download-card">
+      <span class="pdf-download-card__icon">✅</span>
+      <div><h3>{{ call .T "pdf.merge.done.title" }}</h3><p id="mergeDownloadInfo"></p></div>
+      <a id="mergeDownloadLink" class="pdf-download-btn" download data-ga data-ga-action="download" data-ga-category="pdf-merge" data-ga-label="download-merged">{{ call .T "pdf.merge.done.download" }}</a>
+      <button class="pdf-btn pdf-btn--sm" onclick="mergeClearAll()" data-ga data-ga-action="reset" data-ga-category="pdf-merge" data-ga-label="reset-tool">{{ call .T "pdf.merge.done.reset" }}</button>
+    </div>
+  </div>
+
+  <section class="pdf-howto">
+    <h2>{{ call .T "pdf.merge.howto.title" }}</h2>
+    <div class="pdf-steps">
+      <div class="pdf-step"><span class="pdf-step__num">1</span><p>{{ call .T "pdf.merge.howto.step1" }}</p></div>
+      <div class="pdf-step"><span class="pdf-step__num">2</span><p>{{ call .T "pdf.merge.howto.step2" }}</p></div>
+      <div class="pdf-step"><span class="pdf-step__num">3</span><p>{{ call .T "pdf.merge.howto.step3" }}</p></div>
+      <div class="pdf-step"><span class="pdf-step__num">4</span><p>{{ call .T "pdf.merge.howto.step4" }}</p></div>
+    </div>
+  </section>
+
+  <section class="pdf-section"><div class="pdf-section-inner">
+    <span class="pdf-section-label">{{ call .T "pdf.merge.s1.label" }}</span>
+    <h2 class="pdf-section-title">{{ call .T "pdf.merge.s1.title" }}</h2>
+    <p class="pdf-section-body">{{ call .T "pdf.merge.s1.body" }}</p>
+  </div></section>
+
+  <section class="pdf-section"><div class="pdf-section-inner">
+    <span class="pdf-section-label">{{ call .T "pdf.merge.s2.label" }}</span>
+    <h2 class="pdf-section-title">{{ call .T "pdf.merge.s2.title" }}</h2>
+    <p class="pdf-section-body">{{ call .T "pdf.merge.s2.body1" }}</p>
+    <p class="pdf-section-body">{{ call .T "pdf.merge.s2.body2" }}</p>
+  </div></section>
+
+  <section class="pdf-section"><div class="pdf-section-inner">
+    <span class="pdf-section-label">{{ call .T "pdf.merge.s3.label" }}</span>
+    <h2 class="pdf-section-title">{{ call .T "pdf.merge.s3.title" }}</h2>
+    <p class="pdf-section-body">{{ call .T "pdf.merge.s3.body" }}</p>
+  </div></section>
+
+  <section class="pdf-section"><div class="pdf-section-inner">
+    <span class="pdf-section-label">{{ call .T "pdf.merge.s4.label" }}</span>
+    <h2 class="pdf-section-title">{{ call .T "pdf.merge.s4.title" }}</h2>
+    <p class="pdf-section-body">{{ call .T "pdf.merge.s4.body1" }}</p>
+    <p class="pdf-section-body">{{ call .T "pdf.merge.s4.body2" }}</p>
+  </div></section>
+
+  <section class="pdf-section"><div class="pdf-section-inner">
+    <span class="pdf-section-label">{{ call .T "pdf.merge.s5.label" }}</span>
+    <h2 class="pdf-section-title">{{ call .T "pdf.merge.s5.title" }}</h2>
+    <p class="pdf-section-body">{{ call .T "pdf.merge.s5.body1" }}</p>
+    <p class="pdf-section-body">{{ call .T "pdf.merge.s5.body2" }}</p>
+  </div></section>
+
+  <section class="pdf-section"><div class="pdf-section-inner">
+    <span class="pdf-section-label">{{ call .T "pdf.merge.s6.label" }}</span>
+    <h2 class="pdf-section-title">{{ call .T "pdf.merge.s6.title" }}</h2>
+    <p class="pdf-section-body">{{ call .T "pdf.merge.s6.body1" }}</p>
+    <p class="pdf-section-body">{{ call .T "pdf.merge.s6.body2" }}</p>
+    <p class="pdf-section-body">{{ call .T "pdf.merge.s6.body3" }}</p>
+  </div></section>
+
+  <section class="pdf-section"><div class="pdf-section-inner">
+    <span class="pdf-section-label">{{ call .T "pdf.merge.faq.title" }}</span>
+    <h2 class="pdf-section-title">{{ call .T "pdf.merge.faq.title" }}</h2>
+    <div class="pdf-faq-list">
+      {{ range .FAQs }}
+      <div class="pdf-faq-item">
+        <button class="pdf-faq-q" onclick="this.parentElement.classList.toggle('open')" data-ga data-ga-action="toggle" data-ga-category="pdf-merge" data-ga-label="faq">
+          <span>{{ .Q }}</span>
+          <svg class="pdf-faq-chevron" width="20" height="20" viewBox="0 0 20 20"><path d="M5 8l5 5 5-5" stroke="currentColor" fill="none"/></svg>
+        </button>
+        <div class="pdf-faq-a"><p>{{ .A }}</p></div>
+      </div>
+      {{ end }}
+    </div>
+  </div></section>
+
+</div>
+<style>
+.merge-file-list { display:flex; flex-direction:column; gap:8px; }
+.merge-file-row { display:flex; align-items:center; gap:12px; background:#fff; border:1px solid var(--pdf-border); border-radius:9px; padding:10px 14px; cursor:grab; transition:border-color .15s; }
+.merge-file-row:hover { border-color:var(--pdf-red); }
+.merge-file-row.dragging { opacity:.4; }
+.merge-file-row__handle { color:#aaa; font-size:1rem; cursor:grab; flex-shrink:0; }
+.merge-file-row__icon { font-size:1.4rem; flex-shrink:0; }
+.merge-file-row__name { flex:1; font-size:.88rem; font-weight:600; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+.merge-file-row__meta { font-size:.78rem; color:var(--pdf-muted); flex-shrink:0; }
+.merge-file-row__remove { background:none; border:none; cursor:pointer; color:var(--pdf-muted); font-size:.9rem; padding:2px 6px; border-radius:4px; }
+.merge-file-row__remove:hover { color:var(--pdf-red); background:#fff5f5; }
+[data-theme="dark"] .merge-file-row { background:#1e293b; border-color:#334155; }
+</style>
+<script src="/static/js/pdf-merge.js?v={{ .AssetVer }}"></script>
+{{ end }}

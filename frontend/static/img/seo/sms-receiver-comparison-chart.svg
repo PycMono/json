@@ -1,0 +1,87 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 450" width="800" height="450">
+  <defs>
+    <linearGradient id="g1" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#0d9488"/>
+      <stop offset="100%" style="stop-color:#14b8a6"/>
+    </linearGradient>
+    <linearGradient id="g2" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#ef4444"/>
+      <stop offset="100%" style="stop-color:#f87171"/>
+    </linearGradient>
+    <filter id="sh">
+      <feDropShadow dx="0" dy="2" stdDeviation="4" flood-opacity="0.08"/>
+    </filter>
+  </defs>
+  <rect width="800" height="450" fill="#f8fffe" rx="12"/>
+
+  <!-- Title -->
+  <text x="400" y="42" font-family="system-ui, sans-serif" font-size="18" font-weight="700" fill="#0f172a" text-anchor="middle">免费 vs 付费短信接码平台对比</text>
+
+  <!-- Free column -->
+  <rect x="60" y="70" width="310" height="350" rx="14" fill="white" filter="url(#sh)"/>
+  <rect x="60" y="70" width="310" height="50" rx="14" fill="#fef2f2"/>
+  <rect x="60" y="105" width="310" height="15" fill="#fef2f2"/>
+  <circle cx="100" cy="95" r="16" fill="#fca5a5" opacity="0.3"/>
+  <text x="100" y="101" font-family="system-ui, sans-serif" font-size="16" text-anchor="middle">🆓</text>
+  <text x="130" y="102" font-family="system-ui, sans-serif" font-size="16" font-weight="600" fill="#991b1b">免费接码平台</text>
+
+  <!-- Free items -->
+  <g transform="translate(80, 140)">
+    <circle cx="8" cy="0" r="4" fill="#fca5a5"/><text x="22" y="5" font-family="system-ui, sans-serif" font-size="13" fill="#64748b">共享公共号码</text>
+  </g>
+  <g transform="translate(80, 170)">
+    <circle cx="8" cy="0" r="4" fill="#fca5a5"/><text x="22" y="5" font-family="system-ui, sans-serif" font-size="13" fill="#64748b">号码常被平台封锁</text>
+  </g>
+  <g transform="translate(80, 200)">
+    <circle cx="8" cy="0" r="4" fill="#fca5a5"/><text x="22" y="5" font-family="system-ui, sans-serif" font-size="13" fill="#64748b">投递率不可靠</text>
+  </g>
+  <g transform="translate(80, 230)">
+    <circle cx="8" cy="0" r="4" fill="#fca5a5"/><text x="22" y="5" font-family="system-ui, sans-serif" font-size="13" fill="#64748b">无隐私保证</text>
+  </g>
+  <g transform="translate(80, 260)">
+    <circle cx="8" cy="0" r="4" fill="#fca5a5"/><text x="22" y="5" font-family="system-ui, sans-serif" font-size="13" fill="#64748b">响应速度慢</text>
+  </g>
+  <g transform="translate(80, 290)">
+    <circle cx="8" cy="0" r="4" fill="#fca5a5"/><text x="22" y="5" font-family="system-ui, sans-serif" font-size="13" fill="#64748b">无客服支持</text>
+  </g>
+
+  <!-- Free success rate bar -->
+  <text x="215" y="340" font-family="system-ui, sans-serif" font-size="12" fill="#64748b" text-anchor="middle">成功率</text>
+  <rect x="90" y="350" width="240" height="16" rx="8" fill="#fee2e2"/>
+  <rect x="90" y="350" width="84" height="16" rx="8" fill="url(#g2)"/>
+  <text x="215" y="390" font-family="system-ui, sans-serif" font-size="18" font-weight="700" fill="#ef4444" text-anchor="middle">~35%</text>
+
+  <!-- Paid column (us) -->
+  <rect x="430" y="70" width="310" height="350" rx="14" fill="white" filter="url(#sh)" stroke="#99f6e4" stroke-width="2"/>
+  <rect x="430" y="70" width="310" height="50" rx="14" fill="#ecfdf5"/>
+  <rect x="430" y="105" width="310" height="15" fill="#ecfdf5"/>
+  <circle cx="470" cy="95" r="16" fill="#6ee7b7" opacity="0.3"/>
+  <text x="470" y="101" font-family="system-ui, sans-serif" font-size="16" text-anchor="middle">⭐</text>
+  <text x="500" y="102" font-family="system-ui, sans-serif" font-size="16" font-weight="600" fill="#065f46">付费接码平台（推荐）</text>
+
+  <!-- Paid items -->
+  <g transform="translate(450, 140)">
+    <circle cx="8" cy="0" r="4" fill="#34d399"/><text x="22" y="5" font-family="system-ui, sans-serif" font-size="13" fill="#0f172a" font-weight="500">专用私人号码</text>
+  </g>
+  <g transform="translate(450, 170)">
+    <circle cx="8" cy="0" r="4" fill="#34d399"/><text x="22" y="5" font-family="system-ui, sans-serif" font-size="13" fill="#0f172a" font-weight="500">号码干净未被标记</text>
+  </g>
+  <g transform="translate(450, 200)">
+    <circle cx="8" cy="0" r="4" fill="#34d399"/><text x="22" y="5" font-family="system-ui, sans-serif" font-size="13" fill="#0f172a" font-weight="500">95%+ 投递成功率</text>
+  </g>
+  <g transform="translate(450, 230)">
+    <circle cx="8" cy="0" r="4" fill="#34d399"/><text x="22" y="5" font-family="system-ui, sans-serif" font-size="13" fill="#0f172a" font-weight="500">完整隐私保护</text>
+  </g>
+  <g transform="translate(450, 260)">
+    <circle cx="8" cy="0" r="4" fill="#34d399"/><text x="22" y="5" font-family="system-ui, sans-serif" font-size="13" fill="#0f172a" font-weight="500">10 秒内到达</text>
+  </g>
+  <g transform="translate(450, 290)">
+    <circle cx="8" cy="0" r="4" fill="#34d399"/><text x="22" y="5" font-family="system-ui, sans-serif" font-size="13" fill="#0f172a" font-weight="500">7×24 客服支持</text>
+  </g>
+
+  <!-- Paid success rate bar -->
+  <text x="585" y="340" font-family="system-ui, sans-serif" font-size="12" fill="#64748b" text-anchor="middle">成功率</text>
+  <rect x="460" y="350" width="240" height="16" rx="8" fill="#d1fae5"/>
+  <rect x="460" y="350" width="228" height="16" rx="8" fill="url(#g1)"/>
+  <text x="585" y="390" font-family="system-ui, sans-serif" font-size="18" font-weight="700" fill="#0d9488" text-anchor="middle">95%+</text>
+</svg>

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 600">
+  <rect width="800" height="600" fill="#f9fafb"/>
+  <text x="400" y="40" fill="#111827" font-size="24" font-weight="bold" text-anchor="middle">Who Uses AI Article Rewriter?</text>
+  <g transform="translate(100, 80)">
+    <circle cx="80" cy="80" r="70" fill="#f59e0b" opacity="0.1"/>
+    <text x="80" y="80" text-anchor="middle" fill="#f59e0b" font-size="50">✍️</text>
+    <text x="80" y="180" text-anchor="middle" fill="#111827" font-size="18" font-weight="bold">Content Marketers</text>
+    <text x="80" y="200" text-anchor="middle" fill="#6b7280" font-size="12">Blog Posts</text>
+    <text x="80" y="215" text-anchor="middle" fill="#6b7280" font-size="12">SEO Content</text>
+  </g>
+  <g transform="translate(280, 80)">
+    <circle cx="80" cy="80" r="70" fill="#6366f1" opacity="0.1"/>
+    <text x="80" y="80" text-anchor="middle" fill="#6366f1" font-size="50">📰</text>
+    <text x="80" y="180" text-anchor="middle" fill="#111827" font-size="18" font-weight="bold">Journalists</text>
+    <text x="80" y="200" text-anchor="middle" fill="#6b7280" font-size="12">News Articles</text>
+    <text x="80" y="215" text-anchor="middle" fill="#6b7280" font-size="12">Press Releases</text>
+  </g>
+  <g transform="translate(460, 80)">
+    <circle cx="80" cy="80" r="70" fill="#10b981" opacity="0.1"/>
+    <text x="80" y="80" text-anchor="middle" fill="#10b981" font-size="50">💼</text>
+    <text x="80" y="180" text-anchor="middle" fill="#111827" font-size="18" font-weight="bold">Business Owners</text>
+    <text x="80" y="200" text-anchor="middle" fill="#6b7280" font-size="12">Website Content</text>
+    <text x="80" y="215" text-anchor="middle" fill="#6b7280" font-size="12">Marketing Copy</text>
+  </g>
+  <g transform="translate(640, 80)">
+    <circle cx="80" cy="80" r="70" fill="#ec4899" opacity="0.1"/>
+    <text x="80" y="80" text-anchor="middle" fill="#ec4899" font-size="50">🎓</text>
+    <text x="80" y="180" text-anchor="middle" fill="#111827" font-size="18" font-weight="bold">Researchers</text>
+    <text x="80" y="200" text-anchor="middle" fill="#6b7280" font-size="12">Academic Papers</text>
+    <text x="80" y="215" text-anchor="middle" fill="#6b7280" font-size="12">Literature Reviews</text>
+  </g>
+  <rect x="50" y="300" width="700" height="260" rx="12" fill="#fff" stroke="#e5e7eb" stroke-width="2"/>
+  <text x="400" y="330" fill="#111827" font-size="18" font-weight="bold" text-anchor="middle">Common Use Cases</text>
+  <g transform="translate(80, 360)">
+    <rect width="140" height="100" rx="8" fill="#f59e0b" opacity="0.1"/>
+    <text x="70" y="40" text-anchor="middle" fill="#f59e0b" font-size="30">🔍</text>
+    <text x="70" y="70" text-anchor="middle" fill="#111827" font-size="12" font-weight="bold">SEO Articles</text>
+    <text x="70" y="85" text-anchor="middle" fill="#6b7280" font-size="10">Rank higher</text>
+  </g>
+  <g transform="translate(230, 360)">
+    <rect width="140" height="100" rx="8" fill="#6366f1" opacity="0.1"/>
+    <text x="70" y="40" text-anchor="middle" fill="#6366f1" font-size="30">📝</text>
+    <text x="70" y="70" text-anchor="middle" fill="#111827" font-size="12" font-weight="bold">Blog Posts</text>
+    <text x="70" y="85" text-anchor="middle" fill="#6b7280" font-size="10">Fresh content</text>
+  </g>
+  <g transform="translate(380, 360)">
+    <rect width="140" height="100" rx="8" fill="#10b981" opacity="0.1"/>
+    <text x="70" y="40" text-anchor="middle" fill="#10b981" font-size="30">📧</text>
+    <text x="70" y="70" text-anchor="middle" fill="#111827" font-size="12" font-weight="bold">Newsletters</text>
+    <text x="70" y="85" text-anchor="middle" fill="#6b7280" font-size="10">Engage readers</text>
+  </g>
+  <g transform="translate(530, 360)">
+    <rect width="140" height="100" rx="8" fill="#ec4899" opacity="0.1"/>
+    <text x="70" y="40" text-anchor="middle" fill="#ec4899" font-size="30">🌐</text>
+    <text x="70" y="70" text-anchor="middle" fill="#111827" font-size="12" font-weight="bold">Website Copy</text>
+    <text x="70" y="85" text-anchor="middle" fill="#6b7280" font-size="10">Professional</text>
+  </g>
+</svg>

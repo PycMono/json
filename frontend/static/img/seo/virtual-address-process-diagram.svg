@@ -1,0 +1,66 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400" width="800" height="400">
+  <defs>
+    <linearGradient id="stepGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#6366f1"/>
+      <stop offset="100%" style="stop-color:#8b5cf6"/>
+    </linearGradient>
+    <linearGradient id="arrowGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#e9d5ff"/>
+      <stop offset="100%" style="stop-color:#8b5cf6"/>
+    </linearGradient>
+    <filter id="sh">
+      <feDropShadow dx="0" dy="3" stdDeviation="6" flood-opacity="0.08"/>
+    </filter>
+  </defs>
+  <rect width="800" height="400" fill="#faf5ff" rx="12"/>
+
+  <!-- Title -->
+  <text x="400" y="42" font-family="system-ui, sans-serif" font-size="18" font-weight="700" fill="#0f172a" text-anchor="middle">虚拟身份生成流程 — 三步完成</text>
+
+  <!-- Step 1 -->
+  <rect x="40" y="70" width="210" height="280" rx="16" fill="white" filter="url(#sh)"/>
+  <circle cx="145" cy="120" r="35" fill="#f5f3ff"/>
+  <text x="145" y="128" font-family="system-ui, sans-serif" font-size="32" text-anchor="middle">🌍</text>
+  <circle cx="70" cy="90" r="16" fill="url(#stepGrad)"/>
+  <text x="70" y="96" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="white" text-anchor="middle">1</text>
+  <text x="145" y="180" font-family="system-ui, sans-serif" font-size="15" font-weight="600" fill="#0f172a" text-anchor="middle">选择国家地区</text>
+  <text x="145" y="210" font-family="system-ui, sans-serif" font-size="12" fill="#64748b" text-anchor="middle">从 50+ 国家中选择</text>
+  <text x="145" y="230" font-family="system-ui, sans-serif" font-size="12" fill="#64748b" text-anchor="middle">美国、英国、日本等</text>
+  <text x="145" y="260" font-family="system-ui, sans-serif" font-size="12" fill="#64748b" text-anchor="middle">自动匹配本地格式</text>
+  <rect x="95" y="285" width="100" height="32" rx="16" fill="#f5f3ff" stroke="#c4b5fd" stroke-width="1"/>
+  <text x="145" y="306" font-family="system-ui, sans-serif" font-size="11" fill="#6366f1" text-anchor="middle">一键选择</text>
+
+  <!-- Arrow 1 -->
+  <path d="M260 210 L290 210" stroke="url(#arrowGrad)" stroke-width="3" stroke-linecap="round"/>
+  <path d="M285 200 L295 210 L285 220" fill="none" stroke="#8b5cf6" stroke-width="3" stroke-linecap="round"/>
+
+  <!-- Step 2 -->
+  <rect x="300" y="70" width="210" height="280" rx="16" fill="white" filter="url(#sh)"/>
+  <circle cx="405" cy="120" r="35" fill="#f5f3ff"/>
+  <text x="405" y="128" font-family="system-ui, sans-serif" font-size="32" text-anchor="middle">⚙️</text>
+  <circle cx="330" cy="90" r="16" fill="url(#stepGrad)"/>
+  <text x="330" y="96" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="white" text-anchor="middle">2</text>
+  <text x="405" y="180" font-family="system-ui, sans-serif" font-size="15" font-weight="600" fill="#0f172a" text-anchor="middle">配置生成选项</text>
+  <text x="405" y="210" font-family="system-ui, sans-serif" font-size="12" fill="#64748b" text-anchor="middle">选择需要的身份类型</text>
+  <text x="405" y="230" font-family="system-ui, sans-serif" font-size="12" fill="#64748b" text-anchor="middle">姓名、地址、电话等</text>
+  <text x="405" y="260" font-family="system-ui, sans-serif" font-size="12" fill="#64748b" text-anchor="middle">自定义或随机生成</text>
+  <rect x="355" y="285" width="100" height="32" rx="16" fill="#f5f3ff" stroke="#c4b5fd" stroke-width="1"/>
+  <text x="405" y="306" font-family="system-ui, sans-serif" font-size="11" fill="#6366f1" text-anchor="middle">灵活配置</text>
+
+  <!-- Arrow 2 -->
+  <path d="M520 210 L550 210" stroke="url(#arrowGrad)" stroke-width="3" stroke-linecap="round"/>
+  <path d="M545 200 L555 210 L545 220" fill="none" stroke="#8b5cf6" stroke-width="3" stroke-linecap="round"/>
+
+  <!-- Step 3 -->
+  <rect x="560" y="70" width="210" height="280" rx="16" fill="white" filter="url(#sh)"/>
+  <circle cx="665" cy="120" r="35" fill="#ede9fe"/>
+  <text x="665" y="128" font-family="system-ui, sans-serif" font-size="32" text-anchor="middle">✅</text>
+  <circle cx="590" cy="90" r="16" fill="#7c3aed"/>
+  <text x="590" y="96" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="white" text-anchor="middle">3</text>
+  <text x="665" y="180" font-family="system-ui, sans-serif" font-size="15" font-weight="600" fill="#0f172a" text-anchor="middle">获取身份数据</text>
+  <text x="665" y="210" font-family="system-ui, sans-serif" font-size="12" fill="#64748b" text-anchor="middle">立即生成完整身份</text>
+  <text x="665" y="230" font-family="system-ui, sans-serif" font-size="12" fill="#64748b" text-anchor="middle">一键复制所有信息</text>
+  <text x="665" y="260" font-family="system-ui, sans-serif" font-size="12" fill="#64748b" text-anchor="middle">导出为 JSON/CSV</text>
+  <rect x="615" y="285" width="100" height="32" rx="16" fill="#ede9fe" stroke="#a78bfa" stroke-width="1"/>
+  <text x="665" y="306" font-family="system-ui, sans-serif" font-size="11" fill="#7c3aed" text-anchor="middle">即时生成</text>
+</svg>

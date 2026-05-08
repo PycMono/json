@@ -1,0 +1,133 @@
+{{ template "base" . }}
+
+{{ define "extraHead" }}
+<link rel="stylesheet" href="/static/css/ai-tool-page.css?v={{ .AssetVer }}">
+<link rel="stylesheet" href="/static/css/ai-humanize.css?v={{ .AssetVer }}">
+<link rel="stylesheet" href="/static/css/ai-tool-nav.css?v={{ .AssetVer }}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous">
+<meta name="keywords" content="{{ .Keywords }}">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="{{ .Canonical }}">
+{{ range $lang, $url := .HreflangMap }}<link rel="alternate" hreflang="{{ $lang }}" href="{{ $url }}">
+{{ end }}<link rel="alternate" hreflang="x-default" href="https://toolboxnova.com/ai/paragraph-rewriter">
+<meta property="og:type" content="website">
+<meta property="og:title" content="{{ .Title }}">
+<meta property="og:description" content="{{ .Description }}">
+<meta property="og:url" content="{{ .Canonical }}">
+<meta property="og:image" content="{{ .OGImage }}">
+<meta property="og:site_name" content="json">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{{ .Title }}">
+<meta name="twitter:description" content="{{ .Description }}">
+<meta name="twitter:image" content="{{ .OGImage }}">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"AI Paragraph Rewriter — json","applicationCategory":"UtilitiesApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"description":"{{ .Description }}","url":"{{ .Canonical }}","aggregateRating":{"@type":"AggregateRating","ratingValue":"4.9","ratingCount":"11000","bestRating":"5","worstRating":"1"}}</script>
+<script>window.__i18n__ = {{ toJSON .Translations }};window.__lang__ = "{{ .Lang }}";</script>
+{{ end }}
+
+{{ define "content" }}
+<div class="ai-tool-page ai-tool-page--paragraph-rewriter">
+  {{ template "partials/ai_tool_nav.html" dict "T" .T "ActiveTool" .ActiveTool "IsHubPage" false }}
+  <div id="atp-toast-container" class="atp-toast-container"></div>
+
+  <section class="atp-hero">
+    <div class="atp-hero__inner">
+      <div class="atp-hero__badges">
+        <span class="atp-badge atp-badge--accent"><i class="fa-solid fa-bolt"></i> {{ call .T "paragraph_rewriter.hero.badge_fast" }}</span>
+        <span class="atp-badge"><i class="fa-solid fa-spell-check"></i> {{ call .T "paragraph_rewriter.hero.badge_readable" }}</span>
+      </div>
+      <h1 class="atp-hero__title"><span class="atp-gradient-text">{{ call .T "paragraph_rewriter.hero.title" }}</span></h1>
+      <p class="atp-hero__subtitle">{{ call .T "paragraph_rewriter.hero.subtitle" }}</p>
+      <div class="atp-strip">
+        <span class="atp-strip__label">{{ call .T "paragraph_rewriter.hero.strip_label" }}</span>
+        <div class="atp-strip__items"><span>Grammarly</span><span class="atp-sep">·</span><span>QuillBot</span><span class="atp-sep">·</span><span>Wordtune</span><span class="atp-sep">·</span><span>Jasper</span></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="atp-tool" id="atp-tool">
+    <div class="atp-tool__grid">
+      <div class="atp-panel atp-panel--input">
+        <div class="atp-panel__header"><h2>{{ call .T "paragraph_rewriter.input.title" }}</h2></div>
+        <div class="atp-form-group">
+          <label class="atp-label">{{ call .T "paragraph_rewriter.input.text_label" }}</label>
+          <textarea class="atp-textarea atp-textarea--large" id="prInputText" placeholder="{{ call .T `paragraph_rewriter.input.placeholder` }}" oninput="ParagraphRewriter.updateCount()"></textarea>
+          <div class="atp-input-meta"><span id="prWordCount">0 words</span></div>
+        </div>
+        <div class="atp-form-row">
+          <div class="atp-form-group">
+            <label class="atp-label">{{ call .T "paragraph_rewriter.input.style_label" }}</label>
+            <select class="atp-select" id="prStyle">
+              <option value="natural">{{ call .T "paragraph_rewriter.input.style_natural" }}</option>
+              <option value="formal">{{ call .T "paragraph_rewriter.input.style_formal" }}</option>
+              <option value="academic">{{ call .T "paragraph_rewriter.input.style_academic" }}</option>
+              <option value="creative">{{ call .T "paragraph_rewriter.input.style_creative" }}</option>
+              <option value="concise">{{ call .T "paragraph_rewriter.input.style_concise" }}</option>
+            </select>
+          </div>
+          <div class="atp-form-group">
+            <label class="atp-label">{{ call .T "paragraph_rewriter.input.purpose_label" }}</label>
+            <select class="atp-select" id="prPurpose">
+              <option value="readability">{{ call .T "paragraph_rewriter.input.purpose_readability" }}</option>
+              <option value="engagement">{{ call .T "paragraph_rewriter.input.purpose_engagement" }}</option>
+              <option value="professional">{{ call .T "paragraph_rewriter.input.purpose_professional" }}</option>
+              <option value="simplify">{{ call .T "paragraph_rewriter.input.purpose_simplify" }}</option>
+            </select>
+          </div>
+        </div>
+        <button class="atp-btn atp-btn--primary atp-btn--full" id="prRewriteBtn" onclick="ParagraphRewriter.rewrite()" data-ga="paragraph_rewriter_rewrite" data-ga-category="ai_tool">
+          <i class="fa-solid fa-rotate"></i> <span>{{ call .T "paragraph_rewriter.btn.rewrite" }}</span>
+        </button>
+      </div>
+
+      <div class="atp-panel atp-panel--output">
+        <div class="atp-panel__header">
+          <h2>{{ call .T "paragraph_rewriter.output.title" }}</h2>
+          <div class="atp-panel__actions">
+            <button class="atp-btn atp-btn--sm atp-btn--outline" onclick="ParagraphRewriter.copyOutput()" data-ga="paragraph_rewriter_copy" data-ga-category="ai_tool"><i class="fa-solid fa-copy"></i> {{ call .T "paragraph_rewriter.btn.copy" }}</button>
+          </div>
+        </div>
+        <div class="atp-output-empty" id="prOutputEmpty">
+          <div class="atp-output-empty__icon"><i class="fa-solid fa-paragraph"></i></div>
+          <h3>{{ call .T "paragraph_rewriter.output.empty_title" }}</h3>
+          <p>{{ call .T "paragraph_rewriter.output.empty_desc" }}</p>
+        </div>
+        <div class="atp-output-content" id="prOutputContent" style="display:none">
+          <div class="atp-output-text" id="prOutputText"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  {{ if .SEOArticle }}
+  <section class="atp-seo-article" aria-label="AI Paragraph Rewriter Guide">
+    <div class="atp-seo-content">
+      {{ .SEOArticle }}
+    </div>
+  </section>
+  {{ end }}
+
+  <section class="atp-bottom-nav">
+    <div class="atp-section-inner">
+      <p class="atp-bottom-nav__desc">{{ call .T "bottom_nav.desc" }}</p>
+      <div class="atp-bottom-nav__grid">
+        <a class="atp-bottom-nav__card" href="/ai/humanize?tab=humanizer" data-ga="ai_bottom_nav_humanizer" data-ga-category="ai_nav"><i class="fa-solid fa-wand-sparkles"></i><span>{{ call .T "bottom_nav.humanizer" }}</span></a>
+        <a class="atp-bottom-nav__card" href="/ai/detector" data-ga="ai_bottom_nav_detector" data-ga-category="ai_nav"><i class="fa-solid fa-magnifying-glass-chart"></i><span>{{ call .T "bottom_nav.detector" }}</span></a>
+        <a class="atp-bottom-nav__card" href="/ai/essay" data-ga="ai_bottom_nav_essay" data-ga-category="ai_nav"><i class="fa-solid fa-pen-fancy"></i><span>{{ call .T "bottom_nav.essay" }}</span></a>
+        <a class="atp-bottom-nav__card" href="/ai/sentence-rewriter" data-ga="ai_bottom_nav_sentence_rewriter" data-ga-category="ai_nav"><i class="fa-solid fa-rotate"></i><span>{{ call .T "bottom_nav.sentence_rewriter" }}</span></a>
+        <a class="atp-bottom-nav__card" href="/ai/article-rewriter"><i class="fa-solid fa-file-lines"></i><span>{{ call .T "bottom_nav.article_rewriter" }}</span></a>
+        <a class="atp-bottom-nav__card" href="/ai/detector/for-academic-writing" data-ga="ai_bottom_nav_detector_academic" data-ga-category="ai_nav"><i class="fa-solid fa-graduation-cap"></i><span>{{ call .T "bottom_nav.detector_academic" }}</span></a>
+        <a class="atp-bottom-nav__card" href="/ai/for-college" data-ga="ai_bottom_nav_for_college" data-ga-category="ai_nav"><i class="fa-solid fa-school"></i><span>{{ call .T "bottom_nav.for_college" }}</span></a>
+        <a class="atp-bottom-nav__card" href="/ai/for-professors" data-ga="ai_bottom_nav_for_professors" data-ga-category="ai_nav"><i class="fa-solid fa-chalkboard-user"></i><span>{{ call .T "bottom_nav.for_professors" }}</span></a>
+        <a class="atp-bottom-nav__card" href="/ai/humanize?tab=plagiarism" data-ga="ai_bottom_nav_plagiarism" data-ga-category="ai_nav"><i class="fa-solid fa-shield-halved"></i><span>{{ call .T "bottom_nav.plagiarism" }}</span></a>
+      </div>
+    </div>
+  </section>
+
+</div>
+{{ end }}
+
+{{ define "extraScript" }}
+<script src="/static/js/ai-tool-nav.js?v={{ .AssetVer }}"></script>
+<script src="/static/js/ai-tool-stream.js"></script>
+<script src="/static/js/ai-paragraph-rewriter.js?v={{ .AssetVer }}"></script>
+{{ end }}

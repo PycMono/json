@@ -1,0 +1,266 @@
+{{ template "base" . }}
+
+{{ define "extraHead" }}
+<link rel="stylesheet" href="/static/css/img-video.css?v={{ .AssetVer }}">
+<link rel="stylesheet" href="/static/css/img-tabs.css?v={{ .AssetVer }}">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "{{ .Title }}",
+  "description": "{{ .Description }}",
+  "url": "https://toolboxnova.com/img/to-video",
+  "applicationCategory": "MultimediaApplication",
+  "operatingSystem": "Web Browser",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{{- range $i,$f := .FAQs }}{{if $i}},{{end}}{"@type":"Question","name":{{ $f.Q | html }},"acceptedAnswer":{"@type":"Answer","text":{{ $f.A | html }}}}{{- end}}]}
+</script>
+{{ end }}
+
+{{ define "content" }}
+{{ template "img_tabs" . }}
+<div class="itv-page">
+
+  <header class="itv-header">
+    <div class="itv-header__inner">
+      <span class="itv-header__logo">{{ call .T "itv.header.logo" }}</span>
+      <h1 class="itv-header__title">{{ call .T "itv.header.title" }} <em>{{ call .T "itv.header.title_em" }}</em></h1>
+      <p class="itv-header__sub">{{ call .T "itv.header.sub" }}</p>
+      <div class="itv-badges">
+        <span class="itv-badge">{{ call .T "itv.header.badge1" }}</span>
+        <span class="itv-badge">{{ call .T "itv.header.badge2" }}</span>
+        <span class="itv-badge">{{ call .T "itv.header.badge3" }}</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Upload Zone -->
+  <div class="itv-upload-zone" id="itvUploadZone">
+    <div class="itv-upload-idle" id="itvUploadIdle">
+      <div class="itv-upload-icon">🖼️</div>
+      <p class="itv-upload-title">{{ call .T "itv.upload.title" }}</p>
+      <p class="itv-upload-hint">{{ call .T "itv.upload.hint" }}</p>
+      <span class="itv-upload-btn" onclick="event.stopPropagation(); document.getElementById('itvFileInput').click()" data-ga="itv_upload_btn">
+        {{ call .T "itv.upload.btn" }}
+      </span>
+      <input type="file" id="itvFileInput" accept="image/*" multiple style="display:none">
+    </div>
+    <div class="itv-drop-overlay" id="itvDropOverlay"><p>{{ call .T "itv.upload.drop" }}</p></div>
+  </div>
+
+  <!-- Image Grid (sortable) -->
+  <div class="itv-grid-wrap" id="itvGridWrap" style="display:none">
+    <div class="itv-grid-header">
+      <h3 class="itv-grid-title">{{ call .T "itv.grid.title" }} <span id="itvImgCount"></span></h3>
+      <div class="itv-grid-actions">
+        <button class="itv-btn itv-btn--sm" onclick="itvAddMore()" data-ga="itv_add_more">{{ call .T "itv.grid.add_more" }}</button>
+        <button class="itv-btn itv-btn--sm itv-btn--danger" onclick="itvClearAll()" data-ga="itv_clear_all">{{ call .T "itv.grid.clear_all" }}</button>
+      </div>
+    </div>
+    <div class="itv-grid" id="itvGrid"></div>
+    <p class="itv-drag-hint">{{ call .T "itv.grid.drag_hint" }}</p>
+  </div>
+
+  <!-- Settings + Preview -->
+  <div class="itv-settings-row" id="itvSettingsRow" style="display:none">
+    <!-- Settings -->
+    <div class="itv-settings-panel">
+      <h3>{{ call .T "itv.settings.title" }}</h3>
+
+      <div class="itv-field">
+        <label>{{ call .T "itv.settings.duration" }}</label>
+        <div class="itv-range-wrap">
+          <input type="range" id="itvDuration" min="0.5" max="10" step="0.5" value="2" oninput="itvUpdateDurationLabel()">
+          <span id="itvDurationLabel" class="itv-range-val">2s</span>
+        </div>
+      </div>
+
+      <div class="itv-field">
+        <label>{{ call .T "itv.settings.fps" }}</label>
+        <select id="itvFPS" class="itv-select">
+          <option value="15">{{ call .T "itv.settings.fps15" }}</option>
+          <option value="24" selected>{{ call .T "itv.settings.fps24" }}</option>
+          <option value="30">{{ call .T "itv.settings.fps30" }}</option>
+          <option value="60">{{ call .T "itv.settings.fps60" }}</option>
+        </select>
+      </div>
+
+      <div class="itv-field">
+        <label>{{ call .T "itv.settings.transition" }}</label>
+        <select id="itvTransition" class="itv-select">
+          <option value="none">{{ call .T "itv.settings.trans_none" }}</option>
+          <option value="fade" selected>{{ call .T "itv.settings.trans_fade" }}</option>
+          <option value="slide">{{ call .T "itv.settings.trans_slide" }}</option>
+          <option value="zoom">{{ call .T "itv.settings.trans_zoom" }}</option>
+        </select>
+      </div>
+
+      <div class="itv-field">
+        <label>{{ call .T "itv.settings.trans_duration" }}</label>
+        <div class="itv-range-wrap">
+          <input type="range" id="itvTransDuration" min="0.2" max="2" step="0.1" value="0.5" oninput="itvUpdateTransLabel()">
+          <span id="itvTransLabel" class="itv-range-val">0.5s</span>
+        </div>
+      </div>
+
+      <div class="itv-field">
+        <label>{{ call .T "itv.settings.resolution" }}</label>
+        <select id="itvResolution" class="itv-select">
+          <option value="480">{{ call .T "itv.settings.res480" }}</option>
+          <option value="720" selected>{{ call .T "itv.settings.res720" }}</option>
+          <option value="1080">{{ call .T "itv.settings.res1080" }}</option>
+        </select>
+      </div>
+
+      <div class="itv-field">
+        <label>{{ call .T "itv.settings.format" }}</label>
+        <select id="itvFormat" class="itv-select">
+          <option value="webm" selected>{{ call .T "itv.settings.webm" }}</option>
+          <option value="mp4">{{ call .T "itv.settings.mp4" }}</option>
+        </select>
+      </div>
+
+      <button class="itv-make-btn" id="itvMakeBtn" onclick="startVideoMake()" data-ga="itv_make_video">
+        {{ call .T "itv.make_btn" }}
+      </button>
+    </div>
+
+    <!-- Preview Canvas -->
+    <div class="itv-preview-panel">
+      <h3>{{ call .T "itv.preview.title" }}</h3>
+      <div class="itv-canvas-wrap">
+        <canvas id="itvPreviewCanvas" class="itv-preview-canvas"></canvas>
+        <div class="itv-preview-placeholder" id="itvPreviewPlaceholder">
+          <p>{{ call .T "itv.preview.placeholder" }}</p>
+        </div>
+      </div>
+      <div class="itv-preview-controls">
+        <button class="itv-btn itv-btn--sm" onclick="itvPreviewSlideshow()" data-ga="itv_preview_slideshow">{{ call .T "itv.preview.slideshow" }}</button>
+        <span class="itv-preview-frame" id="itvPreviewFrame"></span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Progress + Download -->
+  <div class="itv-progress-wrap" id="itvProgressWrap" style="display:none">
+    <div class="itv-progress-inner">
+      <div class="itv-progress-bar-wrap">
+        <div class="itv-progress-bar" id="itvProgressBar"></div>
+      </div>
+      <p id="itvProgressLabel">{{ call .T "itv.progress.label" }}</p>
+    </div>
+  </div>
+
+  <div class="itv-download-wrap" id="itvDownloadWrap" style="display:none">
+    <div class="itv-download-card">
+      <span class="itv-download-icon">✅</span>
+      <div>
+        <h3>{{ call .T "itv.download.ready" }}</h3>
+        <p id="itvDownloadInfo"></p>
+      </div>
+      <a id="itvDownloadLink" class="itv-download-btn" download data-ga="itv_download">{{ call .T "itv.download.btn" }}</a>
+      <button class="itv-btn itv-btn--sm" onclick="itvReset()" data-ga="itv_reset">{{ call .T "itv.download.reset" }}</button>
+    </div>
+  </div>
+
+  <!-- How it works -->
+  <section class="itv-howto">
+    <div class="itv-howto__inner">
+      <h2>{{ call .T "itv.howto.title" }}</h2>
+      <div class="itv-steps">
+        <div class="itv-step"><span class="itv-step__num">1</span><p>{{ call .T "itv.howto.step1" }}</p></div>
+        <div class="itv-step"><span class="itv-step__num">2</span><p>{{ call .T "itv.howto.step2" }}</p></div>
+        <div class="itv-step"><span class="itv-step__num">3</span><p>{{ call .T "itv.howto.step3" }}</p></div>
+        <div class="itv-step"><span class="itv-step__num">4</span><p>{{ call .T "itv.howto.step4" }}</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Editorial Section 1: Browser-based -->
+  <section class="itv-section">
+    <div class="itv-section-inner">
+      <span class="itv-section-label">{{ call .T "itv.s1.label" }}</span>
+      <h2 class="itv-section-title">{{ call .T "itv.s1.title" }}</h2>
+      <p class="itv-section-body">{{ call .T "itv.s1.body1" }}</p>
+      <p class="itv-section-body">{{ call .T "itv.s1.body2" }}</p>
+    </div>
+  </section>
+
+  <!-- Editorial Section 2: Transitions -->
+  <section class="itv-section">
+    <div class="itv-section-inner">
+      <span class="itv-section-label">{{ call .T "itv.s2.label" }}</span>
+      <h2 class="itv-section-title">{{ call .T "itv.s2.title" }}</h2>
+      <p class="itv-section-body">{{ call .T "itv.s2.body1" }}</p>
+      <p class="itv-section-body">{{ call .T "itv.s2.body2" }}</p>
+    </div>
+  </section>
+
+  <!-- Editorial Section 3: Quality control -->
+  <section class="itv-section">
+    <div class="itv-section-inner">
+      <span class="itv-section-label">{{ call .T "itv.s3.label" }}</span>
+      <h2 class="itv-section-title">{{ call .T "itv.s3.title" }}</h2>
+      <p class="itv-section-body">{{ call .T "itv.s3.body1" }}</p>
+      <p class="itv-section-body">{{ call .T "itv.s3.body2" }}</p>
+    </div>
+  </section>
+
+  <!-- Editorial Section 4: Easy to use -->
+  <section class="itv-section">
+    <div class="itv-section-inner">
+      <span class="itv-section-label">{{ call .T "itv.s4.label" }}</span>
+      <h2 class="itv-section-title">{{ call .T "itv.s4.title" }}</h2>
+      <p class="itv-section-body">{{ call .T "itv.s4.body1" }}</p>
+      <p class="itv-section-body">{{ call .T "itv.s4.body2" }}</p>
+    </div>
+  </section>
+
+  <!-- Editorial Section 5: Use cases -->
+  <section class="itv-section">
+    <div class="itv-section-inner">
+      <span class="itv-section-label">{{ call .T "itv.s5.label" }}</span>
+      <h2 class="itv-section-title">{{ call .T "itv.s5.title" }}</h2>
+      <p class="itv-section-body">{{ call .T "itv.s5.body1" }}</p>
+      <p class="itv-section-body">{{ call .T "itv.s5.body2" }}</p>
+    </div>
+  </section>
+
+  <!-- Editorial Section 6: About this tool -->
+  <section class="itv-section">
+    <div class="itv-section-inner">
+      <span class="itv-section-label">{{ call .T "itv.s6.label" }}</span>
+      <h2 class="itv-section-title">{{ call .T "itv.s6.title" }}</h2>
+      <p class="itv-section-body">{{ call .T "itv.s6.body1" }}</p>
+      <p class="itv-section-body">{{ call .T "itv.s6.body2" }}</p>
+      <p class="itv-section-body">{{ call .T "itv.s6.body3" }}</p>
+    </div>
+  </section>
+
+  <!-- FAQ Section -->
+  <section class="itv-section">
+    <div class="itv-section-inner">
+      <span class="itv-section-label">{{ call .T "itv.faq.title" }}</span>
+      <h2 class="itv-section-title">{{ call .T "itv.faq.title" }}</h2>
+      <div class="itv-faq-list">
+        {{ range .FAQs }}
+        <div class="itv-faq-item">
+          <button class="itv-faq-q" onclick="this.parentElement.classList.toggle('open')" data-ga="itv_faq_toggle">
+            <span>{{ .Q }}</span>
+            <svg class="itv-faq-chevron" width="20" height="20" viewBox="0 0 20 20"><path d="M5 8l5 5 5-5" stroke="currentColor" fill="none"/></svg>
+          </button>
+          <div class="itv-faq-a"><p>{{ .A }}</p></div>
+        </div>
+        {{ end }}
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<script src="/static/js/img-tabs.js?v={{ .AssetVer }}"></script>
+<script src="/static/js/img-video.js?v={{ .AssetVer }}"></script>
+{{ end }}

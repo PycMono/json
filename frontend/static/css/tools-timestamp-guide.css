@@ -1,0 +1,339 @@
+/* ============================================================
+   tools-timestamp-guide.css — SEO Guide Page
+   Reuses CSS custom properties from tools-timestamp.css
+   Palette: slate neutrals + indigo/blue accents
+   ============================================================ */
+
+/* Import variables from tools-timestamp.css */
+@import url('/static/css/tools-timestamp.css');
+
+.page-timestamp-guide {
+  background: var(--ts-bg);
+  color: var(--ts-text);
+}
+
+/* =========================
+   Hero
+   ========================= */
+.tsg-hero {
+  padding: 64px 24px 48px;
+  text-align: center;
+}
+
+.tsg-hero__inner {
+  max-width: 720px;
+  margin: 0 auto;
+}
+
+.tsg-hero__eyebrow {
+  display: inline-block;
+  padding: 5px 14px;
+  background: var(--ts-indigo-soft);
+  border: 1px solid rgba(99,102,241,0.15);
+  border-radius: 999px;
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--ts-indigo);
+  margin-bottom: 16px;
+}
+
+.tsg-hero__title {
+  font-size: 2.4rem;
+  font-weight: 800;
+  line-height: 1.15;
+  margin: 0 0 14px;
+  background: linear-gradient(135deg, #3b82f6 0%, #6366f1 60%, #8b5cf6 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  letter-spacing: -0.03em;
+}
+
+.tsg-hero__subtitle {
+  font-size: 1.05rem;
+  color: var(--ts-text-2);
+  line-height: 1.7;
+  margin: 0 0 24px;
+}
+
+@media (max-width: 768px) {
+  .tsg-hero { padding: 44px 16px 32px; }
+  .tsg-hero__title { font-size: 1.8rem; }
+  .tsg-hero__subtitle { font-size: 0.95rem; }
+}
+
+/* =========================
+   Section system
+   ========================= */
+.tsg-section {
+  padding: 56px 0;
+}
+
+.tsg-section__inner {
+  max-width: 880px;
+  margin: 0 auto;
+  padding: 0 24px;
+}
+
+.tsg-section__title {
+  font-size: 1.6rem;
+  font-weight: 700;
+  text-align: center;
+  margin: 0 0 10px;
+  color: var(--ts-text);
+  letter-spacing: -0.02em;
+}
+
+.tsg-section__subtitle {
+  text-align: center;
+  font-size: 1rem;
+  color: var(--ts-text-2);
+  margin: 0 0 36px;
+  line-height: 1.7;
+}
+
+.tsg-section__body {
+  font-size: 1rem;
+  color: var(--ts-text-2);
+  line-height: 1.8;
+  margin-bottom: 16px;
+}
+
+.tsg-section__body strong {
+  color: var(--ts-text);
+}
+
+.tsg-section__body code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.88em;
+  background: var(--ts-code-bg);
+  padding: 2px 6px;
+  border-radius: 4px;
+  color: var(--ts-code-text);
+}
+
+@media (max-width: 768px) {
+  .tsg-section { padding: 40px 0; }
+  .tsg-section__inner { padding: 0 16px; }
+  .tsg-section__title { font-size: 1.35rem; }
+}
+
+/* =========================
+   Content cards
+   ========================= */
+.tsg-card {
+  background: var(--ts-surface);
+  border: 1px solid var(--ts-border);
+  border-radius: var(--ts-radius);
+  padding: 28px;
+  margin-bottom: 20px;
+  transition: box-shadow var(--ts-transition);
+}
+
+.tsg-card:hover {
+  box-shadow: var(--ts-shadow-md);
+}
+
+.tsg-card__title {
+  font-size: 1.15rem;
+  font-weight: 700;
+  margin: 0 0 12px;
+  color: var(--ts-text);
+}
+
+.tsg-card__body {
+  font-size: 0.95rem;
+  color: var(--ts-text-2);
+  line-height: 1.75;
+}
+
+.tsg-card__body p {
+  margin: 0 0 12px;
+}
+
+.tsg-card__body p:last-child {
+  margin-bottom: 0;
+}
+
+/* =========================
+   Code blocks in guide
+   ========================= */
+.tsg-code-block {
+  background: var(--ts-code-bg);
+  border: 1px solid var(--ts-code-border);
+  border-radius: var(--ts-radius-sm);
+  overflow: hidden;
+  margin: 16px 0;
+}
+
+.tsg-code-block__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 8px 14px;
+  background: var(--ts-surface);
+  border-bottom: 1px solid var(--ts-border);
+}
+
+.tsg-code-block__lang {
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: var(--ts-text-muted);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.tsg-code-block__copy {
+  background: none;
+  border: none;
+  color: var(--ts-text-3);
+  cursor: pointer;
+  padding: 4px;
+  border-radius: 4px;
+  font-size: 0.8rem;
+  transition: all var(--ts-transition);
+}
+
+.tsg-code-block__copy:hover {
+  color: var(--ts-primary);
+  background: var(--ts-primary-dim);
+}
+
+.tsg-code-block__copy.copied {
+  color: var(--ts-success);
+}
+
+.tsg-code-block pre {
+  margin: 0;
+  padding: 14px 16px;
+  font-size: 0.85rem;
+  line-height: 1.65;
+  overflow-x: auto;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  color: var(--ts-code-text);
+  background: var(--ts-code-bg);
+}
+
+.tsg-code-block pre code {
+  font-family: inherit;
+  color: inherit;
+}
+
+/* =========================
+   Comparison table
+   ========================= */
+.tsg-table-wrap {
+  overflow-x: auto;
+  margin: 16px 0;
+}
+
+.tsg-table {
+  width: 100%;
+  border-collapse: collapse;
+  font-size: 0.92rem;
+}
+
+.tsg-table th,
+.tsg-table td {
+  padding: 12px 14px;
+  text-align: left;
+  border-bottom: 1px solid var(--ts-border);
+}
+
+.tsg-table th {
+  font-weight: 600;
+  color: var(--ts-text);
+  background: var(--ts-code-bg);
+  font-size: 0.82rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+.tsg-table td {
+  color: var(--ts-text-2);
+}
+
+.tsg-table td code {
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
+  font-size: 0.85em;
+  background: var(--ts-code-bg);
+  padding: 1px 5px;
+  border-radius: 3px;
+}
+
+.tsg-table tr:hover td {
+  background: var(--ts-surface-2);
+}
+
+/* =========================
+   Warning / Info boxes
+   ========================= */
+.tsg-box {
+  border-radius: var(--ts-radius-sm);
+  padding: 16px 18px;
+  margin: 16px 0;
+  font-size: 0.92rem;
+  line-height: 1.7;
+}
+
+.tsg-box--warning {
+  background: var(--ts-warning);
+  background: rgba(245,158,11,0.08);
+  border: 1px solid rgba(245,158,11,0.2);
+  color: var(--ts-text);
+}
+
+.tsg-box--info {
+  background: var(--ts-primary-dim);
+  border: 1px solid rgba(59,130,246,0.2);
+  color: var(--ts-text);
+}
+
+.tsg-box__title {
+  font-weight: 700;
+  margin-bottom: 6px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* =========================
+   FAQ (reuses ts-faq-* from tools-timestamp.css)
+   ========================= */
+
+/* =========================
+   Bottom CTA
+   ========================= */
+.tsg-cta {
+  padding: 56px 24px;
+}
+
+.tsg-cta__inner {
+  max-width: 600px;
+  margin: 0 auto;
+  text-align: center;
+  background: linear-gradient(135deg, var(--ts-indigo-soft) 0%, var(--ts-primary-dim) 100%);
+  border: 1px solid rgba(99,102,241,0.15);
+  border-radius: var(--ts-radius);
+  padding: 40px 32px;
+}
+
+.tsg-cta__title {
+  font-size: 1.4rem;
+  font-weight: 700;
+  margin: 0 0 8px;
+  color: var(--ts-text);
+}
+
+.tsg-cta__subtitle {
+  font-size: 1rem;
+  color: var(--ts-text-2);
+  line-height: 1.6;
+  margin: 0 0 20px;
+}
+
+@media (max-width: 768px) {
+  .tsg-cta { padding: 40px 16px; }
+  .tsg-cta__inner { padding: 28px 20px; }
+  .tsg-cta__title { font-size: 1.15rem; }
+}

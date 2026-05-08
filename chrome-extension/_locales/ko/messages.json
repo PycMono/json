@@ -1,0 +1,19 @@
+{
+  "extName": {
+    "message": "ToolBoxNova - 개발자 및 개인정보 도구"
+  },
+  "extDescription": {
+    "message": "JSON 도구, 비밀번호 생성기, AI 감지, 이미지 도구, 컬러 피커 등. 개인정보 보호, 오프라인 지원."
+  },
+  "contextFormatJson": { "message": "ToolBoxNova로 JSON 포맷" },
+  "contextAiDetect": { "message": "ToolBoxNova로 AI 콘텐츠 감지" },
+  "contextAiHumanize": { "message": "ToolBoxNova로 텍스트 Humanize" },
+  "toolJson": { "message": "JSON 도구" },
+  "toolPassword": { "message": "비밀번호" },
+  "toolColor": { "message": "컬러" },
+  "toolImage": { "message": "이미지" },
+  "toolTimestamp": { "message": "타임스탬프" },
+  "toolQrcode": { "message": "QR 코드" },
+  "toolAiDetect": { "message": "AI 감지" },
+  "toolAiHumanize": { "message": "Humanize" }
+}

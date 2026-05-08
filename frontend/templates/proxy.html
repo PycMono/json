@@ -1,0 +1,293 @@
+{{ template "base" . }}
+
+{{ define "extraHead" }}
+<link rel="stylesheet" href="/static/css/proxy.css?v={{ .AssetVer }}">
+<link rel="stylesheet" href="/static/css/tools-editorial.css?v={{ .AssetVer }}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous">
+<link rel="canonical" href="https://toolboxnova.com/proxy">
+<link rel="alternate" hreflang="zh" href="https://toolboxnova.com/proxy?lang=zh">
+<link rel="alternate" hreflang="en" href="https://toolboxnova.com/proxy?lang=en">
+<link rel="alternate" hreflang="ja" href="https://toolboxnova.com/proxy?lang=ja">
+<link rel="alternate" hreflang="ko" href="https://toolboxnova.com/proxy?lang=ko">
+<link rel="alternate" hreflang="es" href="https://toolboxnova.com/proxy?lang=spa">
+<link rel="alternate" hreflang="x-default" href="https://toolboxnova.com/proxy">
+<meta property="og:type" content="website">
+<meta property="og:title" content="{{ .Title }}">
+<meta property="og:description" content="{{ .Description }}">
+<meta property="og:url" content="https://toolboxnova.com/proxy">
+<meta property="og:site_name" content="json">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="{{ .Title }}">
+<meta name="twitter:description" content="{{ .Description }}">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {{- range $i, $faq := .FAQs }}
+    {{- if $i }},{{ end }}
+    { "@type": "Question", "name": {{ $faq.Q | printf "%q" }},
+      "acceptedAnswer": { "@type": "Answer", "text": {{ $faq.A | printf "%q" }} } }
+    {{- end }}
+  ]
+}
+</script>
+{{ end }}
+
+{{ define "content" }}
+<div class="proxy-page">
+
+  <!-- Hero -->
+  <section class="proxy-hero">
+    <div class="proxy-hero__inner">
+      <div class="proxy-hero__badges">
+        <span class="proxy-badge proxy-badge--accent"><i class="fa-solid fa-shield-halved"></i> {{ call .T "proxy.hero.badge_private" }}</span>
+        <span class="proxy-badge"><i class="fa-solid fa-bolt"></i> {{ call .T "proxy.hero.badge_fast" }}</span>
+      </div>
+      <h1 class="proxy-hero__title"><span class="proxy-gradient-text">{{ call .T "proxy.hero.title" }}</span></h1>
+      <p class="proxy-hero__subtitle">{{ call .T "proxy.hero.subtitle" }}</p>
+      <div class="proxy-strip">
+        <span class="proxy-strip__label">{{ call .T "proxy.hero.strip_label" }}</span>
+        <div class="proxy-strip__items"><span>AES-256</span><span class="proxy-sep">·</span><span>HTTPS</span><span class="proxy-sep">·</span><span>No Logs</span><span class="proxy-sep">·</span><span>Free</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- URL Input Bar -->
+  <div class="proxy-url-bar">
+    <div class="proxy-url-bar__inner">
+      <div class="proxy-url-bar__prefix"><i class="fa-solid fa-lock"></i> https://</div>
+      <input type="text" id="proxyUrl" class="proxy-url-bar__input" placeholder="{{ call .T "proxy.url_placeholder" }}" onkeydown="if(event.key==='Enter')ProxyTool.visit()">
+      <div class="proxy-url-bar__select">
+        <select id="proxyNode">
+          <option value="auto">{{ call .T "proxy.node_auto" }}</option>
+          <option value="us">{{ call .T "proxy.node_us" }}</option>
+          <option value="eu">{{ call .T "proxy.node_eu" }}</option>
+          <option value="as">{{ call .T "proxy.node_as" }}</option>
+        </select>
+      </div>
+      <button class="proxy-url-bar__btn" id="proxyVisitBtn" onclick="ProxyTool.visit()" data-ga data-ga-action="click" data-ga-category="proxy_tool" data-ga-label="visit">
+        <i class="fa-solid fa-globe"></i> <span>{{ call .T "proxy.visit" }}</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- Options -->
+  <div class="proxy-options">
+    <div class="proxy-options__inner">
+      <label class="proxy-opt-toggle">
+        <input type="checkbox" id="optEncrypt" checked>
+        <span class="proxy-opt-toggle__switch"></span>
+        <span class="proxy-opt-toggle__label">{{ call .T "proxy.encrypt" }}</span>
+      </label>
+      <label class="proxy-opt-toggle">
+        <input type="checkbox" id="optDisableScripts">
+        <span class="proxy-opt-toggle__switch"></span>
+        <span class="proxy-opt-toggle__label">{{ call .T "proxy.disable_scripts" }}</span>
+      </label>
+      <label class="proxy-opt-toggle">
+        <input type="checkbox" id="optBlockAds" checked>
+        <span class="proxy-opt-toggle__switch"></span>
+        <span class="proxy-opt-toggle__label">{{ call .T "proxy.block_ads" }}</span>
+      </label>
+    </div>
+  </div>
+
+  <!-- Quick Access -->
+  <div class="proxy-quick-access">
+    <p class="proxy-quick-access__label">{{ call .T "proxy.quick_links" }}</p>
+    <div class="proxy-quick-access__grid">
+      <div class="proxy-quick-site" onclick="ProxyTool.quickVisit('google.com')" data-ga data-ga-action="click" data-ga-category="proxy_tool" data-ga-label="quick_google">
+        <div class="proxy-quick-site__icon proxy-quick-site__icon--google"><i class="fa-brands fa-google"></i></div>
+        <span class="proxy-quick-site__name">Google</span>
+      </div>
+      <div class="proxy-quick-site" onclick="ProxyTool.quickVisit('youtube.com')" data-ga data-ga-action="click" data-ga-category="proxy_tool" data-ga-label="quick_youtube">
+        <div class="proxy-quick-site__icon proxy-quick-site__icon--youtube"><i class="fa-brands fa-youtube"></i></div>
+        <span class="proxy-quick-site__name">YouTube</span>
+      </div>
+      <div class="proxy-quick-site" onclick="ProxyTool.quickVisit('reddit.com')" data-ga data-ga-action="click" data-ga-category="proxy_tool" data-ga-label="quick_reddit">
+        <div class="proxy-quick-site__icon proxy-quick-site__icon--reddit"><i class="fa-brands fa-reddit"></i></div>
+        <span class="proxy-quick-site__name">Reddit</span>
+      </div>
+      <div class="proxy-quick-site" onclick="ProxyTool.quickVisit('github.com')" data-ga data-ga-action="click" data-ga-category="proxy_tool" data-ga-label="quick_github">
+        <div class="proxy-quick-site__icon proxy-quick-site__icon--github"><i class="fa-brands fa-github"></i></div>
+        <span class="proxy-quick-site__name">GitHub</span>
+      </div>
+      <div class="proxy-quick-site" onclick="ProxyTool.quickVisit('twitter.com')" data-ga data-ga-action="click" data-ga-category="proxy_tool" data-ga-label="quick_twitter">
+        <div class="proxy-quick-site__icon proxy-quick-site__icon--twitter"><i class="fa-brands fa-x-twitter"></i></div>
+        <span class="proxy-quick-site__name">Twitter</span>
+      </div>
+      <div class="proxy-quick-site" onclick="ProxyTool.quickVisit('wikipedia.org')" data-ga data-ga-action="click" data-ga-category="proxy_tool" data-ga-label="quick_wikipedia">
+        <div class="proxy-quick-site__icon proxy-quick-site__icon--wiki"><i class="fa-brands fa-wikipedia-w"></i></div>
+        <span class="proxy-quick-site__name">Wikipedia</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Proxy Result (hidden by default) -->
+  <div class="proxy-result" id="proxyResult" style="display:none">
+    <div class="proxy-result__inner">
+      <div class="proxy-result__toolbar">
+        <div class="proxy-result__url">
+          <i class="fa-solid fa-shield-halved"></i>
+          <span id="proxyResultUrl">{{ call .T "proxy.result.loading" }}</span>
+        </div>
+        <div class="proxy-result__actions">
+          <button class="proxy-result__btn" onclick="ProxyTool.copyUrl()" title="{{ call .T "proxy.result.copy" }}" data-ga data-ga-action="click" data-ga-category="proxy_tool" data-ga-label="copy_url"><i class="fa-solid fa-copy"></i></button>
+          <button class="proxy-result__btn proxy-result__btn--close" onclick="ProxyTool.close()" data-ga data-ga-action="click" data-ga-category="proxy_tool" data-ga-label="close_result"><i class="fa-solid fa-xmark"></i> {{ call .T "proxy.result.close" }}</button>
+        </div>
+      </div>
+      <iframe id="proxyFrame" class="proxy-result__iframe" sandbox="allow-same-origin allow-scripts allow-forms"></iframe>
+    </div>
+  </div>
+
+  <!-- Server Nodes -->
+  <div class="proxy-nodes">
+    <h3 class="proxy-nodes__title"><i class="fa-solid fa-server"></i> {{ call .T "proxy.nodes.title" }}</h3>
+    <div class="proxy-nodes__grid" id="proxyNodesGrid">
+      <div class="proxy-node-card">
+        <div class="proxy-node-card__header">
+          <span class="proxy-node-card__flag">🌍</span>
+          <div>
+            <div class="proxy-node-card__name">{{ call .T "proxy.node_auto" }}</div>
+            <div class="proxy-node-card__loc">Global</div>
+          </div>
+        </div>
+        <div class="proxy-node-card__latency">
+          <div class="proxy-node-card__speed"><div class="proxy-node-card__speed-bar proxy-node-card__speed-bar--fast" id="node-auto-bar"></div></div>
+          <span class="proxy-node-card__ms" id="node-auto-ms">--ms</span>
+        </div>
+        <span class="proxy-node-card__status proxy-node-card__status--online">{{ call .T "proxy.nodes.online" }}</span>
+      </div>
+      <div class="proxy-node-card">
+        <div class="proxy-node-card__header">
+          <span class="proxy-node-card__flag">🇺🇸</span>
+          <div>
+            <div class="proxy-node-card__name">{{ call .T "proxy.node_us" }}</div>
+            <div class="proxy-node-card__loc">United States</div>
+          </div>
+        </div>
+        <div class="proxy-node-card__latency">
+          <div class="proxy-node-card__speed"><div class="proxy-node-card__speed-bar proxy-node-card__speed-bar--fast" id="node-us-bar"></div></div>
+          <span class="proxy-node-card__ms" id="node-us-ms">--ms</span>
+        </div>
+        <span class="proxy-node-card__status proxy-node-card__status--online">{{ call .T "proxy.nodes.online" }}</span>
+      </div>
+      <div class="proxy-node-card">
+        <div class="proxy-node-card__header">
+          <span class="proxy-node-card__flag">🇪🇺</span>
+          <div>
+            <div class="proxy-node-card__name">{{ call .T "proxy.node_eu" }}</div>
+            <div class="proxy-node-card__loc">Europe</div>
+          </div>
+        </div>
+        <div class="proxy-node-card__latency">
+          <div class="proxy-node-card__speed"><div class="proxy-node-card__speed-bar proxy-node-card__speed-bar--fast" id="node-eu-bar"></div></div>
+          <span class="proxy-node-card__ms" id="node-eu-ms">--ms</span>
+        </div>
+        <span class="proxy-node-card__status proxy-node-card__status--online">{{ call .T "proxy.nodes.online" }}</span>
+      </div>
+      <div class="proxy-node-card">
+        <div class="proxy-node-card__header">
+          <span class="proxy-node-card__flag">🌏</span>
+          <div>
+            <div class="proxy-node-card__name">{{ call .T "proxy.node_as" }}</div>
+            <div class="proxy-node-card__loc">Asia</div>
+          </div>
+        </div>
+        <div class="proxy-node-card__latency">
+          <div class="proxy-node-card__speed"><div class="proxy-node-card__speed-bar proxy-node-card__speed-bar--fast" id="node-as-bar"></div></div>
+          <span class="proxy-node-card__ms" id="node-as-ms">--ms</span>
+        </div>
+        <span class="proxy-node-card__status proxy-node-card__status--online">{{ call .T "proxy.nodes.online" }}</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Stats -->
+  <div class="proxy-stats">
+    <div class="proxy-stats__inner">
+      <div class="proxy-stat-card">
+        <div class="proxy-stat-card__value" id="todayRequests">--</div>
+        <div class="proxy-stat-card__label">{{ call .T "proxy.today_requests" }}</div>
+      </div>
+      <div class="proxy-stat-card">
+        <div class="proxy-stat-card__value" id="availableNodes">--</div>
+        <div class="proxy-stat-card__label">{{ call .T "proxy.available_nodes" }}</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Features -->
+  <div class="proxy-features">
+    <div class="proxy-features__grid">
+      <div class="proxy-feature-card">
+        <div class="proxy-feature-card__icon"><i class="fa-solid fa-user-shield"></i></div>
+        <div class="proxy-feature-card__title">{{ call .T "proxy.feature1_title" }}</div>
+        <div class="proxy-feature-card__desc">{{ call .T "proxy.feature1_desc" }}</div>
+      </div>
+      <div class="proxy-feature-card">
+        <div class="proxy-feature-card__icon"><i class="fa-solid fa-bolt"></i></div>
+        <div class="proxy-feature-card__title">{{ call .T "proxy.feature2_title" }}</div>
+        <div class="proxy-feature-card__desc">{{ call .T "proxy.feature2_desc" }}</div>
+      </div>
+      <div class="proxy-feature-card">
+        <div class="proxy-feature-card__icon"><i class="fa-solid fa-lock"></i></div>
+        <div class="proxy-feature-card__title">{{ call .T "proxy.feature3_title" }}</div>
+        <div class="proxy-feature-card__desc">{{ call .T "proxy.feature3_desc" }}</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- How to Use -->
+  <div class="proxy-howto">
+    <div class="proxy-howto__inner">
+      <h3 class="proxy-howto__title"><i class="fa-solid fa-circle-question"></i> {{ call .T "proxy.how.card_title" }}</h3>
+      <div class="proxy-howto__steps">
+        <div class="proxy-howto-step">
+          <div class="proxy-howto-step__num">1</div>
+          <div class="proxy-howto-step__title">{{ call .T "proxy.how.step1_short" }}</div>
+          <div class="proxy-howto-step__desc">{{ call .T "proxy.how.step1" }}</div>
+        </div>
+        <div class="proxy-howto-step">
+          <div class="proxy-howto-step__num">2</div>
+          <div class="proxy-howto-step__title">{{ call .T "proxy.how.step2_short" }}</div>
+          <div class="proxy-howto-step__desc">{{ call .T "proxy.how.step2" }}</div>
+        </div>
+        <div class="proxy-howto-step">
+          <div class="proxy-howto-step__num">3</div>
+          <div class="proxy-howto-step__title">{{ call .T "proxy.how.step3_short" }}</div>
+          <div class="proxy-howto-step__desc">{{ call .T "proxy.how.step3" }}</div>
+        </div>
+        <div class="proxy-howto-step">
+          <div class="proxy-howto-step__num">4</div>
+          <div class="proxy-howto-step__title">{{ call .T "proxy.how.step4_short" }}</div>
+          <div class="proxy-howto-step__desc">{{ call .T "proxy.how.step4" }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Disclaimer -->
+  <div class="proxy-disclaimer">
+    <div class="proxy-disclaimer__inner">
+      <i class="fa-solid fa-triangle-exclamation proxy-disclaimer__icon"></i>
+      <p class="proxy-disclaimer__text">{{ call .T "proxy.disclaimer" }}</p>
+    </div>
+  </div>
+
+  <!-- SEO Article -->
+  {{ if .SEOArticle }}
+  <div class="proxy-seo-article">
+    <div class="proxy-seo-wrap">
+      {{ .SEOArticle }}
+    </div>
+  </div>
+  {{ end }}
+
+</div>
+{{ end }}
+
+{{ define "extraScript" }}
+<script src="/static/js/proxy.js?v={{ .AssetVer }}"></script>
+{{ end }}

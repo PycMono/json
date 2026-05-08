@@ -1,0 +1,14 @@
+{{ define "pdf_tabs" }}
+<div class="pdf-tabs-wrap">
+  <nav class="pdf-tabs" role="tablist">
+    <a href="/pdf/reorder?lang={{ .Lang }}"      class="pdf-tab {{ if eq .PDFTool "reorder"      }}pdf-tab--active{{ end }}">📋 <span>{{ call .T "pdf.tab.reorder" }}</span></a>
+    <a href="/pdf/extract-text?lang={{ .Lang }}" class="pdf-tab {{ if eq .PDFTool "extract-text" }}pdf-tab--active{{ end }}">📝 <span>{{ call .T "pdf.tab.extract" }}</span></a>
+    <a href="/pdf/merge?lang={{ .Lang }}"        class="pdf-tab {{ if eq .PDFTool "merge"        }}pdf-tab--active{{ end }}">🔀 <span>{{ call .T "pdf.tab.merge" }}</span></a>
+    <a href="/pdf/split?lang={{ .Lang }}"        class="pdf-tab {{ if eq .PDFTool "split"        }}pdf-tab--active{{ end }}">✂️ <span>{{ call .T "pdf.tab.split" }}</span></a>
+    <a href="/pdf/to-image?lang={{ .Lang }}"     class="pdf-tab {{ if eq .PDFTool "to-image"     }}pdf-tab--active{{ end }}">🖼️ <span>{{ call .T "pdf.tab.to_image" }}</span></a>
+    <a href="/pdf/watermark?lang={{ .Lang }}"    class="pdf-tab {{ if eq .PDFTool "watermark"    }}pdf-tab--active{{ end }}">💧 <span>{{ call .T "pdf.tab.watermark" }}</span></a>
+    <a href="/pdf/encrypt?lang={{ .Lang }}"      class="pdf-tab {{ if eq .PDFTool "encrypt"      }}pdf-tab--active{{ end }}">🔒 <span>{{ call .T "pdf.tab.encrypt" }}</span></a>
+    <a href="/pdf/compress?lang={{ .Lang }}"     class="pdf-tab {{ if eq .PDFTool "compress"     }}pdf-tab--active{{ end }}">📦 <span>{{ call .T "pdf.tab.compress" }}</span></a>
+  </nav>
+</div>
+{{ end }}

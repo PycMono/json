@@ -1,0 +1,105 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <defs>
+    <linearGradient id="heroGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#78350f"/>
+      <stop offset="50%" style="stop-color:#92400e"/>
+      <stop offset="100%" style="stop-color:#b45309"/>
+    </linearGradient>
+    <linearGradient id="accentGrad" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#f59e0b"/>
+      <stop offset="100%" style="stop-color:#fbbf24"/>
+    </linearGradient>
+    <filter id="sh">
+      <feDropShadow dx="0" dy="4" stdDeviation="8" flood-opacity="0.15"/>
+    </filter>
+    <filter id="glow">
+      <feGaussianBlur stdDeviation="6" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+  <rect width="1200" height="630" fill="#fffbeb"/>
+  <rect x="0" y="0" width="1200" height="280" fill="url(#heroGrad)" rx="0"/>
+
+  <!-- Title -->
+  <text x="600" y="80" font-family="system-ui, sans-serif" font-size="36" font-weight="800" fill="white" text-anchor="middle">浏览器指纹扫描器</text>
+  <text x="600" y="120" font-family="system-ui, sans-serif" font-size="18" fill="#fde68a" text-anchor="middle">检测12+种浏览器追踪技术 · 保护您的在线隐私</text>
+
+  <!-- Badges -->
+  <rect x="340" y="145" width="140" height="32" rx="16" fill="rgba(245,158,11,.25)" stroke="#fbbf24" stroke-width="1"/>
+  <text x="410" y="166" font-family="system-ui, sans-serif" font-size="13" font-weight="600" fill="#fde68a" text-anchor="middle">12+ 检测项</text>
+  <rect x="500" y="145" width="140" height="32" rx="16" fill="rgba(245,158,11,.25)" stroke="#fbbf24" stroke-width="1"/>
+  <text x="570" y="166" font-family="system-ui, sans-serif" font-size="13" font-weight="600" fill="#fde68a" text-anchor="middle">100% 本地运行</text>
+  <rect x="660" y="145" width="140" height="32" rx="16" fill="rgba(245,158,11,.25)" stroke="#fbbf24" stroke-width="1"/>
+  <text x="730" y="166" font-family="system-ui, sans-serif" font-size="13" font-weight="600" fill="#fde68a" text-anchor="middle">完全免费</text>
+
+  <!-- Main UI mockup card -->
+  <rect x="100" y="210" width="1000" height="380" rx="20" fill="white" filter="url(#sh)"/>
+
+  <!-- Header bar -->
+  <rect x="100" y="210" width="1000" height="56" rx="20" fill="#f8fafc"/>
+  <rect x="100" y="246" width="1000" height="20" fill="#f8fafc"/>
+  <circle cx="130" cy="238" r="7" fill="#ef4444"/>
+  <circle cx="152" cy="238" r="7" fill="#f59e0b"/>
+  <circle cx="174" cy="238" r="7" fill="#22c55e"/>
+  <text x="600" y="244" font-family="system-ui, sans-serif" font-size="14" fill="#64748b" text-anchor="middle">Browser Fingerprint Scanner — ToolboxNova.com</text>
+
+  <!-- Score circle -->
+  <circle cx="250" cy="340" r="60" fill="#fef3c7" stroke="#f59e0b" stroke-width="3"/>
+  <text x="250" y="332" font-family="system-ui, sans-serif" font-size="32" font-weight="800" fill="#92400e" text-anchor="middle">87%</text>
+  <text x="250" y="358" font-family="system-ui, sans-serif" font-size="12" fill="#78350f" text-anchor="middle">唯一性</text>
+
+  <!-- Detection cards grid -->
+  <g transform="translate(360, 285)">
+    <rect x="0" y="0" width="155" height="68" rx="10" fill="#f0fdf4" stroke="#bbf7d0" stroke-width="1"/>
+    <text x="12" y="22" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#15803d">🌐 浏览器</text>
+    <text x="12" y="40" font-family="system-ui, sans-serif" font-size="10" fill="#64748b">Chrome 131</text>
+    <text x="120" y="56" font-family="system-ui, sans-serif" font-size="9" font-weight="700" fill="#22c55e">安全</text>
+
+    <rect x="165" y="0" width="155" height="68" rx="10" fill="#fef2f2" stroke="#fecaca" stroke-width="1"/>
+    <text x="177" y="22" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#dc2626">🔌 WebRTC</text>
+    <text x="177" y="40" font-family="system-ui, sans-serif" font-size="10" fill="#64748b">IP: 192.168.1.x</text>
+    <text x="285" y="56" font-family="system-ui, sans-serif" font-size="9" font-weight="700" fill="#ef4444">泄漏</text>
+
+    <rect x="330" y="0" width="155" height="68" rx="10" fill="#fefce8" stroke="#fef08a" stroke-width="1"/>
+    <text x="342" y="22" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#a16207">🎨 Canvas</text>
+    <text x="342" y="40" font-family="system-ui, sans-serif" font-size="10" fill="#64748b">Hash: a3f8b2c1</text>
+    <text x="450" y="56" font-family="system-ui, sans-serif" font-size="9" font-weight="700" fill="#f59e0b">可追踪</text>
+
+    <rect x="495" y="0" width="155" height="68" rx="10" fill="#fefce8" stroke="#fef08a" stroke-width="1"/>
+    <text x="507" y="22" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#a16207">🎮 WebGL</text>
+    <text x="507" y="40" font-family="system-ui, sans-serif" font-size="10" fill="#64748b">NVIDIA RTX 4090</text>
+    <text x="615" y="56" font-family="system-ui, sans-serif" font-size="9" font-weight="700" fill="#f59e0b">已暴露</text>
+  </g>
+
+  <g transform="translate(360, 365)">
+    <rect x="0" y="0" width="155" height="68" rx="10" fill="#fefce8" stroke="#fef08a" stroke-width="1"/>
+    <text x="12" y="22" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#a16207">🔤 字体</text>
+    <text x="12" y="40" font-family="system-ui, sans-serif" font-size="10" fill="#64748b">检测到 9 种字体</text>
+    <text x="120" y="56" font-family="system-ui, sans-serif" font-size="9" font-weight="700" fill="#f59e0b">可识别</text>
+
+    <rect x="165" y="0" width="155" height="68" rx="10" fill="#fefce8" stroke="#fef08a" stroke-width="1"/>
+    <text x="177" y="22" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#a16207">🖥️ 屏幕</text>
+    <text x="177" y="40" font-family="system-ui, sans-serif" font-size="10" fill="#64748b">2560x1440 2x</text>
+    <text x="285" y="56" font-family="system-ui, sans-serif" font-size="9" font-weight="700" fill="#f59e0b">已暴露</text>
+
+    <rect x="330" y="0" width="155" height="68" rx="10" fill="#f0fdf4" stroke="#bbf7d0" stroke-width="1"/>
+    <text x="342" y="22" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#15803d">🗣️ 语言</text>
+    <text x="342" y="40" font-family="system-ui, sans-serif" font-size="10" fill="#64748b">zh-CN</text>
+    <text x="450" y="56" font-family="system-ui, sans-serif" font-size="9" font-weight="700" fill="#22c55e">正常</text>
+
+    <rect x="495" y="0" width="155" height="68" rx="10" fill="#f0fdf4" stroke="#bbf7d0" stroke-width="1"/>
+    <text x="507" y="22" font-family="system-ui, sans-serif" font-size="11" font-weight="600" fill="#15803d">💾 存储</text>
+    <text x="507" y="40" font-family="system-ui, sans-serif" font-size="10" fill="#64748b">全部可用</text>
+    <text x="615" y="56" font-family="system-ui, sans-serif" font-size="9" font-weight="700" fill="#22c55e">正常</text>
+  </g>
+
+  <!-- Bottom recommendation bar -->
+  <rect x="140" y="460" width="920" height="50" rx="12" fill="#fffbeb" stroke="#fde68a" stroke-width="1"/>
+  <text x="180" y="490" font-family="system-ui, sans-serif" font-size="13" font-weight="600" fill="#92400e">🛡️ 建议：</text>
+  <text x="270" y="490" font-family="system-ui, sans-serif" font-size="13" fill="#78350f">安装 Canvas Blocker 扩展 · 禁用 WebRTC · 使用隐私浏览器</text>
+  <rect x="870" y="470" width="160" height="32" rx="16" fill="url(#accentGrad)"/>
+  <text x="950" y="491" font-family="system-ui, sans-serif" font-size="13" font-weight="700" fill="#78350f" text-anchor="middle">立即修复</text>
+
+  <!-- Bottom brand -->
+  <text x="600" y="545" font-family="system-ui, sans-serif" font-size="11" fill="#94a3b8" text-anchor="middle">ToolboxNova.com — 免费在线浏览器指纹检测工具</text>
+</svg>

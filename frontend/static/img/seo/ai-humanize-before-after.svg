@@ -1,0 +1,72 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 500" fill="none">
+  <defs>
+    <linearGradient id="ai-bg" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#fee2e2"/>
+      <stop offset="100%" style="stop-color:#fecaca"/>
+    </linearGradient>
+    <linearGradient id="human-bg" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#d1fae5"/>
+      <stop offset="100%" style="stop-color:#a7f3d0"/>
+    </linearGradient>
+    <linearGradient id="progress" x1="0%" y1="0%" x2="100%" y2="0%">
+      <stop offset="0%" style="stop-color:#00d4ff"/>
+      <stop offset="100%" style="stop-color:#00a8cc"/>
+    </linearGradient>
+  </defs>
+  <!-- Left panel - AI Text (Before) -->
+  <rect x="20" y="60" width="360" height="420" rx="16" fill="#f8fafc" stroke="#e2e8f0" stroke-width="2"/>
+  <rect x="20" y="60" width="360" height="48" rx="16" fill="url(#ai-bg)"/>
+  <rect x="20" y="92" width="360" height="16" fill="url(#ai-bg)"/>
+  <text x="200" y="90" font-family="system-ui" font-size="14" font-weight="600" fill="#dc2626" text-anchor="middle">AI-Generated Text (Before)</text>
+  <!-- AI text content with markers -->
+  <text x="45" y="140" font-family="system-ui" font-size="13" fill="#64748b">The utilization of artificial intelligence</text>
+  <text x="45" y="162" font-family="system-ui" font-size="13" fill="#64748b">technologies has become increasingly</text>
+  <text x="45" y="184" font-family="system-ui" font-size="13" fill="#64748b">prevalent in various industries. AI models</text>
+  <text x="45" y="206" font-family="system-ui" font-size="13" fill="#64748b">demonstrate remarkable capabilities in</text>
+  <text x="45" y="228" font-family="system-ui" font-size="13" fill="#64748b">processing and generating content.</text>
+  <!-- Detection markers -->
+  <circle cx="330" cy="135" r="8" fill="#dc2626" opacity="0.9"/>
+  <text x="330" y="139" font-family="system-ui" font-size="10" fill="white" text-anchor="middle">!</text>
+  <circle cx="330" cy="180" r="8" fill="#dc2626" opacity="0.9"/>
+  <text x="330" y="184" font-family="system-ui" font-size="10" fill="white" text-anchor="middle">!</text>
+  <!-- AI Detection Score -->
+  <rect x="100" y="260" width="200" height="80" rx="12" fill="white" stroke="#fecaca" stroke-width="2"/>
+  <text x="200" y="285" font-family="system-ui" font-size="12" fill="#64748b" text-anchor="middle">AI Detection Probability</text>
+  <text x="200" y="320" font-family="system-ui" font-size="32" font-weight="700" fill="#dc2626" text-anchor="middle">94%</text>
+  <!-- Problems list -->
+  <text x="45" y="380" font-family="system-ui" font-size="12" fill="#94a3b8">&#x2717; Repetitive sentence patterns</text>
+  <text x="45" y="405" font-family="system-ui" font-size="12" fill="#94a3b8">&#x2717; Robotic, predictable structure</text>
+  <text x="45" y="430" font-family="system-ui" font-size="12" fill="#94a3b8">&#x2717; Lacks natural flow and nuance</text>
+  <text x="45" y="455" font-family="system-ui" font-size="12" fill="#94a3b8">&#x2717; Flagged by AI detectors</text>
+  <!-- Right panel - Human Text (After) -->
+  <rect x="420" y="60" width="360" height="420" rx="16" fill="#f8fafc" stroke="#00d4ff" stroke-width="2"/>
+  <rect x="420" y="60" width="360" height="48" rx="16" fill="url(#human-bg)"/>
+  <rect x="420" y="92" width="360" height="16" fill="url(#human-bg)"/>
+  <text x="600" y="90" font-family="system-ui" font-size="14" font-weight="600" fill="#059669" text-anchor="middle">Humanized Text (After)</text>
+  <!-- Human text content -->
+  <text x="445" y="140" font-family="system-ui" font-size="13" fill="#1e293b">AI has woven itself into the fabric of</text>
+  <text x="445" y="162" font-family="system-ui" font-size="13" fill="#1e293b">modern business. These tools excel at</text>
+  <text x="445" y="184" font-family="system-ui" font-size="13" fill="#1e293b">crunching through content, though they</text>
+  <text x="445" y="206" font-family="system-ui" font-size="13" fill="#1e293b">still benefit from a human touch to truly</text>
+  <text x="445" y="228" font-family="system-ui" font-size="13" fill="#1e293b">connect with readers.</text>
+  <!-- Check marks -->
+  <circle cx="730" cy="135" r="8" fill="#059669" opacity="0.9"/>
+  <text x="730" y="139" font-family="system-ui" font-size="10" fill="white" text-anchor="middle">&#x2713;</text>
+  <circle cx="730" cy="180" r="8" fill="#059669" opacity="0.9"/>
+  <text x="730" y="184" font-family="system-ui" font-size="10" fill="white" text-anchor="middle">&#x2713;</text>
+  <!-- Human Score -->
+  <rect x="500" y="260" width="200" height="80" rx="12" fill="white" stroke="#a7f3d0" stroke-width="2"/>
+  <text x="600" y="285" font-family="system-ui" font-size="12" fill="#64748b" text-anchor="middle">Human Score</text>
+  <text x="600" y="320" font-family="system-ui" font-size="32" font-weight="700" fill="#059669" text-anchor="middle">98%</text>
+  <!-- Improvements list -->
+  <text x="445" y="380" font-family="system-ui" font-size="12" fill="#059669">&#x2713; Natural, varied sentence structure</text>
+  <text x="445" y="405" font-family="system-ui" font-size="12" fill="#059669">&#x2713; Conversational, engaging tone</text>
+  <text x="445" y="430" font-family="system-ui" font-size="12" fill="#059669">&#x2713; Retains original meaning</text>
+  <text x="445" y="455" font-family="system-ui" font-size="12" fill="#059669">&#x2713; Bypasses all AI detectors</text>
+  <!-- Center arrow -->
+  <circle cx="400" cy="270" r="30" fill="url(#progress)"/>
+  <text x="400" y="276" font-family="system-ui" font-size="20" fill="white" text-anchor="middle">&#x2192;</text>
+  <text x="400" y="330" font-family="system-ui" font-size="11" fill="#64748b" text-anchor="middle">Humanize</text>
+  <!-- Title at top -->
+  <text x="400" y="30" font-family="system-ui" font-size="16" font-weight="600" fill="#0f172a" text-anchor="middle">Before vs After: AI Text Transformation</text>
+</svg>

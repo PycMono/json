@@ -1,0 +1,175 @@
+{{ template "base" . }}
+
+{{ define "extraHead" }}
+<link rel="stylesheet" href="/static/css/pdf-tools.css?v={{ .AssetVer }}">
+<script src="https://cdn.jsdelivr.net/npm/pdf-lib@1.17.1/dist/pdf-lib.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js"></script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{{- range $i,$f := .FAQs }}{{if $i}},{{end}}{"@type":"Question","name":{{ $f.Q | html }},"acceptedAnswer":{"@type":"Answer","text":{{ $f.A | html }}}}{{- end}}]}
+</script>
+{{ end }}
+
+{{ define "content" }}
+{{ template "pdf_tabs" . }}
+<div class="pdf-tool-page">
+  <header class="pdf-hero">
+    <div class="pdf-hero__inner">
+      <span class="pdf-hero__logo">{{ call .T "pdf.reorder.header.logo" }}</span>
+      <h1 class="pdf-hero__title">{{ call .T "pdf.reorder.header.title" }} <em>{{ call .T "pdf.reorder.header.title_em" }}</em></h1>
+      <p class="pdf-hero__sub">{{ call .T "pdf.reorder.header.sub" }}</p>
+      <div class="pdf-hero__badges">
+        <span class="pdf-hero__badge">{{ call .T "pdf.reorder.header.badge1" }}</span>
+        <span class="pdf-hero__badge">{{ call .T "pdf.reorder.header.badge2" }}</span>
+        <span class="pdf-hero__badge">{{ call .T "pdf.reorder.header.badge3" }}</span>
+      </div>
+    </div>
+  </header>
+
+  <div class="pdf-upload-zone" id="reorderUploadZone">
+    <div class="pdf-upload-idle">
+      <div class="pdf-upload-idle__icon">📄</div>
+      <p class="pdf-upload-idle__title">{{ call .T "pdf.reorder.upload.title" }}</p>
+      <p class="pdf-upload-idle__hint">{{ call .T "pdf.reorder.upload.hint" }}</p>
+      <span class="pdf-upload-btn" onclick="event.stopPropagation(); document.getElementById('reorderFileInput').click()" data-ga data-ga-action="upload" data-ga-category="pdf-reorder" data-ga-label="select-file">{{ call .T "pdf.reorder.upload.btn" }}</span>
+      <input type="file" id="reorderFileInput" accept=".pdf,application/pdf" style="display:none" data-ga data-ga-action="upload" data-ga-category="pdf-reorder" data-ga-label="file-input">
+    </div>
+    <div class="pdf-drop-overlay">{{ call .T "pdf.reorder.upload.drop" }}</div>
+  </div>
+
+  <div id="reorderFileCard" style="display:none" class="pdf-file-card">
+    <div class="pdf-file-card__inner">
+      <span class="pdf-file-card__icon">📄</span>
+      <div class="pdf-file-card__info">
+        <div class="pdf-file-card__name" id="reorderFileName"></div>
+        <div class="pdf-file-card__meta" id="reorderFileMeta"></div>
+      </div>
+      <button class="pdf-file-card__remove" onclick="reorderReset()" data-ga data-ga-action="remove" data-ga-category="pdf-reorder" data-ga-label="remove-file">{{ call .T "pdf.reorder.file.remove" }}</button>
+    </div>
+  </div>
+
+  <div id="reorderGrid" style="display:none" class="pdf-thumb-grid-wrap">
+    <div class="pdf-thumb-grid-header">
+      <h3 class="pdf-thumb-grid-title">{{ call .T "pdf.reorder.grid.title" }} <span id="reorderPageCount"></span></h3>
+      <div style="display:flex;gap:8px">
+        <button class="pdf-btn pdf-btn--sm" onclick="reorderReverse()" data-ga data-ga-action="reorder" data-ga-category="pdf-reorder" data-ga-label="reverse">{{ call .T "pdf.reorder.grid.reverse" }}</button>
+        <button class="pdf-btn pdf-btn--sm" onclick="reorderReset()" data-ga data-ga-action="remove" data-ga-category="pdf-reorder" data-ga-label="clear-all">{{ call .T "pdf.reorder.grid.clear" }}</button>
+      </div>
+    </div>
+    <div class="pdf-thumb-grid" id="reorderThumbGrid"></div>
+    <p class="pdf-drag-hint">{{ call .T "pdf.reorder.grid.drag_hint" }}</p>
+    <div style="max-width:480px;margin:20px auto 0;padding:0 24px">
+      <button class="pdf-action-btn" onclick="reorderDownload()" data-ga data-ga-action="download" data-ga-category="pdf-reorder" data-ga-label="run-reorder">{{ call .T "pdf.reorder.download.btn" }}</button>
+    </div>
+  </div>
+
+  <div id="reorderLoading" class="pdf-loading" style="display:none">
+    <div class="pdf-spinner"></div><p>{{ call .T "pdf.reorder.loading" }}</p>
+  </div>
+  <div id="reorderProgress" class="pdf-progress-wrap" style="display:none">
+    <div class="pdf-progress-card">
+      <div class="pdf-progress-bar-wrap"><div class="pdf-progress-bar" id="reorderProgressBar"></div></div>
+      <p id="reorderProgressLabel">{{ call .T "pdf.reorder.progress" }}</p>
+    </div>
+  </div>
+  <div id="reorderDownload" class="pdf-download-wrap" style="display:none">
+    <div class="pdf-download-card">
+      <span class="pdf-download-card__icon">✅</span>
+      <div><h3>{{ call .T "pdf.reorder.done.title" }}</h3><p id="reorderDownloadInfo"></p></div>
+      <a id="reorderDownloadLink" class="pdf-download-btn" download data-ga data-ga-action="download" data-ga-category="pdf-reorder" data-ga-label="download-reordered">{{ call .T "pdf.reorder.done.download" }}</a>
+      <button class="pdf-btn pdf-btn--sm" onclick="reorderReset()" data-ga data-ga-action="reset" data-ga-category="pdf-reorder" data-ga-label="reset-tool">{{ call .T "pdf.reorder.done.reset" }}</button>
+    </div>
+  </div>
+
+  <!-- How it works -->
+  <section class="pdf-howto">
+    <h2>{{ call .T "pdf.reorder.howto.title" }}</h2>
+    <div class="pdf-steps">
+      <div class="pdf-step"><span class="pdf-step__num">1</span><p>{{ call .T "pdf.reorder.howto.step1" }}</p></div>
+      <div class="pdf-step"><span class="pdf-step__num">2</span><p>{{ call .T "pdf.reorder.howto.step2" }}</p></div>
+      <div class="pdf-step"><span class="pdf-step__num">3</span><p>{{ call .T "pdf.reorder.howto.step3" }}</p></div>
+      <div class="pdf-step"><span class="pdf-step__num">4</span><p>{{ call .T "pdf.reorder.howto.step4" }}</p></div>
+    </div>
+  </section>
+
+  <!-- Editorial S1 -->
+  <section class="pdf-section">
+    <div class="pdf-section-inner">
+      <span class="pdf-section-label">{{ call .T "pdf.reorder.s1.label" }}</span>
+      <h2 class="pdf-section-title">{{ call .T "pdf.reorder.s1.title" }}</h2>
+      <p class="pdf-section-body">{{ call .T "pdf.reorder.s1.body" }}</p>
+    </div>
+  </section>
+
+  <!-- Editorial S2 -->
+  <section class="pdf-section">
+    <div class="pdf-section-inner">
+      <span class="pdf-section-label">{{ call .T "pdf.reorder.s2.label" }}</span>
+      <h2 class="pdf-section-title">{{ call .T "pdf.reorder.s2.title" }}</h2>
+      <p class="pdf-section-body">{{ call .T "pdf.reorder.s2.body1" }}</p>
+      <p class="pdf-section-body">{{ call .T "pdf.reorder.s2.body2" }}</p>
+    </div>
+  </section>
+
+  <!-- Editorial S3 -->
+  <section class="pdf-section">
+    <div class="pdf-section-inner">
+      <span class="pdf-section-label">{{ call .T "pdf.reorder.s3.label" }}</span>
+      <h2 class="pdf-section-title">{{ call .T "pdf.reorder.s3.title" }}</h2>
+      <p class="pdf-section-body">{{ call .T "pdf.reorder.s3.body1" }}</p>
+      <p class="pdf-section-body">{{ call .T "pdf.reorder.s3.body2" }}</p>
+    </div>
+  </section>
+
+  <!-- Editorial S4 -->
+  <section class="pdf-section">
+    <div class="pdf-section-inner">
+      <span class="pdf-section-label">{{ call .T "pdf.reorder.s4.label" }}</span>
+      <h2 class="pdf-section-title">{{ call .T "pdf.reorder.s4.title" }}</h2>
+      <p class="pdf-section-body">{{ call .T "pdf.reorder.s4.body" }}</p>
+    </div>
+  </section>
+
+  <!-- Editorial S5 -->
+  <section class="pdf-section">
+    <div class="pdf-section-inner">
+      <span class="pdf-section-label">{{ call .T "pdf.reorder.s5.label" }}</span>
+      <h2 class="pdf-section-title">{{ call .T "pdf.reorder.s5.title" }}</h2>
+      <p class="pdf-section-body">{{ call .T "pdf.reorder.s5.body1" }}</p>
+      <p class="pdf-section-body">{{ call .T "pdf.reorder.s5.body2" }}</p>
+    </div>
+  </section>
+
+  <!-- Editorial S6 -->
+  <section class="pdf-section">
+    <div class="pdf-section-inner">
+      <span class="pdf-section-label">{{ call .T "pdf.reorder.s6.label" }}</span>
+      <h2 class="pdf-section-title">{{ call .T "pdf.reorder.s6.title" }}</h2>
+      <p class="pdf-section-body">{{ call .T "pdf.reorder.s6.body1" }}</p>
+      <p class="pdf-section-body">{{ call .T "pdf.reorder.s6.body2" }}</p>
+      <p class="pdf-section-body">{{ call .T "pdf.reorder.s6.body3" }}</p>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="pdf-section">
+    <div class="pdf-section-inner">
+      <span class="pdf-section-label">{{ call .T "pdf.reorder.faq.title" }}</span>
+      <h2 class="pdf-section-title">{{ call .T "pdf.reorder.faq.title" }}</h2>
+      <div class="pdf-faq-list">
+        {{ range .FAQs }}
+        <div class="pdf-faq-item">
+          <button class="pdf-faq-q" onclick="this.parentElement.classList.toggle('open')" data-ga data-ga-action="toggle" data-ga-category="pdf-reorder" data-ga-label="faq">
+            <span>{{ .Q }}</span>
+            <svg class="pdf-faq-chevron" width="20" height="20" viewBox="0 0 20 20"><path d="M5 8l5 5 5-5" stroke="currentColor" fill="none"/></svg>
+          </button>
+          <div class="pdf-faq-a"><p>{{ .A }}</p></div>
+        </div>
+        {{ end }}
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<script src="/static/js/pdf-reorder.js?v={{ .AssetVer }}"></script>
+{{ end }}

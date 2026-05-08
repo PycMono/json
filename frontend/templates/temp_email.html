@@ -1,0 +1,160 @@
+{{ template "base" . }}
+
+{{ define "extraHead" }}
+<link rel="canonical" href="https://toolboxnova.com/temp-email">
+<link rel="alternate" hreflang="zh" href="https://toolboxnova.com/temp-email?lang=zh">
+<link rel="alternate" hreflang="en" href="https://toolboxnova.com/temp-email?lang=en">
+<link rel="alternate" hreflang="ja" href="https://toolboxnova.com/temp-email?lang=ja">
+<link rel="alternate" hreflang="ko" href="https://toolboxnova.com/temp-email?lang=ko">
+<link rel="alternate" hreflang="es" href="https://toolboxnova.com/temp-email?lang=spa">
+<link rel="alternate" hreflang="x-default" href="https://toolboxnova.com/temp-email">
+<link rel="stylesheet" href="/static/css/temp-email.css?v={{ .AssetVer }}">
+<link rel="stylesheet" href="/static/css/tools-editorial.css?v={{ .AssetVer }}">
+<link rel="stylesheet" href="/static/css/mail-seo.css?v={{ .AssetVer }}">
+{{ end }}
+
+{{ define "content" }}
+
+<!-- Header Section -->
+<section class="email-header">
+  <h1>{{ call .T "email.hero_title" }}</h1>
+  <p>{{ call .T "email.hero_desc" }}</p>
+</section>
+
+<!-- Warning Bar (shown when < 60s) -->
+<div class="email-warning" id="emailWarning">
+  ⚠️ {{ call .T "email.warning_expire" }}
+</div>
+
+<!-- Top Ad -->
+<div class="email-banner-ad">
+  {{- template "partials/ad_slot.html" (dict "Ctx" . "SlotID" "temp-email-top" "Size" "728x90" "Mobile" "320x50") }}
+</div>
+
+<!-- Main Email Card -->
+<div class="email-main-card" id="emailMainCard">
+  <!-- Email Address Display -->
+  <div class="email-display-row">
+    <input type="text" id="emailPrefix" class="email-address-input" readonly placeholder="Generating...">
+    <select id="emailDomain" class="email-domain-select" onchange="onDomainChange()">
+      {{ range .EmailDomains }}
+      <option value="@{{ . }}">@{{ . }}</option>
+      {{ end }}
+    </select>
+  </div>
+
+  <!-- Action Buttons -->
+  <div class="email-actions-row">
+    <button class="btn btn-primary" onclick="copyEmail()" data-ga="email_copy" data-ga-category="temp_email">📋 {{ call .T "email.copy" }}</button>
+    <button class="btn btn-outline" onclick="changeEmail()" data-ga="email_change" data-ga-category="temp_email">↻ {{ call .T "email.change" }}</button>
+    <button class="btn btn-outline" onclick="setCustomEmail()" data-ga="email_custom" data-ga-category="temp_email">⚙ {{ call .T "email.custom_set" }}</button>
+    <button class="btn btn-outline" style="color:#ef4444;border-color:#fca5a5" onclick="destroyEmail()" data-ga="email_destroy" data-ga-category="temp_email">🗑 {{ call .T "email.destroy" }}</button>
+  </div>
+
+  <!-- Countdown Timer (digit boxes) -->
+  <div class="timer-section" id="emailTimerSection">
+    <div class="timer-label">{{ call .T "email.expires_in" }}</div>
+    <div class="timer-digits">
+      <div class="timer-digit-box" id="timerDigit0">0</div>
+      <div class="timer-digit-box" id="timerDigit1">9</div>
+      <span class="timer-colon">:</span>
+      <div class="timer-digit-box" id="timerDigit2">5</div>
+      <div class="timer-digit-box" id="timerDigit3">9</div>
+    </div>
+    <button class="btn-extend" onclick="extendTimer()" id="btnExtend" data-ga="email_extend_timer" data-ga-category="temp_email">{{ call .T "email.extend_timer" }}</button>
+  </div>
+</div>
+
+<!-- Session Expired Card -->
+<div class="email-expired-card" id="emailExpired">
+  <div class="email-expired-icon">⏰</div>
+  <h2 class="email-expired-title">{{ call .T "email.session_expired" }}</h2>
+  <p class="email-expired-desc">{{ call .T "email.session_expired_desc" }}</p>
+  <button class="btn btn-primary" onclick="destroyEmail()" data-ga="email_get_new" data-ga-category="temp_email">{{ call .T "email.get_new" }}</button>
+</div>
+
+<!-- Sidebar Ad Layout -->
+<div class="email-sidebar-layout">
+  <aside class="email-sidebar-ad">
+    {{- template "partials/ad_slot.html" (dict "Ctx" . "SlotID" "temp-email-left" "Size" "160x600" "MobileHide" true) }}
+  </aside>
+
+  <div class="email-main-area">
+    <!-- Stats Bar -->
+    <div class="email-stats-bar">
+      <div class="email-stat">
+        <div class="email-stat__num" id="todayCreated">-</div>
+        <div class="email-stat__label">{{ call .T "email.stat.today" }}</div>
+      </div>
+      <div class="email-stat">
+        <div class="email-stat__num" id="spamIntercepted">-</div>
+        <div class="email-stat__label">{{ call .T "email.stat.spam" }}</div>
+      </div>
+      <div class="email-stat">
+        <div class="email-stat__num" id="emailsReceived">0</div>
+        <div class="email-stat__label">{{ call .T "email.stat.received" }}</div>
+      </div>
+    </div>
+
+    <!-- Inbox Card -->
+    <div class="inbox-card">
+      <!-- Inbox Ready Status -->
+      <div class="inbox-ready-status">
+        <span class="inbox-ready-icon">📧</span>
+        <div class="inbox-ready-text">
+          <div class="inbox-ready-title">{{ call .T "email.inbox_ready" }}</div>
+          <div class="inbox-ready-desc">{{ call .T "email.inbox_ready_desc" }}</div>
+        </div>
+      </div>
+
+      <!-- Inbox Header -->
+      <div class="inbox-header">
+        <h2>{{ call .T "email.inbox" }} (<span id="inboxCount">0</span>)</h2>
+        <div style="display:flex;align-items:center;gap:12px;">
+          <label class="email-notify-toggle">
+            <input type="checkbox" id="notifyToggle" onchange="toggleNotify()"> {{ call .T "email.notify_new" }}
+          </label>
+          <div class="inbox-actions">
+            <button class="btn btn-outline btn-sm" onclick="refreshInbox()" data-ga data-ga-action="click" data-ga-category="temp_email" data-ga-label="refresh_inbox">↻ {{ call .T "email.refresh_inbox" }}</button>
+            <button class="btn btn-outline btn-sm" onclick="clearInbox()" data-ga data-ga-action="click" data-ga-category="temp_email" data-ga-label="clear_inbox">🗑 {{ call .T "email.clear_inbox" }}</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Message List -->
+      <div id="inboxList">
+        <div class="email-waiting-state" id="emailWaiting">
+          <div class="email-waiting-icon">📭</div>
+          <p>{{ call .T "email.waiting" }}</p>
+        </div>
+        <div id="emailMessages"></div>
+      </div>
+
+      <!-- Auto-check Notice -->
+      <div class="auto-check-notice">
+        <span class="green-dot"></span> {{ call .T "email.auto_check" }}
+      </div>
+    </div>
+  </div>
+
+  <aside class="email-sidebar-ad">
+    {{- template "partials/ad_slot.html" (dict "Ctx" . "SlotID" "temp-email-right" "Size" "160x600" "MobileHide" true) }}
+  </aside>
+</div>
+
+<!-- SEO Article Section -->
+{{ if .SEOArticle }}
+<section class="mail-seo-section">
+  {{ .SEOArticle }}
+</section>
+{{ end }}
+
+<!-- Bottom Ad -->
+<div class="email-banner-ad">
+  {{- template "partials/ad_slot.html" (dict "Ctx" . "SlotID" "temp-email-bottom" "Size" "728x90" "Mobile" "320x50") }}
+</div>
+{{ end }}
+
+{{ define "extraScript" }}
+<script src="/static/js/email.js?v={{ .AssetVer }}"></script>
+{{ end }}

@@ -1,0 +1,19 @@
+{
+  "extName": {
+    "message": "ToolBoxNova - 開発者＆プライバシーツール"
+  },
+  "extDescription": {
+    "message": "JSON ツール、パスワード生成、AI 検出、画像ツール、カラーピッカーなど。プライバシー重視、オフライン対応。"
+  },
+  "contextFormatJson": { "message": "ToolBoxNova で JSON を整形" },
+  "contextAiDetect": { "message": "ToolBoxNova で AI コンテンツを検出" },
+  "contextAiHumanize": { "message": "ToolBoxNova でテキストを Humanize" },
+  "toolJson": { "message": "JSON ツール" },
+  "toolPassword": { "message": "パスワード" },
+  "toolColor": { "message": "カラー" },
+  "toolImage": { "message": "画像" },
+  "toolTimestamp": { "message": "タイムスタンプ" },
+  "toolQrcode": { "message": "QR コード" },
+  "toolAiDetect": { "message": "AI 検出" },
+  "toolAiHumanize": { "message": "Humanize" }
+}

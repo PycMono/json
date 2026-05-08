@@ -1,0 +1,54 @@
+{
+  "manifest_version": 3,
+  "name": "__MSG_extName__",
+  "description": "__MSG_extDescription__",
+  "version": "1.0.0",
+  "default_locale": "en",
+  "permissions": [
+    "contextMenus",
+    "activeTab",
+    "sidePanel",
+    "storage"
+  ],
+  "host_permissions": [
+    "https://toolboxnova.com/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_popup": "popup/popup.html",
+    "default_icon": {
+      "16": "static/img/icon-16.png",
+      "48": "static/img/icon-48.png",
+      "128": "static/img/icon-128.png"
+    }
+  },
+  "side_panel": {
+    "default_path": "sidepanel/sidepanel.html"
+  },
+  "icons": {
+    "16": "static/img/icon-16.png",
+    "48": "static/img/icon-48.png",
+    "128": "static/img/icon-128.png"
+  },
+  "content_security_policy": {
+    "extension_pages": "script-src 'self'; object-src 'self'"
+  },
+  "commands": {
+    "_execute_action": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+T",
+        "mac": "Command+Shift+T"
+      },
+      "description": "__MSG_commandOpenPopup__"
+    },
+    "open-json-tools": {
+      "suggested_key": {
+        "default": "Ctrl+Shift+J",
+        "mac": "Command+Shift+J"
+      },
+      "description": "__MSG_commandJsonTools__"
+    }
+  }
+}

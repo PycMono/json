@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%"><stop offset="0%" style="stop-color:#faf5ff"/><stop offset="100%" style="stop-color:#ede9fe"/></linearGradient>
+    <linearGradient id="accent" x1="0%" y1="0%" x2="100%" y2="0%"><stop offset="0%" style="stop-color:#6366f1"/><stop offset="100%" style="stop-color:#8b5cf6"/></linearGradient>
+    <filter id="sh"><feDropShadow dx="0" dy="4" stdDeviation="8" flood-opacity="0.1"/></filter>
+  </defs>
+  <rect width="1200" height="630" fill="url(#bg)"/>
+  <circle cx="100" cy="100" r="150" fill="#6366f1" opacity="0.04"/><circle cx="1100" cy="530" r="200" fill="#8b5cf6" opacity="0.04"/>
+  <rect x="60" y="40" width="1080" height="550" rx="16" fill="white" filter="url(#sh)"/>
+  <rect x="60" y="40" width="1080" height="56" rx="16" fill="url(#accent)"/><rect x="60" y="80" width="1080" height="16" fill="url(#accent)"/>
+  <circle cx="95" cy="68" r="16" fill="white" opacity="0.2"/>
+  <text x="125" y="76" font-family="system-ui,sans-serif" font-size="16" font-weight="600" fill="white">Virtual Identity Generator</text>
+  <g transform="translate(800,55)"><rect width="90" height="28" rx="14" fill="white" opacity="0.2"/><text x="45" y="19" font-family="system-ui,sans-serif" font-size="11" fill="white" text-anchor="middle">41 Countries</text></g>
+  <g transform="translate(900,55)"><rect width="80" height="28" rx="14" fill="white" opacity="0.2"/><text x="40" y="19" font-family="system-ui,sans-serif" font-size="11" fill="white" text-anchor="middle">30+ Fields</text></g>
+  <g transform="translate(990,55)"><rect width="80" height="28" rx="14" fill="white" opacity="0.2"/><text x="40" y="19" font-family="system-ui,sans-serif" font-size="11" fill="white" text-anchor="middle">Free</text></g>
+  <!-- Controls -->
+  <rect x="100" y="115" width="260" height="40" rx="6" fill="#f1f5f9" stroke="#e2e8f0"/>
+  <text x="130" y="141" font-family="system-ui,sans-serif" font-size="13" fill="#64748b">🇺🇸 United States ▾</text>
+  <rect x="375" y="115" width="160" height="40" rx="6" fill="#f1f5f9" stroke="#e2e8f0"/>
+  <text x="405" y="141" font-family="system-ui,sans-serif" font-size="13" fill="#64748b">Quantity: 5</text>
+  <rect x="550" y="115" width="160" height="40" rx="6" fill="#f1f5f9" stroke="#e2e8f0"/>
+  <text x="580" y="141" font-family="system-ui,sans-serif" font-size="13" fill="#64748b">Gender: Random</text>
+  <rect x="900" y="115" width="200" height="40" rx="8" fill="url(#accent)"/>
+  <text x="1000" y="141" font-family="system-ui,sans-serif" font-size="13" font-weight="600" fill="white" text-anchor="middle">Generate Identities</text>
+  <!-- Identity Card 1 -->
+  <rect x="100" y="180" width="480" height="200" rx="12" fill="white" stroke="#e2e8f0" filter="url(#sh)"/>
+  <rect x="100" y="180" width="480" height="40" rx="12" fill="#f5f3ff"/><rect x="100" y="208" width="480" height="12" fill="#f5f3ff"/>
+  <text x="130" y="206" font-family="system-ui,sans-serif" font-size="13" font-weight="600" fill="#6366f1">👤 Basic Information</text>
+  <text x="120" y="245" font-family="system-ui,sans-serif" font-size="12" fill="#64748b">Name</text><text x="220" y="245" font-family="system-ui,sans-serif" font-size="12" fill="#0f172a" font-weight="500">Michael Johnson</text>
+  <text x="120" y="268" font-family="system-ui,sans-serif" font-size="12" fill="#64748b">Username</text><text x="220" y="268" font-family="system-ui,sans-serif" font-size="12" fill="#0f172a" font-weight="500">mjohnson84</text>
+  <text x="120" y="291" font-family="system-ui,sans-serif" font-size="12" fill="#64748b">Email</text><text x="220" y="291" font-family="system-ui,sans-serif" font-size="12" fill="#0f172a" font-weight="500">m.johnson@example.com</text>
+  <text x="120" y="314" font-family="system-ui,sans-serif" font-size="12" fill="#64748b">Phone</text><text x="220" y="314" font-family="system-ui,sans-serif" font-size="12" fill="#0f172a" font-weight="500">+1 (415) 555-0142</text>
+  <text x="120" y="337" font-family="system-ui,sans-serif" font-size="12" fill="#64748b">SSN</text><text x="220" y="337" font-family="system-ui,sans-serif" font-size="12" fill="#0f172a" font-weight="500">XXX-XX-4821</text>
+  <text x="120" y="362" font-family="system-ui,sans-serif" font-size="12" fill="#64748b">Address</text><text x="220" y="362" font-family="system-ui,sans-serif" font-size="12" fill="#0f172a" font-weight="500">1423 Market St, San Francisco, CA 94103</text>
+  <!-- Identity Card 2 -->
+  <rect x="600" y="180" width="480" height="200" rx="12" fill="white" stroke="#e2e8f0" filter="url(#sh)"/>
+  <rect x="600" y="180" width="480" height="40" rx="12" fill="#fefce8"/><rect x="600" y="208" width="480" height="12" fill="#fefce8"/>
+  <text x="630" y="206" font-family="system-ui,sans-serif" font-size="13" font-weight="600" fill="#a16207">🏢 Employment</text>
+  <text x="620" y="245" font-family="system-ui,sans-serif" font-size="12" fill="#64748b">Company</text><text x="720" y="245" font-family="system-ui,sans-serif" font-size="12" fill="#0f172a" font-weight="500">TechVentures Inc.</text>
+  <text x="620" y="268" font-family="system-ui,sans-serif" font-size="12" fill="#64748b">Job Title</text><text x="720" y="268" font-family="system-ui,sans-serif" font-size="12" fill="#0f172a" font-weight="500">Software Engineer</text>
+  <text x="620" y="291" font-family="system-ui,sans-serif" font-size="12" fill="#64748b">Department</text><text x="720" y="291" font-family="system-ui,sans-serif" font-size="12" fill="#0f172a" font-weight="500">Product Development</text>
+  <text x="620" y="314" font-family="system-ui,sans-serif" font-size="12" fill="#64748b">Income</text><text x="720" y="314" font-family="system-ui,sans-serif" font-size="12" fill="#0f172a" font-weight="500">$125,000/year</text>
+  <text x="620" y="337" font-family="system-ui,sans-serif" font-size="12" fill="#64748b">Card</text><text x="720" y="337" font-family="system-ui,sans-serif" font-size="12" fill="#0f172a" font-weight="500">Visa •••• 4821</text>
+  <!-- Bottom stats -->
+  <g transform="translate(100,410)"><rect width="200" height="55" rx="8" fill="#f8fafc"/><text x="100" y="24" font-family="system-ui,sans-serif" font-size="20" font-weight="700" fill="#6366f1" text-anchor="middle">30+ Fields</text><text x="100" y="44" font-family="system-ui,sans-serif" font-size="11" fill="#64748b" text-anchor="middle">Per Identity</text></g>
+  <g transform="translate(320,410)"><rect width="200" height="55" rx="8" fill="#f8fafc"/><text x="100" y="24" font-family="system-ui,sans-serif" font-size="20" font-weight="700" fill="#8b5cf6" text-anchor="middle">JSON / CSV</text><text x="100" y="44" font-family="system-ui,sans-serif" font-size="11" fill="#64748b" text-anchor="middle">Export Formats</text></g>
+  <g transform="translate(540,410)"><rect width="200" height="55" rx="8" fill="#f8fafc"/><text x="100" y="24" font-family="system-ui,sans-serif" font-size="20" font-weight="700" fill="#6366f1" text-anchor="middle">100% Local</text><text x="100" y="44" font-family="system-ui,sans-serif" font-size="11" fill="#64748b" text-anchor="middle">No Server Upload</text></g>
+  <g transform="translate(760,410)"><rect width="200" height="55" rx="8" fill="#f8fafc"/><text x="100" y="24" font-family="system-ui,sans-serif" font-size="20" font-weight="700" fill="#8b5cf6" text-anchor="middle">Batch 50</text><text x="100" y="44" font-family="system-ui,sans-serif" font-size="11" fill="#64748b" text-anchor="middle">Max Per Generation</text></g>
+</svg>

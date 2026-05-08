@@ -1,0 +1,236 @@
+{{ template "base" . }}
+
+{{ define "extraHead" }}
+<link rel="canonical" href="https://toolboxnova.com/img/remove-bg-guide">
+<link rel="alternate" hreflang="zh" href="https://toolboxnova.com/img/remove-bg-guide?lang=zh">
+<link rel="alternate" hreflang="en" href="https://toolboxnova.com/img/remove-bg-guide?lang=en">
+<link rel="alternate" hreflang="ja" href="https://toolboxnova.com/img/remove-bg-guide?lang=ja">
+<link rel="alternate" hreflang="ko" href="https://toolboxnova.com/img/remove-bg-guide?lang=ko">
+<link rel="alternate" hreflang="spa" href="https://toolboxnova.com/img/remove-bg-guide?lang=spa">
+<link rel="alternate" hreflang="x-default" href="https://toolboxnova.com/img/remove-bg-guide">
+<link rel="stylesheet" href="/static/css/img-toolbox.css?v={{ .AssetVer }}">
+<link rel="stylesheet" href="/static/css/img-tabs.css?v={{ .AssetVer }}">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{{- range $i,$f := .FAQs }}{{if $i}},{{end}}{"@type":"Question","name":{{ $f.Q | html }},"acceptedAnswer":{"@type":"Answer","text":{{ $f.A | html }}}}{{- end}}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"HowTo","name":"{{ call .T "guide.remove_bg.howto.name" }}","description":"{{ call .T "guide.remove_bg.howto.desc" }}","step":[{"@type":"HowToStep","name":"{{ call .T "guide.remove_bg.howto.step1.name" }}","text":"{{ call .T "guide.remove_bg.howto.step1.text" }}","url":"https://toolboxnova.com/img/remove-bg-guide#step1"},{"@type":"HowToStep","name":"{{ call .T "guide.remove_bg.howto.step2.name" }}","text":"{{ call .T "guide.remove_bg.howto.step2.text" }}","url":"https://toolboxnova.com/img/remove-bg-guide#step2"},{"@type":"HowToStep","name":"{{ call .T "guide.remove_bg.howto.step3.name" }}","text":"{{ call .T "guide.remove_bg.howto.step3.text" }}","url":"https://toolboxnova.com/img/remove-bg-guide#step3"}]}</script>
+{{ end }}
+
+{{ define "content" }}
+{{ template "img_tabs" . }}
+<div class="itb-page" data-tool="remove-bg-guide">
+  <header class="itb-header itb-header--remove-bg">
+    <div class="itb-header__inner">
+      <span class="itb-header__badge">{{ call .T "guide.remove_bg.hero.eyebrow" }}</span>
+      <h1 class="itb-header__title">{{ call .T "guide.remove_bg.hero.title" }}</h1>
+      <p class="itb-header__sub">{{ call .T "guide.remove_bg.hero.subtitle" }}</p>
+      <div class="itb-hero__actions" style="margin-top:20px">
+        <a href="/img/remove-bg?lang={{ .Lang }}" class="itb-btn-primary itb-btn-primary--hero">{{ call .T "guide.remove_bg.hero.cta" }}</a>
+      </div>
+    </div>
+  </header>
+
+  <div class="itb-container">
+    <!-- CTA to tool -->
+    <div class="itb-guide-cta itb-guide-cta--blue" style="margin-bottom:32px">
+      <div class="itb-guide-cta__text">
+        <h3 class="itb-guide-cta__title">{{ call .T "guide.remove_bg.cta.title" }}</h3>
+        <p class="itb-guide-cta__desc">{{ call .T "guide.remove_bg.cta.desc" }}</p>
+      </div>
+      <a href="/img/remove-bg?lang={{ .Lang }}" class="itb-guide-cta__btn" data-ga="guide_cta">{{ call .T "guide.remove_bg.cta.btn" }}</a>
+    </div>
+
+    <!-- What is AI Background Removal -->
+    <section class="itb-section" style="padding-top:0">
+      <div class="itb-section-inner">
+        <span class="itb-section-label">{{ call .T "guide.remove_bg.s1.label" }}</span>
+        <h2 class="itb-section-title">{{ call .T "guide.remove_bg.s1.title" }}</h2>
+        <p class="itb-section-body">{{ call .T "guide.remove_bg.s1.body1" }}</p>
+        <p class="itb-section-body">{{ call .T "guide.remove_bg.s1.body2" }}</p>
+      </div>
+    </section>
+
+    <!-- How to remove background online -->
+    <section class="itb-section itb-section--alt" id="step1">
+      <div class="itb-section-inner">
+        <span class="itb-section-label">{{ call .T "guide.remove_bg.s2.label" }}</span>
+        <h2 class="itb-section-title">{{ call .T "guide.remove_bg.s2.title" }}</h2>
+        <p class="itb-section-body">{{ call .T "guide.remove_bg.s2.body" }}</p>
+        <div class="itb-steps" style="margin-top:24px">
+          <div class="itb-step">
+            <div class="itb-step__num">1</div>
+            <h3 class="itb-step__title">{{ call .T "guide.remove_bg.s2.step1.title" }}</h3>
+            <p class="itb-step__desc">{{ call .T "guide.remove_bg.s2.step1.desc" }}</p>
+          </div>
+          <div class="itb-step">
+            <div class="itb-step__num">2</div>
+            <h3 class="itb-step__title">{{ call .T "guide.remove_bg.s2.step2.title" }}</h3>
+            <p class="itb-step__desc">{{ call .T "guide.remove_bg.s2.step2.desc" }}</p>
+          </div>
+          <div class="itb-step">
+            <div class="itb-step__num">3</div>
+            <h3 class="itb-step__title">{{ call .T "guide.remove_bg.s2.step3.title" }}</h3>
+            <p class="itb-step__desc">{{ call .T "guide.remove_bg.s2.step3.desc" }}</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Transparent PNG Guide -->
+    <section class="itb-section">
+      <div class="itb-section-inner">
+        <div class="itb-split">
+          <div class="itb-split-text">
+            <span class="itb-section-label">{{ call .T "guide.remove_bg.s3.label" }}</span>
+            <h2 class="itb-section-title">{{ call .T "guide.remove_bg.s3.title" }}</h2>
+            <p class="itb-section-body">{{ call .T "guide.remove_bg.s3.body1" }}</p>
+            <p class="itb-section-body">{{ call .T "guide.remove_bg.s3.body2" }}</p>
+          </div>
+          <div class="itb-split-visual">
+            <div class="itb-visual-box itb-visual-box--blue">
+              <div class="itb-visual-box__icon">
+                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="1.5"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+              </div>
+              <div class="itb-visual-stat">
+                <span class="itb-visual-stat__num">PNG</span>
+                <span class="itb-visual-stat__lbl">{{ call .T "guide.remove_bg.s3.stat.lbl" }}</span>
+              </div>
+              <div class="itb-visual-box__label">{{ call .T "guide.remove_bg.s3.stat.sub" }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Product Photo White Background -->
+    <section class="itb-section itb-section--alt">
+      <div class="itb-section-inner">
+        <span class="itb-section-label">{{ call .T "guide.remove_bg.s4.label" }}</span>
+        <h2 class="itb-section-title">{{ call .T "guide.remove_bg.s4.title" }}</h2>
+        <p class="itb-section-body">{{ call .T "guide.remove_bg.s4.body1" }}</p>
+        <p class="itb-section-body">{{ call .T "guide.remove_bg.s4.body2" }}</p>
+        <div class="itb-alert itb-alert--info" style="margin-top:16px">
+          <span class="itb-alert__icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+          </span>
+          <span>{{ call .T "guide.remove_bg.s4.note" }}</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Portrait Background Change -->
+    <section class="itb-section">
+      <div class="itb-section-inner">
+        <span class="itb-section-label">{{ call .T "guide.remove_bg.s5.label" }}</span>
+        <h2 class="itb-section-title">{{ call .T "guide.remove_bg.s5.title" }}</h2>
+        <p class="itb-section-body">{{ call .T "guide.remove_bg.s5.body1" }}</p>
+        <p class="itb-section-body">{{ call .T "guide.remove_bg.s5.body2" }}</p>
+      </div>
+    </section>
+
+    <!-- Format Comparison -->
+    <section class="itb-section itb-section--alt">
+      <div class="itb-section-inner">
+        <span class="itb-section-label">{{ call .T "guide.remove_bg.s6.label" }}</span>
+        <h2 class="itb-section-title">{{ call .T "guide.remove_bg.s6.title" }}</h2>
+        <p class="itb-section-body">{{ call .T "guide.remove_bg.s6.body" }}</p>
+        <div class="itb-format-grid" style="margin-top:24px">
+          <div class="itb-format-card">
+            <div class="itb-format-card__icon">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+            </div>
+            <h3 class="itb-format-card__name">PNG</h3>
+            <p class="itb-format-card__desc">{{ call .T "guide.remove_bg.fmt.png" }}</p>
+          </div>
+          <div class="itb-format-card">
+            <div class="itb-format-card__icon">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2"><path d="M13 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V9z"/><polyline points="13 2 13 9 20 9"/></svg>
+            </div>
+            <h3 class="itb-format-card__name">WebP</h3>
+            <p class="itb-format-card__desc">{{ call .T "guide.remove_bg.fmt.webp" }}</p>
+          </div>
+          <div class="itb-format-card">
+            <div class="itb-format-card__icon">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+            </div>
+            <h3 class="itb-format-card__name">JPG</h3>
+            <p class="itb-format-card__desc">{{ call .T "guide.remove_bg.fmt.jpg" }}</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Edge Quality -->
+    <section class="itb-section">
+      <div class="itb-section-inner">
+        <span class="itb-section-label">{{ call .T "guide.remove_bg.s7.label" }}</span>
+        <h2 class="itb-section-title">{{ call .T "guide.remove_bg.s7.title" }}</h2>
+        <p class="itb-section-body">{{ call .T "guide.remove_bg.s7.body1" }}</p>
+        <p class="itb-section-body">{{ call .T "guide.remove_bg.s7.body2" }}</p>
+      </div>
+    </section>
+
+    <!-- Batch Processing -->
+    <section class="itb-section itb-section--alt">
+      <div class="itb-section-inner">
+        <span class="itb-section-label">{{ call .T "guide.remove_bg.s8.label" }}</span>
+        <h2 class="itb-section-title">{{ call .T "guide.remove_bg.s8.title" }}</h2>
+        <p class="itb-section-body">{{ call .T "guide.remove_bg.s8.body1" }}</p>
+        <p class="itb-section-body">{{ call .T "guide.remove_bg.s8.body2" }}</p>
+      </div>
+    </section>
+
+    <!-- Privacy -->
+    <section class="itb-section">
+      <div class="itb-section-inner">
+        <span class="itb-section-label">{{ call .T "guide.remove_bg.s9.label" }}</span>
+        <h2 class="itb-section-title">{{ call .T "guide.remove_bg.s9.title" }}</h2>
+        <p class="itb-section-body">{{ call .T "guide.remove_bg.s9.body1" }}</p>
+        <p class="itb-section-body">{{ call .T "guide.remove_bg.s9.body2" }}</p>
+      </div>
+    </section>
+
+    <!-- Common Mistakes -->
+    <section class="itb-section itb-section--alt">
+      <div class="itb-section-inner">
+        <span class="itb-section-label">{{ call .T "guide.remove_bg.s10.label" }}</span>
+        <h2 class="itb-section-title">{{ call .T "guide.remove_bg.s10.title" }}</h2>
+        <p class="itb-section-body">{{ call .T "guide.remove_bg.s10.body" }}</p>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="itb-faq">
+      <h2 class="itb-faq__title">FAQ</h2>
+      {{ range $i,$f := .FAQs }}
+      <div class="itb-faq-item" id="itbFaq-{{ $i }}">
+        <button class="itb-faq-item__q" onclick="itbToggleFAQ({{ $i }})" aria-expanded="false">{{ $f.Q }}<span class="itb-faq-item__arrow">▾</span></button>
+        <div class="itb-faq-item__a"><p>{{ $f.A }}</p></div>
+      </div>
+      {{ end }}
+    </section>
+
+    <!-- Bottom CTA -->
+    <div class="itb-guide-cta itb-guide-cta--blue" style="margin-top:32px;margin-bottom:48px">
+      <div class="itb-guide-cta__text">
+        <h3 class="itb-guide-cta__title">{{ call .T "guide.remove_bg.cta2.title" }}</h3>
+        <p class="itb-guide-cta__desc">{{ call .T "guide.remove_bg.cta2.desc" }}</p>
+      </div>
+      <a href="/img/remove-bg?lang={{ .Lang }}" class="itb-guide-cta__btn" data-ga="guide_cta">{{ call .T "guide.remove_bg.cta2.btn" }}</a>
+    </div>
+  </div>
+</div>
+{{ end }}
+
+{{ define "extraScript" }}
+<script src="/static/js/img-tabs.js?v={{ .AssetVer }}"></script>
+<script>
+function itbToggleFAQ(i) {
+  var item = document.getElementById('itbFaq-' + i);
+  if (!item) return;
+  var btn = item.querySelector('.itb-faq-item__q');
+  var ans = item.querySelector('.itb-faq-item__a');
+  var isOpen = ans.style.display === 'block';
+  ans.style.display = isOpen ? 'none' : 'block';
+  if (btn) btn.setAttribute('aria-expanded', !isOpen);
+}
+</script>
+{{ end }}

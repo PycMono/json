@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 520">
+  <rect width="800" height="520" fill="#f0fdfa" rx="16"/>
+  <text x="400" y="45" fill="#111827" font-size="22" font-weight="bold" text-anchor="middle">College Students: When You Need AI Humanization</text>
+  <rect x="40" y="70" width="340" height="130" rx="12" fill="#fff" stroke="#0d9488" stroke-width="2"/>
+  <text x="60" y="100" fill="#0d9488" font-size="28">📝</text>
+  <text x="95" y="100" fill="#111827" font-size="15" font-weight="bold">Essay Assignments</text>
+  <text x="60" y="125" fill="#6b7280" font-size="12">Used ChatGPT to brainstorm ideas? Humanize your</text>
+  <text x="60" y="142" fill="#6b7280" font-size="12">draft so it passes Turnitin while keeping your</text>
+  <text x="60" y="159" fill="#6b7280" font-size="12">original thoughts and arguments intact.</text>
+  <rect x="420" y="70" width="340" height="130" rx="12" fill="#fff" stroke="#0d9488" stroke-width="2"/>
+  <text x="440" y="100" fill="#0d9488" font-size="28">📧</text>
+  <text x="475" y="100" fill="#111827" font-size="15" font-weight="bold">Professor Emails</text>
+  <text x="440" y="125" fill="#6b7280" font-size="12">AI-generated emails sound too formal and generic.</text>
+  <text x="440" y="142" fill="#6b7280" font-size="12">Our tool makes them sound like they're from a real</text>
+  <text x="440" y="159" fill="#6b7280" font-size="12">student — professional yet genuine.</text>
+  <rect x="40" y="220" width="340" height="130" rx="12" fill="#fff" stroke="#0d9488" stroke-width="2"/>
+  <text x="60" y="250" fill="#0d9488" font-size="28">📋</text>
+  <text x="95" y="250" fill="#111827" font-size="15" font-weight="bold">Research Reports</text>
+  <text x="60" y="275" fill="#6b7280" font-size="12">AI helps with research, but your report needs your</text>
+  <text x="60" y="292" fill="#6b7280" font-size="12">voice. Transform AI drafts into natural academic</text>
+  <text x="60" y="309" fill="#6b7280" font-size="12">writing that reflects your understanding.</text>
+  <rect x="420" y="220" width="340" height="130" rx="12" fill="#fff" stroke="#0d9488" stroke-width="2"/>
+  <text x="440" y="250" fill="#0d9488" font-size="28">🎓</text>
+  <text x="475" y="250" fill="#111827" font-size="15" font-weight="bold">College Applications</text>
+  <text x="440" y="275" fill="#6b7280" font-size="12">Stand out with authentic personal statements.</text>
+  <text x="440" y="292" fill="#6b7280" font-size="12">AI can help structure your ideas, then humanize</text>
+  <text x="440" y="309" fill="#6b7280" font-size="12">them to sound genuinely personal.</text>
+  <rect x="40" y="370" width="340" height="130" rx="12" fill="#fff" stroke="#0d9488" stroke-width="2"/>
+  <text x="60" y="400" fill="#0d9488" font-size="28">📊</text>
+  <text x="95" y="400" fill="#111827" font-size="15" font-weight="bold">Lab Reports &amp; Analysis</text>
+  <text x="60" y="425" fill="#6b7280" font-size="12">AI-assisted data analysis is common, but your</text>
+  <text x="60" y="442" fill="#6b7280" font-size="12">written analysis should reflect your own critical</text>
+  <text x="60" y="459" fill="#6b7280" font-size="12">thinking and interpretation skills.</text>
+  <rect x="420" y="370" width="340" height="130" rx="12" fill="#fff" stroke="#0d9488" stroke-width="2"/>
+  <text x="440" y="400" fill="#0d9488" font-size="28">💡</text>
+  <text x="475" y="400" fill="#111827" font-size="15" font-weight="bold">Discussion Posts</text>
+  <text x="440" y="425" fill="#6b7280" font-size="12">Online class discussions need your authentic voice.</text>
+  <text x="440" y="442" fill="#6b7280" font-size="12">Humanize AI-assisted responses to sound like real</text>
+  <text x="440" y="459" fill="#6b7280" font-size="12">student contributions with genuine opinions.</text>
+</svg>

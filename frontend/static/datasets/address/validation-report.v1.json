@@ -1,0 +1,258 @@
+{
+  "version": "v1",
+  "generatedAt": "2026-04-09T08:03:57.561Z",
+  "sampleSize": 500,
+  "countries": {
+    "US": {
+      "pass": true,
+      "checked": 500,
+      "failureCount": 0,
+      "failures": []
+    },
+    "GB": {
+      "pass": true,
+      "checked": 500,
+      "failureCount": 0,
+      "failures": []
+    },
+    "CA": {
+      "pass": true,
+      "checked": 500,
+      "failureCount": 0,
+      "failures": []
+    },
+    "AU": {
+      "pass": true,
+      "checked": 500,
+      "failureCount": 0,
+      "failures": []
+    },
+    "DE": {
+      "pass": true,
+      "checked": 500,
+      "failureCount": 0,
+      "failures": []
+    },
+    "FR": {
+      "pass": true,
+      "checked": 500,
+      "failureCount": 0,
+      "failures": []
+    },
+    "JP": {
+      "pass": true,
+      "checked": 500,
+      "failureCount": 0,
+      "failures": []
+    },
+    "CN": {
+      "pass": true,
+      "checked": 500,
+      "failureCount": 0,
+      "failures": []
+    },
+    "IN": {
+      "pass": true,
+      "checked": 500,
+      "failureCount": 0,
+      "failures": []
+    },
+    "BR": {
+      "pass": true,
+      "checked": 500,
+      "failureCount": 0,
+      "failures": []
+    },
+    "MX": {
+      "pass": true,
+      "checked": 500,
+      "failureCount": 0,
+      "failures": []
+    },
+    "RU": {
+      "pass": true,
+      "checked": 500,
+      "failureCount": 0,
+      "failures": []
+    },
+    "KR": {
+      "pass": true,
+      "checked": 500,
+      "failureCount": 0,
+      "failures": []
+    },
+    "ES": {
+      "pass": true,
+      "checked": 500,
+      "failureCount": 0,
+      "failures": []
+    },
+    "IT": {
+      "pass": true,
+      "checked": 500,
+      "failureCount": 0,
+      "failures": []
+    },
+    "NL": {
+      "pass": true,
+      "checked": 500,
+      "failureCount": 0,
+      "failures": []
+    },
+    "SE": {
+      "pass": true,
+      "checked": 500,
+      "failureCount": 0,
+      "failures": []
+    },
+    "SG": {
+      "pass": true,
+      "checked": 500,
+      "failureCount": 0,
+      "failures": []
+    },
+    "ZA": {
+      "pass": true,
+      "checked": 500,
+      "failureCount": 0,
+      "failures": []
+    },
+    "TH": {
+      "pass": true,
+      "checked": 500,
+      "failureCount": 0,
+      "failures": []
+    },
+    "VN": {
+      "pass": true,
+      "checked": 500,
+      "failureCount": 0,
+      "failures": []
+    },
+    "PH": {
+      "pass": true,
+      "checked": 500,
+      "failureCount": 0,
+      "failures": []
+    },
+    "ID": {
+      "pass": true,
+      "checked": 500,
+      "failureCount": 0,
+      "failures": []
+    },
+    "MY": {
+      "pass": true,
+      "checked": 500,
+      "failureCount": 0,
+      "failures": []
+    },
+    "TW": {
+      "pass": true,
+      "checked": 500,
+      "failureCount": 0,
+      "failures": []
+    },
+    "PL": {
+      "pass": true,
+      "checked": 500,
+      "failureCount": 0,
+      "failures": []
+    },
+    "TR": {
+      "pass": true,
+      "checked": 500,
+      "failureCount": 0,
+      "failures": []
+    },
+    "SA": {
+      "pass": true,
+      "checked": 500,
+      "failureCount": 0,
+      "failures": []
+    },
+    "AE": {
+      "pass": true,
+      "checked": 500,
+      "failureCount": 0,
+      "failures": []
+    },
+    "IL": {
+      "pass": true,
+      "checked": 500,
+      "failureCount": 0,
+      "failures": []
+    },
+    "AR": {
+      "pass": true,
+      "checked": 500,
+      "failureCount": 0,
+      "failures": []
+    },
+    "CO": {
+      "pass": true,
+      "checked": 500,
+      "failureCount": 0,
+      "failures": []
+    },
+    "CL": {
+      "pass": true,
+      "checked": 500,
+      "failureCount": 0,
+      "failures": []
+    },
+    "PE": {
+      "pass": true,
+      "checked": 500,
+      "failureCount": 0,
+      "failures": []
+    },
+    "EG": {
+      "pass": true,
+      "checked": 500,
+      "failureCount": 0,
+      "failures": []
+    },
+    "NG": {
+      "pass": true,
+      "checked": 500,
+      "failureCount": 0,
+      "failures": []
+    },
+    "KE": {
+      "pass": true,
+      "checked": 500,
+      "failureCount": 0,
+      "failures": []
+    },
+    "UA": {
+      "pass": true,
+      "checked": 500,
+      "failureCount": 0,
+      "failures": []
+    },
+    "GR": {
+      "pass": true,
+      "checked": 500,
+      "failureCount": 0,
+      "failures": []
+    },
+    "PT": {
+      "pass": true,
+      "checked": 500,
+      "failureCount": 0,
+      "failures": []
+    },
+    "CZ": {
+      "pass": true,
+      "checked": 500,
+      "failureCount": 0,
+      "failures": []
+    }
+  },
+  "summary": {
+    "total": 41,
+    "pass": 41,
+    "fail": 0
+  }
+}

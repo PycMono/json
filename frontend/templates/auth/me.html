@@ -1,0 +1,404 @@
+{{ template "base" . }}
+
+{{ define "extraHead" }}
+<meta name="robots" content="noindex, nofollow">
+<link rel="stylesheet" href="/static/css/social-auth.css?v={{ .AssetVer }}">
+{{ end }}
+
+{{ define "content" }}
+<div class="me-page-wrap">
+  <div class="me-page-inner">
+
+    <!-- ═══════════════════════════════════════════════════════
+         HERO OVERVIEW
+         ═══════════════════════════════════════════════════════ -->
+    <section class="me-hero">
+      <div class="me-hero__content">
+        <div class="me-hero__identity">
+          {{ if .User.AvatarURL }}
+          <img class="me-hero__avatar" src="{{ .User.AvatarURL }}" alt="{{ .User.Name }}" loading="lazy">
+          {{ else }}
+          <div class="me-hero__avatar me-hero__avatar--placeholder">{{ if .User.Name }}{{ printf "%c" (index .User.Name 0) }}{{ else }}?{{ end }}</div>
+          {{ end }}
+          <div class="me-hero__text">
+            <h1 class="me-hero__title">{{ call .T "auth.me.title" }}</h1>
+            <p class="me-hero__subtitle">{{ call .T "auth.me.hero.subtitle" }}</p>
+            <div class="me-hero__badges">
+              <span class="me-badge me-badge--plan">{{ call .T "auth.me.status.free" }}</span>
+              {{ if .User.EmailVerified }}
+              <span class="me-badge me-badge--verified">{{ call .T "auth.me.status.email_verified" }}</span>
+              {{ else }}
+              <span class="me-badge me-badge--warning">{{ call .T "auth.me.status.email_not_verified" }}</span>
+              {{ end }}
+              <span class="me-badge me-badge--status">{{ call .T "auth.me.status.logged_in" }}</span>
+            </div>
+          </div>
+        </div>
+        <div class="me-hero__actions">
+          <a href="/user/tokens?lang={{ .Lang }}" class="me-btn me-btn--secondary" data-ga="me_view_usage" data-ga-category="account">{{ call .T "auth.me.action.view_usage" }}</a>
+          <button class="me-btn me-btn--secondary" disabled title="{{ call .T "auth.me.ai.coming_soon" }}">{{ call .T "auth.me.action.edit_profile" }}</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════════════════════════════════════════════
+         DASHBOARD GRID
+         ═══════════════════════════════════════════════════════ -->
+    <div class="me-dashboard">
+
+      <!-- ── MAIN COLUMN ── -->
+      <div class="me-dashboard__main">
+
+        <!-- Plan & Usage -->
+        <div class="me-card me-card--plan" id="plan-card">
+          <div class="me-card__header">
+            <h2 class="me-card__title">{{ call .T "auth.me.section.plan" }}</h2>
+            <span class="me-badge me-badge--soon">{{ call .T "auth.me.ai.coming_soon" }}</span>
+          </div>
+          <div class="me-plan-body">
+            <p class="me-plan-desc">{{ call .T "auth.me.plan.free_desc" }}</p>
+            <div class="me-quota-grid" id="quota-grid">
+              <div class="me-quota-item" data-quota="ai">
+                <div class="me-quota-item__label">{{ call .T "auth.me.quota.ai_calls" }}</div>
+                <div class="me-quota-item__value" id="quota-ai">—</div>
+                <div class="me-quota-bar"><div class="me-quota-bar__fill" style="width:0%"></div></div>
+              </div>
+              <div class="me-quota-item" data-quota="img">
+                <div class="me-quota-item__label">{{ call .T "auth.me.quota.img_gen" }}</div>
+                <div class="me-quota-item__value" id="quota-img">—</div>
+                <div class="me-quota-bar"><div class="me-quota-bar__fill" style="width:0%"></div></div>
+              </div>
+              <div class="me-quota-item" data-quota="file">
+                <div class="me-quota-item__label">{{ call .T "auth.me.quota.file_proc" }}</div>
+                <div class="me-quota-item__value" id="quota-file">—</div>
+                <div class="me-quota-bar"><div class="me-quota-bar__fill" style="width:0%"></div></div>
+              </div>
+              <div class="me-quota-item" data-quota="export">
+                <div class="me-quota-item__label">{{ call .T "auth.me.quota.exports" }}</div>
+                <div class="me-quota-item__value" id="quota-export">—</div>
+                <div class="me-quota-bar"><div class="me-quota-bar__fill" style="width:0%"></div></div>
+              </div>
+            </div>
+            <div class="me-plan-cta">
+              <p class="me-plan-cta__text">{{ call .T "auth.me.plan.upgrade_cta" }}</p>
+              <div class="me-plan-cta__actions">
+                <button class="me-btn me-btn--primary" disabled title="{{ call .T "auth.me.ai.coming_soon" }}" data-ga="me_plan_upgrade" data-ga-category="account">{{ call .T "auth.me.plan.btn_upgrade" }}</button>
+                <a href="/user/tokens?lang={{ .Lang }}" class="me-btn me-btn--ghost" data-ga="me_plan_details" data-ga-category="account">{{ call .T "auth.me.plan.btn_details" }}</a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Recent Tools -->
+        <div class="me-card me-card--recent">
+          <div class="me-card__header">
+            <h2 class="me-card__title">{{ call .T "auth.me.section.recent" }}</h2>
+          </div>
+          <div class="me-empty-state">
+            <div class="me-empty-state__icon">
+              <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"/><polyline points="14 2 14 8 20 8"/><line x1="16" y1="13" x2="8" y2="13"/><line x1="16" y1="17" x2="8" y2="17"/></svg>
+            </div>
+            <p class="me-empty-state__text">{{ call .T "auth.me.recent.empty" }}</p>
+            <a href="/?lang={{ .Lang }}" class="me-btn me-btn--ghost" data-ga="me_recent_browse" data-ga-category="account">{{ call .T "auth.me.recent.browse" }}</a>
+          </div>
+        </div>
+
+        <!-- AI Usage Stats -->
+        <div class="me-card me-card--ai-stats">
+          <div class="me-card__header">
+            <h2 class="me-card__title">{{ call .T "auth.me.section.ai_stats" }}</h2>
+          </div>
+          <div class="me-empty-state">
+            <div class="me-empty-state__icon">
+              <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M12 20V10"/><path d="M18 20V4"/><path d="M6 20v-4"/></svg>
+            </div>
+            <p class="me-empty-state__text">{{ call .T "auth.me.ai_stats.empty" }}</p>
+            <p class="me-empty-state__hint">{{ call .T "auth.me.ai_stats.desc" }}</p>
+            <div class="me-empty-state__actions">
+              <a href="/ai-image?lang={{ .Lang }}" class="me-btn me-btn--ghost" data-ga="me_ai_quick_image" data-ga-category="account">AI {{ call .T "auth.me.tool.img_compress" }}</a>
+              <a href="/ai-compete?lang={{ .Lang }}" class="me-btn me-btn--ghost" data-ga="me_ai_quick_detector" data-ga-category="account">{{ call .T "auth.me.tool.ai_detector" }}</a>
+            </div>
+          </div>
+        </div>
+
+        <!-- Activity History -->
+        <div class="me-card me-card--history">
+          <div class="me-card__header">
+            <h2 class="me-card__title">{{ call .T "auth.me.section.history" }}</h2>
+          </div>
+          <div class="me-empty-state">
+            <div class="me-empty-state__icon">
+              <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+            </div>
+            <p class="me-empty-state__text">{{ call .T "auth.me.history.empty" }}</p>
+          </div>
+        </div>
+
+        <!-- Favorite Tools -->
+        <div class="me-card me-card--favorites">
+          <div class="me-card__header">
+            <h2 class="me-card__title">{{ call .T "auth.me.section.favorites" }}</h2>
+          </div>
+          <div class="me-empty-state">
+            <div class="me-empty-state__icon">
+              <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/></svg>
+            </div>
+            <p class="me-empty-state__text">{{ call .T "auth.me.favorites.empty" }}</p>
+            <a href="/?lang={{ .Lang }}" class="me-btn me-btn--ghost" data-ga="me_favorites_browse" data-ga-category="account">{{ call .T "auth.me.favorites.browse" }}</a>
+          </div>
+        </div>
+
+        <!-- Security Settings -->
+        <div class="me-card me-card--security">
+          <div class="me-card__header">
+            <h2 class="me-card__title">{{ call .T "auth.me.section.security" }}</h2>
+          </div>
+          <div class="me-security-list">
+            <div class="me-security-item">
+              <div class="me-security-item__info">
+                <span class="me-security-item__label">{{ call .T "auth.me.security.email_status" }}</span>
+                {{ if .User.EmailVerified }}
+                <span class="me-badge me-badge--verified">{{ call .T "auth.me.verified" }}</span>
+                {{ else }}
+                <span class="me-badge me-badge--warning">{{ call .T "auth.me.not_verified" }}</span>
+                {{ end }}
+              </div>
+            </div>
+            <div class="me-security-item">
+              <div class="me-security-item__info">
+                <span class="me-security-item__label">{{ call .T "auth.me.security.login_method" }}</span>
+                <span class="me-security-item__value">
+                  {{ range .LinkedProviders }}
+                    {{ if eq .Provider "google" }}Google{{ else if eq .Provider "microsoft" }}Microsoft{{ else if eq .Provider "email" }}Email{{ end }}
+                  {{ else }}—{{ end }}
+                </span>
+              </div>
+            </div>
+            <div class="me-security-item">
+              <div class="me-security-item__info">
+                <span class="me-security-item__label">{{ call .T "auth.me.security.last_login" }}</span>
+                <span class="me-security-item__value">{{ if .User.LastLoginAt }}{{ (.User.LastLoginAt).Format "2006-01-02 15:04" }}{{ else }}—{{ end }}</span>
+              </div>
+            </div>
+            <div class="me-security-item me-security-item--muted">
+              <div class="me-security-item__info">
+                <span class="me-security-item__label">{{ call .T "auth.me.security.password" }}</span>
+                <span class="me-security-item__value">{{ call .T "auth.me.ai.coming_soon" }}</span>
+              </div>
+            </div>
+            <div class="me-security-item me-security-item--muted">
+              <div class="me-security-item__info">
+                <span class="me-security-item__label">{{ call .T "auth.me.security.2fa" }}</span>
+                <span class="me-security-item__value">{{ call .T "auth.me.ai.coming_soon" }}</span>
+              </div>
+            </div>
+          </div>
+          <div class="me-card__footer me-card__footer--muted">
+            <p class="me-card__hint">{{ call .T "auth.me.security.coming_soon" }}</p>
+          </div>
+        </div>
+
+        <!-- Help & Support -->
+        <div class="me-card me-card--help">
+          <div class="me-card__header">
+            <h2 class="me-card__title">{{ call .T "auth.me.section.help" }}</h2>
+          </div>
+          <p class="me-card__text">{{ call .T "auth.me.help.desc" }}</p>
+          <div class="me-help-actions">
+            <a href="/?lang={{ .Lang }}" class="me-btn me-btn--ghost" data-ga="me_help_docs" data-ga-category="account">{{ call .T "auth.me.help.btn_docs" }}</a>
+            <a href="mailto:support@toolboxnova.com" class="me-btn me-btn--ghost" data-ga="me_help_feedback" data-ga-category="account">{{ call .T "auth.me.help.btn_feedback" }}</a>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- ── SIDEBAR COLUMN ── -->
+      <aside class="me-dashboard__side">
+
+        <!-- Profile Card -->
+        <div class="me-card me-card--profile">
+          <div class="me-card__header">
+            <h2 class="me-card__title">{{ call .T "auth.me.section.profile" }}</h2>
+          </div>
+          <div class="me-profile-body">
+            <div class="me-profile-identity">
+              {{ if .User.AvatarURL }}
+              <img class="me-profile-avatar" src="{{ .User.AvatarURL }}" alt="{{ .User.Name }}" loading="lazy">
+              {{ else }}
+              <div class="me-profile-avatar me-profile-avatar--placeholder">{{ if .User.Name }}{{ printf "%c" (index .User.Name 0) }}{{ else }}?{{ end }}</div>
+              {{ end }}
+              <div class="me-profile-names">
+                <span class="me-profile-name">{{ if .User.Name }}{{ .User.Name }}{{ else }}User{{ end }}</span>
+                <span class="me-profile-email">{{ .User.Email }}</span>
+              </div>
+            </div>
+            <div class="me-profile-fields">
+              <div class="me-profile-field">
+                <span class="me-profile-field__label">{{ call .T "auth.me.field.user_id" }}</span>
+                <span class="me-profile-field__value me-profile-field__value--mono" id="user-id" data-copy="{{ .User.ID }}">{{ .User.ID }} <button class="me-copy-btn" title="{{ call .T "auth.me.success.copied" }}" onclick="copyUserID(this)"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg></button></span>
+              </div>
+              <div class="me-profile-field">
+                <span class="me-profile-field__label">{{ call .T "auth.me.field.email" }}</span>
+                <span class="me-profile-field__value">{{ .User.Email }} {{ if .User.EmailVerified }}<span class="me-badge me-badge--verified">{{ call .T "auth.me.verified" }}</span>{{ else }}<span class="me-badge me-badge--warning">{{ call .T "auth.me.not_verified" }}</span>{{ end }}</span>
+              </div>
+              <div class="me-profile-field">
+                <span class="me-profile-field__label">{{ call .T "auth.me.field.name" }}</span>
+                <span class="me-profile-field__value">{{ if .User.Name }}{{ .User.Name }}{{ else }}—{{ end }}</span>
+              </div>
+              <div class="me-profile-field">
+                <span class="me-profile-field__label">{{ call .T "auth.me.field.language" }}</span>
+                <span class="me-profile-field__value">{{ if .User.PreferredLanguage }}{{ .User.PreferredLanguage }}{{ else if .User.Locale }}{{ .User.Locale }}{{ else }}—{{ end }}</span>
+              </div>
+              <div class="me-profile-field">
+                <span class="me-profile-field__label">{{ call .T "auth.me.field.joined" }}</span>
+                <span class="me-profile-field__value">{{ .User.CreatedAt.Format "2006-01-02" }}</span>
+              </div>
+              <div class="me-profile-field">
+                <span class="me-profile-field__label">{{ call .T "auth.me.field.last_login" }}</span>
+                <span class="me-profile-field__value">{{ if .User.LastLoginAt }}{{ (.User.LastLoginAt).Format "2006-01-02 15:04" }}{{ else }}—{{ end }}</span>
+              </div>
+              <div class="me-profile-field">
+                <span class="me-profile-field__label">{{ call .T "auth.me.field.login_count" }}</span>
+                <span class="me-profile-field__value">{{ .User.LoginCount }} {{ call .T "auth.me.field.login_count_unit" }}</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Linked Accounts -->
+        {{ if .LinkedProviders }}
+        <div class="me-card me-card--linked">
+          <div class="me-card__header">
+            <h2 class="me-card__title">{{ call .T "auth.me.section.linked" }}</h2>
+          </div>
+          <div class="me-linked-list">
+            {{ range .LinkedProviders }}
+            <div class="me-linked-item">
+              {{ if eq .Provider "google" }}
+              <span class="me-linked-icon me-linked-icon--google">G</span>
+              <span class="me-linked-name">Google</span>
+              {{ else if eq .Provider "microsoft" }}
+              <span class="me-linked-icon me-linked-icon--microsoft">M</span>
+              <span class="me-linked-name">Microsoft</span>
+              {{ else if eq .Provider "email" }}
+              <span class="me-linked-icon me-linked-icon--email">@</span>
+              <span class="me-linked-name">Email</span>
+              {{ end }}
+              <span class="me-linked-date">{{ .CreatedAt.Format "2006-01-02" }}</span>
+            </div>
+            {{ end }}
+          </div>
+        </div>
+        {{ end }}
+
+        <!-- Preferences -->
+        <div class="me-card me-card--preferences">
+          <div class="me-card__header">
+            <h2 class="me-card__title">{{ call .T "auth.me.section.preferences" }}</h2>
+          </div>
+          <p class="me-card__text">{{ call .T "auth.me.preferences.desc" }}</p>
+          <div class="me-prefs-list">
+            <div class="me-pref-item">
+              <span class="me-pref-item__label">{{ call .T "auth.me.field.language" }}</span>
+              <span class="me-pref-item__value">{{ .Lang }}</span>
+            </div>
+            <div class="me-pref-item">
+              <span class="me-pref-item__label">{{ call .T "auth.me.field.theme" }}</span>
+              <span class="me-pref-item__value" id="current-theme">{{ call .T "auth.me.ai.coming_soon" }}</span>
+            </div>
+          </div>
+          <div class="me-prefs-actions">
+            <button class="me-btn me-btn--ghost me-btn--sm" disabled title="{{ call .T "auth.me.ai.coming_soon" }}">{{ call .T "auth.me.preferences.btn_save" }}</button>
+          </div>
+        </div>
+
+        <!-- Danger Zone -->
+        <div class="me-card me-card--danger">
+          <div class="me-card__header">
+            <h2 class="me-card__title">{{ call .T "auth.me.section.danger" }}</h2>
+          </div>
+          <p class="me-card__text">{{ call .T "auth.me.danger.logout_desc" }}</p>
+          <form method="POST" action="/auth/logout" class="me-danger-form">
+            <button type="submit" class="me-btn me-btn--danger me-btn--block" data-confirm="{{ call .T "auth.me.logout_confirm" }}" data-ga="me_logout" data-ga-category="auth">
+              {{ call .T "auth.me.logout" }}
+            </button>
+          </form>
+          <div class="me-danger-divider"></div>
+          <button class="me-btn me-btn--danger-outline me-btn--block" disabled title="{{ call .T "auth.me.ai.coming_soon" }}" data-ga="me_delete_account" data-ga-category="account">
+            {{ call .T "auth.me.danger.delete_account" }}
+          </button>
+          <p class="me-card__hint me-card__hint--danger">{{ call .T "auth.me.danger.delete_desc" }}</p>
+        </div>
+
+      </aside>
+
+    </div>
+
+  </div>
+</div>
+
+<!-- Toast container -->
+<div class="me-toast" id="me-toast"></div>
+{{ end }}
+
+{{ define "extraScript" }}
+<script src="/static/js/social-auth.js?v={{ .AssetVer }}"></script>
+<script>
+(function() {
+  // Theme display
+  var theme = localStorage.getItem('tbn-theme') || 'light';
+  var themeEl = document.getElementById('current-theme');
+  if (themeEl) themeEl.textContent = theme === 'dark' ? 'Dark' : (theme === 'auto' ? 'Auto' : 'Light');
+
+  // Fetch token balance
+  function fetchBalance() {
+    fetch('/api/token/balance', { credentials: 'same-origin' })
+      .then(function(r) { return r.ok ? r.json() : null; })
+      .then(function(data) {
+        if (!data) return;
+        var aiEl = document.getElementById('quota-ai');
+        if (aiEl) {
+          var used = data.total_consumed || 0;
+          var total = (data.total_granted || 0);
+          var rem = data.balance || 0;
+          aiEl.textContent = used + ' / ' + (total > 0 ? total : '∞');
+          var pct = total > 0 ? Math.min(100, (used / total) * 100) : 0;
+          var bar = aiEl.closest('.me-quota-item').querySelector('.me-quota-bar__fill');
+          if (bar) bar.style.width = pct + '%';
+        }
+      })
+      .catch(function() {});
+  }
+  fetchBalance();
+
+  // Copy user ID
+  window.copyUserID = function(btn) {
+    var id = document.getElementById('user-id');
+    if (!id) return;
+    var text = id.getAttribute('data-copy') || id.textContent.trim();
+    navigator.clipboard.writeText(text).then(function() {
+      showToast('{{ call .T "auth.me.success.copied" }}');
+    }).catch(function() {});
+  };
+
+  // Toast
+  function showToast(msg) {
+    var t = document.getElementById('me-toast');
+    if (!t) return;
+    t.textContent = msg;
+    t.classList.add('me-toast--visible');
+    setTimeout(function() { t.classList.remove('me-toast--visible'); }, 2500);
+  }
+
+  // Confirm logout
+  document.querySelectorAll('[data-confirm]').forEach(function(el) {
+    el.addEventListener('click', function(e) {
+      var msg = el.getAttribute('data-confirm');
+      if (msg && !confirm(msg)) {
+        e.preventDefault();
+      }
+    });
+  });
+})();
+</script>
+{{ end }}

@@ -1,0 +1,480 @@
+{{ template "base" . }}
+
+{{ define "extraHead" }}
+<link rel="stylesheet" href="/static/css/tools-base.css?v={{ .AssetVer }}">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "{{ call .T "tools.base.hero.title" }}",
+  "url": "{{ .Canonical }}",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "Any",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "description": "{{ call .T "tools.base.seo.description" }}"
+}
+</script>
+{{ end }}
+
+{{ define "content" }}
+<div class="page-base-converter">
+
+<!-- Hero -->
+<section class="bc-hero" aria-labelledby="bc-hero-title">
+  <div class="bc-hero__inner">
+    <div class="bc-hero__eyebrow">{{ call .T "tools.base.hero.eyebrow" }}</div>
+    <h1 class="bc-hero__title" id="bc-hero-title">{{ call .T "tools.base.hero.title" }}</h1>
+    <p class="bc-hero__subtitle">{{ call .T "tools.base.hero.subtitle" }}</p>
+    <div class="bc-hero__badges">
+      <span class="bc-badge">{{ call .T "tools.base.hero.badge1" }}</span>
+      <span class="bc-badge">{{ call .T "tools.base.hero.badge2" }}</span>
+      <span class="bc-badge">{{ call .T "tools.base.hero.badge3" }}</span>
+      <span class="bc-badge">{{ call .T "tools.base.hero.badge4" }}</span>
+    </div>
+    <div class="bc-hero__cta">
+      <a href="#bcWorkspace" class="bc-btn bc-btn--primary">{{ call .T "tools.base.hero.cta_primary" }}</a>
+      <a href="/tools/base-converter-guide?lang={{ .Lang }}" class="bc-btn bc-btn--ghost">{{ call .T "tools.base.hero.cta_secondary" }}</a>
+    </div>
+  </div>
+</section>
+
+<div style="text-align:center;margin:8px auto;max-width:970px;padding:0 16px">
+  {{- template "partials/ad_slot.html" (dict "Ctx" . "SlotID" "tools-base-top" "Size" "728x90" "Mobile" "320x50") }}
+</div>
+
+<div class="hash-sidebar-layout">
+  <aside class="hash-sidebar-ad">
+    {{- template "partials/ad_slot.html" (dict "Ctx" . "SlotID" "tools-base-left" "Size" "160x600" "MobileHide" true) }}
+  </aside>
+
+  <div class="hash-main-area">
+    <script id="bcI18n" type="application/json">
+      {{ toJSON (dict
+        "tools.base.toast.copied" (call .T "tools.base.toast.copied")
+        "tools.base.status.empty" (call .T "tools.base.status.empty")
+        "tools.base.status.ok" (call .T "tools.base.status.ok")
+        "tools.base.status.bigint" (call .T "tools.base.status.bigint")
+        "tools.base.error.invalid" (call .T "tools.base.error.invalid")
+        "tools.base.error.binary_only" (call .T "tools.base.error.binary_only")
+        "tools.base.error.octal_only" (call .T "tools.base.error.octal_only")
+        "tools.base.error.hex_only" (call .T "tools.base.error.hex_only")
+        "tools.base.error.base_only" (call .T "tools.base.error.base_only")
+        "tools.base.error.custom_range" (call .T "tools.base.error.custom_range")
+        "tools.base.hint.auto" (call .T "tools.base.hint.auto")
+        "tools.base.hint.maybe_binary" (call .T "tools.base.hint.maybe_binary")
+        "tools.base.result.placeholder" (call .T "tools.base.result.placeholder")
+        "tools.base.devformat.rgb_oor" (call .T "tools.base.devformat.rgb_oor")
+        "tools.base.bitwidth.overflow_yes" (call .T "tools.base.bitwidth.overflow_yes")
+        "tools.base.bitwidth.overflow_no" (call .T "tools.base.bitwidth.overflow_no")
+        "tools.base.batch.col_input" (call .T "tools.base.batch.col_input")
+        "tools.base.batch.col_base" (call .T "tools.base.batch.col_base")
+        "tools.base.batch.col_bin" (call .T "tools.base.batch.col_bin")
+        "tools.base.batch.col_oct" (call .T "tools.base.batch.col_oct")
+        "tools.base.batch.col_dec" (call .T "tools.base.batch.col_dec")
+        "tools.base.batch.col_hex" (call .T "tools.base.batch.col_hex")
+        "tools.base.batch.col_status" (call .T "tools.base.batch.col_status")
+        "tools.base.batch.status_ok" (call .T "tools.base.batch.status_ok")
+        "tools.base.batch.status_err" (call .T "tools.base.batch.status_err")
+        "tools.base.batch.truncated" (call .T "tools.base.batch.truncated")
+      ) }}
+    </script>
+    <div class="bc-page">
+
+      <!-- Workspace -->
+      <section class="bc-section" id="bcWorkspace" aria-label="Number input">
+        <h2 class="bc-section__title">{{ call .T "tools.base.workspace.title" }}</h2>
+        <p class="bc-section__subtitle">{{ call .T "tools.base.workspace.subtitle" }}</p>
+
+        <div class="bc-card bc-workspace">
+          <div class="bc-input-row">
+            <label class="bc-input-label" for="bcInput">
+              <span>{{ call .T "tools.base.workspace.input_label" }}</span>
+              <span class="bc-input-label__hint" id="bcBaseHint"></span>
+            </label>
+            <input type="text"
+                   id="bcInput"
+                   class="bc-input"
+                   spellcheck="false"
+                   autocomplete="off"
+                   placeholder='{{ call .T "tools.base.workspace.placeholder" }}'>
+            <div class="bc-status" id="bcStatus"></div>
+          </div>
+
+          <div>
+            <div class="bc-input-label" style="margin-bottom:8px">
+              <span>{{ call .T "tools.base.workspace.base_label" }}</span>
+            </div>
+            <div class="bc-base-selector" role="radiogroup" aria-label="Input base">
+              <button type="button" class="bc-base-pill is-active" data-base="0">{{ call .T "tools.base.workspace.base_auto" }}</button>
+              <button type="button" class="bc-base-pill" data-base="2">{{ call .T "tools.base.workspace.base_2" }}</button>
+              <button type="button" class="bc-base-pill" data-base="8">{{ call .T "tools.base.workspace.base_8" }}</button>
+              <button type="button" class="bc-base-pill" data-base="10">{{ call .T "tools.base.workspace.base_10" }}</button>
+              <button type="button" class="bc-base-pill" data-base="16">{{ call .T "tools.base.workspace.base_16" }}</button>
+              <button type="button" class="bc-base-pill" data-base="-1">{{ call .T "tools.base.workspace.base_custom" }}</button>
+            </div>
+            <div class="bc-custom-base" id="bcCustomBaseWrap" style="display:none">
+              <span class="bc-custom-base__label">{{ call .T "tools.base.workspace.custom_label" }}</span>
+              <input type="number" id="bcCustomBase" class="bc-custom-base__input" min="2" max="36" value="16">
+              <span class="bc-custom-base__label" style="font-size:0.78rem">{{ call .T "tools.base.workspace.custom_range" }}</span>
+            </div>
+          </div>
+
+          <div class="bc-actions">
+            <button id="bcBtnConvert" type="button" class="bc-btn bc-btn--primary">{{ call .T "tools.base.actions.convert" }}</button>
+            <button id="bcBtnCopyAll" type="button" class="bc-btn bc-btn--ghost">{{ call .T "tools.base.actions.copy_all" }}</button>
+            <button id="bcBtnExample" type="button" class="bc-btn bc-btn--ghost">{{ call .T "tools.base.actions.example" }}</button>
+            <button id="bcBtnClear"   type="button" class="bc-btn bc-btn--ghost">{{ call .T "tools.base.actions.clear" }}</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- Multi-base result -->
+      <section class="bc-section" aria-label="Conversion result">
+        <h2 class="bc-section__title">{{ call .T "tools.base.result.title" }}</h2>
+        <p class="bc-section__subtitle">{{ call .T "tools.base.result.subtitle" }}</p>
+
+        <div class="bc-card">
+          <div class="bc-result-panel">
+            <div class="bc-result-card">
+              <div class="bc-result-card__head">
+                <span class="bc-result-card__label"><span class="bc-result-card__chip">2</span> {{ call .T "tools.base.result.bin" }}</span>
+                <button class="bc-result-card__copy" data-copy-target="bcResBin">{{ call .T "tools.base.actions.copy" }}</button>
+              </div>
+              <div class="bc-result-card__value bc-result-card__value--placeholder" id="bcResBin" data-result="bin">{{ call .T "tools.base.result.placeholder" }}</div>
+            </div>
+
+            <div class="bc-result-card">
+              <div class="bc-result-card__head">
+                <span class="bc-result-card__label"><span class="bc-result-card__chip">8</span> {{ call .T "tools.base.result.oct" }}</span>
+                <button class="bc-result-card__copy" data-copy-target="bcResOct">{{ call .T "tools.base.actions.copy" }}</button>
+              </div>
+              <div class="bc-result-card__value bc-result-card__value--placeholder" id="bcResOct" data-result="oct">{{ call .T "tools.base.result.placeholder" }}</div>
+            </div>
+
+            <div class="bc-result-card bc-result-card--accent">
+              <div class="bc-result-card__head">
+                <span class="bc-result-card__label"><span class="bc-result-card__chip">10</span> {{ call .T "tools.base.result.dec" }}</span>
+                <button class="bc-result-card__copy" data-copy-target="bcResDec">{{ call .T "tools.base.actions.copy" }}</button>
+              </div>
+              <div class="bc-result-card__value bc-result-card__value--placeholder" id="bcResDec" data-result="dec">{{ call .T "tools.base.result.placeholder" }}</div>
+            </div>
+
+            <div class="bc-result-card">
+              <div class="bc-result-card__head">
+                <span class="bc-result-card__label"><span class="bc-result-card__chip">16</span> {{ call .T "tools.base.result.hex" }}</span>
+                <button class="bc-result-card__copy" data-copy-target="bcResHex">{{ call .T "tools.base.actions.copy" }}</button>
+              </div>
+              <div class="bc-result-card__value bc-result-card__value--placeholder" id="bcResHex" data-result="hex">{{ call .T "tools.base.result.placeholder" }}</div>
+            </div>
+
+            <div class="bc-result-card">
+              <div class="bc-result-card__head">
+                <span class="bc-result-card__label">{{ call .T "tools.base.result.bin_grouped" }}</span>
+                <button class="bc-result-card__copy" data-copy-target="bcResBinGrouped">{{ call .T "tools.base.actions.copy" }}</button>
+              </div>
+              <div class="bc-result-card__value bc-result-card__value--placeholder" id="bcResBinGrouped" data-result="binGrouped">{{ call .T "tools.base.result.placeholder" }}</div>
+            </div>
+
+            <div class="bc-result-card">
+              <div class="bc-result-card__head">
+                <span class="bc-result-card__label">{{ call .T "tools.base.result.hex_grouped" }}</span>
+                <button class="bc-result-card__copy" data-copy-target="bcResHexGrouped">{{ call .T "tools.base.actions.copy" }}</button>
+              </div>
+              <div class="bc-result-card__value bc-result-card__value--placeholder" id="bcResHexGrouped" data-result="hexGrouped">{{ call .T "tools.base.result.placeholder" }}</div>
+            </div>
+
+            <div class="bc-result-card">
+              <div class="bc-result-card__head">
+                <span class="bc-result-card__label">{{ call .T "tools.base.result.bin_prefixed" }}</span>
+                <button class="bc-result-card__copy" data-copy-target="bcResBinPrefixed">{{ call .T "tools.base.actions.copy" }}</button>
+              </div>
+              <div class="bc-result-card__value bc-result-card__value--placeholder" id="bcResBinPrefixed" data-result="binPrefixed">{{ call .T "tools.base.result.placeholder" }}</div>
+            </div>
+
+            <div class="bc-result-card">
+              <div class="bc-result-card__head">
+                <span class="bc-result-card__label">{{ call .T "tools.base.result.hex_prefixed" }}</span>
+                <button class="bc-result-card__copy" data-copy-target="bcResHexPrefixed">{{ call .T "tools.base.actions.copy" }}</button>
+              </div>
+              <div class="bc-result-card__value bc-result-card__value--placeholder" id="bcResHexPrefixed" data-result="hexPrefixed">{{ call .T "tools.base.result.placeholder" }}</div>
+            </div>
+
+            <div class="bc-result-card" id="bcResCustomCard" hidden>
+              <div class="bc-result-card__head">
+                <span class="bc-result-card__label">{{ call .T "tools.base.result.custom_label" }}</span>
+                <button class="bc-result-card__copy" data-copy-target="bcResCustom">{{ call .T "tools.base.actions.copy" }}</button>
+              </div>
+              <div class="bc-result-card__value bc-result-card__value--placeholder" id="bcResCustom" data-result="custom">{{ call .T "tools.base.result.placeholder" }}</div>
+            </div>
+          </div>
+
+          <div class="bc-result-toolbar">
+            <span class="bc-result-toolbar__label">{{ call .T "tools.base.result.hex_case_label" }}</span>
+            <div class="bc-toggle" id="bcHexCase">
+              <button class="bc-toggle__btn is-active" data-case="upper" type="button">FF</button>
+              <button class="bc-toggle__btn" data-case="lower" type="button">ff</button>
+            </div>
+            <span class="bc-result-toolbar__label" style="margin-left:12px">{{ call .T "tools.base.result.prefix_label" }}</span>
+            <div class="bc-toggle" id="bcPrefixToggle">
+              <button class="bc-toggle__btn is-active" data-prefix="on" type="button">{{ call .T "tools.base.result.prefix_on" }}</button>
+              <button class="bc-toggle__btn" data-prefix="off" type="button">{{ call .T "tools.base.result.prefix_off" }}</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Developer formats -->
+      <section class="bc-section" aria-label="Developer formats">
+        <h2 class="bc-section__title">{{ call .T "tools.base.devformat.title" }}</h2>
+        <p class="bc-section__subtitle">{{ call .T "tools.base.devformat.subtitle" }}</p>
+
+        <div class="bc-card">
+          {{ $copyLabel := call .T "tools.base.actions.copy" }}
+          {{ $copyIcon := `<svg class="bc-icon" width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="11" height="11" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>` }}
+          <div class="bc-devformat-grid">
+            <div class="bc-devformat">
+              <span class="bc-devformat__label">JS bin</span>
+              <span class="bc-devformat__value" id="bcDevBinLit" data-dev="binLit">—</span>
+              <button class="bc-devformat__copy" data-copy-target="bcDevBinLit" type="button" aria-label="{{ $copyLabel }}" title="{{ $copyLabel }}">{{ $copyIcon | safeHTML }}</button>
+            </div>
+            <div class="bc-devformat">
+              <span class="bc-devformat__label">JS oct</span>
+              <span class="bc-devformat__value" id="bcDevOctLit" data-dev="octLit">—</span>
+              <button class="bc-devformat__copy" data-copy-target="bcDevOctLit" type="button" aria-label="{{ $copyLabel }}" title="{{ $copyLabel }}">{{ $copyIcon | safeHTML }}</button>
+            </div>
+            <div class="bc-devformat">
+              <span class="bc-devformat__label">JS dec</span>
+              <span class="bc-devformat__value" id="bcDevDecLit" data-dev="decLit">—</span>
+              <button class="bc-devformat__copy" data-copy-target="bcDevDecLit" type="button" aria-label="{{ $copyLabel }}" title="{{ $copyLabel }}">{{ $copyIcon | safeHTML }}</button>
+            </div>
+            <div class="bc-devformat">
+              <span class="bc-devformat__label">JS hex</span>
+              <span class="bc-devformat__value" id="bcDevHexLit" data-dev="hexLit">—</span>
+              <button class="bc-devformat__copy" data-copy-target="bcDevHexLit" type="button" aria-label="{{ $copyLabel }}" title="{{ $copyLabel }}">{{ $copyIcon | safeHTML }}</button>
+            </div>
+            <div class="bc-devformat">
+              <span class="bc-devformat__label">C hex</span>
+              <span class="bc-devformat__value" id="bcDevCHex" data-dev="cHex">—</span>
+              <button class="bc-devformat__copy" data-copy-target="bcDevCHex" type="button" aria-label="{{ $copyLabel }}" title="{{ $copyLabel }}">{{ $copyIcon | safeHTML }}</button>
+            </div>
+            <div class="bc-devformat">
+              <span class="bc-devformat__label">BigInt</span>
+              <span class="bc-devformat__value" id="bcDevBigInt" data-dev="bigint">—</span>
+              <button class="bc-devformat__copy" data-copy-target="bcDevBigInt" type="button" aria-label="{{ $copyLabel }}" title="{{ $copyLabel }}">{{ $copyIcon | safeHTML }}</button>
+            </div>
+            <div class="bc-devformat">
+              <span class="bc-devformat__label">RGB (0-255)</span>
+              <span class="bc-devformat__value" id="bcDevColor" data-dev="color">—</span>
+              <button class="bc-devformat__copy" data-copy-target="bcDevColor" type="button" aria-label="{{ $copyLabel }}" title="{{ $copyLabel }}">{{ $copyIcon | safeHTML }}</button>
+            </div>
+            <div class="bc-devformat">
+              <span class="bc-devformat__label">JSON</span>
+              <span class="bc-devformat__value" id="bcDevJson" data-dev="json">—</span>
+              <button class="bc-devformat__copy" data-copy-target="bcDevJson" type="button" aria-label="{{ $copyLabel }}" title="{{ $copyLabel }}">{{ $copyIcon | safeHTML }}</button>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Bit width / two's complement -->
+      <section class="bc-section" aria-label="Bit width and two's complement">
+        <h2 class="bc-section__title">{{ call .T "tools.base.bitwidth.title" }}</h2>
+        <p class="bc-section__subtitle">{{ call .T "tools.base.bitwidth.subtitle" }}</p>
+
+        <div class="bc-card">
+          <div class="bc-bitwidth-controls">
+            <div class="bc-bitwidth-controls__group">
+              <span class="bc-bitwidth-controls__label">{{ call .T "tools.base.bitwidth.width_label" }}</span>
+              <div class="bc-bitwidth-pills">
+                <button class="bc-bitwidth-pill" data-width="8" type="button">8-bit</button>
+                <button class="bc-bitwidth-pill" data-width="16" type="button">16-bit</button>
+                <button class="bc-bitwidth-pill is-active" data-width="32" type="button">32-bit</button>
+                <button class="bc-bitwidth-pill" data-width="64" type="button">64-bit</button>
+              </div>
+            </div>
+          </div>
+
+          <div class="bc-bitview" id="bcBitView"></div>
+
+          <div class="bc-bitwidth-stats">
+            <div class="bc-bitwidth-stat">
+              <div class="bc-bitwidth-stat__label">{{ call .T "tools.base.bitwidth.unsigned" }}</div>
+              <div class="bc-bitwidth-stat__value" id="bcBwUnsigned">—</div>
+            </div>
+            <div class="bc-bitwidth-stat">
+              <div class="bc-bitwidth-stat__label">{{ call .T "tools.base.bitwidth.signed" }}</div>
+              <div class="bc-bitwidth-stat__value" id="bcBwSigned">—</div>
+            </div>
+            <div class="bc-bitwidth-stat">
+              <div class="bc-bitwidth-stat__label">{{ call .T "tools.base.bitwidth.bin_repr" }}</div>
+              <div class="bc-bitwidth-stat__value" id="bcBwBin">—</div>
+            </div>
+            <div class="bc-bitwidth-stat">
+              <div class="bc-bitwidth-stat__label">{{ call .T "tools.base.bitwidth.hex_repr" }}</div>
+              <div class="bc-bitwidth-stat__value" id="bcBwHex">—</div>
+            </div>
+            <div class="bc-bitwidth-stat">
+              <div class="bc-bitwidth-stat__label">{{ call .T "tools.base.bitwidth.overflow" }}</div>
+              <div class="bc-bitwidth-stat__value" id="bcBwOverflow">—</div>
+            </div>
+          </div>
+
+          <p class="bc-section__subtitle" style="margin-top:14px;text-align:left">{{ call .T "tools.base.bitwidth.note" }}</p>
+        </div>
+      </section>
+
+      <!-- Batch -->
+      <section class="bc-section" aria-label="Batch conversion">
+        <h2 class="bc-section__title">{{ call .T "tools.base.batch.title" }}</h2>
+        <p class="bc-section__subtitle">{{ call .T "tools.base.batch.subtitle" }}</p>
+
+        <div class="bc-card">
+          <textarea id="bcBatchInput" class="bc-batch-textarea" spellcheck="false" placeholder='{{ call .T "tools.base.batch.placeholder" }}'></textarea>
+
+          <div class="bc-batch-controls">
+            <span class="bc-result-toolbar__label">{{ call .T "tools.base.batch.base_label" }}</span>
+            <select id="bcBatchBase" class="bc-custom-base__input" style="width:auto;min-width:140px">
+              <option value="0">{{ call .T "tools.base.workspace.base_auto" }}</option>
+              <option value="2">{{ call .T "tools.base.workspace.base_2" }}</option>
+              <option value="8">{{ call .T "tools.base.workspace.base_8" }}</option>
+              <option value="10">{{ call .T "tools.base.workspace.base_10" }}</option>
+              <option value="16">{{ call .T "tools.base.workspace.base_16" }}</option>
+            </select>
+            <button id="bcBatchBtn"   type="button" class="bc-btn bc-btn--primary bc-btn--sm">{{ call .T "tools.base.batch.convert" }}</button>
+            <button id="bcBatchCopy"  type="button" class="bc-btn bc-btn--ghost bc-btn--sm">{{ call .T "tools.base.batch.copy_table" }}</button>
+            <button id="bcBatchCsv"   type="button" class="bc-btn bc-btn--ghost bc-btn--sm">{{ call .T "tools.base.batch.download_csv" }}</button>
+            <button id="bcBatchClear" type="button" class="bc-btn bc-btn--ghost bc-btn--sm">{{ call .T "tools.base.actions.clear" }}</button>
+          </div>
+
+          <div id="bcBatchTable"></div>
+        </div>
+      </section>
+
+      <!-- Examples -->
+      <section class="bc-section" aria-label="Examples">
+        <h2 class="bc-section__title">{{ call .T "tools.base.examples.title" }}</h2>
+        <p class="bc-section__subtitle">{{ call .T "tools.base.examples.subtitle" }}</p>
+
+        <div class="bc-examples-grid">
+          <button type="button" class="bc-example" data-example="255" data-example-base="10">
+            <div class="bc-example__title">{{ call .T "tools.base.examples.ex1_title" }}</div>
+            <div class="bc-example__pair"><code>255</code> → <code>11111111</code> · <code>FF</code></div>
+            <div class="bc-example__hint">{{ call .T "tools.base.examples.use" }}</div>
+          </button>
+          <button type="button" class="bc-example" data-example="0b101010" data-example-base="0">
+            <div class="bc-example__title">{{ call .T "tools.base.examples.ex2_title" }}</div>
+            <div class="bc-example__pair"><code>0b101010</code> → <code>42</code> · <code>2A</code></div>
+            <div class="bc-example__hint">{{ call .T "tools.base.examples.use" }}</div>
+          </button>
+          <button type="button" class="bc-example" data-example="0xFF" data-example-base="0">
+            <div class="bc-example__title">{{ call .T "tools.base.examples.ex3_title" }}</div>
+            <div class="bc-example__pair"><code>0xFF</code> → <code>255</code> · <code>11111111</code></div>
+            <div class="bc-example__hint">{{ call .T "tools.base.examples.use" }}</div>
+          </button>
+          <button type="button" class="bc-example" data-example="0o755" data-example-base="0">
+            <div class="bc-example__title">{{ call .T "tools.base.examples.ex4_title" }}</div>
+            <div class="bc-example__pair"><code>0o755</code> → <code>493</code> · <code>1ED</code></div>
+            <div class="bc-example__hint">{{ call .T "tools.base.examples.use" }}</div>
+          </button>
+          <button type="button" class="bc-example" data-example="11111111" data-example-base="2">
+            <div class="bc-example__title">{{ call .T "tools.base.examples.ex5_title" }}</div>
+            <div class="bc-example__pair"><code>11111111</code> · 8-bit → <code>-1</code> ({{ call .T "tools.base.examples.signed_label" }})</div>
+            <div class="bc-example__hint">{{ call .T "tools.base.examples.use" }}</div>
+          </button>
+          <button type="button" class="bc-example" data-example="9007199254740993" data-example-base="10">
+            <div class="bc-example__title">{{ call .T "tools.base.examples.ex6_title" }}</div>
+            <div class="bc-example__pair"><code>2^53 + 1</code> → BigInt</div>
+            <div class="bc-example__hint">{{ call .T "tools.base.examples.use" }}</div>
+          </button>
+        </div>
+      </section>
+
+      <!-- Accuracy notice -->
+      <section class="bc-section" aria-label="Accuracy">
+        <div class="bc-notice">
+          <h3 class="bc-notice__title">💡 {{ call .T "tools.base.accuracy.title" }}</h3>
+          <p class="bc-notice__body">{{ call .T "tools.base.accuracy.body1" }}</p>
+          <p class="bc-notice__body">{{ call .T "tools.base.accuracy.body2" }}</p>
+          <p class="bc-notice__body">{{ call .T "tools.base.accuracy.body3" }}</p>
+        </div>
+      </section>
+
+      <!-- Related tools -->
+      <section class="bc-section" aria-label="Related tools">
+        <h2 class="bc-section__title">{{ call .T "tools.base.related.title" }}</h2>
+        <div class="bc-related-grid">
+          <a href="/tools/base64?lang={{ .Lang }}" class="bc-related">
+            <span class="bc-related__icon">B64</span>
+            <span>
+              <div class="bc-related__name">{{ call .T "tools.base.related.base64" }}</div>
+              <p class="bc-related__desc">{{ call .T "tools.base.related.base64_desc" }}</p>
+            </span>
+          </a>
+          <a href="/tools/url-encode?lang={{ .Lang }}" class="bc-related">
+            <span class="bc-related__icon">URL</span>
+            <span>
+              <div class="bc-related__name">{{ call .T "tools.base.related.url" }}</div>
+              <p class="bc-related__desc">{{ call .T "tools.base.related.url_desc" }}</p>
+            </span>
+          </a>
+          <a href="/tools/json?lang={{ .Lang }}" class="bc-related">
+            <span class="bc-related__icon">{ }</span>
+            <span>
+              <div class="bc-related__name">{{ call .T "tools.base.related.json" }}</div>
+              <p class="bc-related__desc">{{ call .T "tools.base.related.json_desc" }}</p>
+            </span>
+          </a>
+          <a href="/tools/timestamp?lang={{ .Lang }}" class="bc-related">
+            <span class="bc-related__icon">⏱</span>
+            <span>
+              <div class="bc-related__name">{{ call .T "tools.base.related.timestamp" }}</div>
+              <p class="bc-related__desc">{{ call .T "tools.base.related.timestamp_desc" }}</p>
+            </span>
+          </a>
+          <a href="/tools/hash?lang={{ .Lang }}" class="bc-related">
+            <span class="bc-related__icon">#</span>
+            <span>
+              <div class="bc-related__name">{{ call .T "tools.base.related.hash" }}</div>
+              <p class="bc-related__desc">{{ call .T "tools.base.related.hash_desc" }}</p>
+            </span>
+          </a>
+          <a href="/tools/regex?lang={{ .Lang }}" class="bc-related">
+            <span class="bc-related__icon">/.*/</span>
+            <span>
+              <div class="bc-related__name">{{ call .T "tools.base.related.regex" }}</div>
+              <p class="bc-related__desc">{{ call .T "tools.base.related.regex_desc" }}</p>
+            </span>
+          </a>
+        </div>
+      </section>
+
+      <!-- Guide CTA -->
+      <section class="bc-section">
+        <div class="bc-guide-cta">
+          <h3 class="bc-guide-cta__title">{{ call .T "tools.base.guide_cta.title" }}</h3>
+          <p class="bc-guide-cta__subtitle">{{ call .T "tools.base.guide_cta.subtitle" }}</p>
+          <a href="/tools/base-converter-guide?lang={{ .Lang }}" class="bc-btn bc-btn--primary">{{ call .T "tools.base.guide_cta.btn" }}</a>
+        </div>
+      </section>
+
+      <div id="bcToast" class="bc-toast" role="status" aria-live="polite"></div>
+
+    </div><!-- /bc-page -->
+  </div><!-- /hash-main-area -->
+
+  <aside class="hash-sidebar-ad">
+    {{- template "partials/ad_slot.html" (dict "Ctx" . "SlotID" "tools-base-right" "Size" "160x600" "MobileHide" true) }}
+  </aside>
+</div><!-- /hash-sidebar-layout -->
+
+<div style="text-align:center;margin:20px auto;max-width:970px;padding:0 16px">
+  {{- template "partials/ad_slot.html" (dict "Ctx" . "SlotID" "tools-base-bottom" "Size" "728x90" "Mobile" "320x50") }}
+</div>
+
+</div><!-- /page-base-converter -->
+{{ end }}
+
+{{ define "extraScript" }}
+<script src="/static/js/tools_base.js?v={{ .AssetVer }}"></script>
+{{ end }}

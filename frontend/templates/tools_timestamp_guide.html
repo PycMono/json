@@ -1,0 +1,317 @@
+{{ template "base" . }}
+
+{{ define "extraHead" }}
+<link rel="stylesheet" href="/static/css/dev-tools.css?v={{ .AssetVer }}">
+<link rel="stylesheet" href="/static/css/tools-timestamp-guide.css?v={{ .AssetVer }}">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "{{ call .T "tools.timestamp-guide.seo.title" }}",
+  "url": "{{ .Canonical }}",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "Any",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "description": "{{ call .T "tools.timestamp-guide.seo.description" }}"
+}
+</script>
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "ToolboxNova", "item": "https://toolboxnova.com/" },
+    { "@type": "ListItem", "position": 2, "name": "{{ call .T "tools.timestamp-guide.seo.title" }}", "item": "{{ .Canonical }}" }
+  ]
+}
+</script>
+
+{{ end }}
+
+{{ define "content" }}
+<div class="page-timestamp-guide">
+
+<!-- Hero -->
+<section class="tsg-hero" aria-labelledby="tsg-hero-title">
+  <div class="tsg-hero__inner">
+    <div class="tsg-hero__eyebrow">ToolboxNova</div>
+    <h1 class="tsg-hero__title" id="tsg-hero-title">{{ call .T "tools.timestamp-guide.hero.title" }}</h1>
+    <p class="tsg-hero__subtitle">{{ call .T "tools.timestamp-guide.hero.subtitle" }}</p>
+    <a href="/tools/timestamp?lang={{ .Lang }}" class="ts-btn ts-btn--primary" data-ga="guide_cta">{{ call .T "tools.timestamp-guide.hero.cta" }}</a>
+  </div>
+</section>
+
+<div style="text-align:center;margin:12px auto;max-width:970px;padding:0 16px">
+  {{- template "partials/ad_slot.html" (dict "Ctx" . "SlotID" "tools-timestamp-guide-top" "Size" "728x90" "Mobile" "320x50") }}
+</div>
+
+<div class="hash-sidebar-layout">
+  <aside class="hash-sidebar-ad">
+    {{- template "partials/ad_slot.html" (dict "Ctx" . "SlotID" "tools-timestamp-guide-left" "Size" "160x600" "MobileHide" true) }}
+  </aside>
+
+  <div class="hash-main-area">
+
+  <!-- What is Unix Timestamp -->
+  <section class="tsg-section" aria-labelledby="tsg-whatis">
+  <div class="tsg-section__inner">
+    <h2 class="tsg-section__title" id="tsg-whatis">{{ call .T "tools.timestamp-guide.whatis.title" }}</h2>
+    <div class="tsg-card">
+      <div class="tsg-card__body">
+        <p>{{ call .T "tools.timestamp-guide.whatis.p1" }}</p>
+        <p>{{ call .T "tools.timestamp-guide.whatis.p2" }}</p>
+        <p>{{ call .T "tools.timestamp-guide.whatis.p3" }}</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Seconds vs Milliseconds -->
+<section class="tsg-section" aria-labelledby="tsg-secms" style="background:linear-gradient(180deg,transparent 0%,rgba(59,130,246,0.03) 50%,transparent 100%)">
+  <div class="tsg-section__inner">
+    <h2 class="tsg-section__title" id="tsg-secms">{{ call .T "tools.timestamp-guide.sec_vs_ms.title" }}</h2>
+    <p class="tsg-section__subtitle">{{ call .T "tools.timestamp-guide.sec_vs_ms.subtitle" }}</p>
+
+    <div class="tsg-table-wrap">
+      <table class="tsg-table">
+        <thead>
+          <tr>
+            <th>{{ call .T "tools.timestamp-guide.sec_vs_ms.col_feature" }}</th>
+            <th>{{ call .T "tools.timestamp-guide.sec_vs_ms.col_seconds" }}</th>
+            <th>{{ call .T "tools.timestamp-guide.sec_vs_ms.col_milliseconds" }}</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>{{ call .T "tools.timestamp-guide.sec_vs_ms.row_digits" }}</td>
+            <td><code>10</code></td>
+            <td><code>13</code></td>
+          </tr>
+          <tr>
+            <td>{{ call .T "tools.timestamp-guide.sec_vs_ms.row_example" }}</td>
+            <td><code>1770000000</code></td>
+            <td><code>1770000000000</code></td>
+          </tr>
+          <tr>
+            <td>{{ call .T "tools.timestamp-guide.sec_vs_ms.row_range" }}</td>
+            <td>1970 ~ 2286</td>
+            <td>1970 ~ 275760</td>
+          </tr>
+          <tr>
+            <td>{{ call .T "tools.timestamp-guide.sec_vs_ms.row_common" }}</td>
+            <td>Unix/Linux, PHP, Go, Python</td>
+            <td>JavaScript, Java, C#</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="tsg-card">
+      <div class="tsg-card__body">
+        <p>{{ call .T "tools.timestamp-guide.sec_vs_ms.p1" }}</p>
+        <p>{{ call .T "tools.timestamp-guide.sec_vs_ms.p2" }}</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- UTC vs Local Time -->
+<section class="tsg-section" aria-labelledby="tsg-utc">
+  <div class="tsg-section__inner">
+    <h2 class="tsg-section__title" id="tsg-utc">{{ call .T "tools.timestamp-guide.utc_vs_local.title" }}</h2>
+    <div class="tsg-card">
+      <div class="tsg-card__body">
+        <p>{{ call .T "tools.timestamp-guide.utc_vs_local.p1" }}</p>
+        <p>{{ call .T "tools.timestamp-guide.utc_vs_local.p2" }}</p>
+        <p>{{ call .T "tools.timestamp-guide.utc_vs_local.p3" }}</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Code Examples -->
+<section class="tsg-section" aria-labelledby="tsg-code" style="background:linear-gradient(180deg,transparent 0%,rgba(59,130,246,0.03) 50%,transparent 100%)">
+  <div class="tsg-section__inner">
+    <h2 class="tsg-section__title" id="tsg-code">{{ call .T "tools.timestamp-guide.code.title" }}</h2>
+    <p class="tsg-section__subtitle">{{ call .T "tools.timestamp-guide.code.subtitle" }}</p>
+
+    <div class="tsg-code-block">
+      <div class="tsg-code-block__header">
+        <span class="tsg-code-block__lang">Python</span>
+        <button class="tsg-code-block__copy" data-code="python">📋</button>
+      </div>
+      <pre><code id="guideCodePython">import time
+
+# Current timestamp
+seconds = int(time.time())
+milliseconds = int(time.time() * 1000)
+
+# Convert timestamp to datetime
+dt = datetime.fromtimestamp(1713340800)
+
+# Convert datetime to timestamp
+ts = int(dt.timestamp())</code></pre>
+    </div>
+
+    <div class="tsg-code-block">
+      <div class="tsg-code-block__header">
+        <span class="tsg-code-block__lang">JavaScript</span>
+        <button class="tsg-code-block__copy" data-code="js">📋</button>
+      </div>
+      <pre><code id="guideCodeJs">// Current timestamp
+const sec = Math.floor(Date.now() / 1000);
+const ms = Date.now();
+
+// Convert timestamp to date
+const date = new Date(1713340800 * 1000);
+
+// Convert date to timestamp
+const ts = Math.floor(new Date().getTime() / 1000);</code></pre>
+    </div>
+
+    <div class="tsg-code-block">
+      <div class="tsg-code-block__header">
+        <span class="tsg-code-block__lang">Go</span>
+        <button class="tsg-code-block__copy" data-code="go">📋</button>
+      </div>
+      <pre><code id="guideCodeGo">package main
+import "time"
+
+// Current timestamp
+sec := time.Now().Unix()
+ms := time.Now().UnixMilli()
+
+// Convert timestamp to time
+t := time.Unix(1713340800, 0)
+
+// Convert time to timestamp
+ts := time.Now().Unix()</code></pre>
+    </div>
+
+    <div class="tsg-code-block">
+      <div class="tsg-code-block__header">
+        <span class="tsg-code-block__lang">Java</span>
+        <button class="tsg-code-block__copy" data-code="java">📋</button>
+      </div>
+      <pre><code id="guideCodeJava">// Current timestamp
+long sec = System.currentTimeMillis() / 1000;
+long ms = System.currentTimeMillis();
+
+// Convert timestamp to date
+Date date = new Date(1713340800L * 1000);
+
+// Convert date to timestamp
+long ts = new Date().getTime() / 1000;</code></pre>
+    </div>
+
+    <div class="tsg-code-block">
+      <div class="tsg-code-block__header">
+        <span class="tsg-code-block__lang">Shell</span>
+        <button class="tsg-code-block__copy" data-code="shell">📋</button>
+      </div>
+      <pre><code id="guideCodeShell"># Current timestamp
+date +%s
+date +%s%3N
+
+# Convert timestamp to date
+date -d @1713340800
+
+# Convert date to timestamp
+date -d "2024-04-17 12:00:00" +%s</code></pre>
+    </div>
+
+    <div class="tsg-code-block">
+      <div class="tsg-code-block__header">
+        <span class="tsg-code-block__lang">SQL</span>
+        <button class="tsg-code-block__copy" data-code="sql">📋</button>
+      </div>
+      <pre><code id="guideCodeSql">-- MySQL
+SELECT UNIX_TIMESTAMP();
+SELECT UNIX_TIMESTAMP('2024-04-17 12:00:00');
+SELECT FROM_UNIXTIME(1713340800);
+
+-- PostgreSQL
+SELECT EXTRACT(EPOCH FROM NOW());
+SELECT TO_TIMESTAMP(1713340800);</code></pre>
+    </div>
+  </div>
+</section>
+
+<!-- Year 2038 Problem -->
+<section class="tsg-section" aria-labelledby="tsg-y2038">
+  <div class="tsg-section__inner">
+    <h2 class="tsg-section__title" id="tsg-y2038">{{ call .T "tools.timestamp-guide.y2038.title" }}</h2>
+    <div class="tsg-card">
+      <div class="tsg-card__body">
+        <div class="tsg-box tsg-box--warning">
+          <div class="tsg-box__title">⚠️ {{ call .T "tools.timestamp-guide.y2038.warning_title" }}</div>
+          <p>{{ call .T "tools.timestamp-guide.y2038.warning_text" }}</p>
+        </div>
+        <p>{{ call .T "tools.timestamp-guide.y2038.p1" }}</p>
+        <p>{{ call .T "tools.timestamp-guide.y2038.p2" }}</p>
+        <p>{{ call .T "tools.timestamp-guide.y2038.p3" }}</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Common Errors -->
+<section class="tsg-section" aria-labelledby="tsg-errors" style="background:linear-gradient(180deg,transparent 0%,rgba(59,130,246,0.03) 50%,transparent 100%)">
+  <div class="tsg-section__inner">
+    <h2 class="tsg-section__title" id="tsg-errors">{{ call .T "tools.timestamp-guide.errors.title" }}</h2>
+    <div class="tsg-card">
+      <div class="tsg-card__body">
+        <p><strong>{{ call .T "tools.timestamp-guide.errors.e1_title" }}</strong> — {{ call .T "tools.timestamp-guide.errors.e1_text" }}</p>
+        <p><strong>{{ call .T "tools.timestamp-guide.errors.e2_title" }}</strong> — {{ call .T "tools.timestamp-guide.errors.e2_text" }}</p>
+        <p><strong>{{ call .T "tools.timestamp-guide.errors.e3_title" }}</strong> — {{ call .T "tools.timestamp-guide.errors.e3_text" }}</p>
+        <p><strong>{{ call .T "tools.timestamp-guide.errors.e4_title" }}</strong> — {{ call .T "tools.timestamp-guide.errors.e4_text" }}</p>
+        <p><strong>{{ call .T "tools.timestamp-guide.errors.e5_title" }}</strong> — {{ call .T "tools.timestamp-guide.errors.e5_text" }}</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="tsg-cta" aria-label="Call to action">
+  <div class="tsg-cta__inner">
+    <h3 class="tsg-cta__title">{{ call .T "tools.timestamp-guide.cta.title" }}</h3>
+    <p class="tsg-cta__subtitle">{{ call .T "tools.timestamp-guide.cta.subtitle" }}</p>
+    <a href="/tools/timestamp?lang={{ .Lang }}" class="ts-btn ts-btn--primary" data-ga="guide_cta">{{ call .T "tools.timestamp-guide.cta.btn" }}</a>
+  </div>
+</section>
+
+  </div><!-- /hash-main-area -->
+
+  <aside class="hash-sidebar-ad">
+    {{- template "partials/ad_slot.html" (dict "Ctx" . "SlotID" "tools-timestamp-guide-right" "Size" "160x600" "MobileHide" true) }}
+  </aside>
+</div><!-- /hash-sidebar-layout -->
+
+<!-- Bottom Ad -->
+<div style="text-align:center;margin:20px auto;max-width:970px;padding:0 16px">
+  {{- template "partials/ad_slot.html" (dict "Ctx" . "SlotID" "tools-timestamp-guide-bottom" "Size" "728x90" "Mobile" "320x50") }}
+</div>
+
+</div><!-- /page-timestamp-guide -->
+{{ end }}
+
+{{ define "extraScript" }}
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  document.querySelectorAll('.tsg-code-block__copy').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      const code = btn.closest('.tsg-code-block').querySelector('pre code');
+      if (!code) return;
+      navigator.clipboard.writeText(code.textContent).then(function() {
+        const old = btn.textContent;
+        btn.textContent = '✅';
+        btn.classList.add('copied');
+        setTimeout(function() { btn.textContent = old; btn.classList.remove('copied'); }, 1500);
+      });
+    });
+  });
+});
+</script>
+{{ end }}

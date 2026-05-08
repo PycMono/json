@@ -1,0 +1,60 @@
+{{ define "partials/tool_tabs_nav.html" }}
+<nav class="hub-tabs" role="tablist" aria-label="Tool sections">
+  <div class="hub-tabs__inner">
+    <a href="/ai/humanize" class="hub-tab">
+      <i class="fa-solid fa-house"></i>
+      <span>{{ call .T "humanize.tab.home" }}</span>
+    </a>
+    <a href="/ai/humanize" class="hub-tab">
+      <i class="fa-solid fa-wand-sparkles"></i>
+      <span>{{ call .T "humanize.tab.humanizer" }}</span>
+    </a>
+    <a href="/ai/humanize" class="hub-tab">
+      <i class="fa-solid fa-magnifying-glass-chart"></i>
+      <span>{{ call .T "humanize.tab.detector" }}</span>
+    </a>
+    <a href="/ai/humanize" class="hub-tab">
+      <i class="fa-solid fa-file-shield"></i>
+      <span>{{ call .T "humanize.tab.plagiarism" }}</span>
+    </a>
+    <span class="hub-tabs__divider"></span>
+    <div class="hub-tabs__more" id="hubTabsMore">
+      <button class="hub-tab hub-tab--more active" type="button" aria-haspopup="true" aria-expanded="false">
+        <i class="fa-solid fa-grid-2"></i>
+        <span>{{ call .T "humanize.tab.more_tools" }}</span>
+        <i class="fa-solid fa-chevron-down hub-tabs__more-arrow"></i>
+      </button>
+      <div class="hub-tabs__dropdown" id="hubTabsDropdown">
+        <a href="/ai/essay" class="hub-tabs__dropdown-item{{ if eq .ActiveTool "essay" }} hub-tabs__dropdown-item--active{{ end }}">
+          <i class="fa-solid fa-pen-fancy"></i>
+          <span>{{ call .T "humanize.tab.essay" }}</span>
+        </a>
+        <a href="/ai/sentence-rewriter" class="hub-tabs__dropdown-item{{ if eq .ActiveTool "sentence-rewriter" }} hub-tabs__dropdown-item--active{{ end }}">
+          <i class="fa-solid fa-align-left"></i>
+          <span>{{ call .T "humanize.tab.sentence_rewriter" }}</span>
+        </a>
+        <a href="/ai/for-college" class="hub-tabs__dropdown-item{{ if eq .ActiveTool "for-college" }} hub-tabs__dropdown-item--active{{ end }}">
+          <i class="fa-solid fa-graduation-cap"></i>
+          <span>{{ call .T "humanize.tab.for_college" }}</span>
+        </a>
+        <a href="/ai/for-professors" class="hub-tabs__dropdown-item{{ if eq .ActiveTool "for-professors" }} hub-tabs__dropdown-item--active{{ end }}">
+          <i class="fa-solid fa-chalkboard-user"></i>
+          <span>{{ call .T "humanize.tab.for_professors" }}</span>
+        </a>
+        <a href="/ai/detector/for-academic-writing" class="hub-tabs__dropdown-item{{ if eq .ActiveTool "detector-academic" }} hub-tabs__dropdown-item--active{{ end }}">
+          <i class="fa-solid fa-microscope"></i>
+          <span>{{ call .T "humanize.tab.detector_academic" }}</span>
+        </a>
+        <a href="/ai/paragraph-rewriter" class="hub-tabs__dropdown-item{{ if eq .ActiveTool "paragraph-rewriter" }} hub-tabs__dropdown-item--active{{ end }}">
+          <i class="fa-solid fa-paragraph"></i>
+          <span>{{ call .T "humanize.tab.paragraph_rewriter" }}</span>
+        </a>
+        <a href="/ai/article-rewriter" class="hub-tabs__dropdown-item{{ if eq .ActiveTool "article-rewriter" }} hub-tabs__dropdown-item--active{{ end }}">
+          <i class="fa-solid fa-newspaper"></i>
+          <span>{{ call .T "humanize.tab.article_rewriter" }}</span>
+        </a>
+      </div>
+    </div>
+  </div>
+</nav>
+{{ end }}

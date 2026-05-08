@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400">
+  <!-- Background -->
+  <rect width="800" height="400" fill="#f9fafb"/>
+  <text x="400" y="40" fill="#111827" font-size="24" font-weight="bold" text-anchor="middle">How to Rewrite Sentences in 3 Steps</text>
+
+  <!-- Step 1 -->
+  <g transform="translate(50, 80)">
+    <circle cx="60" cy="60" r="50" fill="#10b981"/>
+    <text x="60" y="70" text-anchor="middle" fill="#fff" font-size="36" font-weight="bold">1</text>
+    <text x="60" y="140" text-anchor="middle" fill="#111827" font-size="16" font-weight="bold">Enter Text</text>
+    <text x="60" y="165" text-anchor="middle" fill="#6b7280" font-size="12">Paste your sentence</text>
+    <text x="60" y="180" text-anchor="middle" fill="#6b7280" font-size="12">into the input area</text>
+
+    <!-- Connector -->
+    <line x1="130" y1="60" x2="170" y2="60" stroke="#d1d5db" stroke-width="3" stroke-dasharray="5,5"/>
+    <polygon points="170,55 180,60 170,65" fill="#d1d5db"/>
+  </g>
+
+  <!-- Step 2 -->
+  <g transform="translate(280, 80)">
+    <circle cx="60" cy="60" r="50" fill="#6366f1"/>
+    <text x="60" y="70" text-anchor="middle" fill="#fff" font-size="36" font-weight="bold">2</text>
+    <text x="60" y="140" text-anchor="middle" fill="#111827" font-size="16" font-weight="bold">Select Mode</text>
+    <text x="60" y="165" text-anchor="middle" fill="#6b7280" font-size="12">Choose tone and</text>
+    <text x="60" y="180" text-anchor="middle" fill="#6b7280" font-size="12">purpose options</text>
+
+    <!-- Connector -->
+    <line x1="130" y1="60" x2="170" y2="60" stroke="#d1d5db" stroke-width="3" stroke-dasharray="5,5"/>
+    <polygon points="170,55 180,60 170,65" fill="#d1d5db"/>
+  </g>
+
+  <!-- Step 3 -->
+  <g transform="translate(510, 80)">
+    <circle cx="60" cy="60" r="50" fill="#8b5cf6"/>
+    <text x="60" y="70" text-anchor="middle" fill="#fff" font-size="36" font-weight="bold">3</text>
+    <text x="60" y="140" text-anchor="middle" fill="#111827" font-size="16" font-weight="bold">Get Results</text>
+    <text x="60" y="165" text-anchor="middle" fill="#6b7280" font-size="12">Click rewrite and</text>
+    <text x="60" y="180" text-anchor="middle" fill="#6b7280" font-size="12">copy your result</text>
+  </g>
+
+  <!-- Bottom info box -->
+  <rect x="50" y="280" width="700" height="100" rx="12" fill="#fff" stroke="#e5e7eb" stroke-width="2"/>
+  <text x="400" y="310" fill="#111827" font-size="14" font-weight="bold" text-anchor="middle">⚡ Instant Results — No Signup Required</text>
+  <text x="400" y="340" fill="#6b7280" font-size="12" text-anchor="middle">Our AI instantly rewrites your sentences while maintaining</text>
+  <text x="400" y="360" fill="#6b7280" font-size="12" text-anchor="middle">original meaning with improved clarity and style</text>
+</svg>

@@ -1,0 +1,434 @@
+{{ template "base" . }}
+
+{{ define "extraHead" }}
+<link rel="stylesheet" href="/static/css/dev-tools.css?v={{ .AssetVer }}">
+<link rel="stylesheet" href="/static/css/tools-editorial.css?v={{ .AssetVer }}">
+<link rel="stylesheet" href="/static/css/dev-user-agent.css?v={{ .AssetVer }}">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="alternate" hreflang="zh" href="{{ .HreflangZH }}">
+<link rel="alternate" hreflang="en" href="{{ .HreflangEN }}">
+<link rel="alternate" hreflang="x-default" href="{{ .Canonical }}">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "User-Agent Parser & Browser Diagnostics",
+  "url": "{{ .Canonical }}",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "Any",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "description": "{{ .Description }}"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "ToolboxNova", "item": "https://toolboxnova.com/" },
+    { "@type": "ListItem", "position": 2, "name": "{{ call .T "ua.hero.title" }}", "item": "{{ .Canonical }}" }
+  ]
+}
+</script>
+{{ end }}
+
+{{ define "content" }}
+<div class="dev-page page-ua">
+
+<!-- Hero -->
+<section class="ua-hero">
+  <div class="ua-hero__inner">
+    <div class="ua-hero__eyebrow">{{ call .T "ua.hero.eyebrow" }}</div>
+    <h1 class="ua-hero__title">{{ call .T "ua.hero.title" }}</h1>
+    <p class="ua-hero__sub">{{ call .T "ua.hero.subtitle" }}</p>
+    <div class="ua-hero__badges">
+      <span class="ua-badge ua-badge--blue">{{ call .T "ua.hero.badge1" }}</span>
+      <span class="ua-badge ua-badge--green">{{ call .T "ua.hero.badge2" }}</span>
+      <span class="ua-badge ua-badge--purple">{{ call .T "ua.hero.badge3" }}</span>
+    </div>
+  </div>
+</section>
+
+<div style="text-align:center;margin:12px auto;max-width:970px;padding:0 16px">
+  {{- template "partials/ad_slot.html" (dict "Ctx" . "SlotID" "dev-ua-top" "Size" "728x90" "Mobile" "320x50") }}
+</div>
+
+<!-- Sidebar Layout -->
+<div class="ua-sidebar-layout">
+  <aside class="ua-sidebar-ad">
+    {{- template "partials/ad_slot.html" (dict "Ctx" . "SlotID" "dev-ua-left" "Size" "160x600" "MobileHide" "true") }}
+  </aside>
+
+  <div class="ua-main-area">
+
+  <!-- Current Browser Card -->
+  <section class="ua-current">
+    <div class="ua-current__head">
+      <div>
+        <h2 class="ua-current__title">{{ call .T "ua.current.title" }}</h2>
+        <p class="ua-current__sub">{{ call .T "ua.current.subtitle" }}</p>
+      </div>
+      <div class="ua-current__actions">
+        <button class="btn-ua btn-ua--ghost btn-ua--icon" type="button" onclick="DevUA.copyCurrent()" aria-label="{{ call .T "ua.current.btn.copy" }}"
+                data-ga data-ga-action="copy" data-ga-category="dev-tool" data-ga-label="ua-copy-current">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+          <span>{{ call .T "ua.current.btn.copy" }}</span>
+        </button>
+        <button class="btn-ua btn-ua--secondary btn-ua--icon" type="button" onclick="DevUA.useCurrent()"
+                data-ga data-ga-action="use_current" data-ga-category="dev-tool" data-ga-label="ua-use-current">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="9 11 12 14 22 4"></polyline><path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11"></path></svg>
+          <span>{{ call .T "ua.current.btn.use" }}</span>
+        </button>
+      </div>
+    </div>
+    <div class="ua-current__body">
+      <span class="ua-current__label">{{ call .T "ua.current.label.ua" }}</span>
+      <code class="ua-current__string" id="uaCurrentString"></code>
+    </div>
+  </section>
+
+  <!-- Main Tool Card / Workspace -->
+  <div class="ua-main-card container">
+
+    <header class="ua-workspace-head">
+      <h2 class="ua-workspace-title">{{ call .T "ua.workspace.title" }}</h2>
+      <p class="ua-workspace-sub">{{ call .T "ua.workspace.subtitle" }}</p>
+    </header>
+
+    <div class="ua-bot-badge" id="uaBotBadge" hidden>
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="10" rx="2" ry="2"></rect><circle cx="12" cy="5" r="2"></circle><path d="M12 7v4"></path><line x1="8" y1="16" x2="8" y2="16"></line><line x1="16" y1="16" x2="16" y2="16"></line></svg>
+      <span>{{ call .T "ua.bot_detected" }}</span>
+    </div>
+
+    <div class="ua-input-section">
+      <label class="ua-input-label" for="uaInput">{{ call .T "ua.input.label" }}</label>
+      <textarea id="uaInput" class="ua-input-field" rows="3"
+        placeholder="{{ call .T "ua.input.placeholder" }}"
+        spellcheck="false" autocomplete="off"
+        oninput="DevUA.updateCharCount()"
+        aria-label="{{ call .T "ua.input.label" }}"></textarea>
+      <div class="ua-input-footer">
+        <span id="uaCharCount" class="ua-char-count">{{ call .T "ua.js.char_count_zero" }}</span>
+      </div>
+    </div>
+
+    <div class="ua-actions">
+      <button class="btn-ua btn-ua--primary btn-ua--icon" onclick="DevUA.detectMyUA()" type="button"
+              data-ga data-ga-action="detect" data-ga-category="dev-tool" data-ga-label="ua-detect">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+        <span>{{ call .T "ua.btn.detect" }}</span>
+      </button>
+      <button class="btn-ua btn-ua--secondary btn-ua--icon" onclick="DevUA.parseInput()" type="button"
+              data-ga data-ga-action="parse" data-ga-category="dev-tool" data-ga-label="ua-parse">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polygon points="5 3 19 12 5 21 5 3"></polygon></svg>
+        <span>{{ call .T "ua.btn.parse" }}</span>
+      </button>
+      <button class="btn-ua btn-ua--ghost btn-ua--icon" onclick="DevUA.copyUA()" type="button"
+              data-ga data-ga-action="copy" data-ga-category="dev-tool" data-ga-label="ua-copy-input">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+        <span>{{ call .T "ua.btn.copy_ua" }}</span>
+      </button>
+      <button class="btn-ua btn-ua--ghost btn-ua--icon" onclick="DevUA.clearAll()" type="button"
+              data-ga data-ga-action="clear" data-ga-category="dev-tool" data-ga-label="ua-clear">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        <span>{{ call .T "ua.btn.clear" }}</span>
+      </button>
+    </div>
+
+    <div class="ua-samples">
+      <span class="ua-samples__label">{{ call .T "ua.samples.label" }}</span>
+      <div class="ua-samples__list" id="uaSampleList"></div>
+    </div>
+
+    <div class="ua-empty" id="uaEmpty" hidden>
+      <div class="ua-empty__icon">
+        <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+      </div>
+      <p>{{ call .T "ua.empty.hint" }}</p>
+    </div>
+
+    <div id="uaResultPanel" hidden>
+      <div class="ua-summary-cards" id="uaSummaryCards"></div>
+      <div class="ua-detail-section">
+        <h3 class="ua-detail-title">{{ call .T "ua.detail.title" }}</h3>
+        <table class="ua-table" aria-label="Parsed UA details">
+          <tbody id="uaDetailTable"></tbody>
+        </table>
+        <div class="ua-result-actions">
+          <button class="btn-ua btn-ua--secondary btn-ua--icon" onclick="DevUA.copyResult()" type="button"
+                  data-ga data-ga-action="copy" data-ga-category="dev-tool" data-ga-label="ua-copy-result">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+            <span>{{ call .T "ua.btn.copy_result" }}</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Raw JSON section -->
+      <section class="ua-json-section" id="uaJsonSection">
+        <header class="ua-json-head">
+          <div>
+            <h3 class="ua-json-title">{{ call .T "ua.json.title" }}</h3>
+            <p class="ua-json-sub">{{ call .T "ua.json.subtitle" }}</p>
+          </div>
+          <div class="ua-json-actions">
+            <button class="btn-ua btn-ua--ghost btn-ua--icon" type="button" onclick="DevUA.toggleJSON()" id="uaJsonToggleBtn"
+                    data-ga data-ga-action="toggle_json" data-ga-category="dev-tool" data-ga-label="ua-toggle-json">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"></path><circle cx="12" cy="12" r="3"></circle></svg>
+              <span id="uaJsonToggleText">{{ call .T "ua.json.btn.show" }}</span>
+            </button>
+            <button class="btn-ua btn-ua--secondary btn-ua--icon" type="button" onclick="DevUA.copyJSON()"
+                    data-ga data-ga-action="copy" data-ga-category="dev-tool" data-ga-label="ua-copy-json">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+              <span>{{ call .T "ua.json.btn.copy" }}</span>
+            </button>
+          </div>
+        </header>
+        <pre class="ua-json-block" id="uaJsonBlock" hidden><code id="uaJsonCode"></code></pre>
+      </section>
+
+    </div>
+  </div>
+
+  <!-- Browser Environment Diagnostics -->
+  <section class="ua-env">
+    <header class="ua-env__head">
+      <h2 class="ua-env__title">{{ call .T "ua.env.title" }}</h2>
+      <p class="ua-env__sub">{{ call .T "ua.env.subtitle" }}</p>
+    </header>
+    <div class="ua-env__grid" id="uaEnvGrid"></div>
+  </section>
+
+  <!-- Client Hints -->
+  <section class="ua-hints">
+    <header class="ua-hints__head">
+      <div>
+        <h2 class="ua-hints__title">{{ call .T "ua.hints.title" }}</h2>
+        <p class="ua-hints__sub">{{ call .T "ua.hints.subtitle" }}</p>
+      </div>
+      <button class="btn-ua btn-ua--secondary btn-ua--icon" type="button" onclick="DevUA.copyHints()" id="uaHintsCopyBtn" hidden
+              data-ga data-ga-action="copy" data-ga-category="dev-tool" data-ga-label="ua-copy-hints">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg>
+        <span>{{ call .T "ua.hints.btn.copy" }}</span>
+      </button>
+    </header>
+    <div class="ua-hints__body" id="uaHintsBody">
+      <div class="ua-hints__unsupported" id="uaHintsUnsupported">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+        <span>{{ call .T "ua.hints.unsupported" }}</span>
+      </div>
+      <div class="ua-hints__grid" id="uaHintsGrid" hidden></div>
+    </div>
+  </section>
+
+  <!-- History Panel -->
+  <div class="ua-history-panel" id="uaHistoryPanel">
+    <div class="ua-history-header">
+      <button class="ua-history-toggle" onclick="DevUA.toggleHistory()" type="button"
+              data-ga data-ga-action="toggle_history" data-ga-category="dev-tool" data-ga-label="ua-toggle-history">
+        <svg class="ua-history-chevron" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"></circle><polyline points="12 6 12 12 16 14"></polyline></svg>
+        <span>{{ call .T "ua.history.title" }}</span>
+        <span class="ua-history-count" id="uaHistoryCount">0</span>
+      </button>
+      <button class="btn-ua btn-ua--ghost ua-history-clear" onclick="DevUA.clearHistory()" type="button"
+              data-ga data-ga-action="clear" data-ga-category="dev-tool" data-ga-label="ua-clear-history">{{ call .T "ua.history.clear" }}</button>
+    </div>
+    <div class="ua-history-body" id="uaHistoryBody" hidden>
+      <div class="ua-history-list" id="uaHistoryList"></div>
+      <div class="ua-history-empty" id="uaHistoryEmpty">
+        <p>{{ call .T "ua.history.empty" }}</p>
+      </div>
+    </div>
+  </div>
+
+  <!-- Batch Parse -->
+  <section class="ua-batch">
+    <header class="ua-batch__head">
+      <h2 class="ua-batch__title">{{ call .T "ua.batch.title" }}</h2>
+      <p class="ua-batch__sub">{{ call .T "ua.batch.subtitle" }}</p>
+    </header>
+    <textarea class="ua-batch__input" id="uaBatchInput" rows="5"
+      placeholder="{{ call .T "ua.batch.placeholder" }}" spellcheck="false" autocomplete="off"></textarea>
+    <div class="ua-batch__actions">
+      <button class="btn-ua btn-ua--primary btn-ua--icon" type="button" onclick="DevUA.parseBatch()"
+              data-ga data-ga-action="parse_batch" data-ga-category="dev-tool" data-ga-label="ua-parse-batch">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"></polyline></svg>
+        <span>{{ call .T "ua.batch.btn.parse" }}</span>
+      </button>
+      <button class="btn-ua btn-ua--ghost btn-ua--icon" type="button" onclick="DevUA.clearBatch()"
+              data-ga data-ga-action="clear" data-ga-category="dev-tool" data-ga-label="ua-clear-batch">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="18" y1="6" x2="6" y2="18"></line><line x1="6" y1="6" x2="18" y2="18"></line></svg>
+        <span>{{ call .T "ua.batch.btn.clear" }}</span>
+      </button>
+      <button class="btn-ua btn-ua--secondary btn-ua--icon" type="button" onclick="DevUA.exportBatch()"
+              data-ga data-ga-action="download" data-ga-category="dev-tool" data-ga-label="ua-export-batch">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg>
+        <span>{{ call .T "ua.batch.btn.export" }}</span>
+      </button>
+    </div>
+    <div class="ua-batch__results" id="uaBatchResults">
+      <p class="ua-batch__empty">{{ call .T "ua.batch.empty_hint" }}</p>
+    </div>
+  </section>
+
+  </div><!-- /ua-main-area -->
+
+  <aside class="ua-sidebar-ad">
+    {{- template "partials/ad_slot.html" (dict "Ctx" . "SlotID" "dev-ua-right" "Size" "160x600" "MobileHide" "true") }}
+  </aside>
+</div><!-- /ua-sidebar-layout -->
+
+<div style="text-align:center;margin:20px auto;max-width:970px;padding:0 16px">
+  {{- template "partials/ad_slot.html" (dict "Ctx" . "SlotID" "dev-ua-mid" "Size" "728x90" "Mobile" "320x50") }}
+</div>
+
+<!-- Accuracy notice -->
+<section class="te-section">
+  <div class="te-section-inner">
+    <div class="ua-accuracy">
+      <div class="ua-accuracy__icon">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+      </div>
+      <div class="ua-accuracy__body">
+        <h2 class="ua-accuracy__title">{{ call .T "ua.accuracy.title" }}</h2>
+        <p class="ua-accuracy__p">{{ call .T "ua.accuracy.body1" }}</p>
+        <p class="ua-accuracy__p">{{ call .T "ua.accuracy.body2" }}</p>
+        <p class="ua-accuracy__p">{{ call .T "ua.accuracy.body3" }}</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- How It Works -->
+<section class="te-section te-section--alt">
+  <div class="te-section-inner">
+    <span class="te-section-label">{{ call .T "ua.how.label" }}</span>
+    <h2 class="te-section-title">{{ call .T "ua.how.title" }}</h2>
+    <div class="ua-steps">
+      <div class="ua-step">
+        <div class="ua-step__num">1</div>
+        <h3 class="ua-step__title">{{ call .T "ua.step1.title" }}</h3>
+        <p class="ua-step__desc">{{ call .T "ua.step1.desc" }}</p>
+      </div>
+      <div class="ua-step">
+        <div class="ua-step__num">2</div>
+        <h3 class="ua-step__title">{{ call .T "ua.step2.title" }}</h3>
+        <p class="ua-step__desc">{{ call .T "ua.step2.desc" }}</p>
+      </div>
+      <div class="ua-step">
+        <div class="ua-step__num">3</div>
+        <h3 class="ua-step__title">{{ call .T "ua.step3.title" }}</h3>
+        <p class="ua-step__desc">{{ call .T "ua.step3.desc" }}</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Privacy -->
+<section class="te-section">
+  <div class="te-section-inner">
+    <div class="te-split">
+      <div class="te-split-text">
+        <span class="te-section-label">{{ call .T "ua.privacy.label" }}</span>
+        <h2 class="te-section-title">{{ call .T "ua.privacy.title" }}</h2>
+        <p class="te-section-body">{{ call .T "ua.privacy.body1" }}</p>
+        <p class="te-section-body">{{ call .T "ua.privacy.body2" }}</p>
+      </div>
+      <div class="te-split-visual">
+        <div class="te-visual-box">
+          <div class="te-visual-box__icon">
+            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="11" width="18" height="11" rx="2" ry="2"></rect><path d="M7 11V7a5 5 0 0 1 10 0v4"></path></svg>
+          </div>
+          <div class="te-visual-stat">
+            <span class="te-visual-stat__num">100%</span>
+            <span class="te-visual-stat__lbl">{{ call .T "ua.privacy.stat.lbl" }}</span>
+          </div>
+          <div class="te-visual-box__label">{{ call .T "ua.privacy.stat.sub" }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Related developer tools -->
+<section class="te-section te-section--alt">
+  <div class="te-section-inner">
+    <h2 class="te-section-title">{{ call .T "ua.related.title" }}</h2>
+    <p class="te-section-body" style="text-align:center;max-width:640px;margin:0 auto 24px">{{ call .T "ua.related.subtitle" }}</p>
+    <div class="ua-related-grid">
+      <a class="ua-related-card" href="/dev/hash?lang={{ .Lang }}"
+         data-ga data-ga-action="navigate" data-ga-category="dev-tool" data-ga-label="ua-related-hash">
+        <div class="ua-related-card__icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="4" y1="9" x2="20" y2="9"></line><line x1="4" y1="15" x2="20" y2="15"></line><line x1="10" y1="3" x2="8" y2="21"></line><line x1="16" y1="3" x2="14" y2="21"></line></svg>
+        </div>
+        <div>
+          <div class="ua-related-card__title">{{ call .T "ua.related.hash.label" }}</div>
+          <div class="ua-related-card__desc">{{ call .T "ua.related.hash.desc" }}</div>
+        </div>
+      </a>
+      <a class="ua-related-card" href="/dev/uuid?lang={{ .Lang }}"
+         data-ga data-ga-action="navigate" data-ga-category="dev-tool" data-ga-label="ua-related-uuid">
+        <div class="ua-related-card__icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"></path><polyline points="3.27 6.96 12 12.01 20.73 6.96"></polyline><line x1="12" y1="22.08" x2="12" y2="12"></line></svg>
+        </div>
+        <div>
+          <div class="ua-related-card__title">{{ call .T "ua.related.uuid.label" }}</div>
+          <div class="ua-related-card__desc">{{ call .T "ua.related.uuid.desc" }}</div>
+        </div>
+      </a>
+      <a class="ua-related-card" href="/dev/diff?lang={{ .Lang }}"
+         data-ga data-ga-action="navigate" data-ga-category="dev-tool" data-ga-label="ua-related-diff">
+        <div class="ua-related-card__icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="3" y1="6" x2="21" y2="6"></line><line x1="3" y1="12" x2="15" y2="12"></line><line x1="3" y1="18" x2="18" y2="18"></line></svg>
+        </div>
+        <div>
+          <div class="ua-related-card__title">{{ call .T "ua.related.diff.label" }}</div>
+          <div class="ua-related-card__desc">{{ call .T "ua.related.diff.desc" }}</div>
+        </div>
+      </a>
+      <a class="ua-related-card" href="/dev/url?lang={{ .Lang }}"
+         data-ga data-ga-action="navigate" data-ga-category="dev-tool" data-ga-label="ua-related-url">
+        <div class="ua-related-card__icon">
+          <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"></path><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"></path></svg>
+        </div>
+        <div>
+          <div class="ua-related-card__title">{{ call .T "ua.related.url.label" }}</div>
+          <div class="ua-related-card__desc">{{ call .T "ua.related.url.desc" }}</div>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- Guide CTA -->
+<section class="te-section">
+  <div class="te-section-inner">
+    <div class="ua-guide-cta">
+      <span class="ua-guide-cta__eyebrow">{{ call .T "ua.guide_cta.eyebrow" }}</span>
+      <h2 class="ua-guide-cta__title">{{ call .T "ua.guide_cta.title" }}</h2>
+      <p class="ua-guide-cta__sub">{{ call .T "ua.guide_cta.subtitle" }}</p>
+      <a class="ua-guide-cta__btn" href="/dev/user-agent-guide?lang={{ .Lang }}"
+         data-ga data-ga-action="navigate" data-ga-category="dev-tool" data-ga-label="ua-guide-cta">
+        <span>{{ call .T "ua.guide_cta.cta" }}</span>
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"></line><polyline points="12 5 19 12 12 19"></polyline></svg>
+      </a>
+    </div>
+  </div>
+</section>
+
+<div style="text-align:center;margin:20px auto;max-width:970px;padding:0 16px">
+  {{- template "partials/ad_slot.html" (dict "Ctx" . "SlotID" "dev-ua-bottom" "Size" "728x90" "Mobile" "320x50") }}
+</div>
+
+<div id="toastContainer" class="toast-container" aria-live="assertive" aria-atomic="true"></div>
+
+</div>
+{{ end }}
+
+{{ define "extraScript" }}
+<script>
+window.__i18n__ = {{ toJSON .Translations }};
+</script>
+<script src="/static/js/dev-user-agent.js?v={{ .AssetVer }}"></script>
+{{ end }}

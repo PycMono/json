@@ -1,0 +1,320 @@
+{{ template "base" . }}
+
+{{ define "extraHead" }}
+<meta property="og:title" content="{{ if .SEO }}{{ index .SEO "OGTitle" }}{{ else }}{{ .Title }}{{ end }}">
+<meta property="og:description" content="{{ if .SEO }}{{ index .SEO "OGDesc" }}{{ else }}{{ .Description }}{{ end }}">
+<meta property="og:image" content="https://toolboxnova.com/static/img/og.png">
+<link rel="alternate" hreflang="en" href="https://toolboxnova.com/privacy/check?lang=en">
+<link rel="alternate" hreflang="zh" href="https://toolboxnova.com/privacy/check?lang=zh">
+<link rel="alternate" hreflang="ja" href="https://toolboxnova.com/privacy/check?lang=ja">
+<link rel="alternate" hreflang="ko" href="https://toolboxnova.com/privacy/check?lang=ko">
+<link rel="alternate" hreflang="es" href="https://toolboxnova.com/privacy/check?lang=spa">
+<link rel="alternate" hreflang="x-default" href="https://toolboxnova.com/privacy/check">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/js-sha1/0.7.0/sha1.min.js" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/zxcvbn/4.4.2/zxcvbn.js" defer></script>
+<link rel="stylesheet" href="/static/css/privacy-check.css?v={{ .AssetVer }}">
+<link rel="stylesheet" href="/static/css/pvc-seo.css?v={{ .AssetVer }}">
+{{ end }}
+
+{{ define "content" }}
+<div class="pc">
+
+<!-- Hero (blue background like virtual address page) -->
+<section class="pc-hero">
+  <div class="pc-hero-glow"></div>
+  <h1 class="pc-h1 pc-h1--gradient">{{ call .T "pc.hero.title" }}</h1>
+  <p class="pc-sub">{{ call .T "pc.hero.subtitle" }}</p>
+  <div class="pc-bdgs">
+    <span class="pc-bdg pc-bdg--cy">900+ {{ call .T "pc.hero.trust.sources" }}</span>
+    <span class="pc-bdg pc-bdg--gr">🔒 {{ call .T "pc.hero.badge_anon" }}</span>
+    <span class="pc-bdg pc-bdg--am">{{ call .T "pc.hero.badge_privacy" }}</span>
+  </div>
+</section>
+
+<!-- Top Ad (below hero, above tabs) -->
+<div style="text-align:center;padding:0 16px 8px">
+{{- template "partials/ad_slot.html" (dict "Ctx" . "SlotID" "privacy-check-top" "Size" "728x90" "Mobile" "320x50") }}
+</div>
+
+<!-- Tabs -->
+<div class="pc-to">
+  <div class="pc-tabs" role="tablist" id="pcTabs">
+    <button class="pc-tab active" role="tab" data-tab="email" onclick="pcTab('email')" aria-selected="true" data-ga data-ga-action="click" data-ga-category="privacy_check" data-ga-label="tab_email">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 4L12 13 2 4"/></svg>
+      <span class="tl">{{ call .T "pc.tabs.email" }}</span>
+    </button>
+    <button class="pc-tab" role="tab" data-tab="password" onclick="pcTab('password')" aria-selected="false" data-ga data-ga-action="click" data-ga-category="privacy_check" data-ga-label="tab_password">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg>
+      <span class="tl">{{ call .T "pc.tabs.password" }}</span>
+    </button>
+    <button class="pc-tab" role="tab" data-tab="breaches" onclick="pcTab('breaches')" aria-selected="false" data-ga data-ga-action="click" data-ga-category="privacy_check" data-ga-label="tab_breaches">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 9v4M12 17h.01"/><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/></svg>
+      <span class="tl">{{ call .T "pc.tabs.breaches" }}</span>
+    </button>
+    <button class="pc-tab" role="tab" data-tab="generator" onclick="pcTab('generator')" aria-selected="false" data-ga data-ga-action="click" data-ga-category="privacy_check" data-ga-label="tab_generator">
+      <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="7" width="20" height="14" rx="2"/><circle cx="8" cy="14" r="2"/><circle cx="16" cy="14" r="2"/><path d="M8 7V5a2 2 0 014 0v2M12 7v10"/></svg>
+      <span class="tl">{{ call .T "pc.tabs.generator" }}</span>
+    </button>
+    <div class="pc-tsl" id="pcSlider"></div>
+  </div>
+</div>
+
+<!-- 3-Column: Left Sidebar | Main | Right Sidebar -->
+<div class="pc-wrap">
+
+  <!-- LEFT Sidebar -->
+  <aside class="pc-sbr pc-sbr--left">
+    <div class="pc-sb-latest" id="latestBreaches">
+      <h3>{{ call .T "pc.sidebar.latest_breaches" }}</h3>
+      <div id="latestBreachList"></div>
+    </div>
+  </aside>
+
+  <!-- MAIN Content -->
+  <div class="pc-main">
+    <!-- Panel 1: Email Breach Check -->
+    <div class="pc-pnl active" id="panel-email" role="tabpanel">
+      <div class="pc-ic">
+        <div class="pc-sh" id="shieldEmail">
+          <div class="pc-ir">
+            <span class="pc-ii"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="4" width="20" height="16" rx="2"/><path d="M22 4L12 13 2 4"/></svg></span>
+            <input class="pc-in" type="email" id="emailInput"
+              placeholder="{{ call .T "pc.email.placeholder" }}"
+              autocomplete="off" spellcheck="false"
+              onkeydown="if(event.key==='Enter')pcCheckEmail()">
+            <button class="pc-btn pc-btn--p" id="btnEmail" onclick="pcCheckEmail()" data-ga data-ga-action="click" data-ga-category="privacy_check" data-ga-label="check_email">{{ call .T "pc.email.button" }}</button>
+          </div>
+        </div>
+        <p class="pc-hint">&#x1F512; {{ call .T "pc.email.turnstile_hint" }}</p>
+      </div>
+      <div id="emailResult" class="pc-res" style="display:none"></div>
+      <!-- Placeholder output box -->
+      <div id="emailPlaceholder" class="pc-placeholder">
+        <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="var(--bd)" stroke-width="1.5"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        <p>{{ call .T "pc.email.placeholder_result" }}</p>
+      </div>
+    </div>
+
+    <!-- Panel 2: Password Security -->
+    <div class="pc-pnl" id="panel-password" role="tabpanel">
+      <div class="pc-ic">
+        <div class="pc-sh" id="shieldPass">
+          <div class="pc-ir">
+            <span class="pc-ii"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg></span>
+            <input class="pc-in" type="password" id="passInput"
+              placeholder="{{ call .T "pc.password.placeholder" }}"
+              autocomplete="off" spellcheck="false"
+              oninput="pcStr(this.value)"
+              onkeydown="if(event.key==='Enter')pcCheckPassword()">
+            <button class="pc-btn pc-btn--g" id="btnEye" onclick="pcToggleEye()" style="padding:10px 12px;border:none;flex-shrink:0" data-ga data-ga-action="click" data-ga-category="privacy_check" data-ga-label="toggle_eye">
+              <svg id="eyeSvg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            </button>
+            <button class="pc-btn pc-btn--p" id="btnPass" onclick="pcCheckPassword()" data-ga data-ga-action="click" data-ga-category="privacy_check" data-ga-label="check_password">{{ call .T "pc.password.button" }}</button>
+          </div>
+        </div>
+        <p class="pc-pnote">&#x1F510; {{ call .T "pc.password.privacy_note" }}</p>
+      </div>
+      <div class="pc-sc" id="strArea" style="display:none">
+        <h4>{{ call .T "pc.strength.title" }}</h4>
+        <div class="pc-st"><div class="pc-sf" id="strFill"></div></div>
+        <div class="pc-sr">
+          <span id="strLabel" style="font-weight:700"></span>
+          <span id="strTime" style="color:var(--tx3);font-size:.75rem"></span>
+        </div>
+        <div class="pc-sg" id="strSugg"></div>
+        <div class="pc-checks" id="passChecks"></div>
+      </div>
+      <div id="passResult" class="pc-res" style="display:none"></div>
+      <div class="pc-cta">
+        <button class="pc-cta-btn" onclick="pcTab('generator')" data-ga data-ga-action="click" data-ga-category="privacy_check" data-ga-label="cta_generator">{{ call .T "pc.generator.tab_cta" }}</button>
+      </div>
+    </div>
+
+    <!-- Panel 3: Breach Browser -->
+    <div class="pc-pnl" id="panel-breaches" role="tabpanel">
+      <div class="pc-bbh">
+        <h2>{{ call .T "pc.breaches.title" }}</h2>
+        <p>{{ call .T "pc.breaches.subtitle" }}</p>
+      </div>
+      <div class="pc-tb">
+        <div class="pc-sb">
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="M21 21l-4.35-4.35"/></svg>
+          <input type="text" id="breachSearch" placeholder="{{ call .T "pc.breaches.search_placeholder" }}" oninput="pcFiltDb()">
+        </div>
+        <div class="pc-fg">
+          <button class="pc-fb2 active" data-f="all" onclick="pcFilter('all')" data-ga data-ga-action="click" data-ga-category="privacy_check" data-ga-label="filter_all">{{ call .T "pc.breaches.filter_all" }}</button>
+          <button class="pc-fb2" data-f="verified" onclick="pcFilter('verified')" data-ga data-ga-action="click" data-ga-category="privacy_check" data-ga-label="filter_verified">{{ call .T "pc.breaches.filter_verified" }}</button>
+          <button class="pc-fb2" data-f="sensitive" onclick="pcFilter('sensitive')" data-ga data-ga-action="click" data-ga-category="privacy_check" data-ga-label="filter_sensitive">{{ call .T "pc.breaches.filter_sensitive" }}</button>
+        </div>
+        <div class="pc-srt">
+          <span>{{ call .T "pc.breaches.sort_label" }}</span>
+          <select id="breachSort" onchange="pcSort(this.value)">
+            <option value="date">{{ call .T "pc.breaches.sort_date" }}</option>
+            <option value="size">{{ call .T "pc.breaches.sort_size" }}</option>
+            <option value="name">{{ call .T "pc.breaches.sort_name" }}</option>
+          </select>
+        </div>
+      </div>
+      <p class="pc-bcc" id="bcCount"></p>
+      <div class="pc-grd" id="bcGrid"></div>
+      <div class="pc-lm" id="loadMoreWrap" style="display:none">
+        <button class="pc-btn pc-btn--o" onclick="pcLoadMore()" data-ga data-ga-action="click" data-ga-category="privacy_check" data-ga-label="load_more">{{ call .T "pc.breaches.load_more" }}</button>
+      </div>
+    </div>
+
+    <!-- Panel 4: Password Generator -->
+    <div class="pc-pnl" id="panel-generator" role="tabpanel">
+      <div class="pc-gen">
+        <h2>{{ call .T "pc.generator.title" }}</h2>
+        <div class="pc-gd">
+          <code class="pc-gt" id="genText">{{ call .T "pc.generator.placeholder" }}</code>
+          <button class="pc-btn pc-btn--g" onclick="pcCopyGen()" style="padding:9px 12px;border:none;flex-shrink:0" data-ga data-ga-action="click" data-ga-category="privacy_check" data-ga-label="copy_generated">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="9" y="9" width="13" height="13" rx="2"/><path d="M5 15H4a2 2 0 01-2-2V4a2 2 0 012-2h9a2 2 0 012 2v1"/></svg>
+          </button>
+        </div>
+        <div id="genStrW" style="display:none;margin-bottom:16px">
+          <div class="pc-st" style="margin-bottom:6px"><div class="pc-sf" id="genStrF"></div></div>
+          <div class="pc-sr" style="font-size:.77rem"><span id="genStrL" style="font-weight:700"></span></div>
+        </div>
+        <div class="pc-go">
+          <div class="pc-gop">
+            <label>{{ call .T "pc.generator.length_label" }}</label>
+            <div class="pc-slr">
+              <input type="range" class="pc-sli" id="genLen" min="8" max="128" value="20" oninput="document.getElementById('genLenV').textContent=this.value;pcGen()">
+              <span class="pc-slv" id="genLenV">20</span>
+            </div>
+          </div>
+          <div class="pc-gop"><label class="pc-ck"><input type="checkbox" id="genUpper" checked onchange="pcGen()"> {{ call .T "pc.generator.uppercase" }}</label></div>
+          <div class="pc-gop"><label class="pc-ck"><input type="checkbox" id="genLower" checked onchange="pcGen()"> {{ call .T "pc.generator.lowercase" }}</label></div>
+          <div class="pc-gop"><label class="pc-ck"><input type="checkbox" id="genNums"  checked onchange="pcGen()"> {{ call .T "pc.generator.numbers" }}</label></div>
+          <div class="pc-gop"><label class="pc-ck"><input type="checkbox" id="genSyms"  checked onchange="pcGen()"> {{ call .T "pc.generator.symbols" }}</label></div>
+          <div class="pc-gop"><label class="pc-ck"><input type="checkbox" id="genNoAmb"       onchange="pcGen()"> {{ call .T "pc.generator.exclude_ambiguous" }}</label></div>
+        </div>
+        <div class="pc-gen-qty">
+          <label>{{ call .T "pc.generator.quantity" }}</label>
+          <select id="genQty" onchange="pcGen()">
+            <option value="1">1</option>
+            <option value="5">5</option>
+            <option value="10">10</option>
+            <option value="20">20</option>
+          </select>
+        </div>
+        <button class="pc-btn pc-btn--p pc-btn--lg" onclick="pcGen(true)" style="width:100%" data-ga data-ga-action="click" data-ga-category="privacy_check" data-ga-label="generate_password">{{ call .T "pc.generator.generate_btn" }}</button>
+        <div class="pc-gen-batch" id="genBatch" style="display:none"></div>
+        <div id="copyAllWrap" style="display:none;text-align:center;margin-top:12px">
+          <button class="pc-btn pc-btn--o" onclick="pcCopyAll()" data-ga data-ga-action="click" data-ga-category="privacy_check" data-ga-label="copy_all_generated">{{ call .T "pc.generator.copy_all" }}</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- RIGHT Sidebar -->
+  <aside class="pc-sbr pc-sbr--right">
+    <div class="pc-sb-history" id="scanHistory">
+      <div class="pc-sb-history-header" onclick="pcToggleHistory()" role="button" aria-expanded="true" data-ga data-ga-action="click" data-ga-category="privacy_check" data-ga-label="toggle_history">
+        <h3>{{ call .T "pc.sidebar.operation_history" }}</h3>
+        <svg id="histToggleIcon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="6 9 12 15 18 9"/></svg>
+      </div>
+      <div class="pc-sb-history-body" id="histBody">
+        <div class="pc-sb-history-list" id="scanHistoryList"></div>
+        <div class="pc-sb-history-pagination" id="histPagination" style="display:none"></div>
+        <label class="pc-sb-history-opt">
+          <input type="checkbox" id="histPassPlain" onchange="pcSetHistPassPlain(this.checked)">
+          <span>{{ call .T "pc.sidebar.pass_plain_echo" }}</span>
+        </label>
+        <button class="pc-sb-history-clear" onclick="pcClearHistory()" data-ga data-ga-action="click" data-ga-category="privacy_check" data-ga-label="clear_history">{{ call .T "pc.sidebar.clear_history" }}</button>
+      </div>
+    </div>
+  </aside>
+
+</div>
+
+
+<!-- SEO Article Section -->
+{{ if .SEOArticle }}
+<section class="pvc-seo-section">
+  {{ .SEOArticle }}
+</section>
+{{ end }}
+
+<!-- Toast container -->
+<div class="pc-ts" id="pcToasts"></div>
+</div>
+{{ end }}
+
+{{ define "extraScript" }}
+<script>
+var T={
+  eS:{{ call .T "pc.email.safe_title"   | printf "%q" | safeJS }},
+  eSd:{{ call .T "pc.email.safe_desc"   | printf "%q" | safeJS }},
+  eP:{{ call .T "pc.email.pwned_title"  | printf "%q" | safeJS }},
+  ePd:{{ call .T "pc.email.pwned_desc"  | printf "%q" | safeJS }},
+  bD:{{ call .T "pc.email.breach_card_date"    | printf "%q" | safeJS }},
+  bR:{{ call .T "pc.email.breach_card_records" | printf "%q" | safeJS }},
+  bDt:{{ call .T "pc.email.breach_card_data"   | printf "%q" | safeJS }},
+  bDs:{{ call .T "pc.email.breach_card_desc"   | printf "%q" | safeJS }},
+  pS:{{ call .T "pc.password.safe_title"  | printf "%q" | safeJS }},
+  pSd:{{ call .T "pc.password.safe_desc"  | printf "%q" | safeJS }},
+  pP:{{ call .T "pc.password.pwned_title" | printf "%q" | safeJS }},
+  pPd:{{ call .T "pc.password.pwned_desc" | printf "%q" | safeJS }},
+  ss:[{{ call .T "pc.strength.score_0"|printf "%q"|safeJS }},{{ call .T "pc.strength.score_1"|printf "%q"|safeJS }},{{ call .T "pc.strength.score_2"|printf "%q"|safeJS }},{{ call .T "pc.strength.score_3"|printf "%q"|safeJS }},{{ call .T "pc.strength.score_4"|printf "%q"|safeJS }}],
+  sc:{{ call .T "pc.strength.crack_time"    | printf "%q" | safeJS }},
+  rC:{{ call .T "pc.result.risk_critical"   | printf "%q" | safeJS }},
+  rH:{{ call .T "pc.result.risk_high"       | printf "%q" | safeJS }},
+  rM:{{ call .T "pc.result.risk_medium"     | printf "%q" | safeJS }},
+  rL:{{ call .T "pc.result.risk_low"        | printf "%q" | safeJS }},
+  aT:{{ call .T "pc.result.action_title"    | printf "%q" | safeJS }},
+  aP:{{ call .T "pc.advice.change_password" | printf "%q" | safeJS }},
+  a2:{{ call .T "pc.advice.enable_2fa"      | printf "%q" | safeJS }},
+  aR:{{ call .T "pc.advice.check_reuse"     | printf "%q" | safeJS }},
+  aM:{{ call .T "pc.advice.use_manager"     | printf "%q" | safeJS }},
+  aW:{{ call .T "pc.advice.monitor_account" | printf "%q" | safeJS }},
+  aF:{{ call .T "pc.advice.freeze_credit"   | printf "%q" | safeJS }},
+  aPh:{{ call .T "pc.advice.phishing_alert" | printf "%q" | safeJS }},
+  eE:{{ call .T "pc.error.invalid_email"    | printf "%q" | safeJS }},
+  ePs:{{ call .T "pc.error.empty_password"  | printf "%q" | safeJS }},
+  eN:{{ call .T "pc.error.network"          | printf "%q" | safeJS }},
+  fb:{{ call .T "pc.status.fallback"        | printf "%q" | safeJS }},
+  bCt:{{ call .T "pc.breaches.total_count"  | printf "%q" | safeJS }},
+  bNo:{{ call .T "pc.breaches.no_results"   | printf "%q" | safeJS }},
+  tC:{{ call .T "pc.toast.copied"           | printf "%q" | safeJS }},
+  tCf:{{ call .T "pc.toast.copy_failed"     | printf "%q" | safeJS }},
+  tG:{{ call .T "pc.toast.generated"        | printf "%q" | safeJS }},
+  cls:{{ call .T "pc.common.close"          | printf "%q" | safeJS }},
+  lm:{{ call .T "pc.common.learn_more"      | printf "%q" | safeJS }},
+  rec:{{ call .T "pc.common.records"        | printf "%q" | safeJS }},
+  copyBtn:{{ call .T "pc.generator.copy_btn" | printf "%q" | safeJS }},
+  batchCopied:{{ call .T "pc.generator.batch_copied" | printf "%q" | safeJS }},
+  exportBtn:{{ call .T "pc.export.btn"       | printf "%q" | safeJS }},
+  exportTitle:{{ call .T "pc.export.title"   | printf "%q" | safeJS }},
+  healthExcellent:{{ call .T "pc.health.excellent" | printf "%q" | safeJS }},
+  healthGood:{{ call .T "pc.health.good"     | printf "%q" | safeJS }},
+  healthFair:{{ call .T "pc.health.fair"     | printf "%q" | safeJS }},
+  healthPoor:{{ call .T "pc.health.poor"     | printf "%q" | safeJS }},
+  healthCritical:{{ call .T "pc.health.critical" | printf "%q" | safeJS }},
+  healthDesc:{{ call .T "pc.health.description" | printf "%q" | safeJS }},
+  checkLen:{{ call .T "pc.check.length"     | printf "%q" | safeJS }},
+  checkLower:{{ call .T "pc.check.lowercase" | printf "%q" | safeJS }},
+  checkUpper:{{ call .T "pc.check.uppercase" | printf "%q" | safeJS }},
+  checkNum:{{ call .T "pc.check.numbers"    | printf "%q" | safeJS }},
+  checkSym:{{ call .T "pc.check.symbols"    | printf "%q" | safeJS }},
+  checkSeq:{{ call .T "pc.check.no_sequential" | printf "%q" | safeJS }},
+  checkRep:{{ call .T "pc.check.no_repeated"   | printf "%q" | safeJS }},
+  checkCommon:{{ call .T "pc.check.not_common" | printf "%q" | safeJS }},
+  histEmail:{{ call .T "pc.sidebar.hist_email" | printf "%q" | safeJS }},
+  histPass:{{ call .T "pc.sidebar.hist_pass"   | printf "%q" | safeJS }},
+  histGen:{{ call .T "pc.sidebar.hist_gen"     | printf "%q" | safeJS }},
+  histSafe:{{ call .T "pc.history.status.safe"   | printf "%q" | safeJS }},
+  histPwned:{{ call .T "pc.history.status.pwned" | printf "%q" | safeJS }},
+  histWeak:{{ call .T "pc.history.status.weak"   | printf "%q" | safeJS }},
+  histGenerated:{{ call .T "pc.history.status.generated" | printf "%q" | safeJS }},
+  histJustNow:{{ call .T "pc.history.time.just_now" | printf "%q" | safeJS }},
+  histMinAgo:{{ call .T "pc.history.time.min_ago"   | printf "%q" | safeJS }},
+  histHourAgo:{{ call .T "pc.history.time.hour_ago" | printf "%q" | safeJS }},
+  histDayAgo:{{ call .T "pc.history.time.day_ago"   | printf "%q" | safeJS }},
+  histClear:{{ call .T "pc.sidebar.clear_history" | printf "%q" | safeJS }},
+  histEmpty:{{ call .T "pc.sidebar.hist_empty" | printf "%q" | safeJS }}
+};
+</script>
+<script src="/static/js/privacy-check.js?v={{ .AssetVer }}"></script>
+{{ end }}

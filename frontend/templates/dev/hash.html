@@ -1,0 +1,536 @@
+{{ template "base" . }}
+
+{{ define "extraHead" }}
+<link rel="stylesheet" href="/static/css/dev-tools.css?v={{ .AssetVer }}">
+<link rel="stylesheet" href="/static/css/tools-editorial.css?v={{ .AssetVer }}">
+<link rel="stylesheet" href="/static/css/dev-hash.css?v={{ .AssetVer }}">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="alternate" hreflang="zh" href="{{ .HreflangZH }}">
+<link rel="alternate" hreflang="en" href="{{ .HreflangEN }}">
+<link rel="alternate" hreflang="x-default" href="{{ .Canonical }}">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "Hash Generator — MD5 SHA-1 SHA-256 SHA-512 HMAC",
+  "url": "{{ .Canonical }}",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "Any",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+  "description": "{{ .Description }}"
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    { "@type": "ListItem", "position": 1, "name": "ToolboxNova", "item": "https://toolboxnova.com/" },
+    { "@type": "ListItem", "position": 2, "name": "{{ call .T "hash.hero.title" }}", "item": "{{ .Canonical }}" }
+  ]
+}
+</script>
+{{ if .FAQs }}
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  "mainEntity": [
+    {{ range $i, $faq := .FAQs }}{{ if $i }},{{ end }}
+    {"@type":"Question","name":{{ $faq.Q | toJSON }},"acceptedAnswer":{"@type":"Answer","text":{{ $faq.A | toJSON }}}}
+    {{ end }}
+  ]
+}
+</script>
+{{ end }}
+{{ end }}
+
+{{ define "content" }}
+<div class="dev-page page-hash">
+
+<!-- Hero -->
+<section class="hash-hero" aria-labelledby="hash-hero-title">
+  <div class="hash-hero__inner">
+    <div class="hash-hero__eyebrow">{{ call .T "hash.hero.eyebrow" }}</div>
+    <h1 class="hash-hero__title" id="hash-hero-title">{{ call .T "hash.hero.title" }}</h1>
+    <p class="hash-hero__sub">{{ call .T "hash.hero.subtitle" }}</p>
+    <div class="hash-hero__badges">
+      <span class="hash-badge hash-badge--blue">{{ call .T "hash.hero.badge1" }}</span>
+      <span class="hash-badge hash-badge--green">{{ call .T "hash.hero.badge2" }}</span>
+      <span class="hash-badge hash-badge--purple">{{ call .T "hash.hero.badge3" }}</span>
+    </div>
+  </div>
+</section>
+
+<div style="text-align:center;margin:12px auto;max-width:970px;padding:0 16px">
+  {{- template "partials/ad_slot.html" (dict "Ctx" . "SlotID" "dev-hash-top" "Size" "728x90" "Mobile" "320x50") }}
+</div>
+
+<!-- Sidebar Layout -->
+<div class="hash-sidebar-layout">
+  <aside class="hash-sidebar-ad">
+    {{- template "partials/ad_slot.html" (dict "Ctx" . "SlotID" "dev-hash-left" "Size" "160x600" "MobileHide" "true") }}
+  </aside>
+
+  <div class="hash-main-area">
+
+  <!-- Workspace Card -->
+  <section class="hash-workspace">
+    <header class="hash-workspace-head">
+      <h2 class="hash-workspace-title">{{ call .T "hash.workspace.title" }}</h2>
+      <p class="hash-workspace-sub">{{ call .T "hash.workspace.subtitle" }}</p>
+    </header>
+
+    <!-- Tabs -->
+    <div class="hash-tabs" role="tablist" aria-label="Hash modes">
+      <button class="hash-tab hash-tab--active" role="tab" aria-selected="true" aria-controls="tab-panel-text" id="tab-text" onclick="DevHash.switchTab('text')" data-ga data-ga-action="switch_tab" data-ga-category="dev-tool" data-ga-label="hash-tab-text">{{ call .T "hash.input.tab_text" }}</button>
+      <button class="hash-tab" role="tab" aria-selected="false" aria-controls="tab-panel-file" id="tab-file" onclick="DevHash.switchTab('file')" data-ga data-ga-action="switch_tab" data-ga-category="dev-tool" data-ga-label="hash-tab-file">{{ call .T "hash.input.tab_file" }}</button>
+      <button class="hash-tab" role="tab" aria-selected="false" aria-controls="tab-panel-hmac" id="tab-hmac" onclick="DevHash.switchTab('hmac')" data-ga data-ga-action="switch_tab" data-ga-category="dev-tool" data-ga-label="hash-tab-hmac">{{ call .T "hash.input.tab_hmac" }}</button>
+      <button class="hash-tab" role="tab" aria-selected="false" aria-controls="tab-panel-compare" id="tab-compare" onclick="DevHash.switchTab('compare')" data-ga data-ga-action="switch_tab" data-ga-category="dev-tool" data-ga-label="hash-tab-compare">{{ call .T "hash.input.tab_compare" }}</button>
+      <button class="hash-tab" role="tab" aria-selected="false" aria-controls="tab-panel-batch" id="tab-batch" onclick="DevHash.switchTab('batch')" data-ga data-ga-action="switch_tab" data-ga-category="dev-tool" data-ga-label="hash-tab-batch">{{ call .T "hash.input.tab_batch" }}</button>
+    </div>
+
+    <!-- Text Tab -->
+    <div class="hash-tab-panel hash-tab-panel--active" id="tab-panel-text" role="tabpanel" aria-labelledby="tab-text">
+      <div class="hash-input-section">
+        <label class="hash-input-label" for="hashInput">{{ call .T "hash.input.label" }}</label>
+        <textarea id="hashInput" class="hash-input-field" rows="6"
+          placeholder="{{ call .T "hash.input.placeholder" }}"
+          spellcheck="false" autocomplete="off"
+          oninput="DevHash.onInputChange()"></textarea>
+        <div class="hash-input-footer">
+          <span id="inputCharCount" class="hash-char-count">0 chars</span>
+          <div class="hash-input-actions">
+            <button class="btn-hash btn-hash--ghost btn-hash--sm" onclick="DevHash.loadSample()" type="button" data-ga data-ga-action="load_sample" data-ga-category="dev-tool" data-ga-label="hash-sample">{{ call .T "hash.input.btn.sample" }}</button>
+            <button class="btn-hash btn-hash--ghost btn-hash--sm" onclick="DevHash.clearInput()" type="button" data-ga data-ga-action="clear" data-ga-category="dev-tool" data-ga-label="hash-clear-input">{{ call .T "hash.input.btn.clear" }}</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Algorithm selector -->
+      <div class="hash-algo-panel">
+        <div class="hash-algo-head">
+          <span class="hash-algo-title">{{ call .T "hash.algo.title" }}</span>
+          <span class="hash-algo-sub">{{ call .T "hash.algo.subtitle" }}</span>
+        </div>
+        <div class="hash-algo-grid" id="algoGrid">
+          <label class="hash-algo-chip hash-algo-chip--weak"><input type="checkbox" value="md5" checked onchange="DevHash.onInputChange()"><span>MD5</span></label>
+          <label class="hash-algo-chip hash-algo-chip--weak"><input type="checkbox" value="sha1" checked onchange="DevHash.onInputChange()"><span>SHA-1</span></label>
+          <label class="hash-algo-chip"><input type="checkbox" value="sha224" onchange="DevHash.onInputChange()"><span>SHA-224</span></label>
+          <label class="hash-algo-chip hash-algo-chip--recommended"><input type="checkbox" value="sha256" checked onchange="DevHash.onInputChange()"><span>SHA-256</span></label>
+          <label class="hash-algo-chip"><input type="checkbox" value="sha384" onchange="DevHash.onInputChange()"><span>SHA-384</span></label>
+          <label class="hash-algo-chip hash-algo-chip--recommended"><input type="checkbox" value="sha512" checked onchange="DevHash.onInputChange()"><span>SHA-512</span></label>
+          <label class="hash-algo-chip hash-algo-chip--checksum"><input type="checkbox" value="crc32" onchange="DevHash.onInputChange()"><span>CRC32</span></label>
+        </div>
+      </div>
+
+      <!-- Format selector -->
+      <div class="hash-format-bar">
+        <span class="hash-format-label">{{ call .T "hash.format.title" }}</span>
+        <div class="hash-format-group">
+          <label class="hash-format-btn hash-format-btn--active"><input type="radio" name="hashFormat" value="hex_lower" checked onchange="DevHash.onFormatChange()"><span>{{ call .T "hash.format.hex_lower" }}</span></label>
+          <label class="hash-format-btn"><input type="radio" name="hashFormat" value="hex_upper" onchange="DevHash.onFormatChange()"><span>{{ call .T "hash.format.hex_upper" }}</span></label>
+          <label class="hash-format-btn"><input type="radio" name="hashFormat" value="base64" onchange="DevHash.onFormatChange()"><span>{{ call .T "hash.format.base64" }}</span></label>
+        </div>
+      </div>
+    </div><!-- /text tab -->
+
+    <!-- File Tab -->
+    <div class="hash-tab-panel" id="tab-panel-file" role="tabpanel" aria-labelledby="tab-file" hidden>
+      <div class="hash-file-zone" id="fileDropZone"
+           ondragover="DevHash.onDragOver(event)" ondragleave="DevHash.onDragLeave(event)" ondrop="DevHash.onDrop(event)"
+           onclick="document.getElementById('fileInput').click()">
+        <input type="file" id="fileInput" class="sr-only" onchange="DevHash.onFileSelect(event)">
+        <div class="hash-file-zone__inner">
+          <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="17 8 12 3 7 8"/><line x1="12" y1="3" x2="12" y2="15"/></svg>
+          <p class="hash-file-zone__text">{{ call .T "hash.file.drop" }}</p>
+          <p class="hash-file-zone__hint">Max 2 GB · {{ call .T "hash.file.privacy_note" }}</p>
+        </div>
+      </div>
+      <div class="hash-file-info" id="fileInfo" hidden>
+        <div class="hash-file-info__meta">
+          <span id="fileName" class="hash-file-info__name"></span>
+          <span id="fileSize" class="hash-file-info__size"></span>
+        </div>
+        <div class="hash-file-info__progress">
+          <div class="hash-file-info__bar" id="fileProgressBar"></div>
+        </div>
+        <button class="btn-hash btn-hash--ghost btn-hash--sm" onclick="DevHash.clearFile()" type="button" data-ga data-ga-action="clear" data-ga-category="dev-tool" data-ga-label="hash-clear-file">{{ call .T "hash.file.clear" }}</button>
+      </div>
+      <div class="hash-algo-panel" style="margin-top:16px">
+        <div class="hash-algo-grid" id="algoGridFile">
+          <label class="hash-algo-chip hash-algo-chip--weak"><input type="checkbox" value="md5" checked onchange="DevHash.onFileAlgoChange()"><span>MD5</span></label>
+          <label class="hash-algo-chip hash-algo-chip--weak"><input type="checkbox" value="sha1" checked onchange="DevHash.onFileAlgoChange()"><span>SHA-1</span></label>
+          <label class="hash-algo-chip"><input type="checkbox" value="sha224" onchange="DevHash.onFileAlgoChange()"><span>SHA-224</span></label>
+          <label class="hash-algo-chip hash-algo-chip--recommended"><input type="checkbox" value="sha256" checked onchange="DevHash.onFileAlgoChange()"><span>SHA-256</span></label>
+          <label class="hash-algo-chip"><input type="checkbox" value="sha384" onchange="DevHash.onFileAlgoChange()"><span>SHA-384</span></label>
+          <label class="hash-algo-chip hash-algo-chip--recommended"><input type="checkbox" value="sha512" checked onchange="DevHash.onFileAlgoChange()"><span>SHA-512</span></label>
+          <label class="hash-algo-chip hash-algo-chip--checksum"><input type="checkbox" value="crc32" onchange="DevHash.onFileAlgoChange()"><span>CRC32</span></label>
+        </div>
+      </div>
+    </div><!-- /file tab -->
+
+    <!-- HMAC Tab -->
+    <div class="hash-tab-panel" id="tab-panel-hmac" role="tabpanel" aria-labelledby="tab-hmac" hidden>
+      <div class="hash-hmac-section">
+        <p class="hash-hmac-desc">{{ call .T "hash.hmac.subtitle" }}</p>
+        <div class="hash-hmac-row">
+          <label class="hash-input-label" for="hmacKey">{{ call .T "hash.hmac.key_label" }}</label>
+          <div class="hash-hmac-key-wrap">
+            <input type="password" id="hmacKey" class="hash-input-field hash-input-field--single" placeholder="{{ call .T "hash.hmac.key_placeholder" }}" oninput="DevHash.onHMACChange()">
+            <button class="btn-hash btn-hash--ghost" type="button" onclick="DevHash.toggleKeyVisibility()" aria-label="Toggle key visibility" data-ga data-ga-action="toggle_key_visibility" data-ga-category="dev-tool" data-ga-label="hash-hmac-key-toggle">
+              <svg id="hmacKeyEye" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            </button>
+          </div>
+        </div>
+        <div class="hash-hmac-row">
+          <label class="hash-input-label" for="hmacMessage">{{ call .T "hash.hmac.msg_label" }}</label>
+          <textarea id="hmacMessage" class="hash-input-field" rows="4" placeholder="{{ call .T "hash.hmac.msg_placeholder" }}" oninput="DevHash.onHMACChange()"></textarea>
+        </div>
+        <div class="hash-hmac-row">
+          <label class="hash-input-label">{{ call .T "hash.hmac.algo_label" }}</label>
+          <div class="hash-hmac-algo-group">
+            <label class="hash-format-btn hash-format-btn--active"><input type="radio" name="hmacAlgo" value="SHA256" checked onchange="DevHash.onHMACChange()"><span>HMAC-SHA256</span></label>
+            <label class="hash-format-btn"><input type="radio" name="hmacAlgo" value="SHA512" onchange="DevHash.onHMACChange()"><span>HMAC-SHA512</span></label>
+            <label class="hash-format-btn"><input type="radio" name="hmacAlgo" value="SHA1" onchange="DevHash.onHMACChange()"><span>HMAC-SHA1</span></label>
+          </div>
+        </div>
+        <button class="btn-hash btn-hash--primary" onclick="DevHash.computeHMAC()" type="button" data-ga data-ga-action="compute_hmac" data-ga-category="dev-tool" data-ga-label="hash-hmac-compute">{{ call .T "hash.hmac.btn.compute" }}</button>
+        <p class="hash-hmac-note">{{ call .T "hash.hmac.note" }}</p>
+      </div>
+    </div><!-- /hmac tab -->
+
+    <!-- Compare Tab -->
+    <div class="hash-tab-panel" id="tab-panel-compare" role="tabpanel" aria-labelledby="tab-compare" hidden>
+      <div class="hash-compare-section">
+        <p class="hash-compare-desc">{{ call .T "hash.compare.subtitle" }}</p>
+        <div class="hash-compare-row">
+          <label class="hash-input-label" for="compareA">{{ call .T "hash.compare.a_label" }}</label>
+          <textarea id="compareA" class="hash-input-field" rows="2" placeholder="{{ call .T "hash.compare.a_placeholder" }}" spellcheck="false"></textarea>
+        </div>
+        <div class="hash-compare-row">
+          <label class="hash-input-label" for="compareB">{{ call .T "hash.compare.b_label" }}</label>
+          <textarea id="compareB" class="hash-input-field" rows="2" placeholder="{{ call .T "hash.compare.b_placeholder" }}" spellcheck="false"></textarea>
+        </div>
+        <button class="btn-hash btn-hash--primary" onclick="DevHash.compareHashes()" type="button" data-ga data-ga-action="compare" data-ga-category="dev-tool" data-ga-label="hash-compare">{{ call .T "hash.compare.btn.compare" }}</button>
+        <div class="hash-compare-result" id="compareResult"></div>
+      </div>
+    </div><!-- /compare tab -->
+
+    <!-- Batch Tab -->
+    <div class="hash-tab-panel" id="tab-panel-batch" role="tabpanel" aria-labelledby="tab-batch" hidden>
+      <div class="hash-batch-section">
+        <p class="hash-batch-desc">{{ call .T "hash.batch.subtitle" }}</p>
+        <textarea id="batchInput" class="hash-input-field" rows="6" placeholder="{{ call .T "hash.batch.placeholder" }}" spellcheck="false"></textarea>
+        <div class="hash-batch-options">
+          <label class="hash-algo-chip hash-algo-chip--weak"><input type="checkbox" value="md5" checked id="batch-md5"><span>MD5</span></label>
+          <label class="hash-algo-chip hash-algo-chip--weak"><input type="checkbox" value="sha1" checked id="batch-sha1"><span>SHA-1</span></label>
+          <label class="hash-algo-chip hash-algo-chip--recommended"><input type="checkbox" value="sha256" checked id="batch-sha256"><span>SHA-256</span></label>
+          <label class="hash-algo-chip hash-algo-chip--recommended"><input type="checkbox" value="sha512" id="batch-sha512"><span>SHA-512</span></label>
+        </div>
+        <div class="hash-batch-actions">
+          <button class="btn-hash btn-hash--primary" onclick="DevHash.computeBatch()" type="button" data-ga data-ga-action="compute_batch" data-ga-category="dev-tool" data-ga-label="hash-batch-compute">{{ call .T "hash.batch.btn.parse" }}</button>
+          <button class="btn-hash btn-hash--ghost" onclick="DevHash.clearBatch()" type="button" data-ga data-ga-action="clear" data-ga-category="dev-tool" data-ga-label="hash-batch-clear">{{ call .T "hash.batch.btn.clear" }}</button>
+          <button class="btn-hash btn-hash--secondary" onclick="DevHash.exportBatchCSV()" type="button" data-ga data-ga-action="download" data-ga-category="dev-tool" data-ga-label="hash-batch-export">{{ call .T "hash.batch.btn.export" }}</button>
+        </div>
+        <div class="hash-batch-table-wrap" id="batchTableWrap" hidden>
+          <table class="hash-batch-table">
+            <thead>
+              <tr>
+                <th>{{ call .T "hash.batch.col.input" }}</th>
+                <th>MD5</th>
+                <th>SHA-1</th>
+                <th>SHA-256</th>
+                <th>SHA-512</th>
+              </tr>
+            </thead>
+            <tbody id="batchTableBody"></tbody>
+          </table>
+        </div>
+        <p class="hash-batch-empty" id="batchEmpty">{{ call .T "hash.batch.empty" }}</p>
+      </div>
+    </div><!-- /batch tab -->
+
+    <!-- Results panel (shared across Text and File tabs) -->
+    <div class="hash-results" id="resultsPanel">
+      <div class="hash-results-head">
+        <div>
+          <h3 class="hash-results-title">{{ call .T "hash.result.title" }}</h3>
+          <p class="hash-results-sub">{{ call .T "hash.result.subtitle" }}</p>
+        </div>
+        <div class="hash-results-actions">
+          <button class="btn-hash btn-hash--secondary btn-hash--sm" onclick="DevHash.copyAll()" type="button" data-ga data-ga-action="copy_all" data-ga-category="dev-tool" data-ga-label="hash-copy-all">{{ call .T "hash.result.copy_all" }}</button>
+          <button class="btn-hash btn-hash--ghost btn-hash--sm" onclick="DevHash.downloadAll()" type="button" data-ga data-ga-action="download" data-ga-category="dev-tool" data-ga-label="hash-download-all">{{ call .T "hash.result.download_all" }}</button>
+        </div>
+      </div>
+      <div class="hash-results-grid" id="hashResultsGrid">
+        <div class="hash-result-card" data-algo="md5">
+          <div class="hash-result-card__head">
+            <span class="hash-result-card__name">MD5</span>
+            <span class="hash-result-card__bits">128-bit</span>
+            <span class="hash-result-card__tag hash-result-card__tag--warn">{{ call .T "hash.tag.weak" }}</span>
+          </div>
+          <code class="hash-result-card__value" id="val-md5">—</code>
+          <button class="hash-result-card__copy" onclick="DevHash.copy('md5')" type="button" aria-label="{{ call .T "hash.result.copy" }} MD5" data-ga data-ga-action="copy" data-ga-category="dev-tool" data-ga-label="hash-copy-md5">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          </button>
+        </div>
+        <div class="hash-result-card" data-algo="sha1">
+          <div class="hash-result-card__head">
+            <span class="hash-result-card__name">SHA-1</span>
+            <span class="hash-result-card__bits">160-bit</span>
+            <span class="hash-result-card__tag hash-result-card__tag--warn">{{ call .T "hash.tag.weak" }}</span>
+          </div>
+          <code class="hash-result-card__value" id="val-sha1">—</code>
+          <button class="hash-result-card__copy" onclick="DevHash.copy('sha1')" type="button" aria-label="{{ call .T "hash.result.copy" }} SHA-1" data-ga data-ga-action="copy" data-ga-category="dev-tool" data-ga-label="hash-copy-sha1">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          </button>
+        </div>
+        <div class="hash-result-card" data-algo="sha224">
+          <div class="hash-result-card__head">
+            <span class="hash-result-card__name">SHA-224</span>
+            <span class="hash-result-card__bits">224-bit</span>
+            <span class="hash-result-card__tag">{{ call .T "hash.tag.standards" }}</span>
+          </div>
+          <code class="hash-result-card__value" id="val-sha224">—</code>
+          <button class="hash-result-card__copy" onclick="DevHash.copy('sha224')" type="button" aria-label="{{ call .T "hash.result.copy" }} SHA-224" data-ga data-ga-action="copy" data-ga-category="dev-tool" data-ga-label="hash-copy-sha224">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          </button>
+        </div>
+        <div class="hash-result-card hash-result-card--featured" data-algo="sha256">
+          <div class="hash-result-card__head">
+            <span class="hash-result-card__name">SHA-256</span>
+            <span class="hash-result-card__bits">256-bit</span>
+            <span class="hash-result-card__tag hash-result-card__tag--ok">{{ call .T "hash.tag.recommended" }}</span>
+          </div>
+          <code class="hash-result-card__value" id="val-sha256">—</code>
+          <button class="hash-result-card__copy" onclick="DevHash.copy('sha256')" type="button" aria-label="{{ call .T "hash.result.copy" }} SHA-256" data-ga data-ga-action="copy" data-ga-category="dev-tool" data-ga-label="hash-copy-sha256">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          </button>
+        </div>
+        <div class="hash-result-card" data-algo="sha384">
+          <div class="hash-result-card__head">
+            <span class="hash-result-card__name">SHA-384</span>
+            <span class="hash-result-card__bits">384-bit</span>
+            <span class="hash-result-card__tag">{{ call .T "hash.tag.standards" }}</span>
+          </div>
+          <code class="hash-result-card__value" id="val-sha384">—</code>
+          <button class="hash-result-card__copy" onclick="DevHash.copy('sha384')" type="button" aria-label="{{ call .T "hash.result.copy" }} SHA-384" data-ga data-ga-action="copy" data-ga-category="dev-tool" data-ga-label="hash-copy-sha384">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          </button>
+        </div>
+        <div class="hash-result-card hash-result-card--featured" data-algo="sha512">
+          <div class="hash-result-card__head">
+            <span class="hash-result-card__name">SHA-512</span>
+            <span class="hash-result-card__bits">512-bit</span>
+            <span class="hash-result-card__tag hash-result-card__tag--ok">{{ call .T "hash.tag.recommended" }}</span>
+          </div>
+          <code class="hash-result-card__value" id="val-sha512">—</code>
+          <button class="hash-result-card__copy" onclick="DevHash.copy('sha512')" type="button" aria-label="{{ call .T "hash.result.copy" }} SHA-512" data-ga data-ga-action="copy" data-ga-category="dev-tool" data-ga-label="hash-copy-sha512">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          </button>
+        </div>
+        <div class="hash-result-card" data-algo="crc32">
+          <div class="hash-result-card__head">
+            <span class="hash-result-card__name">CRC32</span>
+            <span class="hash-result-card__bits">32-bit</span>
+            <span class="hash-result-card__tag hash-result-card__tag--info">{{ call .T "hash.tag.checksum_only" }}</span>
+          </div>
+          <code class="hash-result-card__value" id="val-crc32">—</code>
+          <button class="hash-result-card__copy" onclick="DevHash.copy('crc32')" type="button" aria-label="{{ call .T "hash.result.copy" }} CRC32" data-ga data-ga-action="copy" data-ga-category="dev-tool" data-ga-label="hash-copy-crc32">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="13" height="13" rx="2" ry="2"/><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/></svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Examples -->
+  <section class="hash-examples">
+    <h2 class="hash-section-title">{{ call .T "hash.examples.title" }}</h2>
+    <p class="hash-section-sub">{{ call .T "hash.examples.subtitle" }}</p>
+    <div class="hash-examples-grid">
+      <div class="hash-example-card" onclick="DevHash.loadExample('empty')" data-ga data-ga-action="load_example" data-ga-category="dev-tool" data-ga-label="hash-example-empty">
+        <div class="hash-example-card__title">{{ call .T "hash.examples.e1.title" }}</div>
+        <p class="hash-example-card__desc">{{ call .T "hash.examples.e1.desc" }}</p>
+        <span class="hash-example-card__cta">{{ call .T "hash.examples.use_this" }}</span>
+      </div>
+      <div class="hash-example-card" onclick="DevHash.loadExample('webhook')" data-ga data-ga-action="load_example" data-ga-category="dev-tool" data-ga-label="hash-example-webhook">
+        <div class="hash-example-card__title">{{ call .T "hash.examples.e2.title" }}</div>
+        <p class="hash-example-card__desc">{{ call .T "hash.examples.e2.desc" }}</p>
+        <span class="hash-example-card__cta">{{ call .T "hash.examples.use_this" }}</span>
+      </div>
+      <div class="hash-example-card" onclick="DevHash.loadExample('password')" data-ga data-ga-action="load_example" data-ga-category="dev-tool" data-ga-label="hash-example-password">
+        <div class="hash-example-card__title">{{ call .T "hash.examples.e3.title" }}</div>
+        <p class="hash-example-card__desc">{{ call .T "hash.examples.e3.desc" }}</p>
+        <span class="hash-example-card__cta">{{ call .T "hash.examples.use_this" }}</span>
+      </div>
+      <div class="hash-example-card" onclick="DevHash.loadExample('json')" data-ga data-ga-action="load_example" data-ga-category="dev-tool" data-ga-label="hash-example-json">
+        <div class="hash-example-card__title">{{ call .T "hash.examples.e4.title" }}</div>
+        <p class="hash-example-card__desc">{{ call .T "hash.examples.e4.desc" }}</p>
+        <span class="hash-example-card__cta">{{ call .T "hash.examples.use_this" }}</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- Security notice -->
+  <section class="te-section">
+    <div class="te-section-inner">
+      <div class="hash-security">
+        <div class="hash-security__icon">
+          <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg>
+        </div>
+        <div class="hash-security__body">
+          <h2 class="hash-security__title">{{ call .T "hash.security.title" }}</h2>
+          <p>{{ call .T "hash.security.body1" }}</p>
+          <p>{{ call .T "hash.security.body2" }}</p>
+          <p>{{ call .T "hash.security.body3" }}</p>
+          <div class="hash-security__privacy">
+            <strong>{{ call .T "hash.security.privacy_title" }}</strong>
+            <p>{{ call .T "hash.security.privacy_body" }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FAQ -->
+  <section class="te-section te-section--alt">
+    <div class="te-section-inner">
+      <h2 class="te-section-title">{{ call .T "hash.faq.title" }}</h2>
+      <div class="hash-faq-list">
+        <details class="hash-faq-item">
+          <summary>{{ call .T "hash.faq.q1.q" }}</summary>
+          <p>{{ call .T "hash.faq.q1.a" }}</p>
+        </details>
+        <details class="hash-faq-item">
+          <summary>{{ call .T "hash.faq.q2.q" }}</summary>
+          <p>{{ call .T "hash.faq.q2.a" }}</p>
+        </details>
+        <details class="hash-faq-item">
+          <summary>{{ call .T "hash.faq.q3.q" }}</summary>
+          <p>{{ call .T "hash.faq.q3.a" }}</p>
+        </details>
+        <details class="hash-faq-item">
+          <summary>{{ call .T "hash.faq.q4.q" }}</summary>
+          <p>{{ call .T "hash.faq.q4.a" }}</p>
+        </details>
+        <details class="hash-faq-item">
+          <summary>{{ call .T "hash.faq.q5.q" }}</summary>
+          <p>{{ call .T "hash.faq.q5.a" }}</p>
+        </details>
+        <details class="hash-faq-item">
+          <summary>{{ call .T "hash.faq.q6.q" }}</summary>
+          <p>{{ call .T "hash.faq.q6.a" }}</p>
+        </details>
+        <details class="hash-faq-item">
+          <summary>{{ call .T "hash.faq.q7.q" }}</summary>
+          <p>{{ call .T "hash.faq.q7.a" }}</p>
+        </details>
+        <details class="hash-faq-item">
+          <summary>{{ call .T "hash.faq.q8.q" }}</summary>
+          <p>{{ call .T "hash.faq.q8.a" }}</p>
+        </details>
+        <details class="hash-faq-item">
+          <summary>{{ call .T "hash.faq.q9.q" }}</summary>
+          <p>{{ call .T "hash.faq.q9.a" }}</p>
+        </details>
+        <details class="hash-faq-item">
+          <summary>{{ call .T "hash.faq.q10.q" }}</summary>
+          <p>{{ call .T "hash.faq.q10.a" }}</p>
+        </details>
+      </div>
+    </div>
+  </section>
+
+  <!-- Related tools -->
+  <section class="te-section">
+    <div class="te-section-inner">
+      <h2 class="te-section-title">{{ call .T "hash.related.title" }}</h2>
+      <p class="te-section-body" style="text-align:center;max-width:640px;margin:0 auto 24px">{{ call .T "hash.related.subtitle" }}</p>
+      <div class="hash-related-grid">
+        <a class="hash-related-card" href="/dev/base64?lang={{ .Lang }}" data-ga data-ga-action="navigate" data-ga-category="dev-tool" data-ga-label="hash-related-base64">
+          <div class="hash-related-card__icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
+          </div>
+          <div>
+            <div class="hash-related-card__title">{{ call .T "hash.related.base64.label" }}</div>
+            <div class="hash-related-card__desc">{{ call .T "hash.related.base64.desc" }}</div>
+          </div>
+        </a>
+        <a class="hash-related-card" href="/dev/url-encode?lang={{ .Lang }}" data-ga data-ga-action="navigate" data-ga-category="dev-tool" data-ga-label="hash-related-url">
+          <div class="hash-related-card__icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+          </div>
+          <div>
+            <div class="hash-related-card__title">{{ call .T "hash.related.url.label" }}</div>
+            <div class="hash-related-card__desc">{{ call .T "hash.related.url.desc" }}</div>
+          </div>
+        </a>
+        <a class="hash-related-card" href="/dev/uuid?lang={{ .Lang }}" data-ga data-ga-action="navigate" data-ga-category="dev-tool" data-ga-label="hash-related-uuid">
+          <div class="hash-related-card__icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 16V8a2 2 0 0 0-1-1.73l-7-4a2 2 0 0 0-2 0l-7 4A2 2 0 0 0 3 8v8a2 2 0 0 0 1 1.73l7 4a2 2 0 0 0 2 0l7-4A2 2 0 0 0 21 16z"/><polyline points="3.27 6.96 12 12.01 20.73 6.96"/><line x1="12" y1="22.08" x2="12" y2="12"/></svg>
+          </div>
+          <div>
+            <div class="hash-related-card__title">{{ call .T "hash.related.uuid.label" }}</div>
+            <div class="hash-related-card__desc">{{ call .T "hash.related.uuid.desc" }}</div>
+          </div>
+        </a>
+        <a class="hash-related-card" href="/dev/timestamp?lang={{ .Lang }}" data-ga data-ga-action="navigate" data-ga-category="dev-tool" data-ga-label="hash-related-timestamp">
+          <div class="hash-related-card__icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          </div>
+          <div>
+            <div class="hash-related-card__title">{{ call .T "hash.related.timestamp.label" }}</div>
+            <div class="hash-related-card__desc">{{ call .T "hash.related.timestamp.desc" }}</div>
+          </div>
+        </a>
+        <a class="hash-related-card" href="/dev/user-agent?lang={{ .Lang }}" data-ga data-ga-action="navigate" data-ga-category="dev-tool" data-ga-label="hash-related-ua">
+          <div class="hash-related-card__icon">
+            <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2" ry="2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>
+          </div>
+          <div>
+            <div class="hash-related-card__title">{{ call .T "hash.related.ua.label" }}</div>
+            <div class="hash-related-card__desc">{{ call .T "hash.related.ua.desc" }}</div>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Guide CTA -->
+  <section class="te-section te-section--alt">
+    <div class="te-section-inner">
+      <div class="hash-guide-cta">
+        <span class="hash-guide-cta__eyebrow">{{ call .T "hash.guide_cta.eyebrow" }}</span>
+        <h2 class="hash-guide-cta__title">{{ call .T "hash.guide_cta.title" }}</h2>
+        <p class="hash-guide-cta__sub">{{ call .T "hash.guide_cta.subtitle" }}</p>
+        <a class="hash-guide-cta__btn" href="/dev/hash-guide?lang={{ .Lang }}" data-ga data-ga-action="navigate" data-ga-category="dev-tool" data-ga-label="hash-guide-cta">
+          <span>{{ call .T "hash.guide_cta.cta" }}</span>
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </a>
+      </div>
+    </div>
+  </section>
+
+  </div><!-- /hash-main-area -->
+
+  <aside class="hash-sidebar-ad">
+    {{- template "partials/ad_slot.html" (dict "Ctx" . "SlotID" "dev-hash-right" "Size" "160x600" "MobileHide" "true") }}
+  </aside>
+</div><!-- /hash-sidebar-layout -->
+
+<div style="text-align:center;margin:20px auto;max-width:970px;padding:0 16px">
+  {{- template "partials/ad_slot.html" (dict "Ctx" . "SlotID" "dev-hash-bottom" "Size" "728x90" "Mobile" "320x50") }}
+</div>
+
+<div id="toastContainer" class="toast-container" aria-live="assertive" aria-atomic="true"></div>
+
+</div><!-- /dev-page -->
+{{ end }}
+
+{{ define "extraScript" }}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/crypto-js/4.2.0/crypto-js.min.js" crossorigin="anonymous"></script>
+<script src="/static/js/dev-hash.js?v={{ .AssetVer }}"></script>
+{{ end }}

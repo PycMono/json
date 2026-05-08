@@ -1,0 +1,231 @@
+{{ template "base" . }}
+
+{{ define "extraHead" }}
+<link rel="canonical" href="https://toolboxnova.com/img/crop-guide">
+<link rel="alternate" hreflang="zh" href="https://toolboxnova.com/img/crop-guide?lang=zh">
+<link rel="alternate" hreflang="en" href="https://toolboxnova.com/img/crop-guide?lang=en">
+<link rel="alternate" hreflang="ja" href="https://toolboxnova.com/img/crop-guide?lang=ja">
+<link rel="alternate" hreflang="ko" href="https://toolboxnova.com/img/crop-guide?lang=ko">
+<link rel="alternate" hreflang="spa" href="https://toolboxnova.com/img/crop-guide?lang=spa">
+<link rel="alternate" hreflang="x-default" href="https://toolboxnova.com/img/crop-guide">
+<link rel="stylesheet" href="/static/css/img-toolbox.css?v={{ .AssetVer }}">
+<link rel="stylesheet" href="/static/css/img-tabs.css?v={{ .AssetVer }}">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{{- range $i,$f := .FAQs }}{{if $i}},{{end}}{"@type":"Question","name":{{ $f.Q | html }},"acceptedAnswer":{"@type":"Answer","text":{{ $f.A | html }}}}{{- end}}]}
+</script>
+{{ end }}
+
+{{ define "content" }}
+{{ template "img_tabs" . }}
+<div class="itb-page" data-tool="crop-guide">
+  <header class="itb-header">
+    <div class="itb-header__inner">
+      <span class="itb-header__logo">📖</span>
+      <h1 class="itb-header__title">{{ call .T "guide.crop.hero.title" }}</h1>
+      <p class="itb-header__sub">{{ call .T "guide.crop.hero.subtitle" }}</p>
+    </div>
+  </header>
+
+  <div class="itb-container">
+    <!-- CTA to tool -->
+    <div class="itb-guide-cta" style="margin-bottom:32px">
+      <div class="itb-guide-cta__text">
+        <h3 class="itb-guide-cta__title">{{ call .T "guide.crop.cta.title" }}</h3>
+        <p class="itb-guide-cta__desc">{{ call .T "guide.crop.cta.desc" }}</p>
+      </div>
+      <a href="/img/crop?lang={{ .Lang }}" class="itb-guide-cta__btn" data-ga="guide_cta">{{ call .T "guide.crop.cta.btn" }}</a>
+    </div>
+
+    <!-- What is cropping -->
+    <section class="itb-section" style="padding-top:0">
+      <div class="itb-section-inner">
+        <span class="itb-section-label">{{ call .T "guide.crop.s1.label" }}</span>
+        <h2 class="itb-section-title">{{ call .T "guide.crop.s1.title" }}</h2>
+        <p class="itb-section-body">{{ call .T "guide.crop.s1.body1" }}</p>
+        <p class="itb-section-body">{{ call .T "guide.crop.s1.body2" }}</p>
+      </div>
+    </section>
+
+    <!-- Free vs Fixed -->
+    <section class="itb-section itb-section--alt">
+      <div class="itb-section-inner">
+        <span class="itb-section-label">{{ call .T "guide.crop.s2.label" }}</span>
+        <h2 class="itb-section-title">{{ call .T "guide.crop.s2.title" }}</h2>
+        <p class="itb-section-body">{{ call .T "guide.crop.s2.body1" }}</p>
+        <p class="itb-section-body">{{ call .T "guide.crop.s2.body2" }}</p>
+      </div>
+    </section>
+
+    <!-- Common Ratios -->
+    <section class="itb-section">
+      <div class="itb-section-inner">
+        <span class="itb-section-label">{{ call .T "guide.crop.s3.label" }}</span>
+        <h2 class="itb-section-title">{{ call .T "guide.crop.s3.title" }}</h2>
+        <p class="itb-section-body">{{ call .T "guide.crop.s3.body" }}</p>
+        <div class="itb-format-grid" style="margin-top:24px">
+          <div class="itb-format-card">
+            <div class="itb-format-card__icon">⬜</div>
+            <h3 class="itb-format-card__name">1:1</h3>
+            <p class="itb-format-card__desc">{{ call .T "guide.crop.ratio.1_1" }}</p>
+          </div>
+          <div class="itb-format-card">
+            <div class="itb-format-card__icon">📺</div>
+            <h3 class="itb-format-card__name">16:9</h3>
+            <p class="itb-format-card__desc">{{ call .T "guide.crop.ratio.16_9" }}</p>
+          </div>
+          <div class="itb-format-card">
+            <div class="itb-format-card__icon">📱</div>
+            <h3 class="itb-format-card__name">9:16</h3>
+            <p class="itb-format-card__desc">{{ call .T "guide.crop.ratio.9_16" }}</p>
+          </div>
+          <div class="itb-format-card">
+            <div class="itb-format-card__icon">🖼️</div>
+            <h3 class="itb-format-card__name">4:3 / 3:4</h3>
+            <p class="itb-format-card__desc">{{ call .T "guide.crop.ratio.4_3" }}</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Avatar Guide -->
+    <section class="itb-section itb-section--alt">
+      <div class="itb-section-inner">
+        <div class="itb-split">
+          <div class="itb-split-text">
+            <span class="itb-section-label">{{ call .T "guide.crop.s4.label" }}</span>
+            <h2 class="itb-section-title">{{ call .T "guide.crop.s4.title" }}</h2>
+            <p class="itb-section-body">{{ call .T "guide.crop.s4.body1" }}</p>
+            <p class="itb-section-body">{{ call .T "guide.crop.s4.body2" }}</p>
+          </div>
+          <div class="itb-split-visual">
+            <div class="itb-visual-box">
+              <div class="itb-visual-box__icon">🧑</div>
+              <div class="itb-visual-stat">
+                <span class="itb-visual-stat__num">512×512</span>
+                <span class="itb-visual-stat__lbl">{{ call .T "guide.crop.s4.stat.lbl" }}</span>
+              </div>
+              <div class="itb-visual-box__label">{{ call .T "guide.crop.s4.stat.sub" }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Cover / Banner -->
+    <section class="itb-section">
+      <div class="itb-section-inner">
+        <span class="itb-section-label">{{ call .T "guide.crop.s5.label" }}</span>
+        <h2 class="itb-section-title">{{ call .T "guide.crop.s5.title" }}</h2>
+        <p class="itb-section-body">{{ call .T "guide.crop.s5.body1" }}</p>
+        <p class="itb-section-body">{{ call .T "guide.crop.s5.body2" }}</p>
+      </div>
+    </section>
+
+    <!-- Social Media -->
+    <section class="itb-section itb-section--alt">
+      <div class="itb-section-inner">
+        <span class="itb-section-label">{{ call .T "guide.crop.s6.label" }}</span>
+        <h2 class="itb-section-title">{{ call .T "guide.crop.s6.title" }}</h2>
+        <p class="itb-section-body">{{ call .T "guide.crop.s6.body" }}</p>
+        <div class="itb-steps" style="margin-top:24px">
+          <div class="itb-step">
+            <div class="itb-step__num">IG</div>
+            <h3 class="itb-step__title">{{ call .T "guide.crop.s6.ig.title" }}</h3>
+            <p class="itb-step__desc">{{ call .T "guide.crop.s6.ig.desc" }}</p>
+          </div>
+          <div class="itb-step">
+            <div class="itb-step__num">YT</div>
+            <h3 class="itb-step__title">{{ call .T "guide.crop.s6.yt.title" }}</h3>
+            <p class="itb-step__desc">{{ call .T "guide.crop.s6.yt.desc" }}</p>
+          </div>
+          <div class="itb-step">
+            <div class="itb-step__num">X</div>
+            <h3 class="itb-step__title">{{ call .T "guide.crop.s6.tw.title" }}</h3>
+            <p class="itb-step__desc">{{ call .T "guide.crop.s6.tw.desc" }}</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Crop vs Resize -->
+    <section class="itb-section">
+      <div class="itb-section-inner">
+        <span class="itb-section-label">{{ call .T "guide.crop.s7.label" }}</span>
+        <h2 class="itb-section-title">{{ call .T "guide.crop.s7.title" }}</h2>
+        <p class="itb-section-body">{{ call .T "guide.crop.s7.body1" }}</p>
+        <p class="itb-section-body">{{ call .T "guide.crop.s7.body2" }}</p>
+      </div>
+    </section>
+
+    <!-- Format Selection -->
+    <section class="itb-section itb-section--alt">
+      <div class="itb-section-inner">
+        <span class="itb-section-label">{{ call .T "guide.crop.s8.label" }}</span>
+        <h2 class="itb-section-title">{{ call .T "guide.crop.s8.title" }}</h2>
+        <p class="itb-section-body">{{ call .T "guide.crop.s8.body" }}</p>
+        <div class="itb-format-grid" style="margin-top:24px">
+          <div class="itb-format-card">
+            <div class="itb-format-card__icon">🖼️</div>
+            <h3 class="itb-format-card__name">JPG</h3>
+            <p class="itb-format-card__desc">{{ call .T "guide.crop.fmt.jpg" }}</p>
+          </div>
+          <div class="itb-format-card">
+            <div class="itb-format-card__icon">🎨</div>
+            <h3 class="itb-format-card__name">PNG</h3>
+            <p class="itb-format-card__desc">{{ call .T "guide.crop.fmt.png" }}</p>
+          </div>
+          <div class="itb-format-card">
+            <div class="itb-format-card__icon">⚡</div>
+            <h3 class="itb-format-card__name">WebP</h3>
+            <p class="itb-format-card__desc">{{ call .T "guide.crop.fmt.webp" }}</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Common Mistakes -->
+    <section class="itb-section">
+      <div class="itb-section-inner">
+        <span class="itb-section-label">{{ call .T "guide.crop.s9.label" }}</span>
+        <h2 class="itb-section-title">{{ call .T "guide.crop.s9.title" }}</h2>
+        <p class="itb-section-body">{{ call .T "guide.crop.s9.body" }}</p>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="itb-faq">
+      <h2 class="itb-faq__title">FAQ</h2>
+      {{ range $i,$f := .FAQs }}
+      <div class="itb-faq-item" id="itbFaq-{{ $i }}">
+        <button class="itb-faq-item__q" onclick="itbToggleFAQ({{ $i }})" aria-expanded="false">{{ $f.Q }}<span class="itb-faq-item__arrow">▾</span></button>
+        <div class="itb-faq-item__a"><p>{{ $f.A }}</p></div>
+      </div>
+      {{ end }}
+    </section>
+
+    <!-- Bottom CTA -->
+    <div class="itb-guide-cta" style="margin-top:32px;margin-bottom:48px">
+      <div class="itb-guide-cta__text">
+        <h3 class="itb-guide-cta__title">{{ call .T "guide.crop.cta2.title" }}</h3>
+        <p class="itb-guide-cta__desc">{{ call .T "guide.crop.cta2.desc" }}</p>
+      </div>
+      <a href="/img/crop?lang={{ .Lang }}" class="itb-guide-cta__btn" data-ga="guide_cta">{{ call .T "guide.crop.cta2.btn" }}</a>
+    </div>
+  </div>
+</div>
+{{ end }}
+
+{{ define "extraScript" }}
+<script src="/static/js/img-tabs.js?v={{ .AssetVer }}"></script>
+<script>
+function itbToggleFAQ(i) {
+  var item = document.getElementById('itbFaq-' + i);
+  if (!item) return;
+  var btn = item.querySelector('.itb-faq-item__q');
+  var ans = item.querySelector('.itb-faq-item__a');
+  var isOpen = ans.style.display === 'block';
+  ans.style.display = isOpen ? 'none' : 'block';
+  if (btn) btn.setAttribute('aria-expanded', !isOpen);
+}
+</script>
+{{ end }}

@@ -1,0 +1,97 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" fill="none">
+  <defs>
+    <linearGradient id="header-bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#6366f1"/>
+      <stop offset="100%" style="stop-color:#8b5cf6"/>
+    </linearGradient>
+    <linearGradient id="input-bg" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" style="stop-color:#ffffff"/>
+      <stop offset="100%" style="stop-color:#f8fafc"/>
+    </linearGradient>
+    <linearGradient id="result-bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f0fdf4"/>
+      <stop offset="100%" style="stop-color:#dcfce7"/>
+    </linearGradient>
+  </defs>
+  <!-- Background -->
+  <rect width="1200" height="630" rx="16" fill="#f8fafc"/>
+  <!-- Header -->
+  <rect x="0" y="0" width="1200" height="80" rx="16" fill="url(#header-bg)"/>
+  <rect x="0" y="40" width="1200" height="40" fill="url(#header-bg)"/>
+  <!-- Header text -->
+  <text x="60" y="50" font-family="system-ui,-apple-system,sans-serif" font-size="24" font-weight="700" fill="white">AI Detector</text>
+  <text x="60" y="68" font-family="system-ui,-apple-system,sans-serif" font-size="12" fill="rgba(255,255,255,0.8)">Check text for AI-generated content</text>
+  <!-- Mode tabs -->
+  <rect x="200" y="35" width="80" height="30" rx="15" fill="rgba(255,255,255,0.2)"/>
+  <text x="240" y="54" font-family="system-ui,-apple-system,sans-serif" font-size="11" fill="white" text-anchor="middle">Text</text>
+  <rect x="290" y="35" width="80" height="30" rx="15" fill="rgba(255,255,255,0.1)"/>
+  <text x="330" y="54" font-family="system-ui,-apple-system,sans-serif" font-size="11" fill="rgba(255,255,255,0.8)" text-anchor="middle">File</text>
+  <rect x="380" y="35" width="80" height="30" rx="15" fill="rgba(255,255,255,0.1)"/>
+  <text x="420" y="54" font-family="system-ui,-apple-system,sans-serif" font-size="11" fill="rgba(255,255,255,0.8)" text-anchor="middle">URL</text>
+  <!-- Privacy badge -->
+  <rect x="1050" y="30" width="120" height="40" rx="20" fill="rgba(0,212,170,0.3)"/>
+  <text x="1110" y="55" font-family="system-ui,-apple-system,sans-serif" font-size="10" fill="rgba(255,255,255,0.9)" text-anchor="middle">100% Secure</text>
+  <!-- Input Panel (Left) -->
+  <rect x="30" y="100" width="540" height="480" rx="12" fill="url(#input-bg)" stroke="#e2e8f0"/>
+  <text x="50" y="130" font-family="system-ui,-apple-system,sans-serif" font-size="14" font-weight="600" fill="#1e293b">Input Text</text>
+  <!-- TextArea placeholder -->
+  <rect x="50" y="150" width="500" height="300" rx="8" fill="#ffffff" stroke="#e2e8f0"/>
+  <text x="70" y="180" font-family="system-ui,-apple-system,sans-serif" font-size="13" fill="#64748b">Paste your text here to analyze for AI content...</text>
+  <!-- Sample lines -->
+  <text x="70" y="220" font-family="system-ui,-apple-system,sans-serif" font-size="12" fill="#94a3b8">The development of artificial intelligence has</text>
+  <text x="70" y="245" font-family="system-ui,-apple-system,sans-serif" font-size="12" fill="#94a3b8">revolutionized many aspects of our daily lives...</text>
+  <text x="70" y="270" font-family="system-ui,-apple-system,sans-serif" font-size="12" fill="#94a3b8">AI models like ChatGPT can generate human-like</text>
+  <text x="70" y="295" font-family="system-ui,-apple-system,sans-serif" font-size="12" fill="#94a3b8">text that is increasingly difficult to detect...</text>
+  <!-- Word counter -->
+  <text x="50" y="470" font-family="system-ui,-apple-system,sans-serif" font-size="11" fill="#94a3b8">256 words</text>
+  <!-- Detect button -->
+  <rect x="200" y="450" width="200" height="45" rx="22" fill="#6366f1"/>
+  <text x="300" y="478" font-family="system-ui,-apple-system,sans-serif" font-size="14" font-weight="600" fill="white" text-anchor="middle">Detect AI Content</text>
+  <!-- Result Panel (Right) -->
+  <rect x="600" y="100" width="570" height="480" rx="12" fill="url(#result-bg)" stroke="#10b981" stroke-width="2"/>
+  <text x="620" y="130" font-family="system-ui,-apple-system,sans-serif" font-size="14" font-weight="600" fill="#1e293b">Analysis Results</text>
+  <!-- Score gauge -->
+  <circle cx="700" cy="220" r="60" fill="#ffffff" stroke="#10b981" stroke-width="4"/>
+  <text x="700" y="210" font-family="system-ui,-apple-system,sans-serif" font-size="28" font-weight="700" fill="#10b981" text-anchor="middle">85%</text>
+  <text x="700" y="235" font-family="system-ui,-apple-system,sans-serif" font-size="11" fill="#64748b" text-anchor="middle">AI Detected</text>
+  <!-- Breakdown bars -->
+  <rect x="800" y="160" width="350" height="20" rx="10" fill="#e2e8f0"/>
+  <rect x="800" y="160" width="280" height="20" rx="10" fill="#ef4444"/>
+  <text x="820" y="175" font-family="system-ui,-apple-system,sans-serif" font-size="10" fill="white">AI Generated 80%</text>
+  <rect x="800" y="190" width="350" height="20" rx="10" fill="#e2e8f0"/>
+  <rect x="800" y="190" width="70" height="20" rx="10" fill="#fbbf24"/>
+  <text x="820" y="205" font-family="system-ui,-apple-system,sans-serif" font-size="10" fill="#1e293b">Mixed 20%</text>
+  <rect x="800" y="220" width="350" height="20" rx="10" fill="#e2e8f0"/>
+  <rect x="800" y="220" width="0" height="20" rx="10" fill="#10b981"/>
+  <text x="820" y="235" font-family="system-ui,-apple-system,sans-serif" font-size="10" fill="#64748b">Human 0%</text>
+  <!-- Detector logos -->
+  <text x="620" y="280" font-family="system-ui,-apple-system,sans-serif" font-size="12" font-weight="600" fill="#1e293b">Multi-Detector Scores</text>
+  <rect x="620" y="300" width="90" height="50" rx="8" fill="#ffffff" stroke="#e2e8f0"/>
+  <text x="665" y="320" font-family="system-ui,-apple-system,sans-serif" font-size="10" font-weight="600" fill="#1e293b" text-anchor="middle">GPTZero</text>
+  <text x="665" y="340" font-family="system-ui,-apple-system,sans-serif" font-size="14" font-weight="700" fill="#ef4444" text-anchor="middle">92%</text>
+  <rect x="720" y="300" width="90" height="50" rx="8" fill="#ffffff" stroke="#e2e8f0"/>
+  <text x="765" y="320" font-family="system-ui,-apple-system,sans-serif" font-size="10" font-weight="600" fill="#1e293b" text-anchor="middle">Turnitin</text>
+  <text x="765" y="340" font-family="system-ui,-apple-system,sans-serif" font-size="14" font-weight="700" fill="#ef4444" text-anchor="middle">88%</text>
+  <rect x="820" y="300" width="90" height="50" rx="8" fill="#ffffff" stroke="#e2e8f0"/>
+  <text x="865" y="320" font-family="system-ui,-apple-system,sans-serif" font-size="10" font-weight="600" fill="#1e293b" text-anchor="middle">Copyleaks</text>
+  <text x="865" y="340" font-family="system-ui,-apple-system,sans-serif" font-size="14" font-weight="700" fill="#ef4444" text-anchor="middle">85%</text>
+  <rect x="920" y="300" width="90" height="50" rx="8" fill="#ffffff" stroke="#e2e8f0"/>
+  <text x="965" y="320" font-family="system-ui,-apple-system,sans-serif" font-size="10" font-weight="600" fill="#1e293b" text-anchor="middle">Originality</text>
+  <text x="965" y="340" font-family="system-ui,-apple-system,sans-serif" font-size="14" font-weight="700" fill="#ef4444" text-anchor="middle">90%</text>
+  <!-- Highlighted text sample -->
+  <text x="620" y="380" font-family="system-ui,-apple-system,sans-serif" font-size="12" font-weight="600" fill="#1e293b">Sentence Analysis</text>
+  <rect x="620" y="400" width="540" height="120" rx="8" fill="#ffffff" stroke="#e2e8f0"/>
+  <text x="640" y="425" font-family="system-ui,-apple-system,sans-serif" font-size="11" fill="#1e293b">The development of artificial intelligence has revolutionized</text>
+  <rect x="620" y="440" width="540" height="3" fill="#ef4444" opacity="0.6"/>
+  <text x="640" y="465" font-family="system-ui,-apple-system,sans-serif" font-size="11" fill="#64748b">AI models like ChatGPT can generate human-like text...</text>
+  <rect x="620" y="480" width="540" height="3" fill="#fbbf24" opacity="0.6"/>
+  <text x="640" y="505" font-family="system-ui,-apple-system,sans-serif" font-size="11" fill="#1e293b">However, detecting this content remains challenging...</text>
+  <rect x="620" y="520" width="540" height="3" fill="#10b981" opacity="0.6"/>
+  <!-- Footer stats -->
+  <rect x="30" y="600" width="180" height="20" rx="10" fill="#6366f1" opacity="0.1"/>
+  <text x="120" y="615" font-family="system-ui,-apple-system,sans-serif" font-size="10" fill="#6366f1" text-anchor="middle">Free Detection</text>
+  <rect x="220" y="600" width="180" height="20" rx="10" fill="#10b981" opacity="0.1"/>
+  <text x="310" y="615" font-family="system-ui,-apple-system,sans-serif" font-size="10" fill="#10b981" text-anchor="middle">99% Accuracy</text>
+  <rect x="410" y="600" width="180" height="20" rx="10" fill="#f59e0b" opacity="0.1"/>
+  <text x="500" y="615" font-family="system-ui,-apple-system,sans-serif" font-size="10" fill="#f59e0b" text-anchor="middle">50+ Languages</text>
+</svg>

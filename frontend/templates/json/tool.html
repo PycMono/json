@@ -1,0 +1,796 @@
+{{ define "json_head" }}
+<!-- Monaco Editor -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/monaco-editor/0.45.0/min/vs/loader.min.js"></script>
+<!-- CDN libs loaded per-tool as needed -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/FileSaver.js/2.0.5/FileSaver.min.js"></script>
+{{ end }}
+
+{{ define "json_content" }}
+{{ $lang := .Lang }}
+{{ $meta := .Meta }}
+
+<!-- JSON Tool Sub-Navigation -->
+<nav class="jt-subnav">
+  <div class="jt-container jt-subnav-inner">
+    <div class="jt-subnav__left">
+      <a href="/json?lang={{ $lang }}" class="jt-subnav__logo" data-ga data-ga-action="back_to_toolbox" data-ga-category="json-nav">{{ call .T "json.back_to_toolbox" }}</a>
+      <div class="jt-subnav__scroll">
+        {{ range .HotTools }}
+        <a href="/json/{{ .Key }}?lang={{ $lang }}"
+           class="jt-subnav__tab{{ if eq $.ToolKey .Key }} active{{ end }}" data-ga data-ga-action="tab_switch" data-ga-category="json-nav" data-ga-label="{{ .Key }}">
+          <span>{{ .Icon }}</span>
+          <span>{{ if eq $lang "zh" }}{{ .TitleZH }}{{ else }}{{ .TitleEN }}{{ end }}</span>
+        </a>
+        {{ end }}
+        <a href="/json?lang={{ $lang }}" class="jt-subnav__all" data-ga data-ga-action="all_tools" data-ga-category="json-nav">{{ call .T "json.home.all_tools" }} →</a>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- Tool Hero (centered, similar to email header) -->
+<section class="jt-tool-hero">
+  <div class="jt-container">
+    <div class="jt-tool-hero__inner">
+      <span class="jt-tool-hero__icon">{{ $meta.Icon }}</span>
+      <h1 class="jt-tool-hero__title">
+        {{ if eq $lang "zh" }}{{ $meta.TitleZH }}{{ else }}{{ $meta.TitleEN }}{{ end }}
+      </h1>
+      <p class="jt-tool-hero__desc">
+        {{ if eq $lang "zh" }}{{ $meta.DescZH }}{{ else }}{{ $meta.DescEN }}{{ end }}
+      </p>
+    </div>
+  </div>
+</section>
+
+<!-- Tool Options (per-tool) -->
+<div class="jt-tool-options-bar" id="toolOptionsBar">
+  <div class="jt-container">
+    <div id="toolOptions" class="jt-tool-options-inner"></div>
+  </div>
+</div>
+
+<!-- Main Workspace -->
+<section class="jt-tool-workspace">
+  <div class="jt-container jt-container--wide" style="position:relative">
+
+    <!-- Tool Selector Bar (shown for ALL tools) -->
+    <div class="jt-tool-selector-bar">
+      <div class="jt-tool-selector" id="toolSelector" onclick="toggleToolSelector()" aria-label='{{ call .T "json.selector.toggle" }}' role="button" tabindex="0" data-ga data-ga-action="toggle_selector" data-ga-category="json-tool" data-ga-label="{{ .ToolKey }}">
+        <span class="jt-tool-selector__icon">{{ $meta.Icon }}</span>
+        <span class="jt-tool-selector__name" id="currentToolName">{{ if eq $lang "zh" }}{{ $meta.TitleZH }}{{ else }}{{ $meta.TitleEN }}{{ end }}</span>
+        <span class="jt-tool-selector__hint">{{ call .T "json.selector.search" }}</span>
+        <span class="jt-tool-selector__arrow">▾</span>
+        <div class="jt-tool-dropdown" id="toolDropdown" onclick="event.stopPropagation()">
+          <div class="jt-tool-dropdown__search">
+            <input type="text" id="toolSearchInput" placeholder="{{ call .T "json.selector.search" }}" oninput="filterToolDropdown(this.value)" onkeydown="handleToolSearchKeydown(event)">
+          </div>
+          {{ range $group := list "validate" "view" "convert" "codegen" "schema" "encode" "generate" }}
+          <div class="jt-tool-dropdown__group" data-group="{{ $group }}">
+            <div class="jt-tool-dropdown__group-title">{{ call $.T (printf "json.home.group.%s" $group) }}</div>
+            {{ range $.AllTools }}{{ if eq .Group $group }}
+            <div class="jt-tool-dropdown__item{{ if eq $.ToolKey .Key }} active{{ end }}" data-key="{{ .Key }}" data-name="{{ if eq $lang "zh" }}{{ .TitleZH }}{{ else }}{{ .TitleEN }}{{ end }}" data-keywords="{{ .Keywords }}" onclick="selectTool('{{ .Key }}')" data-ga data-ga-action="tool_select" data-ga-category="json-tool" data-ga-label="{{ .Key }}">
+              <span class="jt-tool-dropdown__item-icon">{{ .Icon }}</span>
+              <span class="jt-tool-dropdown__item-name">{{ if eq $lang "zh" }}{{ .TitleZH }}{{ else }}{{ .TitleEN }}{{ end }}</span>
+            </div>
+            {{ end }}{{ end }}
+          </div>
+          {{ end }}
+        </div>
+      </div>
+    </div>
+
+    {{ if eq .ToolKey "diff" }}
+    <!-- Diff: 3-column layout with swap + orange button in center -->
+    <div class="jt-editor-wrap" style="position:relative">
+      <!-- Sidebar Toggle Button -->
+      <button class="jt-sidebar-toggle" id="sidebarToggle" onclick="toggleHistorySidebar()" title="{{ call .T "json.sidebar.toggle" }}" aria-label='{{ call .T "json.sidebar.toggle" }}' data-ga data-ga-action="toggle_sidebar" data-ga-category="json-tool" data-ga-label="{{ .ToolKey }}"><span class="jt-sidebar-toggle__arrow">◀</span></button>
+      <!-- History Sidebar -->
+      <aside class="jt-history-sidebar" id="historySidebar" aria-label='{{ call .T "json.history.title" }}' aria-expanded="true">
+        <div class="jt-sidebar-header">
+          <span class="jt-sidebar-title">🕐 {{ call .T "json.history.title" }}</span>
+          <div class="jt-sidebar-actions">
+            <button class="jt-sidebar-btn" onclick="clearHistory()" title="{{ call .T "json.history.clear" }}" aria-label='{{ call .T "json.history.clear" }}' data-ga data-ga-action="clear_history" data-ga-category="json-tool" data-ga-label="{{ .ToolKey }}">🗑️</button>
+            <button class="jt-sidebar-btn" onclick="toggleHistorySidebar()" title="{{ call .T "json.sidebar.toggle" }}" aria-label='{{ call .T "json.sidebar.toggle" }}' data-ga data-ga-action="toggle_sidebar" data-ga-category="json-tool" data-ga-label="{{ .ToolKey }}">✕</button>
+          </div>
+        </div>
+        <input type="text" id="jtHistorySearch" class="jt-history-search" placeholder="Search..." oninput="renderHistory()">
+        <div class="jt-history-list" id="historyList" role="list">
+          <div class="jt-history-empty">{{ call .T "json.history.empty" }}</div>
+        </div>
+      </aside>
+      <!-- Editor Layout -->
+      <div class="jt-editor-layout">
+
+      <!-- Left: Original JSON -->
+      <div class="jt-editor-pane jt-editor-pane--input">
+        <div class="jt-editor-pane__header">
+          <span class="jt-editor-pane__label">{{ call .T "json.diff.left" }}</span>
+          <div class="jt-editor-pane__actions">
+            <button onclick="loadLeftExample()" class="jt-btn jt-btn--ghost" aria-label='{{ call .T "json.common.load_example" }}' data-tooltip='{{ call .T "json.common.load_example" }}' data-ga data-ga-action="load_example" data-ga-category="json-tool" data-ga-label="{{ .ToolKey }}">{{ call .T "json.common.example" }}</button>
+            <button onclick="if(leftEditor)leftEditor.setValue('')" class="jt-btn jt-btn--ghost" aria-label='{{ call .T "json.common.clear" }}' data-tooltip='{{ call .T "json.common.clear" }}' data-ga data-ga-action="clear" data-ga-category="json-tool" data-ga-label="{{ .ToolKey }}">{{ call .T "json.common.clear" }}</button>
+          </div>
+        </div>
+        <div id="diffLeftEditor" class="jt-monaco-editor"></div>
+        <div class="jt-editor-pane__footer">
+          <span id="diffLeftSize"></span>
+        </div>
+      </div>
+
+      <!-- Middle: orange arrow + swap -->
+      <div class="jt-editor-actions">
+        <button class="jt-process-btn" id="processBtn" onclick="runProcessJson()" title="{{ call .T "json.diff.btn" }}" aria-label='{{ call .T "json.diff.btn" }}' data-ga data-ga-action="process" data-ga-category="json-tool" data-ga-label="{{ .ToolKey }}">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+               stroke="currentColor" stroke-width="2.5">
+            <polyline points="9 18 15 12 9 6"/>
+          </svg>
+        </button>
+        <button class="jt-swap-btn" onclick="swapDiffEditors()" data-tooltip='{{ call .T "json.common.swap" }}' aria-label='{{ call .T "json.common.swap" }}' data-ga data-ga-action="swap" data-ga-category="json-tool" data-ga-label="{{ .ToolKey }}">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+               stroke="currentColor" stroke-width="2">
+            <polyline points="17 1 21 5 17 9"/>
+            <path d="M3 11V9a4 4 0 0 1 4-4h14"/>
+            <polyline points="7 23 3 19 7 15"/>
+            <path d="M21 13v2a4 4 0 0 1-4 4H3"/>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Right: Compare JSON -->
+      <div class="jt-editor-pane jt-editor-pane--output">
+        <div class="jt-editor-pane__header">
+          <span class="jt-editor-pane__label">{{ call .T "json.diff.right" }}</span>
+            <div class="jt-editor-pane__actions">
+              <button onclick="loadRightExample()" class="jt-btn jt-btn--ghost" aria-label='{{ call .T "json.common.load_example" }}' data-tooltip='{{ call .T "json.common.load_example" }}' data-ga data-ga-action="load_example" data-ga-category="json-tool" data-ga-label="{{ .ToolKey }}">{{ call .T "json.common.example" }}</button>
+              <button onclick="if(rightEditor)rightEditor.setValue('')" class="jt-btn jt-btn--ghost" aria-label='{{ call .T "json.common.clear" }}' data-tooltip='{{ call .T "json.common.clear" }}' data-ga data-ga-action="clear" data-ga-category="json-tool" data-ga-label="{{ .ToolKey }}">{{ call .T "json.common.clear" }}</button>
+            </div>
+          </div>
+        <div id="diffRightEditor" class="jt-monaco-editor"></div>
+        <div class="jt-editor-pane__footer">
+          <span id="diffRightSize"></span>
+        </div>
+      </div>
+
+    </div><!-- /jt-editor-layout -->
+    </div><!-- /jt-editor-wrap -->
+    <!-- Diff Result -->
+    <div id="diffResult" class="jt-diff-result" style="margin-top:12px"></div>
+
+    {{ else if or (eq .ToolKey "tree") (eq .ToolKey "table") (eq .ToolKey "size") (eq .ToolKey "search") }}
+    <!-- Tree/Table/Size/Search: input left + orange arrow + custom output right -->
+    <div class="jt-editor-wrap" style="position:relative">
+      <!-- Sidebar Toggle Button -->
+      <button class="jt-sidebar-toggle" id="sidebarToggle" onclick="toggleHistorySidebar()" title="{{ call .T "json.sidebar.toggle" }}" aria-label='{{ call .T "json.sidebar.toggle" }}' data-ga data-ga-action="toggle_sidebar" data-ga-category="json-tool" data-ga-label="{{ .ToolKey }}"><span class="jt-sidebar-toggle__arrow">◀</span></button>
+      <!-- History Sidebar -->
+      <aside class="jt-history-sidebar" id="historySidebar" aria-label='{{ call .T "json.history.title" }}' aria-expanded="true">
+        <div class="jt-sidebar-header">
+          <span class="jt-sidebar-title">🕐 {{ call .T "json.history.title" }}</span>
+          <div class="jt-sidebar-actions">
+            <button class="jt-sidebar-btn" onclick="clearHistory()" title="{{ call .T "json.history.clear" }}" aria-label='{{ call .T "json.history.clear" }}' data-ga data-ga-action="clear_history" data-ga-category="json-tool" data-ga-label="{{ .ToolKey }}">🗑️</button>
+            <button class="jt-sidebar-btn" onclick="toggleHistorySidebar()" title="{{ call .T "json.sidebar.toggle" }}" aria-label='{{ call .T "json.sidebar.toggle" }}' data-ga data-ga-action="toggle_sidebar" data-ga-category="json-tool" data-ga-label="{{ .ToolKey }}">✕</button>
+          </div>
+        </div>
+        <input type="text" id="jtHistorySearch" class="jt-history-search" placeholder="Search..." oninput="renderHistory()">
+        <div class="jt-history-list" id="historyList" role="list">
+          <div class="jt-history-empty">{{ call .T "json.history.empty" }}</div>
+        </div>
+      </aside>
+      <!-- Editor Layout -->
+      <div class="jt-editor-layout">
+
+      <!-- Left: Input -->
+      <div class="jt-editor-pane jt-editor-pane--input" id="inputPane">
+        <!-- Tab Bar for multi-tab input -->
+        <div class="jt-tabs-bar" id="tabsBar">
+          <div class="jt-tabs-list" id="tabsList">
+            <div class="jt-tab active" data-tab="0" onclick="switchTab(0)">
+              <span class="jt-tab-title">{{ call .T "json.tabs.document" }} 1</span>
+              <button class="jt-tab-close" onclick="event.stopPropagation(); closeTab(0)" style="display:none">×</button>
+            </div>
+          </div>
+          <button class="jt-tab-add" onclick="newTab()" title='{{ call .T "json.tabs.new_tab" }} (Ctrl+T)' aria-label='{{ call .T "json.tabs.new_tab" }}' data-tooltip='{{ call .T "json.tabs.new_tab" }} (Ctrl+T)' data-ga data-ga-action="new_tab" data-ga-category="json-tool" data-ga-label="{{ .ToolKey }}">+</button>
+        </div>
+        <div class="jt-editor-pane__header">
+          <span class="jt-editor-pane__label">{{ call .T "json.common.input" }}</span>
+          <div class="jt-editor-pane__actions">
+            <!-- Real-time validation status badge -->
+            <span id="realtimeValidationBadge" class="jt-validation-badge">
+              <span class="jt-badge-icon"></span>
+              <span class="jt-badge-text">{{ call .T "json.validation.waiting" }}</span>
+            </span>
+            <span id="inputOptions" class="jt-input-options"></span>
+            <button onclick="loadExample()" class="jt-btn jt-btn--ghost" aria-label='{{ call .T "json.common.load_example" }}' data-tooltip='{{ call .T "json.common.load_example" }}' data-shortcut="Ctrl+E" data-ga data-ga-action="load_example" data-ga-category="json-tool" data-ga-label="{{ .ToolKey }}">{{ call .T "json.common.example" }}</button>
+            <button onclick="clearInput()"  class="jt-btn jt-btn--ghost" aria-label='{{ call .T "json.common.clear" }}' data-tooltip='{{ call .T "json.common.clear" }}' data-shortcut="Ctrl+Shift+X" data-ga data-ga-action="clear" data-ga-category="json-tool" data-ga-label="{{ .ToolKey }}">{{ call .T "json.common.clear" }}</button>
+            <label class="jt-btn jt-btn--ghost" aria-label='{{ call .T "json.common.upload" }}' data-tooltip='{{ call .T "json.common.upload" }}' data-ga data-ga-action="upload" data-ga-category="json-tool" data-ga-label="{{ .ToolKey }}">
+              <input type="file" accept=".json,.txt" style="display:none" onchange="uploadFile(this)">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                <polyline points="17 8 12 3 7 8"></polyline>
+                <line x1="12" y1="3" x2="12" y2="15"></line>
+              </svg>
+              <span>{{ call .T "json.common.upload" }}</span>
+            </label>
+          </div>
+        </div>
+        <div id="inputEditor" class="jt-monaco-editor"></div>
+        <div class="jt-editor-pane__footer">
+          <span id="inputSize"></span>
+          <span id="inputJsonStats" class="jt-json-stats"></span>
+        </div>
+      </div>
+
+      <!-- Resize Handle -->
+      <div class="jt-resize-handle" id="resizeHandle" title="拖动调整比例，双击重置"></div>
+
+      <!-- Middle: orange arrow button -->
+      <div class="jt-editor-actions">
+        <button class="jt-process-btn" id="processBtn" onclick="runProcessJson()" title="{{ call .T "json.common.process" }}" aria-label='{{ call .T "json.common.process" }}' data-tooltip='{{ call .T "json.common.process" }}' data-shortcut="Ctrl+Enter" data-ga data-ga-action="process" data-ga-category="json-tool" data-ga-label="{{ .ToolKey }}">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+               stroke="currentColor" stroke-width="2.5">
+            <polyline points="9 18 15 12 9 6"/>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Right: Custom render output -->
+      <div class="jt-editor-pane jt-editor-pane--output" id="outputPane">
+        <div class="jt-editor-pane__header">
+          <span class="jt-editor-pane__label">{{ call .T "json.common.output" }}</span>
+          <!-- View Switcher (code/tree/table) -->
+          <div class="jt-view-switcher" id="viewSwitcher">
+            <button class="jt-view-btn active"
+                    data-view="code"
+                    onclick="switchOutputView('code')"
+                    data-tooltip="{{ call .T "json.view.code" }}"
+                    data-shortcut="Ctrl+1"
+                    aria-label='{{ call .T "json.view.code" }}'
+                    data-ga data-ga-action="view_switch" data-ga-category="json-tool" data-ga-label="code">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="16 18 22 12 16 6"></polyline>
+                <polyline points="8 6 12 15 18 9 6"></polyline>
+              </svg>
+              <span>{{ call .T "json.view.code" }}</span>
+            </button>
+            <button class="jt-view-btn"
+                    data-view="tree"
+                    onclick="switchOutputView('tree')"
+                    data-tooltip="{{ call .T "json.view.tree" }}"
+                    data-shortcut="Ctrl+2"
+                    aria-label='{{ call .T "json.view.tree" }}'>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="3"></circle>
+                <circle cx="12" cy="5" r="3"></circle>
+                <circle cx="12" cy="19" r="3"></circle>
+                <line x1="12" y1="9" x2="12" y2="15"></line>
+              </svg>
+              <span>{{ call .T "json.view.tree" }}</span>
+            </button>
+            <button class="jt-view-btn"
+                    data-view="table"
+                    onclick="switchOutputView('table')"
+                    data-tooltip="{{ call .T "json.view.table" }}"
+                    data-shortcut="Ctrl+3"
+                    aria-label='{{ call .T "json.view.table" }}'
+                    data-ga data-ga-action="view_switch" data-ga-category="json-tool" data-ga-label="table">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                <line x1="3" y1="9" x2="21" y2="9"></line>
+                <line x1="3" y1="3" x2="21" y2="3"></line>
+                <line x1="9" y1="3" x2="15" y2="3"></line>
+                <line x1="9" y1="9" x2="3" y2="21"></line>
+              </svg>
+              <span>{{ call .T "json.view.table" }}</span>
+            </button>
+          </div>
+          <div class="jt-editor-pane__actions">
+            {{ if eq .ToolKey "tree" }}
+            <button class="jt-btn jt-btn--ghost" onclick="expandAllOutputTree()" data-tooltip='{{ call .T "json.output.expand_all" }}' aria-label='{{ call .T "json.output.expand_all" }}' data-ga data-ga-action="expand_all" data-ga-category="json-tool" data-ga-label="{{ .ToolKey }}">▼ {{ call .T "json.output.expand_all" }}</button>
+            <button class="jt-btn jt-btn--ghost" onclick="collapseAllOutputTree()" data-tooltip='{{ call .T "json.output.collapse_all" }}' aria-label='{{ call .T "json.output.collapse_all" }}' data-ga data-ga-action="collapse_all" data-ga-category="json-tool" data-ga-label="{{ .ToolKey }}">▶ {{ call .T "json.output.collapse_all" }}</button>
+            {{ else if eq .ToolKey "search" }}
+            <div id="searchControls" style="flex:1;justify-content:flex-end"></div>
+            {{ end }}
+          </div>
+        </div>
+        <div class="jt-viewer-render-area">
+          <div id="outputEditor" class="jt-monaco-view"></div>
+          <div id="treeOutput"   {{ if ne .ToolKey "tree"   }}style="display:none"{{ end }}></div>
+          <div id="tableOutput"  {{ if ne .ToolKey "table"  }}style="display:none"{{ end }}></div>
+          <div id="sizeOutput"   {{ if ne .ToolKey "size"   }}style="display:none"{{ end }}></div>
+          <div id="searchOutput" {{ if ne .ToolKey "search" }}style="display:none"{{ end }}></div>
+        </div>
+      </div>
+
+    </div><!-- /jt-editor-layout -->
+    </div><!-- /jt-editor-wrap -->
+
+    {{ else if eq .ToolKey "from-excel" }}
+    <!-- Excel: side-by-side upload left + output right -->
+    <div class="jt-editor-wrap" style="position:relative">
+      <!-- Sidebar Toggle Button -->
+      <button class="jt-sidebar-toggle" id="sidebarToggle" onclick="toggleHistorySidebar()" title="{{ call .T "json.sidebar.toggle" }}" aria-label='{{ call .T "json.sidebar.toggle" }}' data-ga data-ga-action="toggle_sidebar" data-ga-category="json-tool" data-ga-label="{{ .ToolKey }}"><span class="jt-sidebar-toggle__arrow">◀</span></button>
+      <!-- History Sidebar -->
+      <aside class="jt-history-sidebar" id="historySidebar" aria-label='{{ call .T "json.history.title" }}' aria-expanded="true">
+        <div class="jt-sidebar-header">
+          <span class="jt-sidebar-title">🕐 {{ call .T "json.history.title" }}</span>
+          <div class="jt-sidebar-actions">
+            <button class="jt-sidebar-btn" onclick="clearHistory()" title="{{ call .T "json.history.clear" }}" aria-label='{{ call .T "json.history.clear" }}' data-ga data-ga-action="clear_history" data-ga-category="json-tool" data-ga-label="{{ .ToolKey }}">🗑️</button>
+            <button class="jt-sidebar-btn" onclick="toggleHistorySidebar()" title="{{ call .T "json.sidebar.toggle" }}" aria-label='{{ call .T "json.sidebar.toggle" }}' data-ga data-ga-action="toggle_sidebar" data-ga-category="json-tool" data-ga-label="{{ .ToolKey }}">✕</button>
+          </div>
+        </div>
+        <input type="text" id="jtHistorySearch" class="jt-history-search" placeholder="Search..." oninput="renderHistory()">
+        <div class="jt-history-list" id="historyList" role="list">
+          <div class="jt-history-empty">{{ call .T "json.history.empty" }}</div>
+        </div>
+      </aside>
+      <!-- Excel Content -->
+      <div class="jt-schema-layout jt-schema-layout--wide">
+        <div class="jt-editor-pane">
+          <div class="jt-editor-pane__header">
+            <span class="jt-editor-pane__label">{{ call .T "json.convert.upload_excel" }}</span>
+          </div>
+          <div style="padding:24px">
+            <div class="jt-upload-box" id="excelUploadBox">
+              <span class="jt-upload-icon">📗</span>
+              <p>{{ call .T "json.convert.upload_excel" }}</p>
+              <label class="jt-btn jt-btn--primary" data-ga data-ga-action="upload_excel" data-ga-category="json-tool" data-ga-label="{{ .ToolKey }}">
+                {{ call .T "json.common.upload" }}
+                <input type="file" accept=".xlsx,.xls,.csv" style="display:none"
+                       onchange="handleExcelUpload(this)">
+              </label>
+            </div>
+          </div>
+        </div>
+        <div class="jt-schema-mid-action" style="visibility:hidden;width:0;padding:0;border:none"></div>
+        <div class="jt-editor-pane jt-editor-pane--output">
+          <div class="jt-editor-pane__header">
+            <span class="jt-editor-pane__label">{{ call .T "json.common.output" }}</span>
+            <div class="jt-editor-pane__actions">
+              <button onclick="copyOutput()" class="jt-btn jt-btn--primary" aria-label='{{ call .T "json.common.copy" }}' data-ga data-ga-action="copy" data-ga-category="json-tool" data-ga-label="{{ .ToolKey }}">{{ call .T "json.common.copy" }}</button>
+              <button onclick="downloadOutput('output.json','json')" class="jt-btn jt-btn--ghost" aria-label='{{ call .T "json.common.download" }}' data-ga data-ga-action="download" data-ga-category="json-tool" data-ga-label="{{ .ToolKey }}">{{ call .T "json.common.download" }}</button>
+            </div>
+          </div>
+          <div id="outputEditor" class="jt-monaco-editor"></div>
+        </div>
+      </div>
+    </div><!-- /jt-editor-wrap -->
+
+    {{ else if eq .ToolKey "schema-validate" }}
+    <!-- Schema Validate: schema left + orange arrow + data right + result below -->
+    <div class="jt-editor-wrap" style="position:relative">
+      <!-- Sidebar Toggle Button -->
+      <button class="jt-sidebar-toggle" id="sidebarToggle" onclick="toggleHistorySidebar()" title="{{ call .T "json.sidebar.toggle" }}" aria-label='{{ call .T "json.sidebar.toggle" }}' data-ga data-ga-action="toggle_sidebar" data-ga-category="json-tool" data-ga-label="{{ .ToolKey }}"><span class="jt-sidebar-toggle__arrow">◀</span></button>
+      <!-- History Sidebar -->
+      <aside class="jt-history-sidebar" id="historySidebar" aria-label='{{ call .T "json.history.title" }}' aria-expanded="true">
+        <div class="jt-sidebar-header">
+          <span class="jt-sidebar-title">🕐 {{ call .T "json.history.title" }}</span>
+          <div class="jt-sidebar-actions">
+            <button class="jt-sidebar-btn" onclick="clearHistory()" title="{{ call .T "json.history.clear" }}" aria-label='{{ call .T "json.history.clear" }}' data-ga data-ga-action="clear_history" data-ga-category="json-tool" data-ga-label="{{ .ToolKey }}">🗑️</button>
+            <button class="jt-sidebar-btn" onclick="toggleHistorySidebar()" title="{{ call .T "json.sidebar.toggle" }}" aria-label='{{ call .T "json.sidebar.toggle" }}' data-ga data-ga-action="toggle_sidebar" data-ga-category="json-tool" data-ga-label="{{ .ToolKey }}">✕</button>
+          </div>
+        </div>
+        <input type="text" id="jtHistorySearch" class="jt-history-search" placeholder="Search..." oninput="renderHistory()">
+        <div class="jt-history-list" id="historyList" role="list">
+          <div class="jt-history-empty">{{ call .T "json.history.empty" }}</div>
+        </div>
+      </aside>
+      <!-- Editor Layout -->
+      <div class="jt-editor-layout">
+
+      <!-- Left: Schema input -->
+      <div class="jt-editor-pane jt-editor-pane--input">
+        <div class="jt-editor-pane__header">
+          <span class="jt-editor-pane__label">{{ call .T "json.schema.validate.schema_input" }}</span>
+          <div class="jt-editor-pane__actions">
+            <button onclick="loadSchemaExample()" class="jt-btn jt-btn--ghost" aria-label='{{ call .T "json.common.load_example" }}' data-tooltip='{{ call .T "json.common.load_example" }}' data-ga data-ga-action="load_example" data-ga-category="json-tool" data-ga-label="{{ .ToolKey }}">{{ call .T "json.common.example" }}</button>
+            <button onclick="if(window._schemaEditor)window._schemaEditor.setValue('')" class="jt-btn jt-btn--ghost" aria-label='{{ call .T "json.common.clear" }}' data-tooltip='{{ call .T "json.common.clear" }}'>{{ call .T "json.common.clear" }}</button>
+          </div>
+        </div>
+        <div id="schemaEditor" class="jt-monaco-editor"></div>
+        <div class="jt-editor-pane__footer">
+          <span id="schemaSize" style="font-size:0.75rem;color:var(--jt-muted)"></span>
+        </div>
+      </div>
+
+      <!-- Middle: orange arrow -->
+      <div class="jt-editor-actions">
+        <button class="jt-process-btn" id="processBtn" onclick="runProcessJson()" title="{{ call .T "json.schema.validate.btn" }}" aria-label='{{ call .T "json.schema.validate.btn" }}'>
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+               stroke="currentColor" stroke-width="2.5">
+            <polyline points="9 18 15 12 9 6"/>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Right: Data input -->
+      <div class="jt-editor-pane jt-editor-pane--output">
+        <div class="jt-editor-pane__header">
+          <span class="jt-editor-pane__label">{{ call .T "json.schema.validate.json_input" }}</span>
+          <div class="jt-editor-pane__actions">
+            <button onclick="loadExample()" class="jt-btn jt-btn--ghost" aria-label='{{ call .T "json.common.load_example" }}' data-tooltip='{{ call .T "json.common.load_example" }}'>{{ call .T "json.common.example" }}</button>
+            <button onclick="clearInput()" class="jt-btn jt-btn--ghost" aria-label='{{ call .T "json.common.clear" }}' data-tooltip='{{ call .T "json.common.clear" }}'>{{ call .T "json.common.clear" }}</button>
+          </div>
+        </div>
+        <div id="inputEditor" class="jt-monaco-editor"></div>
+        <div class="jt-editor-pane__footer">
+          <span id="inputSize"></span>
+          <span id="outputStats" class="jt-output-stats"></span>
+        </div>
+      </div>
+
+    </div><!-- /jt-editor-layout -->
+    </div><!-- /jt-editor-wrap -->
+
+    <!-- Result panel (shown after validation) -->
+    <div id="schemaResultPanel" class="jt-schema-result-panel" style="display:none;margin-top:12px">
+      <div class="jt-editor-pane jt-editor-pane--output">
+        <div class="jt-editor-pane__header">
+          <span class="jt-editor-pane__label">{{ call .T "json.common.output" }}</span>
+          <div class="jt-editor-pane__actions">
+            <button onclick="copySchemaResult()" class="jt-btn jt-btn--primary" id="copyBtn" aria-label='{{ call .T "json.common.copy" }}' data-ga data-ga-action="copy" data-ga-category="json-tool" data-ga-label="{{ .ToolKey }}">{{ call .T "json.common.copy" }}</button>
+          </div>
+        </div>
+        <div id="schemaResultBody" class="jt-viewer-render-area" style="min-height:100px;max-height:320px"></div>
+      </div>
+    </div>
+
+    {{ else }}
+    <!-- Standard dual-pane editor layout with history sidebar -->
+    <!-- Editor with History Sidebar -->
+    <div class="jt-editor-wrap" style="position:relative">
+      <!-- Sidebar Toggle Button -->
+      <button class="jt-sidebar-toggle" id="sidebarToggle" onclick="toggleHistorySidebar()" title="{{ call .T "json.sidebar.toggle" }}" aria-label='{{ call .T "json.sidebar.toggle" }}' data-ga data-ga-action="toggle_sidebar" data-ga-category="json-tool" data-ga-label="{{ .ToolKey }}"><span class="jt-sidebar-toggle__arrow">◀</span></button>
+
+      <!-- History Sidebar -->
+      <aside class="jt-history-sidebar" id="historySidebar" aria-label='{{ call .T "json.history.title" }}' aria-expanded="true">
+        <div class="jt-sidebar-header">
+          <span class="jt-sidebar-title">🕐 {{ call .T "json.history.title" }}</span>
+          <div class="jt-sidebar-actions">
+            <button class="jt-sidebar-btn" onclick="clearHistory()" title="{{ call .T "json.history.clear" }}" aria-label='{{ call .T "json.history.clear" }}' data-ga data-ga-action="clear_history" data-ga-category="json-tool" data-ga-label="{{ .ToolKey }}">🗑️</button>
+            <button class="jt-sidebar-btn" onclick="toggleHistorySidebar()" title="{{ call .T "json.sidebar.toggle" }}" aria-label='{{ call .T "json.sidebar.toggle" }}' data-ga data-ga-action="toggle_sidebar" data-ga-category="json-tool" data-ga-label="{{ .ToolKey }}">✕</button>
+          </div>
+        </div>
+        <input type="text" id="jtHistorySearch" class="jt-history-search" placeholder="Search..." oninput="renderHistory()">
+        <div class="jt-history-list" id="historyList" role="list">
+          <div class="jt-history-empty">{{ call .T "json.history.empty" }}</div>
+        </div>
+      </aside>
+
+      <!-- Editor Layout -->
+      <div class="jt-editor-layout">
+
+      <!-- Left: Input -->
+      <div class="jt-editor-pane jt-editor-pane--input">
+        <!-- Tab Bar for multi-tab input -->
+        <div class="jt-tabs-bar" id="tabsBar">
+          <div class="jt-tabs-list" id="tabsList">
+            <div class="jt-tab active" data-tab="0" onclick="switchTab(0)">
+              <span class="jt-tab-title">文档 1</span>
+              <button class="jt-tab-close" onclick="event.stopPropagation(); closeTab(0)" style="display:none">×</button>
+            </div>
+          </div>
+          <button class="jt-tab-add" onclick="newTab()" title='{{ call .T "json.tabs.new_tab" }} (Ctrl+T)' aria-label='{{ call .T "json.tabs.new_tab" }}' data-tooltip='{{ call .T "json.tabs.new_tab" }} (Ctrl+T)' data-ga data-ga-action="new_tab" data-ga-category="json-tool" data-ga-label="{{ .ToolKey }}">+</button>
+        </div>
+        <div class="jt-editor-pane__header">
+          <span class="jt-editor-pane__label">{{ call .T "json.common.input" }}</span>
+          <div class="jt-editor-pane__actions">
+            <!-- Real-time validation status badge -->
+            <span id="realtimeValidationBadge" class="jt-validation-badge">
+              <span class="jt-badge-icon"></span>
+              <span class="jt-badge-text">{{ call .T "json.validation.waiting" }}</span>
+            </span>
+            <span id="inputOptions" class="jt-input-options"></span>
+            <button onclick="loadExample()" class="jt-btn jt-btn--ghost" aria-label='{{ call .T "json.common.load_example" }}' data-tooltip='{{ call .T "json.common.load_example" }}' data-shortcut="Ctrl+E" data-ga data-ga-action="load_example" data-ga-category="json-tool" data-ga-label="{{ .ToolKey }}">{{ call .T "json.common.example" }}</button>
+            <button onclick="clearInput()"  class="jt-btn jt-btn--ghost" aria-label='{{ call .T "json.common.clear" }}' data-tooltip='{{ call .T "json.common.clear" }}' data-shortcut="Ctrl+Shift+X" data-ga data-ga-action="clear" data-ga-category="json-tool" data-ga-label="{{ .ToolKey }}">{{ call .T "json.common.clear" }}</button>
+            <label class="jt-btn jt-btn--ghost" aria-label='{{ call .T "json.common.upload" }}' data-tooltip='{{ call .T "json.common.upload" }}' data-ga data-ga-action="upload" data-ga-category="json-tool" data-ga-label="{{ .ToolKey }}">
+              <input type="file" accept=".json,.txt,.yaml,.yml,.xml,.csv,.sql" style="display:none"
+                     onchange="uploadFile(this)">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path>
+                <polyline points="17 8 12 3 7 8"></polyline>
+                <line x1="12" y1="3" x2="12" y2="15"></line>
+              </svg>
+              <span>{{ call .T "json.common.upload" }}</span>
+            </label>
+          </div>
+        </div>
+        <!-- URL Input Bar -->
+        <div class="jt-url-bar">
+          <input type="text" id="jsonUrlInput" class="jt-url-bar__input" placeholder="{{ call .T "json.common.url_placeholder" }}">
+          <button class="jt-url-bar__btn" onclick="fetchJsonFromUrl()" aria-label='{{ call .T "json.common.fetch_from_url" }}' data-ga data-ga-action="fetch_from_url" data-ga-category="json-tool" data-ga-label="{{ .ToolKey }}">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M21 12a9 9 0 01-9 9m9-9a9 9 0 00-9-9m9 9H3m9 9a9 9 0 01-9-9m9 9c1.657 0 3-4.03 3-9s-1.343-9-3-9m0 18c-1.657 0-3-4.03-3-9s1.343-9 3-9m-9 9a9 9 0 019-9"/>
+            </svg>
+            <span>{{ call .T "json.common.fetch" }}</span>
+          </button>
+        </div>
+        <div id="inputEditor" class="jt-monaco-editor"></div>
+        <div class="jt-editor-pane__footer">
+          <span id="inputSize"></span>
+          <span id="inputJsonStats" class="jt-json-stats"></span>
+        </div>
+      </div>
+
+      <!-- Middle: Action buttons -->
+      <div class="jt-editor-actions">
+        <button class="jt-process-btn" id="processBtn" onclick="runProcessJson()" title="{{ call .T "json.common.process" }}" aria-label='{{ call .T "json.common.process" }}' data-tooltip='{{ call .T "json.common.process" }}' data-shortcut="Ctrl+Enter" data-ga data-ga-action="process" data-ga-category="json-tool" data-ga-label="{{ .ToolKey }}">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none"
+               stroke="currentColor" stroke-width="2.5">
+            <polyline points="9 18 15 12 9 6"/>
+          </svg>
+        </button>
+        <button class="jt-swap-btn" onclick="swapEditors()" title="{{ call .T "json.common.swap" }}" aria-label='{{ call .T "json.common.swap" }}'>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
+               stroke="currentColor" stroke-width="2">
+            <polyline points="17 1 21 5 17 9"/>
+            <path d="M3 11V9a4 4 0 0 1 4-4h14"/>
+            <polyline points="7 23 3 19 7 15"/>
+            <path d="M21 13v2a4 4 0 0 1-4 4H3"/>
+          </svg>
+        </button>
+      </div>
+
+      <!-- Right: Output -->
+      <div class="jt-editor-pane jt-editor-pane--output">
+        <div class="jt-editor-pane__header">
+          <span class="jt-editor-pane__label">{{ call .T "json.common.output" }}</span>
+          <!-- View Switcher (code/tree/table) -->
+          <div class="jt-view-switcher" id="viewSwitcher">
+            <button class="jt-view-btn active"
+                    data-view="code"
+                    onclick="switchOutputView('code')"
+                    data-tooltip="{{ call .T "json.view.code" }}"
+                    data-shortcut="Ctrl+1"
+                    aria-label='{{ call .T "json.view.code" }}'
+                    data-ga data-ga-action="view_switch" data-ga-category="json-tool" data-ga-label="code">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="16 18 22 12 16 6"></polyline>
+                <polyline points="8 6 12 15 18 9 6"></polyline>
+              </svg>
+              <span>{{ call .T "json.view.code" }}</span>
+            </button>
+            <button class="jt-view-btn"
+                    data-view="tree"
+                    onclick="switchOutputView('tree')"
+                    data-tooltip="{{ call .T "json.view.tree" }}"
+                    data-shortcut="Ctrl+2"
+                    aria-label='{{ call .T "json.view.tree" }}'>
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <circle cx="12" cy="12" r="3"></circle>
+                <circle cx="12" cy="5" r="3"></circle>
+                <circle cx="12" cy="19" r="3"></circle>
+                <line x1="12" y1="9" x2="12" y2="15"></line>
+              </svg>
+              <span>{{ call .T "json.view.tree" }}</span>
+            </button>
+            <button class="jt-view-btn"
+                    data-view="table"
+                    onclick="switchOutputView('table')"
+                    data-tooltip="{{ call .T "json.view.table" }}"
+                    data-shortcut="Ctrl+3"
+                    aria-label='{{ call .T "json.view.table" }}'
+                    data-ga data-ga-action="view_switch" data-ga-category="json-tool" data-ga-label="table">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <rect x="3" y="3" width="18" height="18" rx="2" ry="2"></rect>
+                <line x1="3" y1="9" x2="21" y2="9"></line>
+                <line x1="3" y1="3" x2="21" y2="3"></line>
+                <line x1="9" y1="3" x2="15" y2="3"></line>
+                <line x1="9" y1="9" x2="3" y2="21"></line>
+              </svg>
+              <span>{{ call .T "json.view.table" }}</span>
+            </button>
+          </div>
+          <div class="jt-editor-pane__actions">
+            <span id="outputOptions" class="jt-input-options"></span>
+            {{ if .OutputIsJSON }}
+            <!-- Expand/Collapse buttons (directly visible for JSON output) -->
+            <button onclick="expandAllOutputTree()" class="jt-btn jt-btn--ghost" id="expandAllBtn" title="{{ call .T "json.output.expand_all" }}" aria-label='{{ call .T "json.output.expand_all" }}' data-tooltip='{{ call .T "json.output.expand_all" }}' data-shortcut="Ctrl+Shift+O">▼ {{ call .T "json.output.expand_all" }}</button>
+            <button onclick="collapseAllOutputTree()" class="jt-btn jt-btn--ghost" id="collapseAllBtn" title="{{ call .T "json.output.collapse_all" }}" aria-label='{{ call .T "json.output.collapse_all" }}' data-tooltip='{{ call .T "json.output.collapse_all" }}' data-shortcut="Ctrl+Shift+P">▶ {{ call .T "json.output.collapse_all" }}</button>
+            {{ end }}
+            <!-- Fullscreen -->
+            <button onclick="openFullscreen()" class="jt-btn jt-btn--ghost" id="fullscreenBtn" title="{{ call .T "json.output.fullscreen" }}" aria-label='{{ call .T "json.output.fullscreen" }}' data-tooltip='{{ call .T "json.output.fullscreen" }}' data-shortcut="F11" data-ga data-ga-action="fullscreen" data-ga-category="json-tool" data-ga-label="{{ .ToolKey }}">⛶ {{ call .T "json.output.fullscreen" }}</button>
+            <!-- Sync Scroll -->
+            <button onclick="toggleSyncScroll()" class="jt-btn jt-btn--ghost jt-btn--active" id="syncScrollBtn" title="同步滚动开启" aria-label='同步滚动' data-tooltip="同步滚动 (Ctrl+M)" data-shortcut="Ctrl+M" data-ga data-ga-action="toggle_sync_scroll" data-ga-category="json-tool" data-ga-label="{{ .ToolKey }}">同步滚动</button>
+            {{ if eq .ToolKey "unescape" }}
+            <button onclick="beautifyOutput()" class="jt-btn jt-btn--primary" aria-label='{{ call .T "json.common.beautify" }}' data-tooltip='{{ call .T "json.common.beautify" }}' data-ga data-ga-action="beautify" data-ga-category="json-tool" data-ga-label="{{ .ToolKey }}">✨ {{ call .T "json.common.beautify" }}</button>
+            {{ end }}
+            {{ if eq .ToolKey "repair" }}
+            <button onclick="validateRepairOutput()" class="jt-btn jt-btn--ghost" aria-label='{{ call .T "json.common.validate" }}' data-tooltip='{{ call .T "json.common.validate" }}' data-ga data-ga-action="validate" data-ga-category="json-tool" data-ga-label="{{ .ToolKey }}">✅ {{ call .T "json.common.validate" }}</button>
+            <button onclick="beautifyRepairOutput()" class="jt-btn jt-btn--ghost" aria-label='{{ call .T "json.common.beautify" }}' data-tooltip='{{ call .T "json.common.beautify" }}' data-ga data-ga-action="beautify" data-ga-category="json-tool" data-ga-label="{{ .ToolKey }}">✨ {{ call .T "json.common.beautify" }}</button>
+            {{ end }}
+            <button onclick="copyOutput()" class="jt-btn jt-btn--primary" id="copyBtn" aria-label='{{ call .T "json.common.copy" }}' data-tooltip='{{ call .T "json.common.copy" }}' data-shortcut="Ctrl+S" data-ga data-ga-action="copy" data-ga-category="json-tool" data-ga-label="{{ .ToolKey }}">
+              {{ call .T "json.common.copy" }}
+            </button>
+            <button onclick="downloadOutput()" class="jt-btn jt-btn--ghost" aria-label='{{ call .T "json.common.download" }}' data-tooltip='{{ call .T "json.common.download" }}' data-shortcut="Ctrl+D" data-ga data-ga-action="download" data-ga-category="json-tool" data-ga-label="{{ .ToolKey }}">
+              {{ call .T "json.common.download" }}
+            </button>
+            <button id="jtShareBtn" class="jt-share-btn" title="Share URL" aria-label='{{ call .T "json.common.share" }}' data-tooltip='{{ call .T "json.common.share" }}' data-ga data-ga-action="share" data-ga-category="json-tool" data-ga-label="{{ .ToolKey }}">🔗 Share</button>
+          </div>
+        </div>
+        <div id="outputEditor" class="jt-monaco-view"></div>
+        <div id="treeOutput" class="jt-tree-view" style="display:none"></div>
+        <div id="tableOutput" class="jt-table-view" style="display:none"></div>
+        <div id="outputTree" class="jt-output-tree"></div>
+        <div id="repairReportPanel" class="jt-repair-report" style="display:none"></div>
+        <div class="jt-editor-pane__footer">
+          <span id="outputSize"></span>
+          <span id="outputTime" class="jt-json-stats__item"></span>
+          <span id="outputStats" class="jt-output-stats"></span>
+          <span class="jt-font-size-control">
+            <button onclick="adjustFontSize(-1)" class="jt-font-btn" title="Zoom out" aria-label='{{ call .T "json.font.decrease" }}' data-ga data-ga-action="font_decrease" data-ga-category="json-tool" data-ga-label="{{ .ToolKey }}">A-</button>
+            <span id="jtFontSizeLabel">13px</span>
+            <button onclick="adjustFontSize(1)" class="jt-font-btn" title="Zoom in" aria-label='{{ call .T "json.font.increase" }}' data-ga data-ga-action="font_increase" data-ga-category="json-tool" data-ga-label="{{ .ToolKey }}">A+</button>
+          </span>
+        </div>
+      </div>
+
+    </div><!-- /jt-editor-layout -->
+    </div><!-- /jt-editor-wrap -->
+    {{ end }}
+
+    <!-- Error Panel -->
+    <div class="jt-error-panel" id="errorPanel" style="display:none" role="alert" aria-live="assertive">
+      <div class="jt-error-panel__header">
+        <span>❌</span>
+        <span id="errorTitle"></span>
+        <button onclick="hideErrorPanel()" class="jt-error-panel__close" aria-label='{{ call .T "json.common.close" }}' data-ga data-ga-action="close_error" data-ga-category="json-tool" data-ga-label="{{ .ToolKey }}">✕</button>
+      </div>
+      <div class="jt-error-panel__body" id="errorBody"></div>
+    </div>
+
+    <!-- JWT Panel (jwt tool only) -->
+    {{ if eq .ToolKey "jwt" }}
+    <div id="jwtPanel" class="jt-jwt-panel" style="display:none"></div>
+    {{ end }}
+
+    <!-- Fullscreen Modal -->
+    <div class="jt-fullscreen-overlay" id="fullscreenOverlay" onclick="closeFullscreenOnBackdrop(event)" role="dialog" aria-modal="true" aria-labelledby="fullscreenTitle">
+      <div class="jt-fullscreen-modal">
+        <div class="jt-fullscreen-header">
+          <span class="jt-fullscreen-title" id="fullscreenTitle">
+            <span id="fullscreenToolIcon">{{ $meta.Icon }}</span>
+            <span id="fullscreenToolName">{{ if eq $lang "zh" }}{{ $meta.TitleZH }}{{ else }}{{ $meta.TitleEN }}{{ end }}</span>
+          </span>
+          <button class="jt-fullscreen-close" onclick="closeFullscreen()" aria-label='{{ call .T "json.output.exit_fullscreen" }}' data-ga data-ga-action="exit_fullscreen" data-ga-category="json-tool" data-ga-label="{{ .ToolKey }}">
+            <span>✕</span>
+            <span>{{ call .T "json.output.exit_fullscreen" }}</span>
+          </button>
+        </div>
+        <div class="jt-fullscreen-body">
+          <div class="jt-editor-pane jt-editor-pane--input">
+            <div id="fullscreenInputEditor" class="jt-monaco-editor"></div>
+          </div>
+          <div class="jt-editor-actions">
+            <button class="jt-process-btn" onclick="processJsonFullscreen()" aria-label='{{ call .T "json.common.process" }}' data-ga data-ga-action="process_fullscreen" data-ga-category="json-tool" data-ga-label="{{ .ToolKey }}">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+                <polyline points="9 18 15 12 9 6"/>
+              </svg>
+            </button>
+            <button class="jt-swap-btn" onclick="swapEditors()" aria-label='{{ call .T "json.common.swap" }}' data-ga data-ga-action="swap" data-ga-category="json-tool" data-ga-label="{{ .ToolKey }}">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <polyline points="17 1 21 5 17 9"/>
+                <path d="M3 11V9a4 4 0 0 1 4-4h14"/>
+                <polyline points="7 23 3 19 7 15"/>
+                <path d="M21 13v2a4 4 0 0 1-4 4H3"/>
+              </svg>
+            </button>
+          </div>
+          <div class="jt-editor-pane jt-editor-pane--output">
+            <div id="fullscreenOutputEditor" class="jt-monaco-editor"></div>
+          </div>
+        </div>
+        <div class="jt-fullscreen-footer">
+          <div class="jt-fullscreen-stats">
+            <span id="fullscreenInputSize"></span> → <span id="fullscreenOutputSize"></span>
+          </div>
+          <div class="jt-fullscreen-actions">
+            <button onclick="copyOutput()" class="jt-btn jt-btn--primary" aria-label='{{ call .T "json.common.copy" }}' data-ga data-ga-action="copy" data-ga-category="json-tool" data-ga-label="{{ .ToolKey }}">{{ call .T "json.common.copy" }}</button>
+            <button onclick="downloadOutput()" class="jt-btn jt-btn--ghost" aria-label='{{ call .T "json.common.download" }}' data-ga data-ga-action="download" data-ga-category="json-tool" data-ga-label="{{ .ToolKey }}">{{ call .T "json.common.download" }}</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div><!-- /jt-container -->
+
+  <!-- Mobile Toolbar (bottom action bar) -->
+  <div class="jt-mobile-toolbar" id="mobileToolbar">
+    <div class="jt-mobile-toolbar__inner">
+      <button class="jt-mobile-action" onclick="document.getElementById('processBtn')?.click()" aria-label='{{ call .T "json.common.process" }}' data-ga data-ga-action="process" data-ga-category="json-tool" data-ga-label="{{ .ToolKey }}">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <polyline points="9 18 15 12 9 6"/>
+        </svg>
+        <span>{{ call .T "json.common.process" }}</span>
+      </button>
+      <button class="jt-mobile-action" onclick="copyOutput()" aria-label='{{ call .T "json.common.copy" }}' data-ga data-ga-action="copy" data-ga-category="json-tool" data-ga-label="{{ .ToolKey }}">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <rect x="9" y="9" width="13" height="13" rx="2" ry="2"></rect>
+          <path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"/>
+        </svg>
+        <span>{{ call .T "json.common.copy" }}</span>
+      </button>
+      <button class="jt-mobile-action" onclick="clearInput()" aria-label='{{ call .T "json.common.clear" }}' data-ga data-ga-action="clear" data-ga-category="json-tool" data-ga-label="{{ .ToolKey }}">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <polyline points="3 6 5 6 21 6"></polyline>
+          <path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6m3 0V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"></path>
+        </svg>
+        <span>{{ call .T "json.common.clear" }}</span>
+      </button>
+      <button class="jt-mobile-action" onclick="loadExample()" aria-label='{{ call .T "json.common.load_example" }}' data-ga data-ga-action="load_example" data-ga-category="json-tool" data-ga-label="{{ .ToolKey }}">
+        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5">
+          <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V4a2 2 0 0 0-2-2z"></path>
+          <line x1="16" y1="8" x2="8" y2="8"></line>
+          <line x1="16" y1="16" x2="8" y2="16"></line>
+        </svg>
+        <span>{{ call .T "json.common.example" }}</span>
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- Related Tools -->
+{{ if .RelatedTools }}
+<section class="jt-related-section">
+  <div class="jt-container">
+    <h2 class="jt-section-title">{{ call .T "json.related.title" }}</h2>
+    <div class="jt-related-grid">
+      {{ range .RelatedTools }}
+      <a class="jt-related-card" href="/json/{{ .Key }}?lang={{ $lang }}" data-ga data-ga-action="related_tool_click" data-ga-category="json-tool" data-ga-label="{{ .Key }}">
+        <span>{{ .Icon }}</span>
+        <span>{{ if eq $lang "zh" }}{{ .TitleZH }}{{ else }}{{ .TitleEN }}{{ end }}</span>
+      </a>
+      {{ end }}
+    </div>
+  </div>
+</section>
+{{ end }}
+
+<!-- Tool Description Article (SEO content, server-side rendered) -->
+{{ if .SEOArticle }}
+<section class="jt-desc-section" id="jt-desc-section">
+  <div class="jt-container jt-desc-inner">
+    <div class="jt-desc-body">
+      {{ .SEOArticle }}
+    </div>
+  </div>
+</section>
+{{ end }}
+{{ end }}
+
+{{ define "json_scripts" }}
+<!-- per-tool CDN libs -->
+{{ if or (eq .ToolKey "to-csv") (eq .ToolKey "from-csv") }}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"
+        onerror="var s=document.createElement('script');s.src='https://unpkg.com/papaparse@5.4.1/papaparse.min.js';document.head.appendChild(s)"></script>
+{{ end }}
+{{ if or (eq .ToolKey "to-excel") (eq .ToolKey "from-excel") }}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+{{ end }}
+{{ if or (eq .ToolKey "to-yaml") (eq .ToolKey "from-yaml") }}
+<!-- js-yaml: cdnjs primary, jsdelivr fallback, unpkg last resort -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/js-yaml/4.1.0/js-yaml.min.js"
+        onerror="(function(){var s=document.createElement('script');s.src='https://cdn.jsdelivr.net/npm/js-yaml@4.1.0/dist/js-yaml.min.js';s.onerror=function(){var s2=document.createElement('script');s2.src='https://unpkg.com/js-yaml@4.1.0/dist/js-yaml.min.js';document.head.appendChild(s2)};document.head.appendChild(s)})()"></script>
+{{ end }}
+{{ if or (eq .ToolKey "to-xml") (eq .ToolKey "from-xml") }}
+<!-- fast-xml-parser: jsdelivr primary, unpkg fallback -->
+<script src="https://cdn.jsdelivr.net/npm/fast-xml-parser@4.3.5/dist/fxp.js"
+        onerror="(function(){var s=document.createElement('script');s.src='https://unpkg.com/fast-xml-parser@4.3.5/dist/fxp.js';document.head.appendChild(s)})()"></script>
+{{ end }}
+{{ if eq .ToolKey "path" }}
+<script src="https://cdn.jsdelivr.net/npm/jsonpath-plus@9.0.0/dist/index-browser-umd.min.js"
+        onerror="var s=document.createElement('script');s.src='https://unpkg.com/jsonpath-plus@9.0.0/dist/index-browser-umd.min.js';document.head.appendChild(s)"></script>
+{{ end }}
+{{ if or (eq .ToolKey "to-typescript") (eq .ToolKey "to-python") (eq .ToolKey "to-java") (eq .ToolKey "to-csharp") (eq .ToolKey "to-go") (eq .ToolKey "to-kotlin") (eq .ToolKey "to-swift") (eq .ToolKey "to-rust") (eq .ToolKey "to-php") (eq .ToolKey "to-dart") (eq .ToolKey "to-objc") (eq .ToolKey "to-cpp") (eq .ToolKey "to-ruby") (eq .ToolKey "to-scala") }}
+<script src="/static/js/json-codegen-core.js?{{ .AssetVer }}"></script>
+{{ end }}
+<script>
+  window.JT_LANG       = "{{ .Lang }}";
+  window.JT_TOOL       = "{{ .ToolKey }}";
+  window.JT_I18N       = {{ if .Translations }}{{ toJSON .Translations }}{{ else }}{}{{ end }};
+  window.JT_ADS_CLIENT = "{{ .AdsClientID }}";
+  window.JT_ADS_ENABLED= {{ if .AdsEnabled }}true{{ else }}false{{ end }};
+  window.JT_ADS_DEV    = {{ if .AdsEnabled }}false{{ else }}true{{ end }};
+</script>
+<script src="/static/js/json-tools-core.js?{{ .AssetVer }}"></script>
+<script src="/static/js/json-tool-{{ .ToolKey }}.js?{{ .AssetVer }}"></script>
+<script src="/static/js/json-tool-descriptions.js?{{ .AssetVer }}"></script>
+{{ end }}

@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Content Detector - ToolBoxNova</title>
+  <link rel="stylesheet" href="shared.css">
+  <link rel="stylesheet" href="../static/css/ai-detector.css">
+  <style>
+    body { padding-top: 0; background: #f8f9fa; }
+    .aid-ext-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 16px 0; }
+    @media (max-width: 768px) { .aid-ext-layout { grid-template-columns: 1fr; } }
+    .aid-panel { background: #fff; border-radius: 12px; padding: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+    .aid-panel h3 { margin: 0 0 12px; font-size: 15px; color: #333; }
+    .aid-textarea {
+      width: 100%; min-height: 200px; padding: 12px; border: 1px solid #e0e0e0; border-radius: 8px;
+      font-size: 14px; line-height: 1.6; resize: vertical; font-family: inherit;
+    }
+    .aid-textarea:focus { outline: none; border-color: #1a73e8; }
+    .aid-actions { display: flex; gap: 8px; margin-top: 12px; }
+    .btn { padding: 8px 16px; border: 1px solid #ddd; border-radius: 6px; background: #fff;
+      cursor: pointer; font-size: 13px; }
+    .btn:hover { background: #f0f0f0; }
+    .btn-primary { background: #1a73e8; color: #fff; border-color: #1a73e8; }
+    .btn-primary:hover { background: #1557b0; }
+    .btn-lg { padding: 12px 24px; font-size: 15px; }
+    .aid-result-empty { text-align: center; padding: 40px; color: #ccc; }
+    .aid-score-ring { text-align: center; margin: 20px 0; }
+    .aid-score-value { font-size: 48px; font-weight: 700; }
+    .aid-score-label { font-size: 14px; color: #888; }
+    .aid-verdict { text-align: center; padding: 12px; border-radius: 8px; font-weight: 600; font-size: 16px; margin: 12px 0; }
+    .aid-verdict.human { background: #e8f5e9; color: #2e7d32; }
+    .aid-verdict.ai { background: #ffebee; color: #c62828; }
+    .aid-verdict.mixed { background: #fff3e0; color: #e65100; }
+    .aid-breakdown { margin-top: 16px; }
+    .aid-detector-row { display: flex; align-items: center; gap: 8px; margin-bottom: 8px; font-size: 13px; }
+    .aid-detector-name { width: 140px; color: #666; }
+    .aid-detector-bar { flex: 1; height: 8px; background: #f0f0f0; border-radius: 4px; overflow: hidden; }
+    .aid-detector-fill { height: 100%; border-radius: 4px; transition: width 0.3s; }
+    .aid-detector-pct { width: 40px; text-align: right; font-weight: 500; }
+    .aid-sentences { margin-top: 16px; font-size: 13px; line-height: 1.8; }
+    .aid-sentence { padding: 2px 4px; border-radius: 3px; }
+    .aid-loading { text-align: center; padding: 40px; }
+    .aid-loading .spinner { display: inline-block; width: 32px; height: 32px; border: 3px solid #e0e0e0;
+      border-top-color: #1a73e8; border-radius: 50%; animation: spin 0.8s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .aid-char-count { text-align: right; font-size: 12px; color: #999; margin-top: 4px; }
+    .aid-options { margin-top: 12px; display: flex; gap: 12px; flex-wrap: wrap; }
+    .aid-options select { padding: 6px 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 13px; }
+  </style>
+</head>
+<body>
+  <nav class="ext-topbar">
+    <a href="#" class="ext-topbar__back">← Back</a>
+    <h1 class="ext-topbar__title">AI Content Detector</h1>
+    <a href="https://toolboxnova.com/ai/detector" target="_blank" class="ext-topbar__site">Web ↗</a>
+  </nav>
+
+  <div class="ext-container">
+    <div class="aid-ext-layout">
+      <!-- Input Panel -->
+      <div class="aid-panel">
+        <h3>📝 Input Text</h3>
+        <textarea class="aid-textarea" id="aidInput" placeholder="Paste or type text to analyze for AI-generated content..."></textarea>
+        <div class="aid-char-count"><span id="aidCharCount">0</span> characters · <span id="aidWordCount">0</span> words</div>
+        <div class="aid-options">
+          <select id="aidLang">
+            <option value="en">English</option>
+            <option value="zh">Chinese</option>
+            <option value="ja">Japanese</option>
+            <option value="ko">Korean</option>
+            <option value="es">Spanish</option>
+          </select>
+        </div>
+        <div class="aid-actions">
+          <button class="btn btn-primary btn-lg" id="aidDetectBtn">🔍 Detect AI Content</button>
+          <button class="btn" id="aidClearBtn">Clear</button>
+        </div>
+      </div>
+
+      <!-- Result Panel -->
+      <div class="aid-panel">
+        <h3>📊 Detection Result</h3>
+        <div id="aidResult">
+          <div class="aid-result-empty">
+            <div style="font-size:48px;margin-bottom:8px;">🤖</div>
+            <p>Results will appear here after detection</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="shared.js"></script>
+  <script src="ext-ai-detect.js"></script>
+</body>
+</html>

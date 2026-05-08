@@ -1,0 +1,114 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AI Humanizer - ToolBoxNova</title>
+  <link rel="stylesheet" href="shared.css">
+  <link rel="stylesheet" href="../static/css/ai-humanizer.css">
+  <style>
+    body { padding-top: 0; background: #f8f9fa; }
+    .ah-ext-layout { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin: 16px 0; }
+    @media (max-width: 768px) { .ah-ext-layout { grid-template-columns: 1fr; } }
+    .ah-panel { background: #fff; border-radius: 12px; padding: 20px; box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+    .ah-panel h3 { margin: 0 0 12px; font-size: 15px; color: #333; }
+    .ah-textarea {
+      width: 100%; min-height: 200px; padding: 12px; border: 1px solid #e0e0e0; border-radius: 8px;
+      font-size: 14px; line-height: 1.6; resize: vertical; font-family: inherit;
+    }
+    .ah-textarea:focus { outline: none; border-color: #1a73e8; }
+    .ah-actions { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; }
+    .btn { padding: 8px 16px; border: 1px solid #ddd; border-radius: 6px; background: #fff;
+      cursor: pointer; font-size: 13px; }
+    .btn:hover { background: #f0f0f0; }
+    .btn-primary { background: #1a73e8; color: #fff; border-color: #1a73e8; }
+    .btn-primary:hover { background: #1557b0; }
+    .btn-lg { padding: 12px 24px; font-size: 15px; }
+    .btn-success { background: #34a853; color: #fff; border-color: #34a853; }
+    .ah-modes { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 16px; }
+    .ah-mode-btn { padding: 6px 14px; border: 1px solid #ddd; border-radius: 20px; background: #fff;
+      cursor: pointer; font-size: 12px; transition: all 0.15s; }
+    .ah-mode-btn:hover { background: #f0f0f0; }
+    .ah-mode-btn.active { background: #1a73e8; color: #fff; border-color: #1a73e8; }
+    .ah-options { display: flex; gap: 12px; margin-top: 12px; flex-wrap: wrap; }
+    .ah-options select { padding: 6px 10px; border: 1px solid #ddd; border-radius: 6px; font-size: 13px; }
+    .ah-result-empty { text-align: center; padding: 40px; color: #ccc; }
+    .ah-output-area {
+      width: 100%; min-height: 200px; padding: 12px; border: 1px solid #e0e0e0; border-radius: 8px;
+      font-size: 14px; line-height: 1.6; background: #f8f9fa; white-space: pre-wrap;
+    }
+    .ah-char-count { text-align: right; font-size: 12px; color: #999; margin-top: 4px; }
+    .ah-progress { height: 4px; background: #e0e0e0; border-radius: 2px; margin: 12px 0; overflow: hidden; }
+    .ah-progress-fill { height: 100%; width: 0%; background: #1a73e8; border-radius: 2px; transition: width 0.3s; }
+    .ah-loading { text-align: center; padding: 40px; }
+    .ah-loading .spinner { display: inline-block; width: 32px; height: 32px; border: 3px solid #e0e0e0;
+      border-top-color: #1a73e8; border-radius: 50%; animation: spin 0.8s linear infinite; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+  </style>
+</head>
+<body>
+  <nav class="ext-topbar">
+    <a href="#" class="ext-topbar__back">← Back</a>
+    <h1 class="ext-topbar__title">AI Humanizer</h1>
+    <a href="https://toolboxnova.com/ai/humanizer" target="_blank" class="ext-topbar__site">Web ↗</a>
+  </nav>
+
+  <div class="ext-container">
+    <!-- Mode selector -->
+    <div class="ah-modes" id="ahModes">
+      <button class="ah-mode-btn active" data-mode="standard">Standard</button>
+      <button class="ah-mode-btn" data-mode="basic">Basic</button>
+      <button class="ah-mode-btn" data-mode="creative">Creative</button>
+      <button class="ah-mode-btn" data-mode="academic">Academic</button>
+      <button class="ah-mode-btn" data-mode="formal">Formal</button>
+      <button class="ah-mode-btn" data-mode="casual">Casual</button>
+      <button class="ah-mode-btn" data-mode="aggressive">Aggressive</button>
+      <button class="ah-mode-btn" data-mode="business">Business</button>
+    </div>
+
+    <div class="ah-ext-layout">
+      <!-- Input -->
+      <div class="ah-panel">
+        <h3>📝 Input Text</h3>
+        <textarea class="ah-textarea" id="ahInput" placeholder="Paste AI-generated text here to humanize it..."></textarea>
+        <div class="ah-char-count"><span id="ahCharCount">0</span> characters</div>
+        <div class="ah-options">
+          <select id="ahLang">
+            <option value="en">English</option>
+            <option value="zh">Chinese</option>
+            <option value="ja">Japanese</option>
+            <option value="ko">Korean</option>
+            <option value="es">Spanish</option>
+          </select>
+        </div>
+        <div class="ah-actions">
+          <button class="btn btn-primary btn-lg" id="ahHumanizeBtn">✍️ Humanize</button>
+          <button class="btn" id="ahClearBtn">Clear</button>
+        </div>
+        <div class="ah-progress" id="ahProgress" style="display:none"><div class="ah-progress-fill" id="ahProgressFill"></div></div>
+      </div>
+
+      <!-- Output -->
+      <div class="ah-panel">
+        <h3>✨ Humanized Output</h3>
+        <div id="ahResult">
+          <div class="ah-result-empty">
+            <div style="font-size:48px;margin-bottom:8px;">✍️</div>
+            <p>Humanized text will appear here</p>
+          </div>
+        </div>
+        <div id="ahOutputWrap" style="display:none">
+          <div class="ah-output-area" id="ahOutput"></div>
+          <div class="ah-actions" style="margin-top:8px">
+            <button class="btn btn-success">📋 Copy</button>
+            <button class="btn">🔄 Re-humanize</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <script src="shared.js"></script>
+  <script src="ext-ai-humanize.js"></script>
+</body>
+</html>

@@ -1,0 +1,249 @@
+{{ template "base" . }}
+
+{{ define "extraHead" }}
+<link rel="canonical" href="https://toolboxnova.com/img/rotate-guide">
+<link rel="alternate" hreflang="zh" href="https://toolboxnova.com/img/rotate-guide?lang=zh">
+<link rel="alternate" hreflang="en" href="https://toolboxnova.com/img/rotate-guide?lang=en">
+<link rel="alternate" hreflang="ja" href="https://toolboxnova.com/img/rotate-guide?lang=ja">
+<link rel="alternate" hreflang="ko" href="https://toolboxnova.com/img/rotate-guide?lang=ko">
+<link rel="alternate" hreflang="spa" href="https://toolboxnova.com/img/rotate-guide?lang=spa">
+<link rel="alternate" hreflang="x-default" href="https://toolboxnova.com/img/rotate-guide">
+<link rel="stylesheet" href="/static/css/img-toolbox.css?v={{ .AssetVer }}">
+<link rel="stylesheet" href="/static/css/img-tabs.css?v={{ .AssetVer }}">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"HowTo","name":"{{ call .T "guide.rotate.howto.name" }}","description":"{{ call .T "guide.rotate.howto.desc" }}","step":[{"@type":"HowToStep","name":"{{ call .T "guide.rotate.howto.step1.name" }}","text":"{{ call .T "guide.rotate.howto.step1.text" }}"},{"@type":"HowToStep","name":"{{ call .T "guide.rotate.howto.step2.name" }}","text":"{{ call .T "guide.rotate.howto.step2.text" }}"},{"@type":"HowToStep","name":"{{ call .T "guide.rotate.howto.step3.name" }}","text":"{{ call .T "guide.rotate.howto.step3.text" }}"}]}
+</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{{- range $i,$f := .FAQs }}{{if $i}},{{end}}{"@type":"Question","name":{{ $f.Q | html }},"acceptedAnswer":{"@type":"Answer","text":{{ $f.A | html }}}}{{- end}}]}
+</script>
+{{ end }}
+
+{{ define "content" }}
+{{ template "img_tabs" . }}
+<div class="itb-page" data-tool="rotate-guide">
+  <header class="itb-header">
+    <div class="itb-header__inner">
+      <span class="itb-header__logo">
+        <svg width="56" height="56" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="display:inline-block;vertical-align:middle"><path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.3"/></svg>
+      </span>
+      <h1 class="itb-header__title">{{ call .T "guide.rotate.hero.title" }}</h1>
+      <p class="itb-header__sub">{{ call .T "guide.rotate.hero.subtitle" }}</p>
+      <div class="itb-hero__badges" style="margin-top:16px">
+        <span class="itb-badge itb-badge--green">{{ call .T "guide.rotate.hero.badge1" }}</span>
+        <span class="itb-badge itb-badge--blue">{{ call .T "guide.rotate.hero.badge2" }}</span>
+        <span class="itb-badge itb-badge--orange">{{ call .T "guide.rotate.hero.badge3" }}</span>
+      </div>
+    </div>
+  </header>
+
+  <div class="itb-container">
+    <!-- CTA to tool -->
+    <div class="itb-guide-cta" style="margin-bottom:32px">
+      <div class="itb-guide-cta__text">
+        <h3 class="itb-guide-cta__title">{{ call .T "guide.rotate.cta.title" }}</h3>
+        <p class="itb-guide-cta__desc">{{ call .T "guide.rotate.cta.desc" }}</p>
+      </div>
+      <a href="/img/rotate?lang={{ .Lang }}" class="itb-guide-cta__btn" data-ga="guide_cta">{{ call .T "guide.rotate.cta.btn" }}</a>
+    </div>
+
+    <!-- What is image rotation -->
+    <section class="itb-section" style="padding-top:0">
+      <div class="itb-section-inner">
+        <span class="itb-section-label">{{ call .T "guide.rotate.s1.label" }}</span>
+        <h2 class="itb-section-title">{{ call .T "guide.rotate.s1.title" }}</h2>
+        <p class="itb-section-body">{{ call .T "guide.rotate.s1.body1" }}</p>
+        <p class="itb-section-body">{{ call .T "guide.rotate.s1.body2" }}</p>
+      </div>
+    </section>
+
+    <!-- Quick rotate guide -->
+    <section class="itb-section itb-section--alt">
+      <div class="itb-section-inner">
+        <span class="itb-section-label">{{ call .T "guide.rotate.s2.label" }}</span>
+        <h2 class="itb-section-title">{{ call .T "guide.rotate.s2.title" }}</h2>
+        <p class="itb-section-body">{{ call .T "guide.rotate.s2.body1" }}</p>
+        <p class="itb-section-body">{{ call .T "guide.rotate.s2.body2" }}</p>
+        <div class="itb-steps" style="margin-top:24px">
+          <div class="itb-step">
+            <div class="itb-step__num">1</div>
+            <h3 class="itb-step__title">{{ call .T "guide.rotate.s2.step1.title" }}</h3>
+            <p class="itb-step__desc">{{ call .T "guide.rotate.s2.step1.desc" }}</p>
+          </div>
+          <div class="itb-step">
+            <div class="itb-step__num">2</div>
+            <h3 class="itb-step__title">{{ call .T "guide.rotate.s2.step2.title" }}</h3>
+            <p class="itb-step__desc">{{ call .T "guide.rotate.s2.step2.desc" }}</p>
+          </div>
+          <div class="itb-step">
+            <div class="itb-step__num">3</div>
+            <h3 class="itb-step__title">{{ call .T "guide.rotate.s2.step3.title" }}</h3>
+            <p class="itb-step__desc">{{ call .T "guide.rotate.s2.step3.desc" }}</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Flip vs Rotate -->
+    <section class="itb-section">
+      <div class="itb-section-inner">
+        <span class="itb-section-label">{{ call .T "guide.rotate.s3.label" }}</span>
+        <h2 class="itb-section-title">{{ call .T "guide.rotate.s3.title" }}</h2>
+        <p class="itb-section-body">{{ call .T "guide.rotate.s3.body1" }}</p>
+        <p class="itb-section-body">{{ call .T "guide.rotate.s3.body2" }}</p>
+        <div class="itb-format-grid" style="margin-top:24px">
+          <div class="itb-format-card">
+            <div class="itb-format-card__icon">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#FF6B35" stroke-width="2"><path d="M12 20v-16"/><path d="M4 6l8-4 8 4"/><path d="M4 18l8 4 8-4"/></svg>
+            </div>
+            <h3 class="itb-format-card__name">{{ call .T "guide.rotate.flip.h.title" }}</h3>
+            <p class="itb-format-card__desc">{{ call .T "guide.rotate.flip.h.desc" }}</p>
+          </div>
+          <div class="itb-format-card">
+            <div class="itb-format-card__icon">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#FF6B35" stroke-width="2"><path d="M20 12h-16"/><path d="M18 4l-4 8 4 8"/><path d="M6 4l4 8-4 8"/></svg>
+            </div>
+            <h3 class="itb-format-card__name">{{ call .T "guide.rotate.flip.v.title" }}</h3>
+            <p class="itb-format-card__desc">{{ call .T "guide.rotate.flip.v.desc" }}</p>
+          </div>
+          <div class="itb-format-card">
+            <div class="itb-format-card__icon">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#FF6B35" stroke-width="2"><path d="M21.5 2v6h-6M2.5 22v-6h6M2 11.5a10 10 0 0 1 18.8-4.3M22 12.5a10 10 0 0 1-18.8 4.3"/></svg>
+            </div>
+            <h3 class="itb-format-card__name">{{ call .T "guide.rotate.rotate.title" }}</h3>
+            <p class="itb-format-card__desc">{{ call .T "guide.rotate.rotate.desc" }}</p>
+          </div>
+          <div class="itb-format-card">
+            <div class="itb-format-card__icon">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#FF6B35" stroke-width="2"><circle cx="12" cy="12" r="3"/><path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/></svg>
+            </div>
+            <h3 class="itb-format-card__name">{{ call .T "guide.rotate.custom.title" }}</h3>
+            <p class="itb-format-card__desc">{{ call .T "guide.rotate.custom.desc" }}</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- EXIF Orientation -->
+    <section class="itb-section itb-section--alt">
+      <div class="itb-section-inner">
+        <div class="itb-split">
+          <div class="itb-split-text">
+            <span class="itb-section-label">{{ call .T "guide.rotate.s4.label" }}</span>
+            <h2 class="itb-section-title">{{ call .T "guide.rotate.s4.title" }}</h2>
+            <p class="itb-section-body">{{ call .T "guide.rotate.s4.body1" }}</p>
+            <p class="itb-section-body">{{ call .T "guide.rotate.s4.body2" }}</p>
+          </div>
+          <div class="itb-split-visual">
+            <div class="itb-visual-box">
+              <div class="itb-visual-box__icon">
+                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#FF6B35" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+              </div>
+              <div class="itb-visual-stat">
+                <span class="itb-visual-stat__num">EXIF</span>
+                <span class="itb-visual-stat__lbl">{{ call .T "guide.rotate.s4.stat.lbl" }}</span>
+              </div>
+              <div class="itb-visual-box__label">{{ call .T "guide.rotate.s4.stat.sub" }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Custom angle -->
+    <section class="itb-section">
+      <div class="itb-section-inner">
+        <span class="itb-section-label">{{ call .T "guide.rotate.s5.label" }}</span>
+        <h2 class="itb-section-title">{{ call .T "guide.rotate.s5.title" }}</h2>
+        <p class="itb-section-body">{{ call .T "guide.rotate.s5.body1" }}</p>
+        <p class="itb-section-body">{{ call .T "guide.rotate.s5.body2" }}</p>
+      </div>
+    </section>
+
+    <!-- Format selection -->
+    <section class="itb-section itb-section--alt">
+      <div class="itb-section-inner">
+        <span class="itb-section-label">{{ call .T "guide.rotate.s6.label" }}</span>
+        <h2 class="itb-section-title">{{ call .T "guide.rotate.s6.title" }}</h2>
+        <p class="itb-section-body">{{ call .T "guide.rotate.s6.body" }}</p>
+        <div class="itb-format-grid" style="margin-top:24px">
+          <div class="itb-format-card">
+            <div class="itb-format-card__icon">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#FF6B35" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2" ry="2"/><circle cx="8.5" cy="8.5" r="1.5"/><polyline points="21 15 16 10 5 21"/></svg>
+            </div>
+            <h3 class="itb-format-card__name">JPG</h3>
+            <p class="itb-format-card__desc">{{ call .T "guide.rotate.fmt.jpg" }}</p>
+          </div>
+          <div class="itb-format-card">
+            <div class="itb-format-card__icon">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#FF6B35" stroke-width="2"><path d="M12 2l3.09 6.26L22 9.27l-5 4.87 1.18 6.88L12 17.77l-6.18 3.25L7 14.14 2 9.27l6.91-1.01L12 2z"/></svg>
+            </div>
+            <h3 class="itb-format-card__name">PNG</h3>
+            <p class="itb-format-card__desc">{{ call .T "guide.rotate.fmt.png" }}</p>
+          </div>
+          <div class="itb-format-card">
+            <div class="itb-format-card__icon">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#FF6B35" stroke-width="2"><path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/></svg>
+            </div>
+            <h3 class="itb-format-card__name">WebP</h3>
+            <p class="itb-format-card__desc">{{ call .T "guide.rotate.fmt.webp" }}</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Batch rotate -->
+    <section class="itb-section">
+      <div class="itb-section-inner">
+        <span class="itb-section-label">{{ call .T "guide.rotate.s7.label" }}</span>
+        <h2 class="itb-section-title">{{ call .T "guide.rotate.s7.title" }}</h2>
+        <p class="itb-section-body">{{ call .T "guide.rotate.s7.body1" }}</p>
+        <p class="itb-section-body">{{ call .T "guide.rotate.s7.body2" }}</p>
+      </div>
+    </section>
+
+    <!-- Common mistakes -->
+    <section class="itb-section itb-section--alt">
+      <div class="itb-section-inner">
+        <span class="itb-section-label">{{ call .T "guide.rotate.s8.label" }}</span>
+        <h2 class="itb-section-title">{{ call .T "guide.rotate.s8.title" }}</h2>
+        <p class="itb-section-body">{{ call .T "guide.rotate.s8.body" }}</p>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="itb-faq">
+      <h2 class="itb-faq__title">FAQ</h2>
+      {{ range $i,$f := .FAQs }}
+      <div class="itb-faq-item" id="itbFaq-{{ $i }}">
+        <button class="itb-faq-item__q" onclick="itbToggleFAQ({{ $i }})" aria-expanded="false">{{ $f.Q }}<span class="itb-faq-item__arrow">▾</span></button>
+        <div class="itb-faq-item__a"><p>{{ $f.A }}</p></div>
+      </div>
+      {{ end }}
+    </section>
+
+    <!-- Bottom CTA -->
+    <div class="itb-guide-cta" style="margin-top:32px;margin-bottom:48px">
+      <div class="itb-guide-cta__text">
+        <h3 class="itb-guide-cta__title">{{ call .T "guide.rotate.cta2.title" }}</h3>
+        <p class="itb-guide-cta__desc">{{ call .T "guide.rotate.cta2.desc" }}</p>
+      </div>
+      <a href="/img/rotate?lang={{ .Lang }}" class="itb-guide-cta__btn" data-ga="guide_cta">{{ call .T "guide.rotate.cta2.btn" }}</a>
+    </div>
+  </div>
+</div>
+{{ end }}
+
+{{ define "extraScript" }}
+<script src="/static/js/img-tabs.js?v={{ .AssetVer }}"></script>
+<script>
+function itbToggleFAQ(i) {
+  var item = document.getElementById('itbFaq-' + i);
+  if (!item) return;
+  var btn = item.querySelector('.itb-faq-item__q');
+  var ans = item.querySelector('.itb-faq-item__a');
+  var isOpen = ans.style.display === 'block';
+  ans.style.display = isOpen ? 'none' : 'block';
+  if (btn) btn.setAttribute('aria-expanded', !isOpen);
+}
+</script>
+{{ end }}

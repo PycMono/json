@@ -1,0 +1,65 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 300" fill="none">
+  <defs>
+    <linearGradient id="step1-bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#6366f1"/>
+      <stop offset="100%" style="stop-color:#8b5cf6"/>
+    </linearGradient>
+    <linearGradient id="step2-bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#00d4ff"/>
+      <stop offset="100%" style="stop-color:#00a8cc"/>
+    </linearGradient>
+    <linearGradient id="step3-bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#10b981"/>
+      <stop offset="100%" style="stop-color:#059669"/>
+    </linearGradient>
+    <linearGradient id="step4-bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f59e0b"/>
+      <stop offset="100%" style="stop-color:#d97706"/>
+    </linearGradient>
+  </defs>
+  <!-- Background -->
+  <rect width="800" height="300" rx="16" fill="#f8fafc"/>
+  <!-- Title -->
+  <text x="400" y="45" font-family="system-ui,-apple-system,sans-serif" font-size="18" font-weight="600" fill="#0f172a" text-anchor="middle">How AI Humanizer Works in 4 Simple Steps</text>
+  <!-- Step 1 -->
+  <circle cx="110" cy="140" r="50" fill="url(#step1-bg)"/>
+  <text x="110" y="148" font-family="system-ui,-apple-system,sans-serif" font-size="28" fill="white" text-anchor="middle" font-weight="700">1</text>
+  <rect x="75" y="205" width="70" height="22" rx="11" fill="#6366f1" opacity="0.15"/>
+  <text x="110" y="220" font-family="system-ui,-apple-system,sans-serif" font-size="10" font-weight="600" fill="#6366f1" text-anchor="middle">STEP 1</text>
+  <text x="110" y="250" font-family="system-ui,-apple-system,sans-serif" font-size="13" font-weight="600" fill="#1e293b" text-anchor="middle">Paste AI Text</text>
+  <text x="110" y="270" font-family="system-ui,-apple-system,sans-serif" font-size="11" fill="#64748b" text-anchor="middle">Copy and paste your</text>
+  <text x="110" y="285" font-family="system-ui,-apple-system,sans-serif" font-size="11" fill="#64748b" text-anchor="middle">AI-generated content</text>
+  <!-- Arrow 1 -->
+  <line x1="175" y1="140" x2="230" y2="140" stroke="#cbd5e1" stroke-width="3" stroke-linecap="round"/>
+  <polygon points="240,140 228,134 228,146" fill="#cbd5e1"/>
+  <!-- Step 2 -->
+  <circle cx="290" cy="140" r="50" fill="url(#step2-bg)"/>
+  <text x="290" y="148" font-family="system-ui,-apple-system,sans-serif" font-size="28" fill="white" text-anchor="middle" font-weight="700">2</text>
+  <rect x="255" y="205" width="70" height="22" rx="11" fill="#00d4ff" opacity="0.15"/>
+  <text x="290" y="220" font-family="system-ui,-apple-system,sans-serif" font-size="10" font-weight="600" fill="#00a8cc" text-anchor="middle">STEP 2</text>
+  <text x="290" y="250" font-family="system-ui,-apple-system,sans-serif" font-size="13" font-weight="600" fill="#1e293b" text-anchor="middle">Choose Mode</text>
+  <text x="290" y="270" font-family="system-ui,-apple-system,sans-serif" font-size="11" fill="#64748b" text-anchor="middle">Select from 10+ modes</text>
+  <text x="290" y="285" font-family="system-ui,-apple-system,sans-serif" font-size="11" fill="#64748b" text-anchor="middle">for your use case</text>
+  <!-- Arrow 2 -->
+  <line x1="355" y1="140" x2="410" y2="140" stroke="#cbd5e1" stroke-width="3" stroke-linecap="round"/>
+  <polygon points="420,140 408,134 408,146" fill="#cbd5e1"/>
+  <!-- Step 3 -->
+  <circle cx="470" cy="140" r="50" fill="url(#step3-bg)"/>
+  <text x="470" y="148" font-family="system-ui,-apple-system,sans-serif" font-size="28" fill="white" text-anchor="middle" font-weight="700">3</text>
+  <rect x="435" y="205" width="70" height="22" rx="11" fill="#10b981" opacity="0.15"/>
+  <text x="470" y="220" font-family="system-ui,-apple-system,sans-serif" font-size="10" font-weight="600" fill="#059669" text-anchor="middle">STEP 3</text>
+  <text x="470" y="250" font-family="system-ui,-apple-system,sans-serif" font-size="13" font-weight="600" fill="#1e293b" text-anchor="middle">Click Humanize</text>
+  <text x="470" y="270" font-family="system-ui,-apple-system,sans-serif" font-size="11" fill="#64748b" text-anchor="middle">Watch real-time</text>
+  <text x="470" y="285" font-family="system-ui,-apple-system,sans-serif" font-size="11" fill="#64748b" text-anchor="middle">transformation</text>
+  <!-- Arrow 3 -->
+  <line x1="535" y1="140" x2="590" y2="140" stroke="#cbd5e1" stroke-width="3" stroke-linecap="round"/>
+  <polygon points="600,140 588,134 588,146" fill="#cbd5e1"/>
+  <!-- Step 4 -->
+  <circle cx="650" cy="140" r="50" fill="url(#step4-bg)"/>
+  <text x="650" y="148" font-family="system-ui,-apple-system,sans-serif" font-size="28" fill="white" text-anchor="middle" font-weight="700">4</text>
+  <rect x="615" y="205" width="70" height="22" rx="11" fill="#f59e0b" opacity="0.15"/>
+  <text x="650" y="220" font-family="system-ui,-apple-system,sans-serif" font-size="10" font-weight="600" fill="#d97706" text-anchor="middle">STEP 4</text>
+  <text x="650" y="250" font-family="system-ui,-apple-system,sans-serif" font-size="13" font-weight="600" fill="#1e293b" text-anchor="middle">Copy &amp; Use</text>
+  <text x="650" y="270" font-family="system-ui,-apple-system,sans-serif" font-size="11" fill="#64748b" text-anchor="middle">Download or copy</text>
+  <text x="650" y="285" font-family="system-ui,-apple-system,sans-serif" font-size="11" fill="#64748b" text-anchor="middle">your humanized text</text>
+</svg>

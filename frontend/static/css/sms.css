@@ -1,0 +1,927 @@
+/* SMS 接码器专用样式 - S-02 */
+
+/* ── 全局 ─────────────────────────────────── */
+.sms-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 20px;
+}
+
+.sms-section-title {
+  font-size: 1.75rem;
+  font-weight: 800;
+  color: #0f172a;
+  text-align: center;
+  margin: 0 0 36px;
+}
+
+/* ── 导航 ────────────────────────────────── */
+.sms-navbar {
+  position: sticky;
+  top: 0;
+  z-index: 200;
+  background: rgba(15, 23, 42, 0.95);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid rgba(255,255,255,0.08);
+  padding: 0;
+}
+
+.sms-navbar > .sms-container {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  height: 60px;
+}
+
+.sms-logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 1.125rem;
+  font-weight: 700;
+}
+
+.sms-navbar__links {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.sms-navbar__links a {
+  color: rgba(255,255,255,0.75);
+  text-decoration: none;
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: color 0.15s;
+}
+
+.sms-navbar__links a:hover { color: #ffffff; }
+
+.sms-navbar__balance {
+  background: rgba(6,182,212,0.25);
+  border: 1px solid rgba(6,182,212,0.5);
+  border-radius: 999px;
+  padding: 4px 14px !important;
+  color: #67e8f9 !important;
+  font-weight: 600 !important;
+}
+
+.sms-nav-btn {
+  height: 36px;
+  padding: 0 18px;
+  border-radius: 8px;
+  font-size: 0.875rem;
+  font-weight: 600;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+}
+
+.sms-nav-btn--ghost {
+  color: rgba(255,255,255,0.8) !important;
+  border: 1px solid rgba(255,255,255,0.2);
+}
+
+.sms-nav-btn--primary {
+  background: #06b6d4;
+  color: #ffffff !important;
+}
+
+.sms-nav-btn--primary:hover { background: #0891b2; }
+
+/* ── Hero ─────────────────────────────────── */
+.sms-hero {
+  position: relative;
+  background: linear-gradient(135deg, #0f172a 0%, #164e63 50%, #155e75 100%);
+  padding: 80px 0 72px;
+  text-align: center;
+  overflow: hidden;
+}
+
+.sms-hero__title {
+  font-size: 3rem;
+  font-weight: 900;
+  color: #ffffff;
+  margin: 0 0 16px;
+  letter-spacing: -0.03em;
+  line-height: 1.1;
+}
+
+.sms-hero__subtitle {
+  font-size: 1.125rem;
+  color: rgba(255,255,255,0.7);
+  max-width: 540px;
+  margin: 0 auto 28px;
+  line-height: 1.6;
+}
+
+.sms-hero__badges {
+  display: flex;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 36px;
+  flex-wrap: wrap;
+}
+
+.sms-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 16px;
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 999px;
+  color: rgba(255,255,255,0.9);
+  font-size: 0.875rem;
+  font-weight: 500;
+  backdrop-filter: blur(4px);
+}
+
+/* 搜索框 */
+.sms-hero__search {
+  position: relative;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.hero-search-box {
+  display: flex;
+  align-items: center;
+  background: #ffffff;
+  border-radius: 14px;
+  padding: 6px 6px 6px 16px;
+  gap: 12px;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+}
+
+.hero-search-icon { color: #9ca3af; flex-shrink: 0; }
+
+.hero-search-input {
+  flex: 1;
+  border: none;
+  outline: none;
+  font-size: 1rem;
+  color: #111827;
+  background: transparent;
+}
+
+.hero-search-btn {
+  height: 44px;
+  padding: 0 24px;
+  background: linear-gradient(135deg, #06b6d4, #0ea5e9);
+  color: #ffffff;
+  border-radius: 10px;
+  font-size: 0.9375rem;
+  font-weight: 700;
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  white-space: nowrap;
+  transition: opacity 0.15s;
+}
+
+.hero-search-btn:hover { opacity: 0.9; }
+
+/* 搜索下拉 */
+.hero-search-dropdown {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  right: 0;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  padding: 12px;
+  box-shadow: 0 16px 48px rgba(0,0,0,0.15);
+  z-index: 100;
+  text-align: left;
+}
+
+.dropdown-label {
+  font-size: 0.75rem;
+  font-weight: 600;
+  color: #9ca3af;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin: 0 0 8px;
+  padding: 0 4px;
+}
+
+.dropdown-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 4px;
+}
+
+.dropdown-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 10px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-size: 0.875rem;
+  color: #374151;
+  transition: background 0.1s;
+}
+
+.dropdown-item:hover { background: #f3f4f6; }
+
+.dropdown-item img,
+.dropdown-item .service-icon {
+  width: 20px;
+  height: 20px;
+  border-radius: 4px;
+  object-fit: contain;
+  font-size: 16px;
+  text-align: center;
+  line-height: 20px;
+}
+
+/* 背景光晕 */
+.sms-hero__bg-orb {
+  position: absolute;
+  border-radius: 50%;
+  pointer-events: none;
+  filter: blur(80px);
+  opacity: 0.25;
+}
+.sms-hero__bg-orb--1 {
+  width: 500px; height: 500px;
+  background: #06b6d4;
+  top: -200px; left: -100px;
+}
+.sms-hero__bg-orb--2 {
+  width: 400px; height: 400px;
+  background: #22d3ee;
+  bottom: -150px; right: -50px;
+}
+
+/* ── 数字统计（增强版）──────────────────────── */
+.sms-stats-section {
+  background: transparent;
+  padding: 0 20px;
+  margin-top: -50px;
+  position: relative;
+  z-index: 1;
+}
+
+.sms-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 24px;
+  max-width: 1100px;
+  margin: 0 auto;
+  background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%);
+  border-radius: 20px;
+  padding: 48px 32px;
+  box-shadow: 0 20px 60px rgba(6,182,212,0.25);
+}
+
+.stat-card {
+  text-align: center;
+  padding: 20px;
+  background: rgba(255,255,255,0.1);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255,255,255,0.15);
+  border-radius: 16px;
+}
+
+.stat-card__number {
+  font-size: 3rem;
+  font-weight: 900;
+  color: #ffffff;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.1;
+}
+
+.stat-card__suffix {
+  font-size: 1.75rem;
+  font-weight: 700;
+  color: #ffffff;
+}
+
+.stat-card__label {
+  font-size: 0.9375rem;
+  color: rgba(255,255,255,0.85);
+  margin: 8px 0 0;
+  font-weight: 500;
+}
+
+/* ── 服务 Logo 无限滚动 ────────────────────── */
+.sms-services-marquee {
+  background: #f8fafc;
+  padding: 24px 0;
+  overflow: hidden;
+  border-bottom: 1px solid #f3f4f6;
+}
+
+.marquee-track {
+  overflow: hidden;
+  mask-image: linear-gradient(to right, transparent, black 10%, black 90%, transparent);
+}
+
+.marquee-inner {
+  display: flex;
+  gap: 24px;
+  width: max-content;
+  animation: marquee-scroll 30s linear infinite;
+}
+
+.marquee-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding: 12px 16px;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 10px;
+  min-width: 80px;
+  flex-shrink: 0;
+}
+
+.marquee-item img,
+.marquee-item .service-icon {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+  border-radius: 6px;
+  font-size: 28px;
+  text-align: center;
+  line-height: 32px;
+}
+
+.marquee-item span {
+  font-size: 0.75rem;
+  color: #6b7280;
+  white-space: nowrap;
+}
+
+@keyframes marquee-scroll {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+/* ── 三步说明 ─────────────────────────────── */
+.sms-how-section {
+  background: #ffffff;
+  padding: 64px 0;
+}
+
+.sms-steps {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+}
+
+.step-card {
+  flex: 1;
+  max-width: 280px;
+  background: #f8fafc;
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+  padding: 28px 24px;
+  text-align: center;
+  position: relative;
+}
+
+.step-card--arrow {
+  flex: 0;
+  background: none;
+  border: none;
+  font-size: 1.5rem;
+  color: #d1d5db;
+  padding: 0;
+}
+
+.step-card__num {
+  position: absolute;
+  top: -12px;
+  left: 20px;
+  width: 24px;
+  height: 24px;
+  background: #06b6d4;
+  color: #fff;
+  border-radius: 50%;
+  font-size: 0.75rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.step-card__icon { font-size: 2rem; margin-bottom: 12px; }
+
+.step-card h3 {
+  font-size: 1rem;
+  font-weight: 700;
+  color: #111827;
+  margin: 0 0 8px;
+}
+
+.step-card p {
+  font-size: 0.875rem;
+  color: #6b7280;
+  margin: 0;
+  line-height: 1.6;
+}
+
+/* ── Features 区域 ───────────────────────────── */
+.sms-features-section {
+  background: linear-gradient(135deg, #e0f2fe 0%, #ede9fe 50%, #fce7f3 100%);
+  padding: 80px 0;
+}
+
+.sms-features-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 24px;
+  max-width: 1100px;
+  margin: 0 auto;
+}
+
+.sms-feature-card {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.9);
+  border-radius: 20px;
+  padding: 32px;
+  transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.06);
+}
+
+.sms-feature-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.10);
+}
+
+.sms-feature-card__icon {
+  width: 48px;
+  height: 48px;
+  border-radius: 12px;
+  background: linear-gradient(135deg, #06b6d4, #8b5cf6);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.sms-feature-card__icon svg {
+  width: 24px;
+  height: 24px;
+  color: #ffffff;
+}
+
+.sms-feature-card h3 {
+  font-size: 1.125rem;
+  font-weight: 700;
+  color: #1e293b;
+  margin: 0 0 10px;
+}
+
+.sms-feature-card p {
+  font-size: 0.9375rem;
+  color: #64748b;
+  margin: 0;
+  line-height: 1.7;
+}
+
+/* ── Privacy 区域 ───────────────────────────── */
+.sms-privacy-section {
+  padding: 80px 24px;
+  background: #ffffff;
+}
+
+.sms-privacy-inner {
+  max-width: 1100px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 48px;
+  align-items: center;
+}
+
+.sms-privacy-label {
+  display: inline-block;
+  background: #ecfdf5;
+  color: #065f46;
+  font-size: .8125rem;
+  font-weight: 700;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  padding: 4px 12px;
+  border-radius: 20px;
+  margin-bottom: 16px;
+}
+
+.sms-privacy-section h2 {
+  font-size: clamp(1.5rem, 3vw, 2.2rem);
+  font-weight: 800;
+  margin: 0 0 16px;
+  line-height: 1.2;
+  color: #0f172a;
+}
+
+.sms-privacy-section p {
+  font-size: 1.0625rem;
+  color: #475569;
+  line-height: 1.75;
+  margin: 0;
+}
+
+.sms-privacy-section p + p {
+  margin-top: 14px;
+}
+
+.sms-privacy-visual {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.sms-privacy-badge {
+  background: #0f4c3a;
+  border-radius: 20px;
+  padding: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  min-height: 220px;
+  max-width: 280px;
+  width: 100%;
+}
+
+.sms-privacy-badge__icon { font-size: 3.5rem; }
+
+.sms-privacy-badge__stat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background: rgba(255,255,255,.12);
+  border-radius: 12px;
+  padding: 14px 28px;
+}
+
+.sms-privacy-badge__stat-number {
+  font-size: 2rem;
+  font-weight: 800;
+  color: #4ade80;
+  line-height: 1;
+}
+
+.sms-privacy-badge__stat-label {
+  font-size: .8125rem;
+  color: rgba(255,255,255,.7);
+  margin-top: 4px;
+}
+
+.sms-privacy-badge__sub {
+  color: rgba(255,255,255,.85);
+  font-size: .9375rem;
+  font-weight: 600;
+  text-align: center;
+}
+
+/* ── About 区域 ────────────────────────────── */
+.sms-about-section {
+  padding: 80px 24px;
+  background: #f8fafc;
+}
+
+.sms-about-section .sms-container {
+  max-width: 900px;
+  margin: 0 auto;
+}
+
+.sms-about-label {
+  display: inline-block;
+  background: #ecfdf5;
+  color: #065f46;
+  font-size: .8125rem;
+  font-weight: 700;
+  letter-spacing: .06em;
+  text-transform: uppercase;
+  padding: 4px 12px;
+  border-radius: 20px;
+  margin-bottom: 16px;
+}
+
+.sms-about-section h2 {
+  font-size: clamp(1.5rem, 3vw, 2.2rem);
+  font-weight: 800;
+  margin: 0 0 16px;
+  line-height: 1.2;
+  color: #0f172a;
+}
+
+.sms-about-section p {
+  font-size: 1.0625rem;
+  color: #475569;
+  line-height: 1.75;
+  margin: 0;
+}
+
+.sms-about-section p + p {
+  margin-top: 14px;
+}
+
+/* ── FAQ Page ─────────────────────────────── */
+.sms-faq-hero {
+  background: linear-gradient(135deg, #0f172a 0%, #164e63 50%, #155e75 100%);
+  padding: 60px 0 48px;
+  text-align: center;
+}
+
+.sms-faq-hero h1 {
+  font-size: 2.25rem;
+  font-weight: 800;
+  color: #ffffff;
+  margin: 0 0 12px;
+}
+
+.sms-faq-hero p {
+  font-size: 1.0625rem;
+  color: rgba(255,255,255,0.7);
+  max-width: 600px;
+  margin: 0 auto;
+  line-height: 1.6;
+}
+
+.sms-faq-content {
+  padding: 48px 0 64px;
+  background: #ffffff;
+}
+
+.sms-faq-content .sms-container {
+  max-width: 840px;
+}
+
+.faq-category {
+  margin-bottom: 40px;
+}
+
+.faq-category__title {
+  font-size: 1.25rem;
+  font-weight: 700;
+  color: #06b6d4;
+  margin: 0 0 16px;
+  padding-bottom: 8px;
+  border-bottom: 2px solid #e0f2fe;
+}
+
+.faq-item {
+  border: 1px solid #e5e7eb;
+  border-radius: 12px;
+  margin-bottom: 8px;
+  overflow: hidden;
+  transition: border-color 0.2s;
+}
+
+.faq-item:hover {
+  border-color: #bae6fd;
+}
+
+.faq-item--open {
+  border-color: #06b6d4;
+}
+
+.faq-item__q {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 20px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  color: #1e293b;
+  text-align: left;
+  line-height: 1.5;
+  gap: 12px;
+}
+
+.faq-item__q:hover {
+  background: #f8fafc;
+}
+
+.faq-item--open .faq-item__q {
+  color: #06b6d4;
+}
+
+.faq-item__chevron {
+  flex-shrink: 0;
+  transition: transform 0.2s;
+  color: #9ca3af;
+}
+
+.faq-item--open .faq-item__chevron {
+  transform: rotate(180deg);
+  color: #06b6d4;
+}
+
+.faq-item__a {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease;
+  padding: 0 20px;
+  font-size: 0.9375rem;
+  color: #475569;
+  line-height: 1.7;
+}
+
+.faq-item--open .faq-item__a {
+  padding: 0 20px 16px;
+}
+
+.sms-nav-active {
+  color: #22d3ee !important;
+  border-bottom: 2px solid #22d3ee;
+  padding-bottom: 2px;
+}
+
+/* FAQ CTA */
+.sms-faq-cta {
+  background: linear-gradient(135deg, #06b6d4 0%, #0891b2 100%);
+  padding: 48px 0;
+  text-align: center;
+}
+
+.sms-faq-cta h2 {
+  font-size: 1.5rem;
+  font-weight: 700;
+  color: #ffffff;
+  margin: 0 0 8px;
+}
+
+.sms-faq-cta p {
+  font-size: 1rem;
+  color: rgba(255,255,255,0.85);
+  margin: 0 0 24px;
+}
+
+.faq-cta-btn {
+  display: inline-flex;
+  align-items: center;
+  padding: 12px 32px;
+  background: #ffffff;
+  color: #0891b2;
+  border-radius: 10px;
+  font-size: 1rem;
+  font-weight: 700;
+  text-decoration: none;
+  transition: transform 0.15s, box-shadow 0.15s;
+}
+
+.faq-cta-btn:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(0,0,0,0.15);
+}
+
+/* ── Dark mode ─────────────────────────────── */
+@media (prefers-color-scheme: dark) {
+  .sms-section-title { color: #f1f5f9; }
+  .sms-privacy-section { background: #1e293b; }
+  .sms-privacy-section h2 { color: #f1f5f9; }
+  .sms-privacy-section p { color: #94a3b8; }
+  .sms-privacy-label { background: rgba(6,182,212,0.15); color: #67e8f9; }
+  .sms-about-section { background: #0f172a; }
+  .sms-about-section h2 { color: #f1f5f9; }
+  .sms-about-section p { color: #94a3b8; }
+  .sms-about-label { background: rgba(6,182,212,0.15); color: #67e8f9; }
+  .step-card { background: #1e293b; border-color: #334155; }
+  .step-card h3 { color: #f1f5f9; }
+  .step-card p { color: #94a3b8; }
+  .sms-services-marquee { background: #1e293b; border-color: #334155; }
+  .marquee-item { background: #0f172a; border-color: #334155; }
+  .marquee-item span { color: #94a3b8; }
+  /* FAQ dark mode */
+  .sms-faq-content { background: #0f172a; }
+  .faq-item { border-color: #334155; background: #1e293b; }
+  .faq-item:hover { border-color: #0891b2; }
+  .faq-item__q { color: #f1f5f9; }
+  .faq-item__q:hover { background: #0f172a; }
+  .faq-item__a { color: #94a3b8; }
+  .faq-category__title { border-bottom-color: #334155; }
+  /* Features dark mode */
+  .sms-features-section { background: linear-gradient(135deg, #0c4a5e 0%, #3b1f6e 50%, #5e1a3e 100%); }
+  .sms-feature-card { background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.1); }
+  .sms-feature-card:hover { box-shadow: 0 8px 24px rgba(0,0,0,0.3); }
+  .sms-feature-card h3 { color: #f1f5f9; }
+  .sms-feature-card p { color: #94a3b8; }
+}
+
+[data-theme="dark"] .sms-section-title { color: #f1f5f9; }
+[data-theme="dark"] .sms-privacy-section { background: #1e293b; }
+[data-theme="dark"] .sms-privacy-section h2 { color: #f1f5f9; }
+[data-theme="dark"] .sms-privacy-section p { color: #94a3b8; }
+[data-theme="dark"] .sms-privacy-label { background: rgba(6,182,212,0.15); color: #67e8f9; }
+[data-theme="dark"] .sms-about-section { background: #0f172a; }
+[data-theme="dark"] .sms-about-section h2 { color: #f1f5f9; }
+[data-theme="dark"] .sms-about-section p { color: #94a3b8; }
+[data-theme="dark"] .sms-about-label { background: rgba(6,182,212,0.15); color: #67e8f9; }
+[data-theme="dark"] .step-card { background: #1e293b; border-color: #334155; }
+[data-theme="dark"] .step-card h3 { color: #f1f5f9; }
+[data-theme="dark"] .faq-item { border-color: #334155; background: #1e293b; }
+[data-theme="dark"] .faq-item:hover { border-color: #0891b2; }
+[data-theme="dark"] .faq-item__q { color: #f1f5f9; }
+[data-theme="dark"] .faq-item__q:hover { background: #0f172a; }
+[data-theme="dark"] .faq-item__a { color: #94a3b8; }
+[data-theme="dark"] .sms-faq-content { background: #0f172a; }
+[data-theme="dark"] .faq-category__title { border-bottom-color: #334155; }
+[data-theme="dark"] .step-card p { color: #94a3b8; }
+[data-theme="dark"] .sms-services-marquee { background: #1e293b; border-color: #334155; }
+[data-theme="dark"] .marquee-item { background: #0f172a; border-color: #334155; }
+[data-theme="dark"] .marquee-item span { color: #94a3b8; }
+[data-theme="dark"] .sms-features-section { background: linear-gradient(135deg, #0c4a5e 0%, #3b1f6e 50%, #5e1a3e 100%); }
+[data-theme="dark"] .sms-feature-card { background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.1); }
+[data-theme="dark"] .sms-feature-card:hover { box-shadow: 0 8px 24px rgba(0,0,0,0.3); }
+[data-theme="dark"] .sms-feature-card h3 { color: #f1f5f9; }
+[data-theme="dark"] .sms-feature-card p { color: #94a3b8; }
+
+/* ── 响应式 ──────────────────────────────── */
+@media (max-width: 768px) {
+  .sms-hero__title { font-size: 2rem; }
+  .sms-hero { padding: 48px 0 40px; }
+  .sms-hero__subtitle { font-size: 1rem; padding: 0 16px; }
+  .sms-stats-section { margin-top: -30px; }
+  .sms-stats-grid  { grid-template-columns: repeat(2, 1fr); padding: 32px 20px; gap: 16px; }
+  .stat-card { padding: 16px; }
+  .stat-card__number { font-size: 2.25rem; }
+  .stat-card__suffix { font-size: 1.25rem; }
+  .sms-steps       { flex-direction: column; }
+  .step-card--arrow { display: none; }
+  .sms-navbar__links a:not(.sms-nav-btn) { display: none; }
+  .dropdown-list { grid-template-columns: 1fr; }
+  .sms-container { padding: 0 16px; }
+  .hero-search-box { padding: 10px; gap: 8px; }
+  .hero-search-input { padding: 10px 14px; font-size: 14px; }
+  .hero-search-btn { padding: 10px 16px; white-space: nowrap; }
+  .sms-section-title { font-size: 1.5rem; }
+  .sms-features-grid { grid-template-columns: 1fr; }
+  .sms-privacy-inner { grid-template-columns: 1fr; }
+  .sms-privacy-visual { margin-top: 32px; }
+  .sms-privacy-section { padding: 48px 16px; }
+  .sms-about-section { padding: 48px 16px; }
+}
+
+@media (max-width: 480px) {
+  .sms-hero { padding: 36px 0 32px; }
+  .sms-hero__title { font-size: 1.75rem; }
+  .sms-hero__badges { gap: 8px; }
+  .sms-badge { font-size: 0.8rem; padding: 4px 12px; }
+  .sms-stats-grid { grid-template-columns: 1fr 1fr; gap: 12px; }
+  .stat-card { padding: 12px; }
+  .stat-card__number { font-size: 2rem; }
+  .stat-card__label { font-size: 0.8rem; }
+  .marquee-item { min-width: 70px; padding: 10px 12px; }
+  .marquee-item img, .marquee-item .service-icon { width: 28px; height: 28px; font-size: 24px; }
+  .step-card { padding: 20px 16px; }
+  .step-card h3 { font-size: 0.95rem; }
+  .step-card p { font-size: 0.85rem; }
+}
+
+/* ── Sidebar Layout for Ads ─────────────────────── */
+.sms-sidebar-layout {
+  display: grid;
+  grid-template-columns: 160px 1fr 160px;
+  gap: 32px;
+  max-width: 1260px;
+  margin: 0 auto;
+  padding: 0 20px;
+  align-items: start;
+}
+.sms-sidebar {
+  padding-top: 24px;
+  position: sticky;
+  top: 80px;
+  display: flex;
+  justify-content: center;
+}
+.sms-sidebar-main {
+  min-width: 0;
+}
+
+/* Active nav link */
+.sms-navbar__links a.sms-nav-active {
+  color: #06b6d4;
+  font-weight: 600;
+}
+
+@media (max-width: 1100px) {
+  .sms-sidebar { display: none; }
+  .sms-sidebar-layout {
+    grid-template-columns: 1fr;
+    padding: 0 16px;
+  }
+}
+

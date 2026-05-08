@@ -1,0 +1,368 @@
+/* JSON Tools Core Styles */
+/* Base styles for all JSON tools */
+
+:root {
+  /* Color palette */
+  --json-tools-primary: #2563eb;
+  --json-tools-primary-hover: #1d4ed8;
+  --json-tools-secondary: #64748b;
+  --json-tools-success: #22c55e;
+  --json-tools-success-hover: #16a34a;
+  --json-tools-error: #ef4444;
+  --json-tools-error-hover: #dc2626;
+  --json-tools-warning: #f59e0b;
+  --json-tools-info: #3b82f6;
+  --json-tools-bg: #f8fafc;
+  --json-tools-bg-alt: #f1f5f9;
+  --json-tools-border: #e2e8f0;
+  --json-tools-border-focus: #94a3b8;
+  --json-tools-text: #1e293b;
+  --json-tools-text-muted: #64748b;
+  --json-tools-text-light: #94a3b8;
+
+  /* Spacing */
+  --json-tools-spacing-xs: 0.25rem;
+  --json-tools-spacing-sm: 0.5rem;
+  --json-tools-spacing-md: 1rem;
+  --json-tools-spacing-lg: 1.5rem;
+  --json-tools-spacing-xl: 2rem;
+
+  /* Border radius */
+  --json-tools-radius-sm: 0.25rem;
+  --json-tools-radius-md: 0.5rem;
+  --json-tools-radius-lg: 0.75rem;
+
+  /* Shadows */
+  --json-tools-shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
+  --json-tools-shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+  --json-tools-shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+
+  /* Transitions */
+  --json-tools-transition: all 0.2s ease;
+}
+
+/* Base container */
+.json-tool-container {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen',
+    'Ubuntu', 'Cantarell', 'Fira Sans', 'Droid Sans', 'Helvetica Neue',
+    sans-serif;
+  line-height: 1.6;
+  color: var(--json-tools-text);
+  background-color: var(--json-tools-bg);
+  min-height: 100vh;
+}
+
+/* Editor containers */
+.json-editor {
+  font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', 'Consolas', 'source-code-pro',
+    monospace;
+  font-size: 14px;
+  line-height: 1.5;
+  border: 1px solid var(--json-tools-border);
+  border-radius: var(--json-tools-radius-md);
+  background-color: #ffffff;
+  color: var(--json-tools-text);
+  padding: var(--json-tools-spacing-md);
+  min-height: 200px;
+  max-height: 500px;
+  overflow: auto;
+  transition: var(--json-tools-transition);
+}
+
+.json-editor:focus {
+  outline: none;
+  border-color: var(--json-tools-border-focus);
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+.json-editor.error {
+  border-color: var(--json-tools-error);
+  background-color: #fef2f2;
+}
+
+.json-editor.success {
+  border-color: var(--json-tools-success);
+  background-color: #f0fdf4;
+}
+
+/* Buttons */
+.json-tool-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: var(--json-tools-spacing-sm);
+  padding: var(--json-tools-spacing-sm) var(--json-tools-spacing-md);
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 1.5;
+  border: 1px solid transparent;
+  border-radius: var(--json-tools-radius-md);
+  cursor: pointer;
+  transition: var(--json-tools-transition);
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.json-tool-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.json-tool-btn-primary {
+  background-color: var(--json-tools-primary);
+  color: #ffffff;
+}
+
+.json-tool-btn-primary:hover:not(:disabled) {
+  background-color: var(--json-tools-primary-hover);
+  transform: translateY(-1px);
+  box-shadow: var(--json-tools-shadow-md);
+}
+
+.json-tool-btn-secondary {
+  background-color: var(--json-tools-secondary);
+  color: #ffffff;
+}
+
+.json-tool-btn-secondary:hover:not(:disabled) {
+  background-color: #475569;
+  transform: translateY(-1px);
+  box-shadow: var(--json-tools-shadow-md);
+}
+
+.json-tool-btn-success {
+  background-color: var(--json-tools-success);
+  color: #ffffff;
+}
+
+.json-tool-btn-success:hover:not(:disabled) {
+  background-color: var(--json-tools-success-hover);
+  transform: translateY(-1px);
+  box-shadow: var(--json-tools-shadow-md);
+}
+
+.json-tool-btn-outline {
+  background-color: transparent;
+  border-color: var(--json-tools-border);
+  color: var(--json-tools-text);
+}
+
+.json-tool-btn-outline:hover:not(:disabled) {
+  background-color: var(--json-tools-bg-alt);
+  border-color: var(--json-tools-border-focus);
+}
+
+/* Copy button */
+.copy-btn {
+  position: absolute;
+  top: var(--json-tools-spacing-sm);
+  right: var(--json-tools-spacing-sm);
+  padding: var(--json-tools-spacing-xs) var(--json-tools-spacing-sm);
+  font-size: 12px;
+  font-weight: 500;
+  color: #ffffff;
+  background-color: var(--json-tools-success);
+  border: none;
+  border-radius: var(--json-tools-radius-sm);
+  cursor: pointer;
+  transition: var(--json-tools-transition);
+  z-index: 10;
+}
+
+.copy-btn:hover {
+  background-color: var(--json-tools-success-hover);
+  transform: scale(1.05);
+}
+
+.copy-btn:active {
+  transform: scale(0.95);
+}
+
+/* Loading state */
+.loading {
+  opacity: 0.6;
+  pointer-events: none;
+  position: relative;
+}
+
+.loading::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 20px;
+  height: 20px;
+  margin: -10px 0 0 -10px;
+  border: 2px solid var(--json-tools-border);
+  border-top-color: var(--json-tools-primary);
+  border-radius: 50%;
+  animation: spin 0.6s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Error and success states */
+.error-message {
+  padding: var(--json-tools-spacing-md);
+  margin-bottom: var(--json-tools-spacing-md);
+  color: #991b1b;
+  background-color: #fef2f2;
+  border: 1px solid #fecaca;
+  border-radius: var(--json-tools-radius-md);
+  font-size: 14px;
+}
+
+.success-message {
+  padding: var(--json-tools-spacing-md);
+  margin-bottom: var(--json-tools-spacing-md);
+  color: #166534;
+  background-color: #f0fdf4;
+  border: 1px solid #bbf7d0;
+  border-radius: var(--json-tools-radius-md);
+  font-size: 14px;
+}
+
+.info-message {
+  padding: var(--json-tools-spacing-md);
+  margin-bottom: var(--json-tools-spacing-md);
+  color: #1e40af;
+  background-color: #eff6ff;
+  border: 1px solid #bfdbfe;
+  border-radius: var(--json-tools-radius-md);
+  font-size: 14px;
+}
+
+.warning-message {
+  padding: var(--json-tools-spacing-md);
+  margin-bottom: var(--json-tools-spacing-md);
+  color: #92400e;
+  background-color: #fffbeb;
+  border: 1px solid #fde68a;
+  border-radius: var(--json-tools-radius-md);
+  font-size: 14px;
+}
+
+/* Stats display */
+.stats-display {
+  display: flex;
+  align-items: center;
+  gap: var(--json-tools-spacing-md);
+  padding: var(--json-tools-spacing-sm) var(--json-tools-spacing-md);
+  font-size: 13px;
+  color: var(--json-tools-text-muted);
+  background-color: var(--json-tools-bg-alt);
+  border-radius: var(--json-tools-radius-md);
+}
+
+.stats-badge {
+  display: inline-flex;
+  align-items: center;
+  padding: 2px 8px;
+  font-size: 12px;
+  font-weight: 500;
+  border-radius: var(--json-tools-radius-sm);
+}
+
+.stats-badge.success {
+  color: var(--json-tools-success);
+  background-color: #dcfce7;
+}
+
+.stats-badge.error {
+  color: var(--json-tools-error);
+  background-color: #fee2e2;
+}
+
+.stats-badge.info {
+  color: var(--json-tools-info);
+  background-color: #dbeafe;
+}
+
+.stats-badge.warning {
+  color: var(--json-tools-warning);
+  background-color: #fef3c7;
+}
+
+/* Options panel */
+.options-panel {
+  padding: var(--json-tools-spacing-md);
+  margin-bottom: var(--json-tools-spacing-md);
+  background-color: #ffffff;
+  border: 1px solid var(--json-tools-border);
+  border-radius: var(--json-tools-radius-md);
+}
+
+.options-row {
+  display: flex;
+  align-items: center;
+  gap: var(--json-tools-spacing-md);
+  margin-bottom: var(--json-tools-spacing-sm);
+}
+
+.options-row:last-child {
+  margin-bottom: 0;
+}
+
+.checkbox-label {
+  display: flex;
+  align-items: center;
+  gap: var(--json-tools-spacing-xs);
+  font-size: 14px;
+  cursor: pointer;
+}
+
+.checkbox-label input[type="checkbox"] {
+  width: 16px;
+  height: 16px;
+  cursor: pointer;
+}
+
+/* Code block wrapper */
+.code-block-wrapper {
+  position: relative;
+  margin-bottom: var(--json-tools-spacing-md);
+}
+
+/* Responsive design */
+@media (max-width: 768px) {
+  .json-tool-container {
+    padding: var(--json-tools-spacing-sm);
+  }
+
+  .json-editor {
+    font-size: 13px;
+    padding: var(--json-tools-spacing-sm);
+  }
+
+  .options-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--json-tools-spacing-xs);
+  }
+
+  .copy-btn {
+    font-size: 11px;
+    padding: 2px 6px;
+  }
+}
+
+/* Print styles */
+@media print {
+  .json-tool-container {
+    background-color: #ffffff;
+  }
+
+  .copy-btn,
+  .json-tool-btn {
+    display: none;
+  }
+
+  .json-editor {
+    border: 1px solid #000000;
+    max-height: none;
+  }
+}

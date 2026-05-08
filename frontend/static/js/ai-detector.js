@@ -1,0 +1,1142 @@
+/**
+ * AI Detector Frontend Engine
+ * Namespace: AID (AI Detector)
+ */
+(function () {
+  'use strict';
+
+  const I18N = window.__AID_I18N__ || {};
+  const CFG  = window.__AID_CONFIG__ || { freeLimit: 15000, lang: 'en' };
+
+  function t(key, vars) {
+    let text = I18N[key] || key;
+    if (vars) Object.entries(vars).forEach(([k,v]) => { text = text.replace('{' + k + '}', v); });
+    return text;
+  }
+
+  // ─── State ───────────────────────────────────────────────
+  const State = {
+    inputMode: 'text',
+    inputText: '',
+    isDetecting: false,
+    isHumanizing: false,
+    detectResult: null,
+    humanizeResult: null,
+    activeCompareTab: 'humanized',
+    purpose: 'general',
+    tone: 'standard',
+    mode: 'balanced',
+    language: 'auto',
+    gaugeChart: null,
+    history: [],
+  };
+
+  // ─── DOM helpers ──────────────────────────────────────────
+  function $id(id) { return document.getElementById(id); }
+  function esc(str) {
+    return String(str)
+      .replace(/&/g,'&amp;')
+      .replace(/</g,'&lt;')
+      .replace(/>/g,'&gt;')
+      .replace(/"/g,'&quot;');
+  }
+
+  // ─── Input Handling ───────────────────────────────────────
+  function handleTextInput(el) {
+    const text = el.value;
+    State.inputText = text;
+    const chars = text.length;
+    const words = text.trim() ? text.trim().split(/\s+/).length : 0;
+    const counter = $id('aidCharCounter');
+    const clearBtn = $id('aidClearBtn');
+    const detectBtn = $id('aidDetectBtn');
+
+    counter.textContent = chars + ' / 15,000';
+    $id('aidWordCounter').textContent = words + ' words';
+    counter.classList.toggle('aid-counter--error', chars > CFG.freeLimit);
+    clearBtn.style.display = chars > 0 ? 'flex' : 'none';
+    detectBtn.disabled = chars < 50 || chars > CFG.freeLimit;
+  }
+
+  function setInputMode(mode) {
+    State.inputMode = mode;
+    ['text','file','url'].forEach(m => {
+      const el = $id('aidMode-' + m);
+      if (el) el.style.display = m === mode ? 'flex' : 'none';
+    });
+    document.querySelectorAll('.aid-input-tab').forEach(btn => {
+      btn.classList.toggle('aid-input-tab--active', btn.dataset.tab === mode);
+    });
+  }
+
+  function clearInput() {
+    State.inputText = '';
+    State.detectResult = null;
+    State.humanizeResult = null;
+    const ta = $id('aidInputText');
+    if (ta) ta.value = '';
+    handleTextInput(ta || { value: '' });
+    $id('aidHumanizeBtn').style.display = 'none';
+    $id('aidEmpty').style.display = 'flex';
+    $id('aidResult').style.display = 'none';
+    $id('aidCompare').style.display = 'none';
+  }
+
+  function loadSample() {
+    const SAMPLES = [
+      'Artificial intelligence has transformed the landscape of modern technology in unprecedented ways. The development of large language models has enabled machines to engage in complex reasoning tasks that were previously thought to require human intelligence. These systems demonstrate remarkable capabilities in natural language understanding, code generation, and creative problem-solving. Furthermore, they have significant implications for various industries and sectors of society.',
+      'Space exploration represents one of humanity\'s most ambitious endeavors. Since the first Moon landing in 1969, scientists and engineers have continued pushing the boundaries of what is possible in aerospace technology. The prospect of establishing permanent settlements on Mars has become increasingly realistic as private companies invest billions of dollars in rocket development. Additionally, international cooperation has played a crucial role in advancing space science.'
+    ];
+    const sample = SAMPLES[Math.floor(Math.random() * SAMPLES.length)];
+    const ta = $id('aidInputText');
+    ta.value = sample;
+    State.inputText = sample;
+    handleTextInput(ta);
+    if (typeof gsap !== 'undefined') gsap.from(ta, { opacity: 0.5, duration: 0.3 });
+  }
+
+  // ─── Drag & Drop ─────────────────────────────────────────
+  function handleDragOver(event) {
+    event.preventDefault();
+    event.stopPropagation();
+    const zone = $id('aidDropZone');
+    zone.classList.add('aid-drop-zone--active');
+    const overlay = $id('aidDropOverlay');
+    overlay.style.display = 'flex';
+  }
+
+  function handleDragLeave(event) {
+    const zone = $id('aidDropZone');
+    if (!zone.contains(event.relatedTarget)) {
+      zone.classList.remove('aid-drop-zone--active');
+      $id('aidDropOverlay').style.display = 'none';
+    }
+  }
+
+  function handleDrop(event) {
+    event.preventDefault();
+    handleDragLeave(event);
+    const files = event.dataTransfer.files;
+    if (files.length > 0) {
+      addFiles(files);
+    } else if (event.dataTransfer.types.includes('text/plain')) {
+      const text = event.dataTransfer.getData('text/plain');
+      const ta = $id('aidInputText');
+      ta.value = text;
+      State.inputText = text;
+      handleTextInput(ta);
+    }
+  }
+
+  function handleFileDragOver(event) { event.preventDefault(); $id('aidFileZone').style.borderColor = 'var(--aid-primary)'; }
+  function handleFileDragLeave(event) { $id('aidFileZone').style.borderColor = ''; }
+  function handleFileDrop(event) {
+    event.preventDefault();
+    handleFileDragLeave(event);
+    addFiles(event.dataTransfer.files);
+  }
+
+  function handleFileSelect(input) {
+    if (input.files.length > 0) addFiles(input.files);
+  }
+
+  function addFiles(fileList) {
+    const MAX_SIZE = 10 * 1024 * 1024;
+    const file = fileList[0];
+    if (!file) return;
+
+    const ext = file.name.split('.').pop().toLowerCase();
+    const allowedExts = ['txt', 'pdf', 'docx'];
+    if (!allowedExts.includes(ext)) {
+      showToast('Only .txt, .pdf, .docx files are supported.', 'error');
+      return;
+    }
+    if (file.size > MAX_SIZE) {
+      showToast('File size exceeds 10MB limit.', 'error');
+      return;
+    }
+
+    if (ext === 'docx' && typeof mammoth !== 'undefined') {
+      const reader = new FileReader();
+      reader.onload = e => {
+        mammoth.extractRawText({ arrayBuffer: e.target.result }).then(result => {
+          const text = result.value;
+          setInputMode('text');
+          const ta = $id('aidInputText');
+          ta.value = text;
+          State.inputText = text;
+          handleTextInput(ta);
+          showToast('DOCX text extracted successfully!', 'success');
+        }).catch(() => {
+          showToast('Could not read DOCX. Please copy and paste text.', 'error');
+        });
+      };
+      reader.readAsArrayBuffer(file);
+      return;
+    }
+
+    if (ext === 'pdf') {
+      showToast('PDF not supported. Please copy and paste text.', 'error');
+      return;
+    }
+
+    // TXT
+    const reader = new FileReader();
+    reader.onload = e => {
+      const text = e.target.result;
+      setInputMode('text');
+      const ta = $id('aidInputText');
+      ta.value = text;
+      State.inputText = text;
+      handleTextInput(ta);
+    };
+    reader.readAsText(file);
+  }
+
+  function removeFile() {
+    State.inputText = '';
+    $id('aidFileInput').value = '';
+    $id('aidFileInfo').style.display = 'none';
+    $id('aidDetectBtn').disabled = true;
+  }
+
+  // ─── URL Fetch ────────────────────────────────────────────
+  async function fetchURL() {
+    const url = $id('aidUrlInput').value.trim();
+    if (!url.startsWith('http')) { showToast('Please enter a valid URL', 'error'); return; }
+    try {
+      const res = await fetch('/api/ai/fetch-url', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ url })
+      });
+      const data = await res.json();
+      if (data.text) {
+        const ta = $id('aidInputText');
+        ta.value = data.text;
+        State.inputText = data.text;
+        handleTextInput(ta);
+        setInputMode('text');
+      }
+    } catch (e) {
+      showToast(t('error.network'), 'error');
+    }
+  }
+
+  // ─── Options ─────────────────────────────────────────────
+  function toggleOptions() {
+    const body = $id('aidOptionsBody');
+    const chevron = $id('aidOptionsChevron');
+    const isOpen = body.style.display !== 'none';
+    if (typeof gsap !== 'undefined') {
+      if (isOpen) {
+        gsap.to(body, { height: 0, opacity: 0, duration: 0.25, onComplete: () => { body.style.display = 'none'; } });
+        gsap.to(chevron, { rotation: 0, duration: 0.25 });
+      } else {
+        body.style.display = 'flex';
+        body.style.height = '0px';
+        gsap.to(body, { height: 'auto', opacity: 1, duration: 0.25 });
+        gsap.to(chevron, { rotation: 180, duration: 0.25 });
+      }
+    } else {
+      body.style.display = isOpen ? 'none' : 'flex';
+      chevron.style.transform = isOpen ? '' : 'rotate(180deg)';
+    }
+  }
+
+  // ─── Detect ───────────────────────────────────────────────
+  async function startDetect(isRecheck) {
+    if (State.isDetecting) return;
+    const text = State.inputText.trim();
+    if (text.length < 50) { showToast(t('error.too_short'), 'error'); return; }
+    if (text.length > CFG.freeLimit) { showToast(t('error.too_long'), 'error'); return; }
+
+    State.isDetecting = true;
+    const _detectStart = Date.now();
+    setDetectBtnState('loading');
+    if (typeof gaTrackToolUse === 'function') gaTrackToolUse('ai-detector');
+
+    try {
+      const res = await fetch('/api/ai/detect', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ text, language: State.language })
+      });
+
+      if (!res.ok) throw new Error(res.status === 429 ? 'rate_limit' : 'api_failed');
+      const result = await res.json();
+      State.detectResult = result;
+
+      renderDetectionResults(result);
+      if (!isRecheck) showHumanizeButton();
+      saveHistory({ text: text, score: result.score, verdict: result.verdict, result: result });
+      showToast(t('toast.detect_success'), 'success');
+      if (typeof gaTrackProcessDone === 'function') gaTrackProcessDone('ai-detector', Date.now() - _detectStart);
+
+      // GA event
+      document.dispatchEvent(new CustomEvent('detect:done', { detail: {
+        score: result.score,
+        language: result.language || 'auto',
+        charCount: text.length,
+        durationMs: Date.now() - _detectStart
+      }}));
+
+    } catch (err) {
+      showToast(t('error.api_failed'), 'error');
+    } finally {
+      State.isDetecting = false;
+      setDetectBtnState('idle');
+    }
+  }
+
+  function setDetectBtnState(state) {
+    const btn = $id('aidDetectBtn');
+    const txt = $id('aidDetectBtnText');
+    const spin = $id('aidDetectSpinner');
+    if (state === 'loading') {
+      btn.disabled = true;
+      txt.textContent = t('btn.detecting');
+      spin.style.display = 'inline-flex';
+    } else {
+      btn.disabled = State.inputText.length < 50;
+      txt.textContent = t('btn.detect');
+      spin.style.display = 'none';
+    }
+  }
+
+  function showHumanizeButton() {
+    const btn = $id('aidHumanizeBtn');
+    btn.style.display = 'flex';
+  }
+
+  // ─── Humanize ─────────────────────────────────────────────
+  async function startHumanize() {
+    if (State.isHumanizing) return;
+    const text = State.inputText.trim();
+    State.isHumanizing = true;
+    const _humanizeStart = Date.now();
+    setHumanizeBtnState('loading');
+    if (typeof gaTrackToolUse === 'function') gaTrackToolUse('ai-detector-humanize');
+
+    try {
+      // Use the JSON API endpoint for non-streaming response
+      const res = await fetch('/api/ai/humanize-json', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          text,
+          purpose: State.purpose,
+          tone: State.tone,
+          mode: State.mode,
+          language: State.language
+        })
+      });
+
+      if (!res.ok) throw new Error('api_failed');
+      const result = await res.json();
+      State.humanizeResult = result;
+
+      // API returns { text: "..." }, use that for humanized text
+      const humanizedText = result.text || result.humanized_text || result.humanizedText || '';
+      renderCompare(text, humanizedText);
+      if (humanizedText) {
+        State.inputText = humanizedText;
+        await startDetect(true);
+      }
+      showToast(t('toast.humanize_success'), 'success');
+      if (typeof gaTrackProcessDone === 'function') gaTrackProcessDone('ai-detector-humanize', Date.now() - _humanizeStart);
+
+      // GA event
+      document.dispatchEvent(new CustomEvent('humanize:done', { detail: {
+        purpose: State.purpose,
+        tone: State.tone,
+        mode: State.mode,
+        wordsChanged: result.words_changed || 0,
+        durationMs: Date.now() - _humanizeStart
+      }}));
+
+    } catch (err) {
+      showToast(t('error.api_failed'), 'error');
+    } finally {
+      State.isHumanizing = false;
+      setHumanizeBtnState('idle');
+    }
+  }
+
+  function setHumanizeBtnState(state) {
+    const btn = $id('aidHumanizeBtn');
+    const txt = $id('aidHumanizeBtnText');
+    const spin = $id('aidHumanizeSpinner');
+    if (state === 'loading') {
+      btn.disabled = true;
+      txt.textContent = t('btn.humanizing');
+      spin.style.display = 'inline-flex';
+    } else {
+      btn.disabled = false;
+      txt.textContent = t('btn.rehumanize');
+      spin.style.display = 'none';
+    }
+  }
+
+  // ─── Render Results ───────────────────────────────────────
+  function renderDetectionResults(result) {
+    const emptyEl = $id('aidEmpty');
+    const resultEl = $id('aidResult');
+    if (emptyEl) emptyEl.style.display = 'none';
+    if (resultEl) resultEl.style.display = 'flex';
+
+    try { updateGauge(result.score, result.verdict); } catch(e) { console.warn('gauge error', e); }
+    try { renderBreakdown(result.score, result.sentences || []); } catch(e) { console.warn('breakdown error', e); }
+    try { renderDetectorScores(result.detectors || {}); } catch(e) { console.warn('detector scores error', e); }
+    try { renderHighlightedText(result.sentences || []); } catch(e) { console.warn('highlight error', e); }
+
+    // Detailed analysis → report modal (not main panel)
+    try { renderReportModal(result); } catch(e) { console.warn('report modal error', e); }
+
+    const readabilityEl = $id('aidReadability');
+    const wordCountEl = $id('aidWordCountResult');
+    const langEl = $id('aidLangResult');
+    if (readabilityEl) readabilityEl.textContent = (result.readability && result.readability.grade) ? result.readability.grade : '--';
+    if (wordCountEl)   wordCountEl.textContent   = result.word_count || '--';
+    if (langEl)        langEl.textContent         = (result.language || '--').toUpperCase();
+
+    // Show "View Detailed Report" button if any detailed data exists
+    const reportBtn = $id('aidViewReportBtn');
+    if (reportBtn) {
+      const hasDetail = result.verdict_summary || result.model_signature || result.linguistic_metrics || result.forensic_evidence;
+      reportBtn.style.display = hasDetail ? 'flex' : 'none';
+    }
+
+    if (typeof gsap !== 'undefined') {
+      gsap.from('#aidResult', { opacity: 0, y: 20, duration: 0.4, ease: 'power2.out' });
+    }
+  }
+
+  // Compute & animate the AI / AI-Assisted / Human breakdown bar
+  function renderBreakdown(score, sentences) {
+    // Derive percentages from sentence-level data if available,
+    // otherwise estimate from the overall score
+    let pctAI = 0, pctAssisted = 0, pctHuman = 0;
+
+    if (sentences && sentences.length > 0) {
+      const total = sentences.length;
+      const aiCount       = sentences.filter(s => s.type === 'ai').length;
+      const mixedCount    = sentences.filter(s => s.type === 'mixed').length;
+      const humanCount    = sentences.filter(s => s.type === 'human').length;
+      pctAI       = Math.round((aiCount    / total) * 100);
+      pctAssisted = Math.round((mixedCount / total) * 100);
+      pctHuman    = 100 - pctAI - pctAssisted;
+      if (pctHuman < 0) pctHuman = 0;
+    } else {
+      // Fallback: estimate from overall score
+      // score 0-100: AI%, rest split between assisted and human
+      pctAI       = Math.round(score * 0.7);
+      pctAssisted = Math.round(score * 0.3);
+      pctHuman    = 100 - pctAI - pctAssisted;
+      if (pctHuman < 0) pctHuman = 0;
+    }
+
+    // Apply widths (animated via CSS transition)
+    requestAnimationFrame(() => {
+      const segAI       = $id('bdSegAI');
+      const segAssisted = $id('bdSegAssisted');
+      const segHuman    = $id('bdSegHuman');
+      if (segAI)       segAI.style.width       = pctAI       + '%';
+      if (segAssisted) segAssisted.style.width  = pctAssisted + '%';
+      if (segHuman)    segHuman.style.width     = pctHuman    + '%';
+    });
+
+    // Update percentage labels with CountUp
+    function animatePct(elId, val) {
+      const el = $id(elId);
+      if (!el) return;
+      // countUp UMD exports as window.countUp (lowercase), class is countUp.CountUp
+      if (typeof countUp !== 'undefined' && countUp.CountUp) {
+        new countUp.CountUp(el, val, { duration: 0.9, suffix: '%' }).start();
+      } else if (typeof CountUp !== 'undefined') {
+        new CountUp.CountUp(el, val, { duration: 0.9, suffix: '%' }).start();
+      } else {
+        el.textContent = val + '%';
+      }
+    }
+    animatePct('bdPctAI',       pctAI);
+    animatePct('bdPctAssisted', pctAssisted);
+    animatePct('bdPctHuman',    pctHuman);
+  }
+
+  function updateGauge(score, verdict) {
+    const color = score <= 15 ? '#10B981'
+                : score <= 45 ? '#3DD68C'
+                : score <= 70 ? '#F59E0B'
+                :               '#EF4444';
+    const borderColor = getComputedStyle(document.documentElement).getPropertyValue('--aid-border').trim() || '#E5E3FF';
+
+    const chartData = {
+      datasets: [{
+        data: [score, 100 - score],
+        backgroundColor: [color, borderColor],
+        borderWidth: 0,
+      }]
+    };
+
+    // Chart.js 4.x: circumference & rotation belong in options, not dataset
+    const chartOptions = {
+      circumference: 180,
+      rotation: -90,
+      plugins: { tooltip: { enabled: false }, legend: { display: false } },
+      cutout: '72%',
+      animation: { duration: 800 }
+    };
+
+    if (!State.gaugeChart) {
+      const canvas = $id('aidGaugeChart');
+      if (!canvas) return;
+      State.gaugeChart = new Chart(canvas, {
+        type: 'doughnut',
+        data: chartData,
+        options: chartOptions
+      });
+    } else {
+      State.gaugeChart.data = chartData;
+      State.gaugeChart.update('active');
+    }
+
+    // CountUp animation — UMD exports as window.countUp.CountUp (lowercase)
+    const scoreEl = $id('aidGaugeScore');
+    if (scoreEl) {
+      if (typeof countUp !== 'undefined' && countUp.CountUp) {
+        new countUp.CountUp(scoreEl, score, { duration: 1.2, suffix: '' }).start();
+      } else if (typeof CountUp !== 'undefined') {
+        new CountUp.CountUp(scoreEl, score, { duration: 1.2, suffix: '' }).start();
+      } else {
+        scoreEl.textContent = score + '%';
+      }
+    }
+
+    // Verdict
+    const verdictMap = {
+      human: 'verdict.human',
+      mixed: 'verdict.mixed',
+      ai: 'verdict.ai'
+    };
+    const v = verdict || (score <= 45 ? 'human' : score <= 70 ? 'mixed' : 'ai');
+    const confidence = (State.detectResult && State.detectResult.confidence) ? State.detectResult.confidence : 90;
+    const verdictEl = $id('aidVerdict');
+    if (verdictEl) {
+      verdictEl.innerHTML = `
+        <span class="aid-verdict-badge aid-verdict-badge--${v}">${t(verdictMap[v] || 'verdict.mixed')}</span>
+        <span class="aid-confidence-text">${t('result.confidence', { pct: confidence })}</span>
+      `;
+    }
+  }
+
+  function renderDetectorScores(detectors) {
+    const list = $id('aidDetectorList');
+    const ORDER = ['gptzero','turnitin','copyleaks','zerogpt','writer','sapling','originality','winston'];
+    const html = ORDER.map(key => {
+      const score = detectors[key] !== undefined ? detectors[key] : 0;
+      const color = score <= 30 ? 'var(--aid-success)' : score <= 60 ? 'var(--aid-warning)' : 'var(--aid-danger)';
+      return `
+        <div class="aid-detector-item">
+          <span class="aid-detector-name">${t('detector.' + key)}</span>
+          <div class="aid-detector-bar-track">
+            <div class="aid-detector-bar" style="background:${color}" data-target="${score}"></div>
+          </div>
+          <span class="aid-detector-score" data-target="${score}">0%</span>
+        </div>`;
+    }).join('');
+    list.innerHTML = html;
+
+    // Stagger animation
+    requestAnimationFrame(() => {
+      list.querySelectorAll('.aid-detector-bar').forEach((bar, i) => {
+        const target = parseInt(bar.dataset.target);
+        setTimeout(() => {
+          bar.style.width = target + '%';
+          const scoreEl = bar.closest('.aid-detector-item').querySelector('.aid-detector-score');
+          if (typeof countUp !== 'undefined' && countUp.CountUp) {
+            new countUp.CountUp(scoreEl, target, { duration: 0.8, suffix: '%' }).start();
+          } else if (typeof CountUp !== 'undefined') {
+            new CountUp.CountUp(scoreEl, target, { duration: 0.8, suffix: '%' }).start();
+          } else {
+            scoreEl.textContent = target + '%';
+          }
+        }, i * 80);
+      });
+    });
+  }
+
+  function renderHighlightedText(sentences) {
+    const container = $id('aidHighlightText');
+    const gotoBtn   = $id('aidGotoHumanizer');
+
+    if (!sentences || sentences.length === 0) {
+      container.innerHTML = '<div class="aid-highlight-para">' + esc(State.inputText) + '</div>';
+      if (gotoBtn) gotoBtn.style.display = 'none';
+      $id('aidHighlightFooter').textContent = '';
+      return;
+    }
+
+    // Group sentences into paragraphs (split on double-newline or every ~3-4 sentences)
+    const GROUP_SIZE = 3;
+    const groups = [];
+    for (let i = 0; i < sentences.length; i += GROUP_SIZE) {
+      groups.push(sentences.slice(i, i + GROUP_SIZE));
+    }
+
+    let aiCount = 0, mixedCount = 0, humanCount = 0;
+
+    container.innerHTML = groups.map((group, gi) => {
+      // Determine dominant type for this paragraph
+      const types = group.map(s => s.type || 'human');
+      const aiPct = types.filter(t => t === 'ai').length / types.length;
+      const mixedPct = types.filter(t => t === 'mixed').length / types.length;
+      const paraType = aiPct >= 0.5 ? 'ai' : mixedPct >= 0.4 ? 'mixed' : 'human';
+
+      types.forEach(t => {
+        if (t === 'ai') aiCount++;
+        else if (t === 'mixed') mixedCount++;
+        else humanCount++;
+      });
+
+      const labelMap = {
+        ai:    '<span class="aid-para-label aid-para-label--ai"><i class="fa-solid fa-robot"></i> AI</span>',
+        mixed: '<span class="aid-para-label aid-para-label--mixed"><i class="fa-solid fa-circle-half-stroke"></i> Mixed</span>',
+        human: '<span class="aid-para-label aid-para-label--human"><i class="fa-solid fa-user"></i> Human</span>',
+      };
+
+      const sentencesHtml = group.map(s => {
+        const cls = 'sentence sentence--' + (s.type || 'human');
+        const opacity = s.type === 'ai'    ? Math.max(0.15, (s.score || 50) / 100 * 0.55)
+                      : s.type === 'mixed' ? 0.25 : 0.12;
+        const rgb = s.type === 'ai'    ? '239,68,68'
+                  : s.type === 'mixed' ? '245,158,11' : '16,185,129';
+        const pct = Math.round(s.score || 0);
+        // Show LLM reason as tooltip if available
+        const titleAttr = s.reason
+          ? 'title="' + esc(s.reason) + '"'
+          : 'title="AI probability: ' + pct + '%"';
+        return `<span class="${cls}" style="background:rgba(${rgb},${opacity})"
+          ${titleAttr} data-score="${pct}">${esc(s.text)} </span>`;
+      }).join('');
+
+      return `<div class="aid-highlight-para aid-highlight-para--${paraType}">
+        ${labelMap[paraType]}
+        <div class="aid-para-text">${sentencesHtml}</div>
+      </div>`;
+    }).join('');
+
+    // Show goto humanizer if any AI content found
+    const hasAI = aiCount > 0 || mixedCount > 0;
+    if (gotoBtn) gotoBtn.style.display = hasAI ? 'inline-flex' : 'none';
+
+    $id('aidHighlightFooter').textContent = t('result.sentences', { count: sentences.length });
+  }
+
+  // ─── Detailed Report Modal ──────────────────────────────────
+  function renderReportModal(result) {
+    // Verdict Summary
+    const verdictSection = $id('aidReportVerdictSummary');
+    const verdictText = $id('aidReportVerdictSummaryText');
+    const verdictReasoning = $id('aidReportConfidenceReasoning');
+    if (result.verdict_summary || result.confidence_reasoning) {
+      verdictSection.style.display = 'flex';
+      if (verdictText && result.verdict_summary) verdictText.textContent = result.verdict_summary;
+      if (verdictReasoning && result.confidence_reasoning) verdictReasoning.textContent = result.confidence_reasoning;
+    } else {
+      verdictSection.style.display = 'none';
+    }
+
+    // Model Signature
+    renderModelSignatureInto(result.model_signature, 'aidReportSignatureSection', 'aidReportSignatureBars', 'aidReportSignatureDominant');
+
+    // Linguistic Metrics
+    renderLinguisticMetricsInto(result.linguistic_metrics, 'aidReportMetricsSection', 'aidReportMetricsGrid');
+
+    // Forensic Evidence
+    renderForensicEvidenceInto(result.forensic_evidence, 'aidReportEvidenceSection', 'aidReportEvidenceList');
+  }
+
+  function openReportModal() {
+    const modal = $id('aidReportModal');
+    if (modal) modal.style.display = 'flex';
+    document.body.style.overflow = 'hidden';
+  }
+
+  function closeReportModal() {
+    const modal = $id('aidReportModal');
+    if (modal) modal.style.display = 'none';
+    document.body.style.overflow = '';
+  }
+
+  function renderModelSignatureInto(signature, sectionId, barsId, dominantId) {
+    const section = $id(sectionId);
+    const barsEl = $id(barsId);
+    const dominantEl = $id(dominantId);
+
+    if (!signature || (!signature.gpt_match_score && !signature.claude_match_score && !signature.deepseek_gemini_match_score)) {
+      section.style.display = 'none';
+      return;
+    }
+
+    section.style.display = 'block';
+
+    const bars = [
+      { label: t('signature.gpt'), value: signature.gpt_match_score || 0, color: '#10B981' },
+      { label: t('signature.claude'), value: signature.claude_match_score || 0, color: '#D97706' },
+      { label: t('signature.deepseek'), value: signature.deepseek_gemini_match_score || 0, color: '#6C63FF' },
+    ];
+
+    barsEl.innerHTML = bars.map(b => {
+      const pct = Math.round(b.value * 100);
+      return `
+        <div class="aid-signature-row">
+          <span class="aid-signature-label">${b.label}</span>
+          <div class="aid-signature-track">
+            <div class="aid-signature-bar" style="background:${b.color}" data-target="${pct}"></div>
+          </div>
+          <span class="aid-signature-pct" data-target="${pct}">0%</span>
+        </div>`;
+    }).join('');
+
+    requestAnimationFrame(() => {
+      barsEl.querySelectorAll('.aid-signature-bar').forEach((bar, i) => {
+        const target = parseInt(bar.dataset.target);
+        setTimeout(() => {
+          bar.style.width = target + '%';
+          const pctEl = bar.closest('.aid-signature-row').querySelector('.aid-signature-pct');
+          if (typeof countUp !== 'undefined' && countUp.CountUp) {
+            new countUp.CountUp(pctEl, target, { duration: 0.8, suffix: '%' }).start();
+          } else {
+            pctEl.textContent = target + '%';
+          }
+        }, i * 120);
+      });
+    });
+
+    if (dominantEl && signature.dominant_signature) {
+      dominantEl.innerHTML = `<span class="aid-signature-dominant-label">${t('signature.dominant')}:</span> <strong>${esc(signature.dominant_signature)}</strong>`;
+    }
+  }
+
+  function renderLinguisticMetricsInto(metrics, sectionId, gridId) {
+    const section = $id(sectionId);
+    const grid = $id(gridId);
+
+    if (!metrics || (!metrics.burstiness_score && !metrics.perplexity && !metrics.ttr_score && !metrics.personal_anchor_count)) {
+      section.style.display = 'none';
+      return;
+    }
+
+    section.style.display = 'block';
+
+    const items = [
+      {
+        label: t('metrics.burstiness'),
+        value: metrics.burstiness_score != null ? metrics.burstiness_score : '--',
+        icon: 'fa-solid fa-wave-square',
+        desc: metrics.burstiness_score >= 18 ? 'Human-like' : metrics.burstiness_score >= 10 ? 'Mixed' : 'AI-like',
+        color: metrics.burstiness_score >= 18 ? 'var(--aid-success)' : metrics.burstiness_score >= 10 ? 'var(--aid-warning)' : 'var(--aid-danger)',
+      },
+      {
+        label: t('metrics.perplexity'),
+        value: metrics.perplexity || '--',
+        icon: 'fa-solid fa-chart-line',
+        desc: metrics.perplexity || '',
+        color: metrics.perplexity === 'High' ? 'var(--aid-success)' : metrics.perplexity === 'Medium' ? 'var(--aid-warning)' : 'var(--aid-danger)',
+      },
+      {
+        label: t('metrics.ttr'),
+        value: metrics.ttr_score ? metrics.ttr_score.toFixed(2) : '--',
+        icon: 'fa-solid fa-font',
+        desc: metrics.ttr_score ? (metrics.ttr_score > 0.6 ? 'Diverse vocabulary' : 'Repetitive vocabulary') : '',
+        color: metrics.ttr_score > 0.6 ? 'var(--aid-success)' : metrics.ttr_score > 0.4 ? 'var(--aid-warning)' : 'var(--aid-danger)',
+      },
+      {
+        label: t('metrics.anchors'),
+        value: metrics.personal_anchor_count != null ? metrics.personal_anchor_count : '--',
+        icon: 'fa-solid fa-user-pen',
+        desc: metrics.personal_anchor_count >= 3 ? 'Strong personal voice' : metrics.personal_anchor_count >= 1 ? 'Some personal touches' : 'No personal anchors',
+        color: metrics.personal_anchor_count >= 3 ? 'var(--aid-success)' : metrics.personal_anchor_count >= 1 ? 'var(--aid-warning)' : 'var(--aid-danger)',
+      },
+    ];
+
+    grid.innerHTML = items.map(item => `
+      <div class="aid-metric-card">
+        <div class="aid-metric-card__header">
+          <i class="${item.icon}" style="color:${item.color}"></i>
+          <span class="aid-metric-card__label">${item.label}</span>
+        </div>
+        <span class="aid-metric-card__value">${item.value}</span>
+        <span class="aid-metric-card__desc">${item.desc}</span>
+      </div>
+    `).join('');
+  }
+
+  function renderForensicEvidenceInto(evidence, sectionId, listId) {
+    const section = $id(sectionId);
+    const list = $id(listId);
+
+    if (!evidence || evidence.length === 0) {
+      section.style.display = 'none';
+      return;
+    }
+
+    section.style.display = 'block';
+
+    const severityOrder = { Critical: 0, High: 1, Medium: 2, Low: 3 };
+    const sorted = [...evidence].sort((a, b) => (severityOrder[a.severity] || 3) - (severityOrder[b.severity] || 3));
+
+    list.innerHTML = sorted.map(e => {
+      const severityColor = {
+        Critical: 'var(--aid-danger)',
+        High: '#F97316',
+        Medium: 'var(--aid-warning)',
+        Low: 'var(--aid-text-muted)',
+      }[e.severity] || 'var(--aid-text-muted)';
+
+      return `
+        <div class="aid-evidence-item" style="border-left-color:${severityColor}">
+          <div class="aid-evidence-item__header">
+            <span class="aid-evidence-dimension">${esc(e.dimension || '')}</span>
+            <span class="aid-evidence-severity" style="color:${severityColor}">${e.severity || 'Low'}</span>
+          </div>
+          <p class="aid-evidence-detail">${esc(e.detail || '')}</p>
+          ${e.original_quote ? `<blockquote class="aid-evidence-quote">${esc(e.original_quote)}</blockquote>` : ''}
+        </div>`;
+    }).join('');
+  }
+
+  // ─── Cross-tool: goto humanizer ──────────────────────────
+  function goToHumanizer() {
+    const text = State.inputText || '';
+    if (!text.trim()) return;
+    if (typeof HumanizeHub !== 'undefined' && HumanizeHub.transferToHumanizer) {
+      HumanizeHub.transferToHumanizer(text);
+    } else {
+      try { sessionStorage.setItem('ah_prefill_text', text); } catch(e) {}
+      window.location.href = '/ai/humanizer';
+    }
+  }
+
+  // ─── Compare ──────────────────────────────────────────────
+  function renderCompare(originalText, humanizedText) {
+    const compareSection = $id('aidCompare');
+    compareSection.style.display = 'block';
+
+    if (typeof diff_match_patch !== 'undefined') {
+      const dmp = new diff_match_patch();
+      const diffs = dmp.diff_main(originalText, humanizedText);
+      dmp.diff_cleanupSemantic(diffs);
+
+      let added = 0, removed = 0;
+      const diffHtml = diffs.map(([op, text]) => {
+        const escaped = esc(text);
+        if (op === 1)  { added   += text.split(/\s+/).length; return `<ins class="diff-ins">${escaped}</ins>`; }
+        if (op === -1) { removed += text.split(/\s+/).length; return `<del class="diff-del">${escaped}</del>`; }
+        return escaped;
+      }).join('');
+
+      $id('aidCompareStats').innerHTML = `
+        <span class="aid-stat-pill aid-stat-pill--green">+${added} words</span>
+        <span class="aid-stat-pill aid-stat-pill--red">-${removed} words</span>
+      `;
+
+      const body = $id('aidCompareBody');
+      body.dataset.humanized = humanizedText;
+      body.dataset.diff = diffHtml;
+    } else {
+      const body = $id('aidCompareBody');
+      body.dataset.humanized = humanizedText;
+      body.dataset.diff = esc(humanizedText);
+    }
+
+    showCompareTab(State.activeCompareTab);
+
+    if (typeof gsap !== 'undefined') {
+      gsap.from('#aidCompare', { opacity: 0, y: 16, duration: 0.4 });
+    }
+  }
+
+  function showCompareTab(tab) {
+    State.activeCompareTab = tab;
+    const body = $id('aidCompareBody');
+    if (tab === 'humanized') {
+      body.innerHTML = `<div class="aid-compare-text">${esc(body.dataset.humanized || '')}</div>`;
+    } else {
+      body.innerHTML = `<div class="aid-compare-text diff-view">${body.dataset.diff || ''}</div>`;
+    }
+    document.querySelectorAll('.aid-compare-tab').forEach(t => {
+      t.classList.toggle('aid-compare-tab--active', t.dataset.tab === tab);
+    });
+  }
+
+  // ─── Download / Copy ─────────────────────────────────────
+  function copyHumanized() {
+    const text = (State.humanizeResult && (State.humanizeResult.text || State.humanizeResult.humanized_text || State.humanizeResult.humanizedText)) || State.inputText;
+    navigator.clipboard.writeText(text).then(() => {
+      showToast(t('toast.copy_success'), 'success');
+      if (typeof gaTrackResultCopy === 'function') gaTrackResultCopy('ai-detector');
+    }).catch(() => {
+      // fallback
+      const ta = document.createElement('textarea');
+      ta.value = text;
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand('copy');
+      document.body.removeChild(ta);
+      showToast(t('toast.copy_success'), 'success');
+    });
+  }
+
+  function downloadTxt() {
+    const text = (State.humanizeResult && (State.humanizeResult.text || State.humanizeResult.humanized_text || State.humanizeResult.humanizedText)) || State.inputText;
+    if (typeof gaTrackDownload === 'function') gaTrackDownload('ai-detector', 'txt');
+    const blob = new Blob([text], { type: 'text/plain;charset=utf-8' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url; a.download = 'humanized-text.txt';
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    setTimeout(() => URL.revokeObjectURL(url), 1000);
+  }
+
+  // ─── History ─────────────────────────────────────────────
+  const HISTORY_KEY = 'aid-history';
+  const MAX_HISTORY = 20;
+
+  function loadHistory() {
+    try { State.history = JSON.parse(localStorage.getItem(HISTORY_KEY) || '[]'); } catch { State.history = []; }
+  }
+
+  function saveHistory(entry) {
+    loadHistory();
+    State.history.unshift({
+      id: Date.now(),
+      fullText: entry.text || '',
+      preview: (entry.text || '').slice(0, 80) + ((entry.text || '').length > 80 ? '…' : ''),
+      score: entry.score,
+      verdict: entry.verdict,
+      result: entry.result || null,
+      timestamp: Date.now()
+    });
+    State.history = State.history.slice(0, MAX_HISTORY);
+    localStorage.setItem(HISTORY_KEY, JSON.stringify(State.history));
+    renderHistory();
+  }
+
+  function renderHistory() {
+    loadHistory();
+    const list = $id('aidHistoryList');
+    if (!State.history.length) {
+      list.innerHTML = `<p class="aid-history__empty">${t('history.empty')}</p>`;
+      return;
+    }
+    list.innerHTML = State.history.map(item => {
+      const v = item.verdict || 'mixed';
+      return `
+        <div class="aid-history-item" data-history-id="${item.id}">
+          <span class="aid-history-item__text">${esc(item.preview)}</span>
+          <div class="aid-history-item__meta">
+            <span class="aid-history-score aid-verdict-badge--${v}">${item.score}%</span>
+            <span class="aid-history-time">${formatTime(item.timestamp)}</span>
+          </div>
+        </div>`;
+    }).join('');
+    list.querySelectorAll('.aid-history-item').forEach(el => {
+      el.addEventListener('click', function() {
+        const hid = parseInt(this.dataset.historyId);
+        restoreFromHistory(hid);
+      });
+    });
+  }
+
+  function clearHistory() {
+    localStorage.removeItem(HISTORY_KEY);
+    State.history = [];
+    renderHistory();
+  }
+
+  function restoreFromHistory(id) {
+    const item = State.history.find(h => h.id === id);
+    if (!item) return;
+    // Restore input text
+    const fullText = item.fullText || item.preview || '';
+    const ta = $id('aidInputText');
+    if (ta && fullText) {
+      ta.value = fullText;
+      State.inputText = fullText;
+      handleTextInput(ta);
+    }
+    // Restore detection results if available
+    if (item.result) {
+      State.detectResult = item.result;
+      renderDetectionResults(item.result);
+      showHumanizeButton();
+    }
+  }
+
+  function formatTime(ts) {
+    const diff = Date.now() - ts;
+    if (diff < 60000) return 'just now';
+    if (diff < 3600000) return Math.floor(diff / 60000) + 'm ago';
+    if (diff < 86400000) return Math.floor(diff / 3600000) + 'h ago';
+    return new Date(ts).toLocaleDateString();
+  }
+
+  // ─── FAQ Accordion ────────────────────────────────────────
+  function toggleFAQ(index) {
+    const item = $id('faq-' + index);
+    const answer = $id('faq-answer-' + index);
+    const isOpen = item.classList.contains('aid-faq-item--open');
+
+    // close all
+    document.querySelectorAll('.aid-faq-item--open').forEach(el => {
+      el.classList.remove('aid-faq-item--open');
+      el.querySelector('.aid-faq-answer').style.maxHeight = '0';
+      el.querySelector('.aid-faq-question').setAttribute('aria-expanded', 'false');
+    });
+
+    if (!isOpen) {
+      item.classList.add('aid-faq-item--open');
+      answer.style.maxHeight = answer.scrollHeight + 'px';
+      item.querySelector('.aid-faq-question').setAttribute('aria-expanded', 'true');
+    }
+  }
+
+  // ─── Theme ───────────────────────────────────────────────
+  function toggleTheme() {
+    // Delegate to global applyTheme (defined in base.html) for site-wide theme switching
+    if (typeof window.applyTheme === 'function') {
+      const themes = ['light','dark','forest','ocean','sunset'];
+      const current = document.documentElement.getAttribute('data-theme') || 'light';
+      const next = current === 'dark' ? 'light' : 'dark'; // simple toggle: light ↔ dark
+      window.applyTheme(next);
+      return;
+    }
+    // Fallback (standalone, no base.html)
+    const isDark = document.documentElement.getAttribute('data-theme') === 'dark';
+    const newTheme = isDark ? 'light' : 'dark';
+    document.documentElement.setAttribute('data-theme', newTheme);
+    localStorage.setItem('tbn-theme', newTheme);
+    const icon = $id('aidThemeIcon');
+    if (icon) icon.className = newTheme === 'dark' ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
+    if (State.detectResult && State.gaugeChart) {
+      updateGauge(State.detectResult.score, State.detectResult.verdict);
+    }
+  }
+
+  function initTheme() {
+    // Read from unified key 'tbn-theme' (set by global applyTheme in base.html)
+    const saved = localStorage.getItem('tbn-theme')
+      || localStorage.getItem('aid-theme')  // migrate legacy key
+      || (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    // Sync icon to current theme
+    const icon = $id('aidThemeIcon');
+    if (icon) icon.className = saved === 'dark' ? 'fa-solid fa-sun' : 'fa-solid fa-moon';
+    // Refresh gauge if already rendered
+    if (State.detectResult && State.gaugeChart) {
+      updateGauge(State.detectResult.score, State.detectResult.verdict);
+    }
+  }
+
+  // ─── Toast ───────────────────────────────────────────────
+  function showToast(msg, type) {
+    type = type || 'info';
+    const container = $id('aidToastContainer');
+    const toast = document.createElement('div');
+    toast.className = 'aid-toast aid-toast--' + type;
+    const iconMap = { success: 'fa-check-circle', error: 'fa-circle-xmark', info: 'fa-circle-info' };
+    toast.innerHTML = `<i class="fa-solid ${iconMap[type] || 'fa-circle-info'}"></i><span>${msg}</span>`;
+    container.appendChild(toast);
+
+    if (typeof gsap !== 'undefined') {
+      gsap.from(toast, { x: 100, opacity: 0, duration: 0.3 });
+      setTimeout(() => {
+        gsap.to(toast, { x: 100, opacity: 0, duration: 0.3, onComplete: () => toast.remove() });
+      }, 3000);
+    } else {
+      setTimeout(() => toast.remove(), 3000);
+    }
+  }
+
+  // ─── Init ─────────────────────────────────────────────────
+  function init() {
+    initTheme();
+    loadHistory();
+    renderHistory();
+
+    // Cross-tool prefill: if navigated from AI Humanizer
+    try {
+      var prefill = sessionStorage.getItem('aid_prefill_text');
+      if (prefill) {
+        sessionStorage.removeItem('aid_prefill_text');
+        var ta = $id('aidInputText');
+        if (ta) {
+          ta.value = prefill;
+          State.inputText = prefill;
+          handleTextInput(ta);
+          // Auto-start detection after a short delay
+          setTimeout(function() { startDetect(); }, 600);
+        }
+      }
+    } catch(e) {}
+
+    // Purpose tabs
+    const purposeTabs = $id('aidPurposeTabs');
+    if (purposeTabs) {
+      purposeTabs.addEventListener('click', function (e) {
+        const tab = e.target.closest('.aid-purpose-tab');
+        if (!tab) return;
+        purposeTabs.querySelectorAll('.aid-purpose-tab').forEach(t => t.classList.remove('aid-purpose-tab--active'));
+        tab.classList.add('aid-purpose-tab--active');
+        State.purpose = tab.dataset.value;
+      });
+    }
+
+    // Selects
+    const toneSelect = $id('aidToneSelect');
+    if (toneSelect) toneSelect.addEventListener('change', e => State.tone = e.target.value);
+    const modeSelect = $id('aidModeSelect');
+    if (modeSelect) modeSelect.addEventListener('change', e => State.mode = e.target.value);
+    const langSelect = $id('aidLangSelect');
+    if (langSelect) langSelect.addEventListener('change', e => State.language = e.target.value);
+  }
+
+  // ─── Public API ───────────────────────────────────────────
+  window.AID = {
+    setInputMode,
+    handleTextInput,
+    handleDragOver,
+    handleDragLeave,
+    handleDrop,
+    handleFileDragOver,
+    handleFileDragLeave,
+    handleFileDrop,
+    handleFileSelect,
+    removeFile,
+    fetchURL,
+    loadSample,
+    clearInput,
+    toggleOptions,
+    startDetect,
+    startHumanize,
+    showCompareTab,
+    copyHumanized,
+    downloadTxt,
+    clearHistory,
+    toggleFAQ,
+    toggleTheme,
+    goToHumanizer,
+    openReportModal,
+    closeReportModal,
+    restoreFromHistory,
+  };
+
+  // Boot
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', init);
+  } else {
+    init();
+  }
+})();
+

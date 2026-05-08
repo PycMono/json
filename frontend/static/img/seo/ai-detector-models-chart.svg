@@ -1,0 +1,95 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 800 400" fill="none">
+  <defs>
+    <linearGradient id="bg" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#f8fafc"/>
+      <stop offset="100%" style="stop-color:#eef2ff"/>
+    </linearGradient>
+  </defs>
+  <!-- Background -->
+  <rect width="800" height="400" rx="16" fill="url(#bg)"/>
+  <!-- Title -->
+  <text x="400" y="45" font-family="system-ui,-apple-system,sans-serif" font-size="18" font-weight="600" fill="#0f172a" text-anchor="middle">Detectable AI Models</text>
+  <text x="400" y="70" font-family="system-ui,-apple-system,sans-serif" font-size="13" fill="#64748b" text-anchor="middle">Our AI Detector identifies content from all major AI writing platforms</text>
+  <!-- Row 1 -->
+  <!-- ChatGPT -->
+  <rect x="40" y="95" width="170" height="130" rx="12" fill="white" stroke="#e2e8f0"/>
+  <rect x="55" y="108" width="36" height="36" rx="8" fill="#10b981" opacity="0.12"/>
+  <text x="73" y="132" font-family="system-ui,-apple-system,sans-serif" font-size="16" text-anchor="middle" fill="#10b981" font-weight="700">G</text>
+  <text x="105" y="122" font-family="system-ui,-apple-system,sans-serif" font-size="12" font-weight="600" fill="#1e293b">ChatGPT</text>
+  <text x="55" y="160" font-family="system-ui,-apple-system,sans-serif" font-size="10" fill="#64748b">GPT-3.5, GPT-4,</text>
+  <text x="55" y="175" font-family="system-ui,-apple-system,sans-serif" font-size="10" fill="#64748b">GPT-4 Turbo, GPT-4o</text>
+  <text x="55" y="190" font-family="system-ui,-apple-system,sans-serif" font-size="10" fill="#64748b">All OpenAI models</text>
+  <rect x="55" y="200" width="50" height="16" rx="8" fill="#10b981" opacity="0.08"/>
+  <text x="80" y="211" font-family="system-ui,-apple-system,sans-serif" font-size="9" fill="#059669" text-anchor="middle">98.5%</text>
+  <!-- Claude -->
+  <rect x="225" y="95" width="170" height="130" rx="12" fill="white" stroke="#e2e8f0"/>
+  <rect x="240" y="108" width="36" height="36" rx="8" fill="#6366f1" opacity="0.12"/>
+  <text x="258" y="132" font-family="system-ui,-apple-system,sans-serif" font-size="16" text-anchor="middle" fill="#6366f1" font-weight="700">C</text>
+  <text x="290" y="122" font-family="system-ui,-apple-system,sans-serif" font-size="12" font-weight="600" fill="#1e293b">Claude</text>
+  <text x="240" y="160" font-family="system-ui,-apple-system,sans-serif" font-size="10" fill="#64748b">Claude 3.5 Sonnet,</text>
+  <text x="240" y="175" font-family="system-ui,-apple-system,sans-serif" font-size="10" fill="#64748b">Opus, Haiku</text>
+  <text x="240" y="190" font-family="system-ui,-apple-system,sans-serif" font-size="10" fill="#64748b">Anthropic models</text>
+  <rect x="240" y="200" width="50" height="16" rx="8" fill="#6366f1" opacity="0.08"/>
+  <text x="265" y="211" font-family="system-ui,-apple-system,sans-serif" font-size="9" fill="#4f46e5" text-anchor="middle">97.8%</text>
+  <!-- Gemini -->
+  <rect x="410" y="95" width="170" height="130" rx="12" fill="white" stroke="#e2e8f0"/>
+  <rect x="425" y="108" width="36" height="36" rx="8" fill="#f59e0b" opacity="0.12"/>
+  <text x="443" y="132" font-family="system-ui,-apple-system,sans-serif" font-size="16" text-anchor="middle" fill="#f59e0b" font-weight="700">Ge</text>
+  <text x="475" y="122" font-family="system-ui,-apple-system,sans-serif" font-size="12" font-weight="600" fill="#1e293b">Gemini</text>
+  <text x="425" y="160" font-family="system-ui,-apple-system,sans-serif" font-size="10" fill="#64748b">Gemini Pro,</text>
+  <text x="425" y="175" font-family="system-ui,-apple-system,sans-serif" font-size="10" fill="#64748b">Gemini Ultra</text>
+  <text x="425" y="190" font-family="system-ui,-apple-system,sans-serif" font-size="10" fill="#64748b">Google AI models</text>
+  <rect x="425" y="200" width="50" height="16" rx="8" fill="#f59e0b" opacity="0.08"/>
+  <text x="450" y="211" font-family="system-ui,-apple-system,sans-serif" font-size="9" fill="#d97706" text-anchor="middle">98.1%</text>
+  <!-- DeepSeek -->
+  <rect x="595" y="95" width="170" height="130" rx="12" fill="white" stroke="#e2e8f0"/>
+  <rect x="610" y="108" width="36" height="36" rx="8" fill="#ec4899" opacity="0.12"/>
+  <text x="628" y="132" font-family="system-ui,-apple-system,sans-serif" font-size="16" text-anchor="middle" fill="#ec4899" font-weight="700">D</text>
+  <text x="660" y="122" font-family="system-ui,-apple-system,sans-serif" font-size="12" font-weight="600" fill="#1e293b">DeepSeek</text>
+  <text x="610" y="160" font-family="system-ui,-apple-system,sans-serif" font-size="10" fill="#64748b">DeepSeek V3,</text>
+  <text x="610" y="175" font-family="system-ui,-apple-system,sans-serif" font-size="10" fill="#64748b">DeepSeek Coder</text>
+  <text x="610" y="190" font-family="system-ui,-apple-system,sans-serif" font-size="10" fill="#64748b">Chinese AI models</text>
+  <rect x="610" y="200" width="50" height="16" rx="8" fill="#ec4899" opacity="0.08"/>
+  <text x="635" y="211" font-family="system-ui,-apple-system,sans-serif" font-size="9" fill="#db2777" text-anchor="middle">97.2%</text>
+  <!-- Row 2 -->
+  <!-- Llama -->
+  <rect x="40" y="245" width="170" height="130" rx="12" fill="white" stroke="#e2e8f0"/>
+  <rect x="55" y="258" width="36" height="36" rx="8" fill="#8b5cf6" opacity="0.12"/>
+  <text x="73" y="282" font-family="system-ui,-apple-system,sans-serif" font-size="16" text-anchor="middle" fill="#8b5cf6" font-weight="700">L</text>
+  <text x="105" y="272" font-family="system-ui,-apple-system,sans-serif" font-size="12" font-weight="600" fill="#1e293b">Llama</text>
+  <text x="55" y="310" font-family="system-ui,-apple-system,sans-serif" font-size="10" fill="#64748b">Llama 2, Llama 3,</text>
+  <text x="55" y="325" font-family="system-ui,-apple-system,sans-serif" font-size="10" fill="#64748b">Meta open source</text>
+  <text x="55" y="340" font-family="system-ui,-apple-system,sans-serif" font-size="10" fill="#64748b">AI models</text>
+  <rect x="55" y="350" width="50" height="16" rx="8" fill="#8b5cf6" opacity="0.08"/>
+  <text x="80" y="361" font-family="system-ui,-apple-system,sans-serif" font-size="9" fill="#7c3aed" text-anchor="middle">96.5%</text>
+  <!-- Jasper -->
+  <rect x="225" y="245" width="170" height="130" rx="12" fill="white" stroke="#e2e8f0"/>
+  <rect x="240" y="258" width="36" height="36" rx="8" fill="#f97316" opacity="0.12"/>
+  <text x="258" y="282" font-family="system-ui,-apple-system,sans-serif" font-size="16" text-anchor="middle" fill="#f97316" font-weight="700">J</text>
+  <text x="290" y="272" font-family="system-ui,-apple-system,sans-serif" font-size="12" font-weight="600" fill="#1e293b">Jasper</text>
+  <text x="240" y="310" font-family="system-ui,-apple-system,sans-serif" font-size="10" fill="#64748b">Jasper AI,</text>
+  <text x="240" y="325" font-family="system-ui,-apple-system,sans-serif" font-size="10" fill="#64748b">Marketing copy</text>
+  <text x="240" y="340" font-family="system-ui,-apple-system,sans-serif" font-size="10" fill="#64748b">generation tool</text>
+  <rect x="240" y="350" width="50" height="16" rx="8" fill="#f97316" opacity="0.08"/>
+  <text x="265" y="361" font-family="system-ui,-apple-system,sans-serif" font-size="9" fill="#ea580c" text-anchor="middle">95.8%</text>
+  <!-- Copy.ai -->
+  <rect x="410" y="245" width="170" height="130" rx="12" fill="white" stroke="#e2e8f0"/>
+  <rect x="425" y="258" width="36" height="36" rx="8" fill="#14b8a6" opacity="0.12"/>
+  <text x="443" y="282" font-family="system-ui,-apple-system,sans-serif" font-size="16" text-anchor="middle" fill="#14b8a6" font-weight="700">CP</text>
+  <text x="475" y="272" font-family="system-ui,-apple-system,sans-serif" font-size="12" font-weight="600" fill="#1e293b">Copy.ai</text>
+  <text x="425" y="310" font-family="system-ui,-apple-system,sans-serif" font-size="10" fill="#64748b">Copy.ai,</text>
+  <text x="425" y="325" font-family="system-ui,-apple-system,sans-serif" font-size="10" fill="#64748b">QuillBot,</text>
+  <text x="425" y="340" font-family="system-ui,-apple-system,sans-serif" font-size="10" fill="#64748b">Grammarly AI</text>
+  <rect x="425" y="350" width="50" height="16" rx="8" fill="#14b8a6" opacity="0.08"/>
+  <text x="450" y="361" font-family="system-ui,-apple-system,sans-serif" font-size="9" fill="#0d9488" text-anchor="middle">94.2%</text>
+  <!-- Others -->
+  <rect x="595" y="245" width="170" height="130" rx="12" fill="white" stroke="#e2e8f0"/>
+  <rect x="610" y="258" width="36" height="36" rx="8" fill="#64748b" opacity="0.12"/>
+  <text x="628" y="282" font-family="system-ui,-apple-system,sans-serif" font-size="16" text-anchor="middle" fill="#64748b" font-weight="700">+</text>
+  <text x="660" y="272" font-family="system-ui,-apple-system,sans-serif" font-size="12" font-weight="600" fill="#1e293b">More</text>
+  <text x="610" y="310" font-family="system-ui,-apple-system,sans-serif" font-size="10" fill="#64748b">Mistral, Writesonic,</text>
+  <text x="610" y="325" font-family="system-ui,-apple-system,sans-serif" font-size="10" fill="#64748b">and dozens of</text>
+  <text x="610" y="340" font-family="system-ui,-apple-system,sans-serif" font-size="10" fill="#64748b">other AI tools</text>
+  <rect x="610" y="350" width="50" height="16" rx="8" fill="#64748b" opacity="0.08"/>
+  <text x="635" y="361" font-family="system-ui,-apple-system,sans-serif" font-size="9" fill="#475569" text-anchor="middle">95%+</text>
+</svg>

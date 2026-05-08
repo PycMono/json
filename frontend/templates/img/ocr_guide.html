@@ -1,0 +1,231 @@
+{{ template "base" . }}
+
+{{ define "extraHead" }}
+<link rel="canonical" href="https://toolboxnova.com/img/ocr-guide">
+<link rel="alternate" hreflang="zh" href="https://toolboxnova.com/img/ocr-guide?lang=zh">
+<link rel="alternate" hreflang="en" href="https://toolboxnova.com/img/ocr-guide?lang=en">
+<link rel="alternate" hreflang="ja" href="https://toolboxnova.com/img/ocr-guide?lang=ja">
+<link rel="alternate" hreflang="ko" href="https://toolboxnova.com/img/ocr-guide?lang=ko">
+<link rel="alternate" hreflang="spa" href="https://toolboxnova.com/img/ocr-guide?lang=spa">
+<link rel="alternate" hreflang="x-default" href="https://toolboxnova.com/img/ocr-guide">
+<link rel="stylesheet" href="/static/css/img-toolbox.css?v={{ .AssetVer }}">
+<link rel="stylesheet" href="/static/css/img-tabs.css?v={{ .AssetVer }}">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{{- range $i,$f := .FAQs }}{{if $i}},{{end}}{"@type":"Question","name":{{ $f.Q | html }},"acceptedAnswer":{"@type":"Answer","text":{{ $f.A | html }}}}{{- end}}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"HowTo","name":"{{ call .T "guide.ocr.howto.name" }}","description":"{{ call .T "guide.ocr.howto.desc" }}","step":[{"@type":"HowToStep","name":"{{ call .T "guide.ocr.howto.step1.name" }}","text":"{{ call .T "guide.ocr.howto.step1.text" }}","url":"https://toolboxnova.com/img/ocr-guide#step1"},{"@type":"HowToStep","name":"{{ call .T "guide.ocr.howto.step2.name" }}","text":"{{ call .T "guide.ocr.howto.step2.text" }}","url":"https://toolboxnova.com/img/ocr-guide#step2"},{"@type":"HowToStep","name":"{{ call .T "guide.ocr.howto.step3.name" }}","text":"{{ call .T "guide.ocr.howto.step3.text" }}","url":"https://toolboxnova.com/img/ocr-guide#step3"},{"@type":"HowToStep","name":"{{ call .T "guide.ocr.howto.step4.name" }}","text":"{{ call .T "guide.ocr.howto.step4.text" }}","url":"https://toolboxnova.com/img/ocr-guide#step4"}]}</script>
+{{ end }}
+
+{{ define "content" }}
+{{ template "img_tabs" . }}
+<div class="itb-page" data-tool="ocr-guide">
+  <header class="itb-header itb-header--ocr">
+    <div class="itb-header__inner">
+      <span class="itb-header__badge">{{ call .T "guide.ocr.hero.eyebrow" }}</span>
+      <h1 class="itb-header__title">{{ call .T "guide.ocr.hero.title" }}</h1>
+      <p class="itb-header__sub">{{ call .T "guide.ocr.hero.subtitle" }}</p>
+      <div class="itb-hero__actions" style="margin-top:20px">
+        <a href="/img/ocr?lang={{ .Lang }}" class="itb-btn-primary itb-btn-primary--hero">{{ call .T "guide.ocr.hero.cta" }}</a>
+      </div>
+    </div>
+  </header>
+
+  <div class="itb-container">
+    <!-- CTA to tool -->
+    <div class="itb-guide-cta itb-guide-cta--blue" style="margin-bottom:32px">
+      <div class="itb-guide-cta__text">
+        <h3 class="itb-guide-cta__title">{{ call .T "guide.ocr.cta.title" }}</h3>
+        <p class="itb-guide-cta__desc">{{ call .T "guide.ocr.cta.desc" }}</p>
+      </div>
+      <a href="/img/ocr?lang={{ .Lang }}" class="itb-guide-cta__btn" data-ga="guide_cta">{{ call .T "guide.ocr.cta.btn" }}</a>
+    </div>
+
+    <!-- What is OCR -->
+    <section class="itb-section" style="padding-top:0">
+      <div class="itb-section-inner">
+        <span class="itb-section-label">{{ call .T "guide.ocr.s1.label" }}</span>
+        <h2 class="itb-section-title">{{ call .T "guide.ocr.s1.title" }}</h2>
+        <p class="itb-section-body">{{ call .T "guide.ocr.s1.body1" }}</p>
+        <p class="itb-section-body">{{ call .T "guide.ocr.s1.body2" }}</p>
+      </div>
+    </section>
+
+    <!-- How to use -->
+    <section class="itb-section itb-section--alt" id="step1">
+      <div class="itb-section-inner">
+        <span class="itb-section-label">{{ call .T "guide.ocr.s2.label" }}</span>
+        <h2 class="itb-section-title">{{ call .T "guide.ocr.s2.title" }}</h2>
+        <p class="itb-section-body">{{ call .T "guide.ocr.s2.body" }}</p>
+        <div class="itb-steps" style="margin-top:24px">
+          <div class="itb-step">
+            <div class="itb-step__num">1</div>
+            <h3 class="itb-step__title">{{ call .T "guide.ocr.s2.step1.title" }}</h3>
+            <p class="itb-step__desc">{{ call .T "guide.ocr.s2.step1.desc" }}</p>
+          </div>
+          <div class="itb-step">
+            <div class="itb-step__num">2</div>
+            <h3 class="itb-step__title">{{ call .T "guide.ocr.s2.step2.title" }}</h3>
+            <p class="itb-step__desc">{{ call .T "guide.ocr.s2.step2.desc" }}</p>
+          </div>
+          <div class="itb-step">
+            <div class="itb-step__num">3</div>
+            <h3 class="itb-step__title">{{ call .T "guide.ocr.s2.step3.title" }}</h3>
+            <p class="itb-step__desc">{{ call .T "guide.ocr.s2.step3.desc" }}</p>
+          </div>
+          <div class="itb-step">
+            <div class="itb-step__num">4</div>
+            <h3 class="itb-step__title">{{ call .T "guide.ocr.s2.step4.title" }}</h3>
+            <p class="itb-step__desc">{{ call .T "guide.ocr.s2.step4.desc" }}</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Screenshot OCR -->
+    <section class="itb-section">
+      <div class="itb-section-inner">
+        <div class="itb-split">
+          <div class="itb-split-text">
+            <span class="itb-section-label">{{ call .T "guide.ocr.s3.label" }}</span>
+            <h2 class="itb-section-title">{{ call .T "guide.ocr.s3.title" }}</h2>
+            <p class="itb-section-body">{{ call .T "guide.ocr.s3.body1" }}</p>
+            <p class="itb-section-body">{{ call .T "guide.ocr.s3.body2" }}</p>
+          </div>
+          <div class="itb-split-visual">
+            <div class="itb-visual-box itb-visual-box--blue">
+              <div class="itb-visual-box__icon">
+                <svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="1.5"><path d="M23 19a2 2 0 01-2 2H3a2 2 0 01-2-2V8a2 2 0 012-2h4l2-3h6l2 3h4a2 2 0 012 2z"/><circle cx="12" cy="13" r="4"/></svg>
+              </div>
+              <div class="itb-visual-stat">
+                <span class="itb-visual-stat__num">Ctrl+V</span>
+                <span class="itb-visual-stat__lbl">{{ call .T "guide.ocr.s3.stat.lbl" }}</span>
+              </div>
+              <div class="itb-visual-box__label">{{ call .T "guide.ocr.s3.stat.sub" }}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Language Support -->
+    <section class="itb-section itb-section--alt">
+      <div class="itb-section-inner">
+        <span class="itb-section-label">{{ call .T "guide.ocr.s4.label" }}</span>
+        <h2 class="itb-section-title">{{ call .T "guide.ocr.s4.title" }}</h2>
+        <p class="itb-section-body">{{ call .T "guide.ocr.s4.body1" }}</p>
+        <p class="itb-section-body">{{ call .T "guide.ocr.s4.body2" }}</p>
+        <div class="itb-alert itb-alert--info" style="margin-top:16px">
+          <span class="itb-alert__icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="16" x2="12" y2="12"/><line x1="12" y1="8" x2="12.01" y2="8"/></svg>
+          </span>
+          <span>{{ call .T "guide.ocr.s4.note" }}</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Accuracy -->
+    <section class="itb-section">
+      <div class="itb-section-inner">
+        <span class="itb-section-label">{{ call .T "guide.ocr.s5.label" }}</span>
+        <h2 class="itb-section-title">{{ call .T "guide.ocr.s5.title" }}</h2>
+        <p class="itb-section-body">{{ call .T "guide.ocr.s5.body1" }}</p>
+        <p class="itb-section-body">{{ call .T "guide.ocr.s5.body2" }}</p>
+      </div>
+    </section>
+
+    <!-- Batch OCR -->
+    <section class="itb-section itb-section--alt">
+      <div class="itb-section-inner">
+        <span class="itb-section-label">{{ call .T "guide.ocr.s6.label" }}</span>
+        <h2 class="itb-section-title">{{ call .T "guide.ocr.s6.title" }}</h2>
+        <p class="itb-section-body">{{ call .T "guide.ocr.s6.body1" }}</p>
+        <p class="itb-section-body">{{ call .T "guide.ocr.s6.body2" }}</p>
+      </div>
+    </section>
+
+    <!-- Export Formats -->
+    <section class="itb-section">
+      <div class="itb-section-inner">
+        <span class="itb-section-label">{{ call .T "guide.ocr.s7.label" }}</span>
+        <h2 class="itb-section-title">{{ call .T "guide.ocr.s7.title" }}</h2>
+        <p class="itb-section-body">{{ call .T "guide.ocr.s7.body" }}</p>
+        <div class="itb-format-grid" style="margin-top:24px">
+          <div class="itb-format-card">
+            <div class="itb-format-card__icon">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><path d="M3 9h18M9 21V9"/></svg>
+            </div>
+            <h3 class="itb-format-card__name">TXT</h3>
+            <p class="itb-format-card__desc">{{ call .T "guide.ocr.fmt.txt" }}</p>
+          </div>
+          <div class="itb-format-card">
+            <div class="itb-format-card__icon">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2"><path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/><polyline points="14 2 14 8 20 8"/></svg>
+            </div>
+            <h3 class="itb-format-card__name">Markdown</h3>
+            <p class="itb-format-card__desc">{{ call .T "guide.ocr.fmt.md" }}</p>
+          </div>
+          <div class="itb-format-card">
+            <div class="itb-format-card__icon">
+              <svg width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="#2563EB" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+            </div>
+            <h3 class="itb-format-card__name">Clipboard</h3>
+            <p class="itb-format-card__desc">{{ call .T "guide.ocr.fmt.clipboard" }}</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Privacy -->
+    <section class="itb-section itb-section--alt">
+      <div class="itb-section-inner">
+        <span class="itb-section-label">{{ call .T "guide.ocr.s8.label" }}</span>
+        <h2 class="itb-section-title">{{ call .T "guide.ocr.s8.title" }}</h2>
+        <p class="itb-section-body">{{ call .T "guide.ocr.s8.body1" }}</p>
+        <p class="itb-section-body">{{ call .T "guide.ocr.s8.body2" }}</p>
+      </div>
+    </section>
+
+    <!-- Common Mistakes -->
+    <section class="itb-section">
+      <div class="itb-section-inner">
+        <span class="itb-section-label">{{ call .T "guide.ocr.s9.label" }}</span>
+        <h2 class="itb-section-title">{{ call .T "guide.ocr.s9.title" }}</h2>
+        <p class="itb-section-body">{{ call .T "guide.ocr.s9.body" }}</p>
+      </div>
+    </section>
+
+    <!-- FAQ -->
+    <section class="itb-faq">
+      <h2 class="itb-faq__title">FAQ</h2>
+      {{ range $i,$f := .FAQs }}
+      <div class="itb-faq-item" id="itbFaq-{{ $i }}">
+        <button class="itb-faq-item__q" onclick="itbToggleFAQ({{ $i }})" aria-expanded="false">{{ $f.Q }}<span class="itb-faq-item__arrow">▾</span></button>
+        <div class="itb-faq-item__a"><p>{{ $f.A }}</p></div>
+      </div>
+      {{ end }}
+    </section>
+
+    <!-- Bottom CTA -->
+    <div class="itb-guide-cta itb-guide-cta--blue" style="margin-top:32px;margin-bottom:48px">
+      <div class="itb-guide-cta__text">
+        <h3 class="itb-guide-cta__title">{{ call .T "guide.ocr.cta2.title" }}</h3>
+        <p class="itb-guide-cta__desc">{{ call .T "guide.ocr.cta2.desc" }}</p>
+      </div>
+      <a href="/img/ocr?lang={{ .Lang }}" class="itb-guide-cta__btn" data-ga="guide_cta">{{ call .T "guide.ocr.cta2.btn" }}</a>
+    </div>
+  </div>
+</div>
+{{ end }}
+
+{{ define "extraScript" }}
+<script src="/static/js/img-tabs.js?v={{ .AssetVer }}"></script>
+<script>
+function itbToggleFAQ(i) {
+  var item = document.getElementById('itbFaq-' + i);
+  if (!item) return;
+  var btn = item.querySelector('.itb-faq-item__q');
+  var ans = item.querySelector('.itb-faq-item__a');
+  var isOpen = ans.style.display === 'block';
+  ans.style.display = isOpen ? 'none' : 'block';
+  if (btn) btn.setAttribute('aria-expanded', !isOpen);
+}
+</script>
+{{ end }}

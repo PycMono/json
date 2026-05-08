@@ -1,0 +1,16 @@
+{{ template "base" . }}
+
+{{ define "extraHead" }}
+<link rel="stylesheet" href="/static/css/social-auth.css?v={{ .AssetVer }}">
+{{ end }}
+
+{{ define "content" }}
+<div class="auth-container">
+  <div class="auth-card auth-card--error">
+    <div class="auth-error-icon">⚠️</div>
+    <h1 class="auth-error-title">{{ .ErrorTitle }}</h1>
+    <p class="auth-error-message">{{ .ErrorMessage }}</p>
+    <a href="/auth/login" class="auth-btn auth-btn--primary" data-ga="auth_error_retry" data-ga-category="auth">{{ call .T "auth.error.retry" }}</a>
+  </div>
+</div>
+{{ end }}

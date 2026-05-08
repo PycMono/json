@@ -1,0 +1,261 @@
+{{ template "base" . }}
+
+{{ define "extraHead" }}
+<link rel="stylesheet" href="/static/css/img-ocr.css?v={{ .AssetVer }}">
+<link rel="stylesheet" href="/static/css/img-tabs.css?v={{ .AssetVer }}">
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "WebApplication",
+  "name": "{{ .Title }}",
+  "description": "{{ .Description }}",
+  "url": "https://toolboxnova.com/img/ocr",
+  "applicationCategory": "UtilityApplication",
+  "operatingSystem": "Web Browser",
+  "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+}
+</script>
+{{ end }}
+
+{{ define "content" }}
+{{ template "img_tabs" . }}
+<div class="ocr-page">
+
+  <!-- Hero Header -->
+  <header class="ocr-header">
+    <div class="ocr-header__inner">
+      <span class="ocr-header__logo">{{ call .T "ocr.header.logo" }}</span>
+      <h1 class="ocr-header__title">{{ call .T "ocr.header.title" }} <em>{{ call .T "ocr.header.title_em" }}</em></h1>
+      <p class="ocr-header__sub">{{ call .T "ocr.header.sub" }}</p>
+      <div class="ocr-header__badges">
+        <span class="ocr-badge">{{ call .T "ocr.header.badge1" }}</span>
+        <span class="ocr-badge">{{ call .T "ocr.header.badge2" }}</span>
+        <span class="ocr-badge">{{ call .T "ocr.header.badge3" }}</span>
+      </div>
+    </div>
+  </header>
+
+  <div class="ocr-layout">
+
+    <!-- Left Column: Upload + Settings -->
+    <div class="ocr-panel ocr-panel--left">
+
+      <!-- Upload Zone -->
+      <div class="ocr-upload-zone" id="ocrUploadZone">
+        <div class="ocr-upload-idle" id="ocrUploadIdle">
+          <div class="ocr-upload-icon">🖼️</div>
+          <p class="ocr-upload-title">{{ call .T "ocr.upload.title" }}</p>
+          <p class="ocr-upload-hint">{{ call .T "ocr.upload.hint" }}</p>
+          <span class="ocr-upload-btn" onclick="event.stopPropagation(); document.getElementById('ocrFileInput').click()" data-ga data-ga-action="upload" data-ga-category="ocr_tool" data-ga-label="browse">
+            {{ call .T "ocr.upload.btn" }}
+          </span>
+          <input type="file" id="ocrFileInput" accept="image/*" style="display:none" data-ga data-ga-action="upload" data-ga-category="ocr_tool" data-ga-label="file_select">
+        </div>
+        <div class="ocr-upload-preview" id="ocrPreviewWrap" style="display:none">
+          <img id="ocrPreviewImg" src="" alt="Preview" class="ocr-preview-img">
+          <div class="ocr-preview-info" id="ocrPreviewInfo"></div>
+          <button class="ocr-change-btn" onclick="ocrChangeImage()" data-ga data-ga-action="upload" data-ga-category="ocr_tool" data-ga-label="change_image">{{ call .T "ocr.upload.change" }}</button>
+        </div>
+        <div class="ocr-drop-overlay" id="ocrDropOverlay">
+          <div class="ocr-drop-icon">📝</div>
+          <p>{{ call .T "ocr.upload.drop" }}</p>
+        </div>
+      </div>
+
+      <!-- Settings Panel -->
+      <div class="ocr-settings">
+        <h3 class="ocr-settings__title">{{ call .T "ocr.settings.title" }}</h3>
+
+        <div class="ocr-setting-row">
+          <label class="ocr-label">{{ call .T "ocr.settings.lang" }}</label>
+          <select id="ocrLang" class="ocr-select">
+            <option value="eng" selected>English</option>
+            <option value="chs">Chinese (Simplified)</option>
+            <option value="cht">Chinese (Traditional)</option>
+            <option value="jpn">Japanese</option>
+            <option value="kor">Korean</option>
+            <option value="fre">French</option>
+            <option value="ger">German</option>
+            <option value="spa">Spanish</option>
+            <option value="por">Portuguese</option>
+            <option value="ita">Italian</option>
+            <option value="rus">Russian</option>
+            <option value="ara">Arabic</option>
+            <option value="hin">Hindi</option>
+            <option value="tur">Turkish</option>
+            <option value="pol">Polish</option>
+            <option value="nld">Dutch</option>
+            <option value="swe">Swedish</option>
+            <option value="dan">Danish</option>
+            <option value="nor">Norwegian</option>
+            <option value="fin">Finnish</option>
+            <option value="ukr">Ukrainian</option>
+            <option value="vie">Vietnamese</option>
+            <option value="tha">Thai</option>
+            <option value="ind">Indonesian</option>
+            <option value="hrv">Croatian</option>
+          </select>
+        </div>
+
+        <div class="ocr-setting-row">
+          <label class="ocr-label">{{ call .T "ocr.settings.engine" }}</label>
+          <select id="ocrEngine" class="ocr-select">
+            <option value="2" selected>{{ call .T "ocr.settings.engine2" }}</option>
+            <option value="1">{{ call .T "ocr.settings.engine1" }}</option>
+          </select>
+        </div>
+
+        <div class="ocr-setting-row">
+          <label class="ocr-label">
+            <input type="checkbox" id="ocrAutoOrient" checked class="ocr-checkbox">
+            {{ call .T "ocr.settings.auto_orient" }}
+          </label>
+        </div>
+
+        <button class="ocr-run-btn" id="ocrRunBtn" onclick="runOCR()" disabled data-ga data-ga-action="process" data-ga-category="ocr_tool" data-ga-label="run_ocr">
+          <span class="ocr-run-icon">{{ call .T "ocr.run.btn" }}</span>
+        </button>
+      </div>
+
+    </div><!-- /left -->
+
+    <!-- Right Column: Results -->
+    <div class="ocr-panel ocr-panel--right">
+      <div class="ocr-result-header">
+        <h3 class="ocr-result-title">{{ call .T "ocr.result.title" }}</h3>
+        <div class="ocr-result-actions">
+          <button class="ocr-action-btn" id="ocrCopyBtn" onclick="ocrCopy()" disabled title="{{ call .T "ocr.result.copy" }}" data-ga data-ga-action="copy" data-ga-category="ocr_tool" data-ga-label="copy_text">
+            <span>{{ call .T "ocr.result.copy" }}</span>
+          </button>
+          <button class="ocr-action-btn" id="ocrDownloadBtn" onclick="ocrDownload()" disabled title="{{ call .T "ocr.result.download" }}" data-ga data-ga-action="download" data-ga-category="ocr_tool" data-ga-label="download_text">
+            <span>{{ call .T "ocr.result.download" }}</span>
+          </button>
+          <button class="ocr-action-btn" id="ocrClearBtn" onclick="ocrClear()" disabled title="{{ call .T "ocr.result.clear" }}" data-ga data-ga-action="clear" data-ga-category="ocr_tool" data-ga-label="clear_result">
+            <span>{{ call .T "ocr.result.clear" }}</span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Confidence bar -->
+      <div class="ocr-confidence" id="ocrConfidence" style="display:none">
+        <span class="ocr-confidence__label">{{ call .T "ocr.confidence.label" }}</span>
+        <div class="ocr-confidence__bar-wrap">
+          <div class="ocr-confidence__bar" id="ocrConfidenceBar"></div>
+        </div>
+        <span class="ocr-confidence__pct" id="ocrConfidencePct"></span>
+      </div>
+
+      <!-- Status area -->
+      <div class="ocr-status" id="ocrStatus">
+        <div class="ocr-status__idle">
+          <p>{{ call .T "ocr.status.idle" }}</p>
+          <ul class="ocr-tips">
+            <li>{{ call .T "ocr.status.tip1" }}</li>
+            <li>{{ call .T "ocr.status.tip2" }}</li>
+            <li>{{ call .T "ocr.status.tip3" }}</li>
+          </ul>
+        </div>
+      </div>
+
+      <!-- Loading state -->
+      <div class="ocr-loading" id="ocrLoading" style="display:none">
+        <div class="ocr-spinner"></div>
+        <p>{{ call .T "ocr.loading.text" }}</p>
+      </div>
+
+      <!-- Text output — editable -->
+      <textarea id="ocrOutput" class="ocr-output" placeholder="{{ call .T "ocr.output.placeholder" }}" spellcheck="false" style="display:none"></textarea>
+
+      <!-- Word / char count -->
+      <div class="ocr-stats" id="ocrStats" style="display:none">
+        <span id="ocrWordCount">0 {{ call .T "ocr.stats.words" }}</span>
+        <span>·</span>
+        <span id="ocrCharCount">0 {{ call .T "ocr.stats.chars" }}</span>
+      </div>
+
+    </div><!-- /right -->
+
+  </div><!-- /layout -->
+
+  <!-- How it works -->
+  <section class="ocr-howto">
+    <div class="ocr-howto__inner">
+      <h2>{{ call .T "ocr.howto.title" }}</h2>
+      <div class="ocr-steps">
+        <div class="ocr-step"><span class="ocr-step__num">1</span><p>{{ call .T "ocr.howto.step1" }}</p></div>
+        <div class="ocr-step"><span class="ocr-step__num">2</span><p>{{ call .T "ocr.howto.step2" }}</p></div>
+        <div class="ocr-step"><span class="ocr-step__num">3</span><p>{{ call .T "ocr.howto.step3" }}</p></div>
+        <div class="ocr-step"><span class="ocr-step__num">4</span><p>{{ call .T "ocr.howto.step4" }}</p></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Editorial Section 1: What is OCR -->
+  <section class="ocr-section">
+    <div class="ocr-section-inner">
+      <span class="ocr-section-label">{{ call .T "ocr.s1.label" }}</span>
+      <h2 class="ocr-section-title">{{ call .T "ocr.s1.title" }}</h2>
+      <p class="ocr-section-body">{{ call .T "ocr.s1.body1" }}</p>
+      <p class="ocr-section-body">{{ call .T "ocr.s1.body2" }}</p>
+    </div>
+  </section>
+
+  <!-- Editorial Section 2: How it works -->
+  <section class="ocr-section">
+    <div class="ocr-section-inner">
+      <span class="ocr-section-label">{{ call .T "ocr.s2.label" }}</span>
+      <h2 class="ocr-section-title">{{ call .T "ocr.s2.title" }}</h2>
+      <p class="ocr-section-body">{{ call .T "ocr.s2.body1" }}</p>
+      <p class="ocr-section-body">{{ call .T "ocr.s2.body2" }}</p>
+    </div>
+  </section>
+
+  <!-- Editorial Section 3: Privacy first -->
+  <section class="ocr-section">
+    <div class="ocr-section-inner">
+      <span class="ocr-section-label">{{ call .T "ocr.s3.label" }}</span>
+      <h2 class="ocr-section-title">{{ call .T "ocr.s3.title" }}</h2>
+      <p class="ocr-section-body">{{ call .T "ocr.s3.body1" }}</p>
+      <p class="ocr-section-body">{{ call .T "ocr.s3.body2" }}</p>
+    </div>
+  </section>
+
+  <!-- Editorial Section 4: Features -->
+  <section class="ocr-section">
+    <div class="ocr-section-inner">
+      <span class="ocr-section-label">{{ call .T "ocr.s4.label" }}</span>
+      <h2 class="ocr-section-title">{{ call .T "ocr.s4.title" }}</h2>
+      <p class="ocr-section-body">{{ call .T "ocr.s4.body1" }}</p>
+      <p class="ocr-section-body">{{ call .T "ocr.s4.body2" }}</p>
+      <p class="ocr-section-body">{{ call .T "ocr.s4.body3" }}</p>
+    </div>
+  </section>
+
+  <!-- Editorial Section 5: Use cases -->
+  <section class="ocr-section">
+    <div class="ocr-section-inner">
+      <span class="ocr-section-label">{{ call .T "ocr.s5.label" }}</span>
+      <h2 class="ocr-section-title">{{ call .T "ocr.s5.title" }}</h2>
+      <p class="ocr-section-body">{{ call .T "ocr.s5.body1" }}</p>
+      <p class="ocr-section-body">{{ call .T "ocr.s5.body2" }}</p>
+    </div>
+  </section>
+
+  <!-- Editorial Section 6: About this tool -->
+  <section class="ocr-section">
+    <div class="ocr-section-inner">
+      <span class="ocr-section-label">{{ call .T "ocr.s6.label" }}</span>
+      <h2 class="ocr-section-title">{{ call .T "ocr.s6.title" }}</h2>
+      <p class="ocr-section-body">{{ call .T "ocr.s6.body1" }}</p>
+      <p class="ocr-section-body">{{ call .T "ocr.s6.body2" }}</p>
+      <p class="ocr-section-body">{{ call .T "ocr.s6.body3" }}</p>
+    </div>
+  </section>
+
+
+
+</div>
+
+<script src="/static/js/img-tabs.js?v={{ .AssetVer }}"></script>
+<script src="/static/js/img-ocr.js?v={{ .AssetVer }}"></script>
+{{ end }}

@@ -1,0 +1,1049 @@
+{{ template "base" . }}
+
+{{ define "extraHead" }}
+<!-- Unified CSS -->
+<link rel="stylesheet" href="/static/css/ai-humanize.css?v={{ .AssetVer }}">
+<link rel="stylesheet" href="/static/css/ai-humanizer.css?v={{ .AssetVer }}">
+<link rel="stylesheet" href="/static/css/ai-detector.css?v={{ .AssetVer }}">
+<link rel="stylesheet" href="/static/css/plagiarism-checker.css?v={{ .AssetVer }}">
+<link rel="stylesheet" href="/static/css/ai-tool-page.css?v={{ .AssetVer }}">
+<link rel="stylesheet" href="/static/css/ai-tool-nav.css?v={{ .AssetVer }}">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css" crossorigin="anonymous">
+
+<!-- SEO -->
+<meta name="keywords" content="{{ .Keywords }}">
+<meta name="robots" content="index, follow">
+<link rel="canonical" href="{{ .Canonical }}">
+{{ range $lang, $url := .HreflangMap }}<link rel="alternate" hreflang="{{ $lang }}" href="{{ $url }}">
+{{ end }}<link rel="alternate" hreflang="x-default" href="https://toolboxnova.com/ai/humanize">
+
+<!-- OG -->
+<meta property="og:type"        content="website">
+<meta property="og:title"       content="{{ .Title }}">
+<meta property="og:description" content="{{ .Description }}">
+<meta property="og:url"         content="{{ .Canonical }}">
+<meta property="og:image"       content="{{ .OGImage }}">
+<meta property="og:site_name"   content="json">
+<meta name="twitter:card"       content="summary_large_image">
+<meta name="twitter:title"      content="{{ .Title }}">
+<meta name="twitter:description" content="{{ .Description }}">
+<meta name="twitter:image"      content="{{ .OGImage }}">
+
+<!-- JSON-LD -->
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"AI Humanize — json","applicationCategory":"UtilitiesApplication","operatingSystem":"Web","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"description":"{{ .Description }}","url":"{{ .Canonical }}","aggregateRating":{"@type":"AggregateRating","ratingValue":"4.9","ratingCount":"25000","bestRating":"5","worstRating":"1"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity": {{ toJSON .FAQ }} }</script>
+
+<!-- CDN libs -->
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.6.0/mammoth.browser.min.js" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/docx/8.2.2/docx.umd.min.js" defer></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/diff_match_patch/20121119/diff_match_patch.js" defer></script>
+
+<!-- i18n bridge -->
+<script>
+window.__i18n__ = {{ toJSON .Translations }};
+window.__lang__ = "{{ .Lang }}";
+window.__HUMANIZE_CONFIG__ = { activeTab: "{{ .ActiveTab }}", freeLimit: {{ .FreeWordLimit }} };
+</script>
+{{ end }}
+
+{{ define "content" }}
+<div class="page-ai-humanize" data-active-tab="{{ .ActiveTab }}">
+
+  <!-- ═══════════ Tab Navigation ═══════════ -->
+  {{ template "partials/ai_tool_nav.html" dict "T" .T "ActiveTool" .ActiveTool "IsHubPage" true }}
+
+  <!-- ═══════════ HOME TAB ═══════════ -->
+  <section class="hub-panel hub-panel--home {{ if ne .ActiveTab "home" }}hub-panel--hidden{{ end }}" id="hub-panel-home" role="tabpanel" aria-labelledby="tab-home">
+
+    <!-- Hero with Inline Tool -->
+    <div class="hub-hero-tool">
+      <div class="hub-hero-tool__inner">
+        <div class="hub-hero-tool__badges" style="display:flex;justify-content:center;gap:0.75rem;margin-bottom:1.25rem;flex-wrap:wrap">
+          <span style="display:inline-flex;align-items:center;gap:0.4rem;padding:0.35rem 0.85rem;border-radius:100px;font-size:0.8rem;font-weight:500;background:linear-gradient(135deg,#6366f1,#8b5cf6);color:#fff"><i class="fa-solid fa-bolt"></i> {{ call .T "humanize.home.badge_free" }}</span>
+          <span style="display:inline-flex;align-items:center;gap:0.4rem;padding:0.35rem 0.85rem;border-radius:100px;font-size:0.8rem;font-weight:500;background:rgba(255,255,255,0.9);border:1px solid rgba(0,0,0,0.06);color:#4b5563"><i class="fa-solid fa-shield-halved"></i> {{ call .T "humanize.home.badge_bypass" }}</span>
+          <span style="display:inline-flex;align-items:center;gap:0.4rem;padding:0.35rem 0.85rem;border-radius:100px;font-size:0.8rem;font-weight:500;background:rgba(255,255,255,0.9);border:1px solid rgba(0,0,0,0.06);color:#4b5563"><i class="fa-solid fa-language"></i> {{ call .T "humanize.home.badge_languages" }}</span>
+        </div>
+        <h1 class="hub-hero-tool__title"><span class="hub-gradient-text">{{ call .T "humanize.home.title" }}</span></h1>
+        <p class="hub-hero-tool__subtitle">{{ call .T "humanize.home.subtitle" }}</p>
+
+        <!-- Mode Selector -->
+        <div class="hub-mode-bar" role="tablist">
+          <button class="hub-mode-btn active" data-mode="free" onclick="HomeTool.setMode('free')"
+                  data-ga data-ga-action="mode_select" data-ga-category="ai-humanizer" data-ga-label="home_mode_free">{{ call .T "ah.mode.free" }}</button>
+          <button class="hub-mode-btn" data-mode="standard" onclick="HomeTool.setMode('standard')"
+                  data-ga data-ga-action="mode_select" data-ga-category="ai-humanizer" data-ga-label="home_mode_standard">{{ call .T "ah.mode.standard" }}</button>
+          <button class="hub-mode-btn" data-mode="academic" onclick="HomeTool.setMode('academic')"
+                  data-ga data-ga-action="mode_select" data-ga-category="ai-humanizer" data-ga-label="home_mode_academic">{{ call .T "ah.mode.academic" }}</button>
+          <button class="hub-mode-btn" data-mode="simple" onclick="HomeTool.setMode('simple')"
+                  data-ga data-ga-action="mode_select" data-ga-category="ai-humanizer" data-ga-label="home_mode_simple">{{ call .T "humanize.mode.simple" }}</button>
+          <button class="hub-mode-btn" data-mode="flowing" onclick="HomeTool.setMode('flowing')"
+                  data-ga data-ga-action="mode_select" data-ga-category="ai-humanizer" data-ga-label="home_mode_flowing">{{ call .T "humanize.mode.flowing" }}</button>
+          <button class="hub-mode-btn" data-mode="informal" onclick="HomeTool.setMode('informal')"
+                  data-ga data-ga-action="mode_select" data-ga-category="ai-humanizer" data-ga-label="home_mode_informal">{{ call .T "humanize.mode.informal" }}</button>
+          <button class="hub-mode-btn" data-mode="formal" onclick="HomeTool.setMode('formal')"
+                  data-ga data-ga-action="mode_select" data-ga-category="ai-humanizer" data-ga-label="home_mode_formal">{{ call .T "ah.mode.formal" }}</button>
+          <button class="hub-mode-btn" data-mode="expand" onclick="HomeTool.setMode('expand')"
+                  data-ga data-ga-action="mode_select" data-ga-category="ai-humanizer" data-ga-label="home_mode_expand">{{ call .T "humanize.mode.expand" }}</button>
+          <button class="hub-mode-btn hub-mode-btn--more" onclick="HomeTool.showMoreModes()"
+                  data-ga data-ga-action="toggle" data-ga-category="ai-humanizer" data-ga-label="show_more_modes">{{ call .T "humanize.mode.more" }} <i class="fa-solid fa-chevron-down"></i></button>
+          <div class="hub-mode-ultra">
+            <span class="hub-mode-ultra__label">{{ call .T "ah.mode.ultra" }}</span>
+            <label class="hub-toggle" data-ga data-ga-action="toggle" data-ga-category="ai-humanizer" data-ga-label="home_ultra_toggle">
+              <input type="checkbox" id="home-ultra-toggle" onchange="HomeTool.toggleUltra()">
+              <span class="hub-toggle__slider"></span>
+            </label>
+          </div>
+        </div>
+
+        <!-- Input/Output Area -->
+        <div class="hub-tool-area">
+          <div class="hub-tool-input">
+            <textarea id="home-input" placeholder="{{ call .T "humanize.home.input_placeholder" }}" oninput="HomeTool.updateWordCount()"></textarea>
+            <div class="hub-tool-input__footer">
+              <button class="hub-tool-sample" onclick="HomeTool.loadSample()"
+                      data-ga data-ga-action="sample" data-ga-category="ai-humanizer" data-ga-label="home_load_sample"><i class="fa-solid fa-wand-magic-sparkles"></i> {{ call .T "humanize.home.sample" }}</button>
+              <span class="hub-tool-wordcount" id="home-wordcount">0 words</span>
+            </div>
+          </div>
+          <div class="hub-tool-actions">
+            <button class="hub-tool-btn" id="home-humanize-btn" onclick="HomeTool.humanize()"
+                    data-ga data-ga-action="humanize" data-ga-category="ai-humanizer" data-ga-label="home_humanize">
+              <i class="fa-solid fa-wand-sparkles"></i> {{ call .T "humanize.home.humanize_btn" }}
+            </button>
+          </div>
+          <div class="hub-tool-output" id="home-output-wrap" style="display:none">
+            <div class="hub-tool-output__content" id="home-output"></div>
+            <div class="hub-tool-output__footer">
+              <span id="home-output-wordcount">0 words</span>
+              <div class="hub-tool-output__actions">
+                <button class="hub-tool-output__btn" onclick="HomeTool.copyOutput()"
+                        data-ga data-ga-action="copy" data-ga-category="ai-humanizer" data-ga-label="home_copy_output"><i class="fa-solid fa-copy"></i> {{ call .T "ah.action.copy" }}</button>
+                <button class="hub-tool-output__btn" onclick="HomeTool.humanizeAgain()"
+                        data-ga data-ga-action="humanize" data-ga-category="ai-humanizer" data-ga-label="home_humanize_again"><i class="fa-solid fa-rotate"></i> {{ call .T "ah.action.humanize_again" }}</button>
+                <button class="hub-tool-output__btn" onclick="HomeTool.goToFullTool()"
+                        data-ga data-ga-action="navigate" data-ga-category="ai-humanizer" data-ga-label="home_goto_full"><i class="fa-solid fa-arrow-right"></i> {{ call .T "humanize.home.full_tool" }}</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Trust Strip -->
+        <div class="hub-trust-strip">
+          <span class="hub-trust-strip__label">{{ call .T "humanize.home.bypass" }}</span>
+          <span class="hub-trust-strip__item">GPTZero</span>
+          <span class="hub-trust-strip__sep">·</span>
+          <span class="hub-trust-strip__item">Turnitin</span>
+          <span class="hub-trust-strip__sep">·</span>
+          <span class="hub-trust-strip__item">Copyleaks</span>
+          <span class="hub-trust-strip__sep">·</span>
+          <span class="hub-trust-strip__item">Originality.ai</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Tool Cards (Humanizer + Detector) -->
+    <div class="hub-tools">
+      <div class="hub-tool-card" onclick="HumanizeHub.goToTab('humanizer')"
+           data-ga data-ga-action="navigate" data-ga-category="ai-humanizer" data-ga-label="home_card_humanizer">
+        <div class="hub-tool-card__icon"><i class="fa-solid fa-wand-sparkles"></i></div>
+        <h3 class="hub-tool-card__title">{{ call .T "humanize.tool.humanizer.title" }}</h3>
+        <p class="hub-tool-card__desc">{{ call .T "humanize.tool.humanizer.desc" }}</p>
+        <span class="hub-tool-card__cta">{{ call .T "humanize.tool.humanizer.cta" }} <i class="fa-solid fa-arrow-right"></i></span>
+      </div>
+      <div class="hub-tool-card" onclick="HumanizeHub.goToTab('detector')"
+           data-ga data-ga-action="navigate" data-ga-category="ai-humanizer" data-ga-label="home_card_detector">
+        <div class="hub-tool-card__icon hub-tool-card__icon--detector"><i class="fa-solid fa-magnifying-glass-chart"></i></div>
+        <h3 class="hub-tool-card__title">{{ call .T "humanize.tool.detector.title" }}</h3>
+        <p class="hub-tool-card__desc">{{ call .T "humanize.tool.detector.desc" }}</p>
+        <span class="hub-tool-card__cta">{{ call .T "humanize.tool.detector.cta" }} <i class="fa-solid fa-arrow-right"></i></span>
+      </div>
+    </div>
+
+    <!-- More AI Tools -->
+    <h2 class="hub-section-title" style="margin-top:40px">{{ call .T "humanize.more_tools.title" }}</h2>
+    <div class="hub-tools hub-tools--more">
+      <a class="hub-tool-card hub-tool-card--link" href="/ai/essay" data-ga="ai_bottom_nav_essay" data-ga-category="ai_nav"
+         data-ga data-ga-action="navigate" data-ga-category="ai-humanizer" data-ga-label="home_nav_essay">
+        <div class="hub-tool-card__icon hub-tool-card__icon--purple"><i class="fa-solid fa-pen-fancy"></i></div>
+        <h3 class="hub-tool-card__title">{{ call .T "humanize.tool.essay.title" }}</h3>
+        <p class="hub-tool-card__desc">{{ call .T "humanize.tool.essay.desc" }}</p>
+        <span class="hub-tool-card__cta">{{ call .T "humanize.tool.essay.cta" }} <i class="fa-solid fa-arrow-right"></i></span>
+      </a>
+      <a class="hub-tool-card hub-tool-card--link" href="/ai/sentence-rewriter" data-ga="ai_bottom_nav_sentence_rewriter" data-ga-category="ai_nav"
+         data-ga data-ga-action="navigate" data-ga-category="ai-humanizer" data-ga-label="home_nav_sentence_rewriter">
+        <div class="hub-tool-card__icon hub-tool-card__icon--orange"><i class="fa-solid fa-align-left"></i></div>
+        <h3 class="hub-tool-card__title">{{ call .T "humanize.tool.sentence_rewriter.title" }}</h3>
+        <p class="hub-tool-card__desc">{{ call .T "humanize.tool.sentence_rewriter.desc" }}</p>
+        <span class="hub-tool-card__cta">{{ call .T "humanize.tool.sentence_rewriter.cta" }} <i class="fa-solid fa-arrow-right"></i></span>
+      </a>
+      <a class="hub-tool-card hub-tool-card--link" href="/ai/paragraph-rewriter" data-ga="ai_bottom_nav_paragraph_rewriter" data-ga-category="ai_nav"
+         data-ga data-ga-action="navigate" data-ga-category="ai-humanizer" data-ga-label="home_nav_paragraph_rewriter">
+        <div class="hub-tool-card__icon hub-tool-card__icon--blue"><i class="fa-solid fa-paragraph"></i></div>
+        <h3 class="hub-tool-card__title">{{ call .T "humanize.tool.paragraph_rewriter.title" }}</h3>
+        <p class="hub-tool-card__desc">{{ call .T "humanize.tool.paragraph_rewriter.desc" }}</p>
+        <span class="hub-tool-card__cta">{{ call .T "humanize.tool.paragraph_rewriter.cta" }} <i class="fa-solid fa-arrow-right"></i></span>
+      </a>
+      <a class="hub-tool-card hub-tool-card--link" href="/ai/article-rewriter"
+         data-ga data-ga-action="navigate" data-ga-category="ai-humanizer" data-ga-label="home_nav_article_rewriter">
+        <div class="hub-tool-card__icon hub-tool-card__icon--teal"><i class="fa-solid fa-newspaper"></i></div>
+        <h3 class="hub-tool-card__title">{{ call .T "humanize.tool.article_rewriter.title" }}</h3>
+        <p class="hub-tool-card__desc">{{ call .T "humanize.tool.article_rewriter.desc" }}</p>
+        <span class="hub-tool-card__cta">{{ call .T "humanize.tool.article_rewriter.cta" }} <i class="fa-solid fa-arrow-right"></i></span>
+      </a>
+      <a class="hub-tool-card hub-tool-card--link" href="/ai/detector/for-academic-writing" data-ga="ai_bottom_nav_detector_academic" data-ga-category="ai_nav"
+         data-ga data-ga-action="navigate" data-ga-category="ai-humanizer" data-ga-label="home_nav_detector_academic">
+        <div class="hub-tool-card__icon hub-tool-card__icon--detector"><i class="fa-solid fa-microscope"></i></div>
+        <h3 class="hub-tool-card__title">{{ call .T "humanize.tool.detector_academic.title" }}</h3>
+        <p class="hub-tool-card__desc">{{ call .T "humanize.tool.detector_academic.desc" }}</p>
+        <span class="hub-tool-card__cta">{{ call .T "humanize.tool.detector_academic.cta" }} <i class="fa-solid fa-arrow-right"></i></span>
+      </a>
+      <a class="hub-tool-card hub-tool-card--link" href="/ai/for-college" data-ga="ai_bottom_nav_for_college" data-ga-category="ai_nav"
+         data-ga data-ga-action="navigate" data-ga-category="ai-humanizer" data-ga-label="home_nav_for_college">
+        <div class="hub-tool-card__icon hub-tool-card__icon--gold"><i class="fa-solid fa-graduation-cap"></i></div>
+        <h3 class="hub-tool-card__title">{{ call .T "humanize.tool.for_college.title" }}</h3>
+        <p class="hub-tool-card__desc">{{ call .T "humanize.tool.for_college.desc" }}</p>
+        <span class="hub-tool-card__cta">{{ call .T "humanize.tool.for_college.cta" }} <i class="fa-solid fa-arrow-right"></i></span>
+      </a>
+      <a class="hub-tool-card hub-tool-card--link" href="/ai/for-professors" data-ga="ai_bottom_nav_for_professors" data-ga-category="ai_nav"
+         data-ga data-ga-action="navigate" data-ga-category="ai-humanizer" data-ga-label="home_nav_for_professors">
+        <div class="hub-tool-card__icon hub-tool-card__icon--red"><i class="fa-solid fa-chalkboard-user"></i></div>
+        <h3 class="hub-tool-card__title">{{ call .T "humanize.tool.for_professors.title" }}</h3>
+        <p class="hub-tool-card__desc">{{ call .T "humanize.tool.for_professors.desc" }}</p>
+        <span class="hub-tool-card__cta">{{ call .T "humanize.tool.for_professors.cta" }} <i class="fa-solid fa-arrow-right"></i></span>
+      </a>
+    </div>
+
+    <!-- ═══════════ HOME SEO Content ═══════════ -->
+    {{ if .SEOArticle }}
+    <section class="hub-seo-article" aria-label="AI Humanize Guide">
+      <div class="hub-seo-content">
+        {{ .SEOArticle }}
+      </div>
+    </section>
+    {{ end }}
+
+    <!-- Bottom Tool Navigation -->
+    <section class="atp-bottom-nav">
+      <div class="atp-section-inner">
+        <p class="atp-bottom-nav__desc">{{ call .T "bottom_nav.desc" }}</p>
+        <div class="atp-bottom-nav__grid">
+          <a class="atp-bottom-nav__card" href="/ai/detector" data-ga="ai_bottom_nav_detector" data-ga-category="ai_nav" data-ga data-ga-action="navigate" data-ga-category="ai-humanizer" data-ga-label="home_nav_detector"><i class="fa-solid fa-magnifying-glass-chart"></i><span>{{ call .T "bottom_nav.detector" }}</span></a>
+          <a class="atp-bottom-nav__card" href="/ai/essay" data-ga="ai_bottom_nav_essay" data-ga-category="ai_nav" data-ga data-ga-action="navigate" data-ga-category="ai-humanizer" data-ga-label="home_nav_essay"><i class="fa-solid fa-pen-fancy"></i><span>{{ call .T "bottom_nav.essay" }}</span></a>
+          <a class="atp-bottom-nav__card" href="/ai/sentence-rewriter" data-ga="ai_bottom_nav_sentence_rewriter" data-ga-category="ai_nav" data-ga data-ga-action="navigate" data-ga-category="ai-humanizer" data-ga-label="home_nav_sentence_rewriter"><i class="fa-solid fa-rotate"></i><span>{{ call .T "bottom_nav.sentence_rewriter" }}</span></a>
+          <a class="atp-bottom-nav__card" href="/ai/paragraph-rewriter" data-ga="ai_bottom_nav_paragraph_rewriter" data-ga-category="ai_nav" data-ga data-ga-action="navigate" data-ga-category="ai-humanizer" data-ga-label="home_nav_paragraph_rewriter"><i class="fa-solid fa-align-left"></i><span>{{ call .T "bottom_nav.paragraph_rewriter" }}</span></a>
+          <a class="atp-bottom-nav__card" href="/ai/article-rewriter" data-ga data-ga-action="navigate" data-ga-category="ai-humanizer" data-ga-label="home_nav_article_rewriter"><i class="fa-solid fa-file-lines"></i><span>{{ call .T "bottom_nav.article_rewriter" }}</span></a>
+          <a class="atp-bottom-nav__card" href="/ai/detector/for-academic-writing" data-ga="ai_bottom_nav_detector_academic" data-ga-category="ai_nav" data-ga data-ga-action="navigate" data-ga-category="ai-humanizer" data-ga-label="home_nav_detector_academic"><i class="fa-solid fa-graduation-cap"></i><span>{{ call .T "bottom_nav.detector_academic" }}</span></a>
+          <a class="atp-bottom-nav__card" href="/ai/for-college" data-ga="ai_bottom_nav_for_college" data-ga-category="ai_nav" data-ga data-ga-action="navigate" data-ga-category="ai-humanizer" data-ga-label="home_nav_for_college"><i class="fa-solid fa-school"></i><span>{{ call .T "bottom_nav.for_college" }}</span></a>
+          <a class="atp-bottom-nav__card" href="/ai/for-professors" data-ga="ai_bottom_nav_for_professors" data-ga-category="ai_nav" data-ga data-ga-action="navigate" data-ga-category="ai-humanizer" data-ga-label="home_nav_for_professors"><i class="fa-solid fa-chalkboard-user"></i><span>{{ call .T "bottom_nav.for_professors" }}</span></a>
+          <a class="atp-bottom-nav__card" href="/ai/humanize?tab=plagiarism" data-ga="ai_bottom_nav_plagiarism" data-ga-category="ai_nav" data-ga data-ga-action="navigate" data-ga-category="ai-humanizer" data-ga-label="home_nav_plagiarism"><i class="fa-solid fa-shield-halved"></i><span>{{ call .T "bottom_nav.plagiarism" }}</span></a>
+        </div>
+      </div>
+    </section>
+
+  </section>
+
+  <!-- ═══════════ HUMANIZER TAB ═══════════ -->
+  <section class="hub-panel hub-panel--humanizer {{ if ne .ActiveTab "humanizer" }}hub-panel--hidden{{ end }}" id="hub-panel-humanizer" role="tabpanel" aria-labelledby="tab-humanizer">
+
+    <div class="ah-hero ah-hero--compact">
+      <div class="ah-hero__inner">
+        <div class="ah-hero__badges">
+          <span class="ah-badge">{{ call .T "ah.hero.badge.undetectable" }}</span>
+          <span class="ah-badge">{{ call .T "ah.hero.badge.modes" }}</span>
+        </div>
+        <h1 class="ah-hero__title">{{ call .T "ah.hero.title" }}</h1>
+        <p class="ah-hero__sub">{{ call .T "ah.hero.subtitle" }}</p>
+      </div>
+    </div>
+
+    <div class="ah-mode-bar">
+      <div class="ah-container">
+        <div class="ah-mode-scroll" role="tablist" aria-label="{{ call .T "ah.mode.label" }}">
+          <button class="ah-mode-btn active" role="tab" data-mode="free" aria-selected="true" onclick="AIHumanizer.setMode('free')"
+                  data-ga data-ga-action="mode_select" data-ga-category="ai-humanizer" data-ga-label="tab_mode_free"><span>⚡</span><span>{{ call .T "ah.mode.free" }}</span></button>
+          <button class="ah-mode-btn" role="tab" data-mode="standard" aria-selected="false" onclick="AIHumanizer.setMode('standard')"
+                  data-ga data-ga-action="mode_select" data-ga-category="ai-humanizer" data-ga-label="tab_mode_standard"><span>⚖️</span><span>{{ call .T "ah.mode.standard" }}</span></button>
+          <button class="ah-mode-btn" role="tab" data-mode="creative" aria-selected="false" onclick="AIHumanizer.setMode('creative')"
+                  data-ga data-ga-action="mode_select" data-ga-category="ai-humanizer" data-ga-label="tab_mode_creative"><span>🎨</span><span>{{ call .T "ah.mode.creative" }}</span></button>
+          <button class="ah-mode-btn" role="tab" data-mode="academic" aria-selected="false" onclick="AIHumanizer.setMode('academic')"
+                  data-ga data-ga-action="mode_select" data-ga-category="ai-humanizer" data-ga-label="tab_mode_academic"><span>🎓</span><span>{{ call .T "ah.mode.academic" }}</span></button>
+          <button class="ah-mode-btn" role="tab" data-mode="formal" aria-selected="false" onclick="AIHumanizer.setMode('formal')"
+                  data-ga data-ga-action="mode_select" data-ga-category="ai-humanizer" data-ga-label="tab_mode_formal"><span>💼</span><span>{{ call .T "ah.mode.formal" }}</span></button>
+          <button class="ah-mode-btn" role="tab" data-mode="aggressive" aria-selected="false" onclick="AIHumanizer.setMode('aggressive')"
+                  data-ga data-ga-action="mode_select" data-ga-category="ai-humanizer" data-ga-label="tab_mode_aggressive"><span>🔥</span><span>{{ call .T "ah.mode.aggressive" }}</span><span class="ah-mode-btn__badge">Best</span></button>
+        </div>
+        <div class="ah-mode-desc" id="ah-mode-desc">{{ call .T "ah.mode.standard.desc" }}</div>
+      </div>
+    </div>
+
+    <div class="ah-outer-wrap">
+      <div class="ah-workspace-wrap">
+        <div class="ah-container">
+          <div class="ah-workspace" id="ah-workspace">
+            <!-- Input -->
+            <div class="ah-panel ah-panel--input" id="ah-panel-input" ondragover="AIHumanizer.onDragOver(event)" ondragleave="AIHumanizer.onDragLeave(event)" ondrop="AIHumanizer.onDrop(event)">
+              <div class="ah-panel__hd">
+                <span class="ah-panel__title">{{ call .T "ah.input.panel_title" }}</span>
+                <div class="ah-panel__actions">
+                  <div class="ah-score-ring" title="{{ call .T "ah.result.aiscore" }}"><canvas id="ah-chart-input" width="52" height="52" aria-hidden="true"></canvas><div class="ah-score-ring__lbl"><span class="ah-score-ring__val" id="ah-score-input-val">—</span><span class="ah-score-ring__unit">AI</span></div></div>
+                  <button class="ah-btn ah-btn--sm ah-btn--outline" id="ah-detect-btn" onclick="AIHumanizer.detectAI('input')"
+                          data-ga data-ga-action="detect" data-ga-category="ai-humanizer" data-ga-label="tab_detect_input">{{ call .T "ah.action.detect" }}</button>
+                  <label class="ah-btn ah-btn--sm ah-btn--ghost" for="ah-file-upload" style="cursor:pointer"
+                         data-ga data-ga-action="upload" data-ga-category="ai-humanizer" data-ga-label="tab_file_upload"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M17 8l-5-5-5 5M12 3v12"/></svg> {{ call .T "ah.input.upload" }}</label>
+                  <input type="file" id="ah-file-upload" class="sr-only" accept=".txt,.pdf,.docx" onchange="AIHumanizer.onFileSelect(event)">
+                </div>
+              </div>
+              <div class="ah-panel__body" style="position:relative">
+                <textarea id="ah-input" class="ah-textarea" placeholder="{{ call .T "ah.input.placeholder" }}" oninput="AIHumanizer.onInputChange(event)" spellcheck="false" autocomplete="off"></textarea>
+                <div class="ah-drop-overlay" aria-hidden="true"><svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M17 8l-5-5-5 5M12 3v12"/></svg><span>Drop file here</span></div>
+              </div>
+              <div class="ah-panel__foot"><span id="ah-input-wc">0 words</span><div class="ah-panel__foot-actions"><button class="ah-btn ah-btn--icon ah-btn--ghost" onclick="AIHumanizer.clearInput()" title="Clear"
+                      data-ga data-ga-action="clear" data-ga-category="ai-humanizer" data-ga-label="tab_clear_input"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="18" y1="6" x2="6" y2="18"/><line x1="6" y1="6" x2="18" y2="18"/></svg></button></div></div>
+            </div>
+            <!-- Controls -->
+            <div class="ah-divider">
+              <div class="ah-toggle-row"><input type="checkbox" id="ah-preserve" checked onchange="AIHumanizer.onPreserveChange(event)"><label for="ah-preserve">{{ call .T "ah.options.preserve_format" }}</label></div>
+              <button class="ah-btn-humanize" id="ah-humanize-btn" onclick="AIHumanizer.humanize()"
+                      data-ga data-ga-action="humanize" data-ga-category="ai-humanizer" data-ga-label="tab_humanize"><span class="ah-btn-humanize__icon">🧬</span>{{ call .T "ah.action.humanize" }}</button>
+            </div>
+            <!-- Output -->
+            <div class="ah-panel ah-panel--output" id="ah-panel-output">
+              <div class="ah-panel__hd">
+                <span class="ah-panel__title">{{ call .T "ah.result.panel_title" }}</span>
+                <div class="ah-panel__actions">
+                  <div class="ah-score-ring" title="{{ call .T "ah.result.aiscore" }}"><canvas id="ah-chart-output" width="52" height="52" aria-hidden="true"></canvas><div class="ah-score-ring__lbl"><span class="ah-score-ring__val" id="ah-score-output-val">—</span><span class="ah-score-ring__unit">AI</span></div></div>
+                  <div class="ah-readability" id="ah-readability"><span style="font-size:.7rem;color:var(--ah-tx3)">{{ call .T "ah.result.readability" }}</span><span class="ah-readability__val" id="ah-readability-val">—</span></div>
+                </div>
+              </div>
+              <div class="ah-panel__body">
+                <div class="ah-output-wrap">
+                  <div class="ah-output-empty" id="ah-output-empty"><div class="ah-output-empty__icon">🧬</div><p class="ah-output-empty__text">{{ call .T "ah.result.empty" }}</p></div>
+                  <div class="ah-output-proc" id="ah-output-proc" style="display:none"><span class="ah-cursor"></span><span>{{ call .T "ah.status.streaming" }}</span></div>
+                  <div class="ah-output-text" id="ah-output-text" style="display:none" aria-live="polite"></div>
+                </div>
+              </div>
+              <div class="ah-panel__foot">
+                <div style="display:flex;align-items:center;gap:8px"><span id="ah-output-wc">0 words</span><span class="ah-improve" id="ah-improve" style="display:none"><span id="ah-improve-text"></span></span></div>
+                <div class="ah-panel__foot-actions">
+                  <button class="ah-btn ah-btn--sm ah-btn--outline" id="ah-humanize-again" onclick="AIHumanizer.humanize(true)" style="display:none"
+                          data-ga data-ga-action="humanize" data-ga-category="ai-humanizer" data-ga-label="tab_humanize_again">{{ call .T "ah.action.humanize_again" }}</button>
+                  <button class="ah-btn ah-btn--sm ah-btn--ghost ah-btn--cross" id="ah-goto-detector" onclick="HumanizeHub.goToTab('detector')" style="display:none"
+                          data-ga data-ga-action="navigate" data-ga-category="ai-humanizer" data-ga-label="tab_goto_detector"><svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg> {{ call .T "ah.action.goto_detector" }}</button>
+                  <button class="ah-btn ah-btn--sm ah-btn--primary" id="ah-copy-btn" onclick="AIHumanizer.copyOutput()"
+                          data-ga data-ga-action="copy" data-ga-category="ai-humanizer" data-ga-label="tab_copy_output">{{ call .T "ah.action.copy" }}</button>
+                  <div class="ah-dropdown" id="ah-dl-dropdown">
+                    <button class="ah-btn ah-btn--sm ah-btn--ghost ah-btn--icon" data-dl-toggle onclick="AIHumanizer.toggleDownloadMenu()"
+                            data-ga data-ga-action="toggle" data-ga-category="ai-humanizer" data-ga-label="tab_download_menu"><svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 15v4a2 2 0 01-2 2H5a2 2 0 01-2-2v-4M7 10l5 5 5-5M12 15V3"/></svg></button>
+                    <div class="ah-dropdown__menu">
+                      <button class="ah-dropdown__item" onclick="AIHumanizer.downloadTxt()"
+                              data-ga data-ga-action="download" data-ga-category="ai-humanizer" data-ga-label="tab_download_txt">{{ call .T "ah.action.download.txt" }}</button>
+                      <button class="ah-dropdown__item" onclick="AIHumanizer.downloadDocx()"
+                              data-ga data-ga-action="download" data-ga-category="ai-humanizer" data-ga-label="tab_download_docx">{{ call .T "ah.action.download.docx" }}</button>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="ah-progress" id="ah-progress" style="display:none"><div class="ah-progress__fill" id="ah-progress-fill"></div></div>
+          <div class="ah-global-bar">
+            <button class="ah-btn ah-btn--ghost ah-btn--sm" onclick="AIHumanizer.clearAll()"
+                    data-ga data-ga-action="clear" data-ga-category="ai-humanizer" data-ga-label="tab_clear_all"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="3 6 5 6 21 6"/><path d="M19 6l-1 14a2 2 0 01-2 2H8a2 2 0 01-2-2L5 6M10 11v6M14 11v6M9 6V4h6v2"/></svg> {{ call .T "ah.action.clear" }}</button>
+            <button class="ah-btn ah-btn--ghost ah-btn--sm" onclick="AIHumanizer.toggleHistory()"
+                    data-ga data-ga-action="toggle" data-ga-category="ai-humanizer" data-ga-label="tab_history"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg> {{ call .T "ah.history.title" }}</button>
+          </div>
+        </div>
+      </div>
+    </div>
+    <aside class="ah-history-drawer" id="ah-history-drawer" role="complementary"><div class="ah-history-hd"><h3>{{ call .T "ah.history.title" }}</h3><div style="display:flex;gap:6px"><button class="ah-btn ah-btn--ghost ah-btn--sm" onclick="AIHumanizer.clearHistory()" data-ga data-ga-action="clear" data-ga-category="ai-humanizer" data-ga-label="tab_history_clear">{{ call .T "ah.history.clear" }}</button><button class="ah-btn ah-btn--icon ah-btn--ghost" onclick="AIHumanizer.closeHistory()" data-ga data-ga-action="close" data-ga-category="ai-humanizer" data-ga-label="tab_history_close">✕</button></div></div><ul class="ah-history-list" id="ah-history-list" role="list"></ul></aside>
+    <div class="ah-history-overlay" id="ah-history-overlay" onclick="AIHumanizer.closeHistory()"></div>
+
+    <!-- Bottom Tool Navigation -->
+    <section class="atp-bottom-nav">
+      <div class="atp-section-inner">
+        <p class="atp-bottom-nav__desc">{{ call .T "bottom_nav.desc" }}</p>
+        <div class="atp-bottom-nav__grid">
+          <a class="atp-bottom-nav__card" href="/ai/humanize?tab=detector"><i class="fa-solid fa-magnifying-glass-chart"></i><span>{{ call .T "bottom_nav.detector" }}</span></a>
+          <a class="atp-bottom-nav__card" href="/ai/essay" data-ga="ai_bottom_nav_essay" data-ga-category="ai_nav"><i class="fa-solid fa-pen-fancy"></i><span>{{ call .T "bottom_nav.essay" }}</span></a>
+          <a class="atp-bottom-nav__card" href="/ai/sentence-rewriter" data-ga="ai_bottom_nav_sentence_rewriter" data-ga-category="ai_nav"><i class="fa-solid fa-rotate"></i><span>{{ call .T "bottom_nav.sentence_rewriter" }}</span></a>
+          <a class="atp-bottom-nav__card" href="/ai/paragraph-rewriter" data-ga="ai_bottom_nav_paragraph_rewriter" data-ga-category="ai_nav"><i class="fa-solid fa-align-left"></i><span>{{ call .T "bottom_nav.paragraph_rewriter" }}</span></a>
+          <a class="atp-bottom-nav__card" href="/ai/article-rewriter"><i class="fa-solid fa-file-lines"></i><span>{{ call .T "bottom_nav.article_rewriter" }}</span></a>
+          <a class="atp-bottom-nav__card" href="/ai/detector/for-academic-writing" data-ga="ai_bottom_nav_detector_academic" data-ga-category="ai_nav"><i class="fa-solid fa-graduation-cap"></i><span>{{ call .T "bottom_nav.detector_academic" }}</span></a>
+          <a class="atp-bottom-nav__card" href="/ai/for-college" data-ga="ai_bottom_nav_for_college" data-ga-category="ai_nav"><i class="fa-solid fa-school"></i><span>{{ call .T "bottom_nav.for_college" }}</span></a>
+          <a class="atp-bottom-nav__card" href="/ai/for-professors" data-ga="ai_bottom_nav_for_professors" data-ga-category="ai_nav"><i class="fa-solid fa-chalkboard-user"></i><span>{{ call .T "bottom_nav.for_professors" }}</span></a>
+          <a class="atp-bottom-nav__card" href="/ai/humanize?tab=plagiarism" data-ga="ai_bottom_nav_plagiarism" data-ga-category="ai_nav"><i class="fa-solid fa-shield-halved"></i><span>{{ call .T "bottom_nav.plagiarism" }}</span></a>
+        </div>
+      </div>
+    </section>
+
+  </section>
+
+  <!-- ═══════════ DETECTOR TAB ═══════════ -->
+  <section class="hub-panel hub-panel--detector {{ if ne .ActiveTab "detector" }}hub-panel--hidden{{ end }}" id="hub-panel-detector" role="tabpanel" aria-labelledby="tab-detector">
+
+    <section class="aid-hero aid-hero--compact">
+      <div class="aid-hero__inner">
+        <div class="aid-hero__badges">
+          <span class="aid-badge aid-badge--accent"><i class="fa-solid fa-shield-check"></i> {{ call .T "ailab.detector.hero.badge_accuracy" }}</span>
+          <span class="aid-badge aid-badge--outline"><i class="fa-solid fa-users"></i> {{ call .T "ailab.detector.hero.badge_users" }}</span>
+        </div>
+        <h1 class="aid-hero__title"><span class="aid-gradient-text">{{ call .T "ailab.detector.hero.title" }}</span></h1>
+        <p class="aid-hero__subtitle">{{ call .T "ailab.detector.hero.subtitle" }}</p>
+        <div class="aid-strip">
+          <span class="aid-strip__label">{{ call .T "ailab.detector.hero.detector_strip_label" }}</span>
+          <div class="aid-strip__logos"><span>GPTZero</span><span class="sep">·</span><span>Turnitin</span><span class="sep">·</span><span>Copyleaks</span><span class="sep">·</span><span>ZeroGPT</span><span class="sep">·</span><span>Originality</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="aid-tool">
+      <div class="aid-tool__outer">
+        <div class="aid-tool__grid">
+          <!-- Input -->
+          <div class="aid-panel aid-panel--input" id="inputPanel">
+            <div class="aid-input-tabs">
+              <button class="aid-input-tab aid-input-tab--active" data-tab="text" onclick="AID.setInputMode('text')"
+                      data-ga data-ga-action="tab_switch" data-ga-category="ai-detector" data-ga-label="detector_input_text"><i class="fa-solid fa-align-left"></i> {{ call .T "ailab.detector.input.tab_text" }}</button>
+              <button class="aid-input-tab" data-tab="file" onclick="AID.setInputMode('file')"
+                      data-ga data-ga-action="tab_switch" data-ga-category="ai-detector" data-ga-label="detector_input_file"><i class="fa-solid fa-file-upload"></i> {{ call .T "ailab.detector.input.tab_file" }}</button>
+              <button class="aid-input-tab" data-tab="url" onclick="AID.setInputMode('url')"
+                      data-ga data-ga-action="tab_switch" data-ga-category="ai-detector" data-ga-label="detector_input_url"><i class="fa-solid fa-link"></i> {{ call .T "ailab.detector.input.tab_url" }}</button>
+            </div>
+            <div class="aid-mode" id="aidMode-text">
+              <div class="aid-drop-zone" id="aidDropZone" ondragover="AID.handleDragOver(event)" ondragleave="AID.handleDragLeave(event)" ondrop="AID.handleDrop(event)">
+                <textarea id="aidInputText" class="aid-textarea" placeholder="{{ call .T `ailab.detector.input.placeholder` }}" maxlength="60000" oninput="AID.handleTextInput(this)"></textarea>
+                <div class="aid-drop-overlay" id="aidDropOverlay" aria-hidden="true"><i class="fa-solid fa-cloud-arrow-up"></i><span>Drop file here</span></div>
+              </div>
+              <div class="aid-input-bar">
+                <div class="aid-input-bar__left"><span id="aidCharCounter" class="aid-counter">0 / 15,000</span><span id="aidWordCounter" class="aid-counter aid-counter--dim">0 words</span></div>
+                <div class="aid-input-bar__right"><button class="aid-btn-icon" onclick="AID.loadSample()" title="{{ call .T `ailab.detector.input.sample_btn` }}"
+                        data-ga data-ga-action="sample" data-ga-category="ai-detector" data-ga-label="detector_load_sample"><i class="fa-solid fa-wand-magic-sparkles"></i></button><button class="aid-btn-icon" id="aidClearBtn" onclick="AID.clearInput()" style="display:none"
+                        data-ga data-ga-action="clear" data-ga-category="ai-detector" data-ga-label="detector_clear_input"><i class="fa-solid fa-xmark"></i></button></div>
+              </div>
+            </div>
+            <div class="aid-mode" id="aidMode-file" style="display:none">
+              <div class="aid-file-zone" id="aidFileZone" ondragover="AID.handleFileDragOver(event)" ondragleave="AID.handleFileDragLeave(event)" ondrop="AID.handleFileDrop(event)" onclick="document.getElementById('aidFileInput').click()"><i class="fa-solid fa-file-arrow-up aid-file-zone__icon"></i><p>{{ call .T "ailab.detector.input.upload_btn" }}</p><p class="aid-hint">{{ call .T "ailab.detector.input.upload_hint" }}</p><input type="file" id="aidFileInput" accept=".txt,.pdf,.docx" onchange="AID.handleFileSelect(this)" style="display:none"></div>
+              <div class="aid-file-info" id="aidFileInfo" style="display:none"><i class="fa-solid fa-file-lines"></i><span id="aidFileName"></span><button onclick="AID.removeFile()" class="aid-btn-icon aid-btn-icon--danger"
+                      data-ga data-ga-action="remove" data-ga-category="ai-detector" data-ga-label="detector_remove_file"><i class="fa-solid fa-xmark"></i></button></div>
+            </div>
+            <div class="aid-mode" id="aidMode-url" style="display:none">
+              <div class="aid-url-group"><i class="fa-solid fa-link aid-url-group__icon"></i><input type="url" id="aidUrlInput" placeholder="{{ call .T `ailab.detector.input.url_placeholder` }}" class="aid-url-input" onkeydown="if(event.key==='Enter') AID.fetchURL()"><button class="aid-btn aid-btn--outline aid-btn--sm" onclick="AID.fetchURL()"
+                      data-ga data-ga-action="fetch" data-ga-category="ai-detector" data-ga-label="detector_fetch_url">{{ call .T "ailab.detector.input.url_btn" }}</button></div>
+            </div>
+            <div class="aid-actions">
+              <button class="aid-btn aid-btn--primary aid-btn--full" id="aidDetectBtn" onclick="AID.startDetect()" disabled
+                      data-ga data-ga-action="detect" data-ga-category="ai-detector" data-ga-label="detector_start_detect"><i class="fa-solid fa-magnifying-glass-chart"></i><span id="aidDetectBtnText">{{ call .T "ailab.detector.btn.detect" }}</span><span class="aid-spinner" id="aidDetectSpinner" style="display:none"><i class="fa-solid fa-spinner fa-spin"></i></span></button>
+              <button class="aid-btn aid-btn--secondary aid-btn--full" id="aidHumanizeBtn" onclick="AID.startHumanize()" style="display:none"
+                      data-ga data-ga-action="humanize" data-ga-category="ai-detector" data-ga-label="detector_start_humanize"><i class="fa-solid fa-wand-sparkles"></i><span id="aidHumanizeBtnText">{{ call .T "ailab.detector.btn.humanize" }}</span><span class="aid-spinner" id="aidHumanizeSpinner" style="display:none"><i class="fa-solid fa-spinner fa-spin"></i></span></button>
+            </div>
+          </div>
+          <!-- Results -->
+          <div class="aid-panel aid-panel--result" id="resultPanel">
+            <div class="aid-empty" id="aidEmpty"><div class="aid-empty__icon-wrap"><i class="fa-solid fa-robot aid-empty__icon"></i></div><h3>{{ call .T "ailab.detector.result.empty_title" }}</h3><p>{{ call .T "ailab.detector.result.empty_desc" }}</p></div>
+            <div class="aid-result" id="aidResult" style="display:none">
+              <div class="aid-gauge-section"><div class="aid-gauge-wrap"><canvas id="aidGaugeChart" width="220" height="130"></canvas><div class="aid-gauge-overlay"><span class="aid-gauge-score" id="aidGaugeScore">--</span><span class="aid-gauge-label">{{ call .T "ailab.detector.result.score_label" }}</span></div></div><div class="aid-verdict" id="aidVerdict"></div></div>
+              <!-- AI / Assisted / Human Breakdown Bar -->
+              <div class="aid-breakdown" id="aidBreakdown">
+                <div class="aid-breakdown__bar">
+                  <div class="aid-breakdown__seg aid-breakdown__seg--ai"    id="bdSegAI"     title="{{ call .T "ailab.detector.result.bd_ai" }}"></div>
+                  <div class="aid-breakdown__seg aid-breakdown__seg--assisted" id="bdSegAssisted" title="{{ call .T "ailab.detector.result.bd_assisted" }}"></div>
+                  <div class="aid-breakdown__seg aid-breakdown__seg--human" id="bdSegHuman"  title="{{ call .T "ailab.detector.result.bd_human" }}"></div>
+                </div>
+                <div class="aid-breakdown__labels">
+                  <div class="aid-breakdown__lbl">
+                    <span class="aid-breakdown__dot aid-breakdown__dot--ai"></span>
+                    <span class="aid-breakdown__pct" id="bdPctAI">--%</span>
+                    <span class="aid-breakdown__name">{{ call .T "ailab.detector.result.bd_ai" }}</span>
+                  </div>
+                  <div class="aid-breakdown__lbl">
+                    <span class="aid-breakdown__dot aid-breakdown__dot--assisted"></span>
+                    <span class="aid-breakdown__pct" id="bdPctAssisted">--%</span>
+                    <span class="aid-breakdown__name">{{ call .T "ailab.detector.result.bd_assisted" }}</span>
+                  </div>
+                  <div class="aid-breakdown__lbl">
+                    <span class="aid-breakdown__dot aid-breakdown__dot--human"></span>
+                    <span class="aid-breakdown__pct" id="bdPctHuman">--%</span>
+                    <span class="aid-breakdown__name">{{ call .T "ailab.detector.result.bd_human" }}</span>
+                  </div>
+                </div>
+              </div>
+              <div class="aid-detectors-section"><h3 class="aid-section-title">{{ call .T "ailab.detector.result.detectors_title" }}</h3><div class="aid-detector-list" id="aidDetectorList"></div></div>
+              <div class="aid-highlight-section">
+                <div class="aid-highlight-header"><h3 class="aid-section-title">{{ call .T "ailab.detector.result.analysis_title" }}</h3><div class="aid-legend"><span class="aid-legend-item aid-legend-item--ai"><span class="aid-legend-dot aid-legend-dot--ai"></span>{{ call .T "ailab.detector.result.highlight_ai" }}</span><span class="aid-legend-item aid-legend-item--mixed"><span class="aid-legend-dot aid-legend-dot--mixed"></span>{{ call .T "ailab.detector.result.highlight_mixed" }}</span><span class="aid-legend-item aid-legend-item--human"><span class="aid-legend-dot aid-legend-dot--human"></span>{{ call .T "ailab.detector.result.highlight_human" }}</span></div></div>
+                <div class="aid-highlight-text" id="aidHighlightText"></div>
+                <div class="aid-highlight-actions"><p class="aid-highlight-footer" id="aidHighlightFooter"></p><button class="aid-btn aid-btn--outline aid-btn--sm aid-btn--goto-humanizer" id="aidGotoHumanizer" onclick="AID.goToHumanizer()" style="display:none"
+                        data-ga data-ga-action="navigate" data-ga-category="ai-detector" data-ga-label="detector_goto_humanizer"><i class="fa-solid fa-wand-sparkles"></i> {{ call .T "aid.action.goto_humanizer" }}</button></div>
+              </div>
+              <div class="aid-stats-row">
+                <div class="aid-stat-card"><i class="fa-solid fa-book-reader"></i><div><span class="aid-stat-val" id="aidReadability">--</span><span class="aid-stat-lbl">{{ call .T "ailab.detector.result.readability" }}</span></div></div>
+                <div class="aid-stat-card"><i class="fa-solid fa-spell-check"></i><div><span class="aid-stat-val" id="aidWordCountResult">--</span><span class="aid-stat-lbl">{{ call .T "ailab.detector.result.words" }}</span></div></div>
+                <div class="aid-stat-card"><i class="fa-solid fa-language"></i><div><span class="aid-stat-val" id="aidLangResult">--</span><span class="aid-stat-lbl">{{ call .T "ailab.detector.result.language" }}</span></div></div>
+              </div>
+              <button class="aid-btn aid-btn--outline aid-btn--full" id="aidViewReportBtn" onclick="AID.openReportModal()" style="display:none"
+                      data-ga data-ga-action="view" data-ga-category="ai-detector" data-ga-label="detector_view_report"><i class="fa-solid fa-file-lines"></i> {{ call .T "ailab.detector.btn.view_report" }}</button>
+              <div class="aid-compare" id="aidCompare" style="display:none">
+                <div class="aid-compare-header"><h3 class="aid-section-title">Before / After</h3><div id="aidCompareStats" class="aid-compare-stats"></div></div>
+                <div class="aid-compare-tabs"><button class="aid-compare-tab aid-compare-tab--active" data-tab="humanized" onclick="AID.showCompareTab('humanized')"
+                        data-ga data-ga-action="tab_switch" data-ga-category="ai-detector" data-ga-label="detector_compare_humanized">{{ call .T "ailab.detector.compare.tab_humanized" }}</button><button class="aid-compare-tab" data-tab="diff" onclick="AID.showCompareTab('diff')"
+                        data-ga data-ga-action="tab_switch" data-ga-category="ai-detector" data-ga-label="detector_compare_diff">{{ call .T "ailab.detector.compare.tab_diff" }}</button></div>
+                <div class="aid-compare-body" id="aidCompareBody"></div>
+                <div class="aid-download-bar"><button class="aid-btn aid-btn--outline aid-btn--sm" onclick="AID.copyHumanized()"
+                        data-ga data-ga-action="copy" data-ga-category="ai-detector" data-ga-label="detector_copy_humanized"><i class="fa-solid fa-copy"></i> {{ call .T "ailab.detector.download.copy_btn" }}</button><button class="aid-btn aid-btn--outline aid-btn--sm" onclick="AID.downloadTxt()"
+                        data-ga data-ga-action="download" data-ga-category="ai-detector" data-ga-label="detector_download_txt"><i class="fa-solid fa-file-arrow-down"></i> .txt</button><button class="aid-btn aid-btn--primary aid-btn--sm" onclick="AID.startDetect(true)"
+                        data-ga data-ga-action="recheck" data-ga-category="ai-detector" data-ga-label="detector_recheck"><i class="fa-solid fa-rotate-right"></i> {{ call .T "ailab.detector.download.recheck" }}</button></div>
+              </div>
+            </div>
+            <div class="aid-history" id="aidHistory"><div class="aid-history__header"><h4>{{ call .T "ailab.detector.history.title" }}</h4><button class="aid-btn-icon" onclick="AID.clearHistory()"
+                    data-ga data-ga-action="clear" data-ga-category="ai-detector" data-ga-label="detector_clear_history"><i class="fa-solid fa-trash-can"></i></button></div><div id="aidHistoryList"><p class="aid-history__empty">{{ call .T "ailab.detector.history.empty" }}</p></div></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════ Detector SEO Content ═══════════ -->
+    <div class="aid-seo-rich">
+      <div class="aid-seo-rich__inner">
+
+        <!-- Section 1: How AI Detection Works -->
+        <section class="aid-seo-rich__section">
+          <h2 class="aid-seo-rich__h2">{{ call .T "detector.seo.how_title" }}</h2>
+          <p class="aid-seo-rich__intro">{{ call .T "detector.seo.how_intro" }}</p>
+          <p class="aid-seo-rich__p">{{ call .T "detector.seo.how_p1" }}</p>
+          <p class="aid-seo-rich__p">{{ call .T "detector.seo.how_p2" }}</p>
+          <p class="aid-seo-rich__p">{{ call .T "detector.seo.how_p3" }}</p>
+        </section>
+
+        <!-- Section 2: Features -->
+        <section class="aid-seo-rich__section aid-seo-rich__section--alt">
+          <h2 class="aid-seo-rich__h2">{{ call .T "detector.seo.features_title" }}</h2>
+          <div class="aid-seo-rich__grid">
+            <div class="aid-seo-rich__card">
+              <div class="aid-seo-rich__card-icon"><i class="fa-solid fa-bolt"></i></div>
+              <h3>{{ call .T "detector.seo.f1_title" }}</h3>
+              <p>{{ call .T "detector.seo.f1_desc" }}</p>
+            </div>
+            <div class="aid-seo-rich__card">
+              <div class="aid-seo-rich__card-icon"><i class="fa-solid fa-bullseye"></i></div>
+              <h3>{{ call .T "detector.seo.f2_title" }}</h3>
+              <p>{{ call .T "detector.seo.f2_desc" }}</p>
+            </div>
+            <div class="aid-seo-rich__card">
+              <div class="aid-seo-rich__card-icon"><i class="fa-solid fa-robot"></i></div>
+              <h3>{{ call .T "detector.seo.f3_title" }}</h3>
+              <p>{{ call .T "detector.seo.f3_desc" }}</p>
+            </div>
+            <div class="aid-seo-rich__card">
+              <div class="aid-seo-rich__card-icon"><i class="fa-solid fa-layer-group"></i></div>
+              <h3>{{ call .T "detector.seo.f4_title" }}</h3>
+              <p>{{ call .T "detector.seo.f4_desc" }}</p>
+            </div>
+            <div class="aid-seo-rich__card">
+              <div class="aid-seo-rich__card-icon"><i class="fa-solid fa-wand-sparkles"></i></div>
+              <h3>{{ call .T "detector.seo.f5_title" }}</h3>
+              <p>{{ call .T "detector.seo.f5_desc" }}</p>
+            </div>
+            <div class="aid-seo-rich__card">
+              <div class="aid-seo-rich__card-icon"><i class="fa-solid fa-gauge-high"></i></div>
+              <h3>{{ call .T "detector.seo.f6_title" }}</h3>
+              <p>{{ call .T "detector.seo.f6_desc" }}</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Section 3: Benefits -->
+        <section class="aid-seo-rich__section">
+          <h2 class="aid-seo-rich__h2">{{ call .T "detector.seo.benefits_title" }}</h2>
+          <p class="aid-seo-rich__intro">{{ call .T "detector.seo.benefits_intro" }}</p>
+          <div class="aid-seo-rich__grid">
+            <div class="aid-seo-rich__card">
+              <div class="aid-seo-rich__card-icon"><i class="fa-solid fa-fingerprint"></i></div>
+              <h3>{{ call .T "detector.seo.b1_title" }}</h3>
+              <p>{{ call .T "detector.seo.b1_desc" }}</p>
+            </div>
+            <div class="aid-seo-rich__card">
+              <div class="aid-seo-rich__card-icon"><i class="fa-solid fa-graduation-cap"></i></div>
+              <h3>{{ call .T "detector.seo.b2_title" }}</h3>
+              <p>{{ call .T "detector.seo.b2_desc" }}</p>
+            </div>
+            <div class="aid-seo-rich__card">
+              <div class="aid-seo-rich__card-icon"><i class="fa-solid fa-star"></i></div>
+              <h3>{{ call .T "detector.seo.b3_title" }}</h3>
+              <p>{{ call .T "detector.seo.b3_desc" }}</p>
+            </div>
+            <div class="aid-seo-rich__card">
+              <div class="aid-seo-rich__card-icon"><i class="fa-solid fa-scale-balanced"></i></div>
+              <h3>{{ call .T "detector.seo.b4_title" }}</h3>
+              <p>{{ call .T "detector.seo.b4_desc" }}</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Section 4: Who Benefits -->
+        <section class="aid-seo-rich__section aid-seo-rich__section--alt">
+          <h2 class="aid-seo-rich__h2">{{ call .T "detector.seo.who_title" }}</h2>
+          <p class="aid-seo-rich__intro">{{ call .T "detector.seo.who_intro" }}</p>
+          <div class="aid-seo-rich__grid aid-seo-rich__grid--who">
+            <div class="aid-seo-rich__card aid-seo-rich__card--sm">
+              <div class="aid-seo-rich__card-icon aid-seo-rich__card-icon--sm"><i class="fa-solid fa-graduation-cap"></i></div>
+              <h3>{{ call .T "detector.seo.w1_title" }}</h3>
+              <p>{{ call .T "detector.seo.w1_desc" }}</p>
+            </div>
+            <div class="aid-seo-rich__card aid-seo-rich__card--sm">
+              <div class="aid-seo-rich__card-icon aid-seo-rich__card-icon--sm"><i class="fa-solid fa-pen-fancy"></i></div>
+              <h3>{{ call .T "detector.seo.w2_title" }}</h3>
+              <p>{{ call .T "detector.seo.w2_desc" }}</p>
+            </div>
+            <div class="aid-seo-rich__card aid-seo-rich__card--sm">
+              <div class="aid-seo-rich__card-icon aid-seo-rich__card-icon--sm"><i class="fa-solid fa-bullhorn"></i></div>
+              <h3>{{ call .T "detector.seo.w3_title" }}</h3>
+              <p>{{ call .T "detector.seo.w3_desc" }}</p>
+            </div>
+            <div class="aid-seo-rich__card aid-seo-rich__card--sm">
+              <div class="aid-seo-rich__card-icon aid-seo-rich__card-icon--sm"><i class="fa-solid fa-briefcase"></i></div>
+              <h3>{{ call .T "detector.seo.w4_title" }}</h3>
+              <p>{{ call .T "detector.seo.w4_desc" }}</p>
+            </div>
+            <div class="aid-seo-rich__card aid-seo-rich__card--sm">
+              <div class="aid-seo-rich__card-icon aid-seo-rich__card-icon--sm"><i class="fa-solid fa-newspaper"></i></div>
+              <h3>{{ call .T "detector.seo.w5_title" }}</h3>
+              <p>{{ call .T "detector.seo.w5_desc" }}</p>
+            </div>
+            <div class="aid-seo-rich__card aid-seo-rich__card--sm">
+              <div class="aid-seo-rich__card-icon aid-seo-rich__card-icon--sm"><i class="fa-solid fa-share-nodes"></i></div>
+              <h3>{{ call .T "detector.seo.w6_title" }}</h3>
+              <p>{{ call .T "detector.seo.w6_desc" }}</p>
+            </div>
+            <div class="aid-seo-rich__card aid-seo-rich__card--sm">
+              <div class="aid-seo-rich__card-icon aid-seo-rich__card-icon--sm"><i class="fa-solid fa-microscope"></i></div>
+              <h3>{{ call .T "detector.seo.w7_title" }}</h3>
+              <p>{{ call .T "detector.seo.w7_desc" }}</p>
+            </div>
+            <div class="aid-seo-rich__card aid-seo-rich__card--sm">
+              <div class="aid-seo-rich__card-icon aid-seo-rich__card-icon--sm"><i class="fa-solid fa-feather-pointed"></i></div>
+              <h3>{{ call .T "detector.seo.w8_title" }}</h3>
+              <p>{{ call .T "detector.seo.w8_desc" }}</p>
+            </div>
+            <div class="aid-seo-rich__card aid-seo-rich__card--sm">
+              <div class="aid-seo-rich__card-icon aid-seo-rich__card-icon--sm"><i class="fa-solid fa-cart-shopping"></i></div>
+              <h3>{{ call .T "detector.seo.w9_title" }}</h3>
+              <p>{{ call .T "detector.seo.w9_desc" }}</p>
+            </div>
+            <div class="aid-seo-rich__card aid-seo-rich__card--sm">
+              <div class="aid-seo-rich__card-icon aid-seo-rich__card-icon--sm"><i class="fa-solid fa-scale-balanced"></i></div>
+              <h3>{{ call .T "detector.seo.w10_title" }}</h3>
+              <p>{{ call .T "detector.seo.w10_desc" }}</p>
+            </div>
+          </div>
+        </section>
+
+        <!-- Section 5: Pricing -->
+        <section class="aid-seo-rich__section">
+          <h2 class="aid-seo-rich__h2">{{ call .T "detector.seo.pricing_title" }}</h2>
+          <p class="aid-seo-rich__p">{{ call .T "detector.seo.pricing_p1" }}</p>
+        </section>
+
+      </div>
+    </div>
+
+    <!-- Bottom Tool Navigation -->
+    <section class="atp-bottom-nav">
+      <div class="atp-section-inner">
+        <p class="atp-bottom-nav__desc">{{ call .T "bottom_nav.desc" }}</p>
+        <div class="atp-bottom-nav__grid">
+          <a class="atp-bottom-nav__card" href="/ai/humanize?tab=humanizer" data-ga="ai_bottom_nav_humanizer" data-ga-category="ai_nav" data-ga data-ga-action="navigate" data-ga-category="ai-humanizer" data-ga-label="detector_nav_humanizer"><i class="fa-solid fa-wand-sparkles"></i><span>{{ call .T "bottom_nav.humanizer" }}</span></a>
+          <a class="atp-bottom-nav__card" href="/ai/essay" data-ga="ai_bottom_nav_essay" data-ga-category="ai_nav" data-ga data-ga-action="navigate" data-ga-category="ai-humanizer" data-ga-label="detector_nav_essay"><i class="fa-solid fa-pen-fancy"></i><span>{{ call .T "bottom_nav.essay" }}</span></a>
+          <a class="atp-bottom-nav__card" href="/ai/sentence-rewriter" data-ga="ai_bottom_nav_sentence_rewriter" data-ga-category="ai_nav" data-ga data-ga-action="navigate" data-ga-category="ai-humanizer" data-ga-label="detector_nav_sentence_rewriter"><i class="fa-solid fa-rotate"></i><span>{{ call .T "bottom_nav.sentence_rewriter" }}</span></a>
+          <a class="atp-bottom-nav__card" href="/ai/paragraph-rewriter" data-ga="ai_bottom_nav_paragraph_rewriter" data-ga-category="ai_nav" data-ga data-ga-action="navigate" data-ga-category="ai-humanizer" data-ga-label="detector_nav_paragraph_rewriter"><i class="fa-solid fa-align-left"></i><span>{{ call .T "bottom_nav.paragraph_rewriter" }}</span></a>
+          <a class="atp-bottom-nav__card" href="/ai/article-rewriter" data-ga data-ga-action="navigate" data-ga-category="ai-humanizer" data-ga-label="detector_nav_article_rewriter"><i class="fa-solid fa-file-lines"></i><span>{{ call .T "bottom_nav.article_rewriter" }}</span></a>
+          <a class="atp-bottom-nav__card" href="/ai/detector/for-academic-writing" data-ga="ai_bottom_nav_detector_academic" data-ga-category="ai_nav" data-ga data-ga-action="navigate" data-ga-category="ai-humanizer" data-ga-label="detector_nav_detector_academic"><i class="fa-solid fa-graduation-cap"></i><span>{{ call .T "bottom_nav.detector_academic" }}</span></a>
+          <a class="atp-bottom-nav__card" href="/ai/for-college" data-ga="ai_bottom_nav_for_college" data-ga-category="ai_nav" data-ga data-ga-action="navigate" data-ga-category="ai-humanizer" data-ga-label="detector_nav_for_college"><i class="fa-solid fa-school"></i><span>{{ call .T "bottom_nav.for_college" }}</span></a>
+          <a class="atp-bottom-nav__card" href="/ai/for-professors" data-ga="ai_bottom_nav_for_professors" data-ga-category="ai_nav" data-ga data-ga-action="navigate" data-ga-category="ai-humanizer" data-ga-label="detector_nav_for_professors"><i class="fa-solid fa-chalkboard-user"></i><span>{{ call .T "bottom_nav.for_professors" }}</span></a>
+          <a class="atp-bottom-nav__card" href="/ai/humanize?tab=plagiarism" data-ga="ai_bottom_nav_plagiarism" data-ga-category="ai_nav" data-ga data-ga-action="navigate" data-ga-category="ai-humanizer" data-ga-label="detector_nav_plagiarism"><i class="fa-solid fa-shield-halved"></i><span>{{ call .T "bottom_nav.plagiarism" }}</span></a>
+        </div>
+      </div>
+    </section>
+
+  </section>
+
+  <!-- ═══════════ PLAGIARISM CHECKER TAB ═══════════ -->
+  <section class="hub-panel hub-panel--plagiarism {{ if ne .ActiveTab "plagiarism" }}hub-panel--hidden{{ end }}" id="hub-panel-plagiarism" role="tabpanel" aria-labelledby="tab-plagiarism">
+
+    <!-- Hero -->
+    <section class="plg-hero">
+      <div class="plg-hero__inner">
+        <div class="plg-hero__badges">
+          <span class="plg-badge plg-badge--accent"><i class="fa-solid fa-shield-check"></i> {{ call .T "plagiarism.hero.badge_accuracy" }}</span>
+          <span class="plg-badge plg-badge--outline"><i class="fa-solid fa-users"></i> {{ call .T "plagiarism.hero.badge_users" }}</span>
+        </div>
+        <h1 class="plg-hero__title"><span class="plg-gradient-text">{{ call .T "plagiarism.hero.title" }}</span></h1>
+        <p class="plg-hero__subtitle">{{ call .T "plagiarism.hero.subtitle" }}</p>
+      </div>
+    </section>
+
+    <!-- Tool -->
+    <section class="plg-tool">
+      <div class="plg-tool__outer">
+        <div class="plg-tool__grid">
+          <!-- Input Panel -->
+          <div class="plg-panel plg-panel--input" id="plgInputPanel">
+            <div class="plg-input-tabs">
+              <button class="plg-input-tab plg-input-tab--active" data-tab="text" onclick="AIP.setInputMode('text')" data-ga data-ga-action="tab_switch" data-ga-category="ai-plagiarism" data-ga-label="input_text"><i class="fa-solid fa-align-left"></i> {{ call .T "plagiarism.input.tab_text" }}</button>
+              <button class="plg-input-tab" data-tab="file" onclick="AIP.setInputMode('file')" data-ga data-ga-action="tab_switch" data-ga-category="ai-plagiarism" data-ga-label="input_file"><i class="fa-solid fa-file-upload"></i> {{ call .T "plagiarism.input.tab_file" }}</button>
+            </div>
+            <div class="plg-mode" id="plgMode-text">
+              <div class="plg-drop-zone" id="plgDropZone" ondragover="AIP.handleDragOver(event)" ondragleave="AIP.handleDragLeave(event)" ondrop="AIP.handleDrop(event)">
+                <textarea id="plgInputText" class="plg-textarea" placeholder="{{ call .T `plagiarism.input.placeholder` }}" maxlength="60000" oninput="AIP.handleTextInput(this)"></textarea>
+                <div class="plg-drop-overlay" id="plgDropOverlay" aria-hidden="true"><i class="fa-solid fa-cloud-arrow-up"></i><span>Drop file here</span></div>
+              </div>
+              <div class="plg-input-bar">
+                <div class="plg-input-bar__left">
+                  <span id="plgCharCounter" class="plg-counter">0 / 15,000</span>
+                  <span id="plgWordCounter" class="plg-counter plg-counter--dim">0 words</span>
+                </div>
+                <div class="plg-input-bar__right">
+                  <button class="plg-btn-icon" onclick="AIP.loadSample()" title="{{ call .T `plagiarism.input.sample_btn` }}" data-ga data-ga-action="click" data-ga-category="ai-plagiarism" data-ga-label="sample_text"><i class="fa-solid fa-wand-magic-sparkles"></i></button>
+                  <button class="plg-btn-icon" id="plgClearBtn" onclick="AIP.clearInput()" style="display:none" data-ga data-ga-action="click" data-ga-category="ai-plagiarism" data-ga-label="clear_input"><i class="fa-solid fa-xmark"></i></button>
+                </div>
+              </div>
+            </div>
+            <div class="plg-mode" id="plgMode-file" style="display:none">
+              <div class="plg-file-zone" id="plgFileZone" onclick="document.getElementById('plgFileInput').click()">
+                <i class="fa-solid fa-file-arrow-up plg-file-zone__icon"></i>
+                <p>{{ call .T "plagiarism.input.upload_btn" }}</p>
+                <p class="plg-hint">{{ call .T "plagiarism.input.upload_hint" }}</p>
+                <input type="file" id="plgFileInput" accept=".txt,.pdf,.docx" onchange="AIP.handleFileSelect(this)" style="display:none">
+              </div>
+              <div class="plg-file-info" id="plgFileInfo" style="display:none">
+                <i class="fa-solid fa-file-lines"></i>
+                <span id="plgFileName"></span>
+                <button onclick="AIP.removeFile()" class="plg-btn-icon plg-btn-icon--danger" data-ga data-ga-action="click" data-ga-category="ai-plagiarism" data-ga-label="remove_file"><i class="fa-solid fa-xmark"></i></button>
+              </div>
+            </div>
+            <div class="plg-actions">
+              <button class="plg-btn plg-btn--primary plg-btn--full" id="plgCheckBtn" onclick="AIP.startCheck()" disabled data-ga data-ga-action="submit" data-ga-category="ai-plagiarism" data-ga-label="check_plagiarism">
+                <i class="fa-solid fa-file-shield"></i>
+                <span id="plgCheckBtnText">{{ call .T "plagiarism.btn.check" }}</span>
+                <span class="plg-spinner" id="plgCheckSpinner" style="display:none"><i class="fa-solid fa-spinner fa-spin"></i></span>
+              </button>
+            </div>
+          </div>
+
+          <!-- Results Panel -->
+          <div class="plg-panel plg-panel--result" id="plgResultPanel">
+            <div class="plg-empty" id="plgEmpty">
+              <div class="plg-empty__icon-wrap"><i class="fa-solid fa-file-shield plg-empty__icon"></i></div>
+              <h3>{{ call .T "plagiarism.result.empty_title" }}</h3>
+              <p>{{ call .T "plagiarism.result.empty_desc" }}</p>
+            </div>
+            <div class="plg-result" id="plgResult" style="display:none">
+              <!-- Dual Score Display -->
+              <div class="plg-scores">
+                <div class="plg-score-card plg-score-card--plagiarism">
+                  <div class="plg-score-card__ring">
+                    <canvas id="plgPlagiarismChart" width="140" height="140"></canvas>
+                    <div class="plg-score-card__overlay">
+                      <span class="plg-score-card__val" id="plgPlagiarismScore">--</span>
+                      <span class="plg-score-card__unit">%</span>
+                    </div>
+                  </div>
+                  <span class="plg-score-card__label">{{ call .T "plagiarism.result.plagiarism_score" }}</span>
+                </div>
+                <div class="plg-score-card plg-score-card--ai">
+                  <div class="plg-score-card__ring">
+                    <canvas id="plgAIChart" width="140" height="140"></canvas>
+                    <div class="plg-score-card__overlay">
+                      <span class="plg-score-card__val" id="plgAIScore">--</span>
+                      <span class="plg-score-card__unit">%</span>
+                    </div>
+                  </div>
+                  <span class="plg-score-card__label">{{ call .T "plagiarism.result.ai_score" }}</span>
+                </div>
+              </div>
+
+              <!-- Verdict -->
+              <div class="plg-verdict" id="plgVerdict"></div>
+
+              <!-- Highlighted Text -->
+              <div class="plg-highlight-section">
+                <div class="plg-highlight-header">
+                  <h3 class="plg-section-title">{{ call .T "plagiarism.result.analysis_title" }}</h3>
+                  <div class="plg-legend">
+                    <span class="plg-legend-item plg-legend-item--original"><span class="plg-legend-dot plg-legend-dot--original"></span>{{ call .T "plagiarism.result.highlight_original" }}</span>
+                    <span class="plg-legend-item plg-legend-item--plagiarized"><span class="plg-legend-dot plg-legend-dot--plagiarized"></span>{{ call .T "plagiarism.result.highlight_plagiarized" }}</span>
+                    <span class="plg-legend-item plg-legend-item--ai"><span class="plg-legend-dot plg-legend-dot--ai"></span>{{ call .T "plagiarism.result.highlight_ai" }}</span>
+                    <span class="plg-legend-item plg-legend-item--mixed"><span class="plg-legend-dot plg-legend-dot--mixed"></span>{{ call .T "plagiarism.result.highlight_mixed" }}</span>
+                  </div>
+                </div>
+                <div class="plg-highlight-text" id="plgHighlightText"></div>
+              </div>
+
+              <!-- Matched Sources -->
+              <div class="plg-sources-section" id="plgSourcesSection" style="display:none">
+                <h3 class="plg-section-title">{{ call .T "plagiarism.result.sources_title" }}</h3>
+                <div class="plg-sources-list" id="plgSourcesList"></div>
+              </div>
+
+              <!-- Recommendations -->
+              <div class="plg-recommendations-section" id="plgRecommendationsSection" style="display:none">
+                <h3 class="plg-section-title">{{ call .T "plagiarism.result.recommendations_title" }}</h3>
+                <ul class="plg-recommendations-list" id="plgRecommendationsList"></ul>
+              </div>
+
+              <!-- Stats -->
+              <div class="plg-stats-row">
+                <div class="plg-stat-card">
+                  <i class="fa-solid fa-book-reader"></i>
+                  <div>
+                    <span class="plg-stat-val" id="plgWordCountResult">--</span>
+                    <span class="plg-stat-lbl">{{ call .T "plagiarism.result.words" }}</span>
+                  </div>
+                </div>
+                <div class="plg-stat-card">
+                  <i class="fa-solid fa-list-check"></i>
+                  <div>
+                    <span class="plg-stat-val" id="plgSentencesCount">--</span>
+                    <span class="plg-stat-lbl">{{ call .T "plagiarism.result.sentences" }}</span>
+                  </div>
+                </div>
+                <div class="plg-stat-card">
+                  <i class="fa-solid fa-file-lines"></i>
+                  <div>
+                    <span class="plg-stat-val" id="plgSourcesCount">--</span>
+                    <span class="plg-stat-lbl">{{ call .T "plagiarism.result.sources" }}</span>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Actions -->
+              <div class="plg-result-actions">
+                <button class="plg-btn plg-btn--outline plg-btn--sm" onclick="AIP.copyReport()" data-ga data-ga-action="click" data-ga-category="ai-plagiarism" data-ga-label="copy_report"><i class="fa-solid fa-copy"></i> {{ call .T "plagiarism.btn.copy_report" }}</button>
+                <button class="plg-btn plg-btn--outline plg-btn--sm" onclick="AIP.startCheck()" data-ga data-ga-action="click" data-ga-category="ai-plagiarism" data-ga-label="recheck"><i class="fa-solid fa-rotate-right"></i> {{ call .T "plagiarism.btn.recheck" }}</button>
+                <button class="plg-btn plg-btn--primary plg-btn--sm" onclick="HumanizeHub.goToTab('humanizer')" data-ga data-ga-action="navigate" data-ga-category="ai-plagiarism" data-ga-label="goto_humanizer"><i class="fa-solid fa-wand-sparkles"></i> {{ call .T "plagiarism.btn.humanize" }}</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════ SEO Content: Hero Screenshot ═══════════ -->
+    <figure class="hub-seo-hero-image" style="margin-top:2rem">
+      <img src="/static/img/seo/plagiarism-checker-tool-screenshot.svg?v={{ .AssetVer }}"
+           alt="Plagiarism checker tool interface showing text input, plagiarism and AI scores, matched sources, and highlighted text analysis"
+           loading="lazy" width="1200" height="630" />
+      <figcaption>{{ call .T "plagiarism.seo.img_hero_caption" }}</figcaption>
+    </figure>
+
+    <!-- ═══════════ SEO Content: Why Plagiarism Detection Matters ═══════════ -->
+    <div class="hub-seo-content">
+      <div class="hub-seo-content__section">
+        <h2 class="hub-seo-content__h2">{{ call .T "plagiarism.seo.why_title" }}</h2>
+        <p class="hub-seo-content__intro">{{ call .T "plagiarism.seo.why_intro" }}</p>
+        <p class="hub-seo-content__text">{{ call .T "plagiarism.seo.why_p1" }}</p>
+        <p class="hub-seo-content__text">{{ call .T "plagiarism.seo.why_p2" }}</p>
+        <p class="hub-seo-content__text">{{ call .T "plagiarism.seo.why_p3" }}</p>
+      </div>
+    </div>
+
+    <!-- ═══════════ SEO Content: Process Diagram ═══════════ -->
+    <div class="hub-seo-content">
+      <div class="hub-seo-content__section">
+        <h2 class="hub-seo-content__h2">{{ call .T "plagiarism.seo.process_title" }}</h2>
+        <p class="hub-seo-content__intro">{{ call .T "plagiarism.seo.process_intro" }}</p>
+        <figure class="hub-seo-hero-image">
+          <img src="/static/img/seo/plagiarism-checker-process-diagram.svg?v={{ .AssetVer }}"
+               alt="Four-step plagiarism checking process: paste text, deep scan, analyze matches, get detailed results"
+               loading="lazy" width="800" height="300" />
+          <figcaption>{{ call .T "plagiarism.seo.img_process_caption" }}</figcaption>
+        </figure>
+        <p class="hub-seo-content__text">{{ call .T "plagiarism.seo.process_p1" }}</p>
+        <p class="hub-seo-content__text">{{ call .T "plagiarism.seo.process_p2" }}</p>
+      </div>
+    </div>
+
+    <!-- ═══════════ SEO Content: Types of Plagiarism ═══════════ -->
+    <div class="hub-seo-content">
+      <div class="hub-seo-content__section">
+        <h2 class="hub-seo-content__h2">{{ call .T "plagiarism.seo.types_title" }}</h2>
+        <p class="hub-seo-content__intro">{{ call .T "plagiarism.seo.types_intro" }}</p>
+        <figure class="hub-seo-hero-image">
+          <img src="/static/img/seo/plagiarism-checker-types-chart.svg?v={{ .AssetVer }}"
+               alt="Chart showing five types of plagiarism: direct copying, mosaic, self-plagiarism, accidental, and AI-generated"
+               loading="lazy" width="800" height="400" />
+          <figcaption>{{ call .T "plagiarism.seo.img_types_caption" }}</figcaption>
+        </figure>
+        <p class="hub-seo-content__text">{{ call .T "plagiarism.seo.types_p1" }}</p>
+        <p class="hub-seo-content__text">{{ call .T "plagiarism.seo.types_p2" }}</p>
+      </div>
+    </div>
+
+    <!-- ═══════════ SEO Content: Plagiarism vs AI Detection ═══════════ -->
+    <div class="hub-seo-content">
+      <div class="hub-seo-content__section">
+        <h2 class="hub-seo-content__h2">{{ call .T "plagiarism.seo.compare_title" }}</h2>
+        <p class="hub-seo-content__intro">{{ call .T "plagiarism.seo.compare_intro" }}</p>
+        <figure class="hub-seo-hero-image">
+          <img src="/static/img/seo/plagiarism-checker-comparison-chart.svg?v={{ .AssetVer }}"
+               alt="Comparison chart showing differences between original content, plagiarized content, and AI-generated content detection methods"
+               loading="lazy" width="800" height="400" />
+          <figcaption>{{ call .T "plagiarism.seo.img_compare_caption" }}</figcaption>
+        </figure>
+        <p class="hub-seo-content__text">{{ call .T "plagiarism.seo.compare_p1" }}</p>
+        <p class="hub-seo-content__text">{{ call .T "plagiarism.seo.compare_p2" }}</p>
+      </div>
+    </div>
+
+    <!-- ═══════════ SEO Content: Use Cases ═══════════ -->
+    <div class="hub-seo-content">
+      <div class="hub-seo-content__section">
+        <h2 class="hub-seo-content__h2">{{ call .T "plagiarism.seo.use_cases_title" }}</h2>
+        <p class="hub-seo-content__intro">{{ call .T "plagiarism.seo.use_cases_intro" }}</p>
+        <figure class="hub-seo-hero-image">
+          <img src="/static/img/seo/plagiarism-checker-use-cases.svg?v={{ .AssetVer }}"
+               alt="Professional groups using plagiarism checker: students, teachers, researchers, writers, HR teams, legal professionals, publishers, SEO specialists"
+               loading="lazy" width="800" height="400" />
+          <figcaption>{{ call .T "plagiarism.seo.img_usecases_caption" }}</figcaption>
+        </figure>
+        <div class="hub-seo-cases">
+          <div class="hub-seo-cases__grid">
+            <div class="hub-seo-case">
+              <div class="hub-seo-case__icon"><i class="fa-solid fa-user-graduate"></i></div>
+              <h4>{{ call .T "plagiarism.seo.case1_title" }}</h4>
+              <p>{{ call .T "plagiarism.seo.case1_desc" }}</p>
+            </div>
+            <div class="hub-seo-case">
+              <div class="hub-seo-case__icon"><i class="fa-solid fa-chalkboard-user"></i></div>
+              <h4>{{ call .T "plagiarism.seo.case2_title" }}</h4>
+              <p>{{ call .T "plagiarism.seo.case2_desc" }}</p>
+            </div>
+            <div class="hub-seo-case">
+              <div class="hub-seo-case__icon"><i class="fa-solid fa-microscope"></i></div>
+              <h4>{{ call .T "plagiarism.seo.case3_title" }}</h4>
+              <p>{{ call .T "plagiarism.seo.case3_desc" }}</p>
+            </div>
+            <div class="hub-seo-case">
+              <div class="hub-seo-case__icon"><i class="fa-solid fa-pen-fancy"></i></div>
+              <h4>{{ call .T "plagiarism.seo.case4_title" }}</h4>
+              <p>{{ call .T "plagiarism.seo.case4_desc" }}</p>
+            </div>
+            <div class="hub-seo-case">
+              <div class="hub-seo-case__icon"><i class="fa-solid fa-briefcase"></i></div>
+              <h4>{{ call .T "plagiarism.seo.case5_title" }}</h4>
+              <p>{{ call .T "plagiarism.seo.case5_desc" }}</p>
+            </div>
+            <div class="hub-seo-case">
+              <div class="hub-seo-case__icon"><i class="fa-solid fa-chart-line"></i></div>
+              <h4>{{ call .T "plagiarism.seo.case6_title" }}</h4>
+              <p>{{ call .T "plagiarism.seo.case6_desc" }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════ SEO Content: Privacy & Security ═══════════ -->
+    <div class="hub-seo-content">
+      <div class="hub-seo-content__section">
+        <h2 class="hub-seo-content__h2">{{ call .T "plagiarism.seo.privacy_title" }}</h2>
+        <p class="hub-seo-content__intro">{{ call .T "plagiarism.seo.privacy_intro" }}</p>
+        <ul class="hub-seo-content__list">
+          <li>{{ call .T "plagiarism.seo.privacy_l1" }}</li>
+          <li>{{ call .T "plagiarism.seo.privacy_l2" }}</li>
+          <li>{{ call .T "plagiarism.seo.privacy_l3" }}</li>
+          <li>{{ call .T "plagiarism.seo.privacy_l4" }}</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Bottom Tool Navigation -->
+    <section class="atp-bottom-nav">
+      <div class="atp-section-inner">
+        <p class="atp-bottom-nav__desc">{{ call .T "bottom_nav.desc" }}</p>
+        <div class="atp-bottom-nav__grid">
+          <a class="atp-bottom-nav__card" href="/ai/humanize?tab=humanizer" data-ga="ai_bottom_nav_humanizer" data-ga-category="ai_nav" data-ga data-ga-action="navigate" data-ga-category="ai-plagiarism" data-ga-label="bottom_nav_humanizer"><i class="fa-solid fa-wand-sparkles"></i><span>{{ call .T "bottom_nav.humanizer" }}</span></a>
+          <a class="atp-bottom-nav__card" href="/ai/detector" data-ga="ai_bottom_nav_detector" data-ga-category="ai_nav" data-ga data-ga-action="navigate" data-ga-category="ai-plagiarism" data-ga-label="bottom_nav_detector"><i class="fa-solid fa-magnifying-glass-chart"></i><span>{{ call .T "bottom_nav.detector" }}</span></a>
+          <a class="atp-bottom-nav__card" href="/ai/essay" data-ga="ai_bottom_nav_essay" data-ga-category="ai_nav" data-ga data-ga-action="navigate" data-ga-category="ai-plagiarism" data-ga-label="bottom_nav_essay"><i class="fa-solid fa-pen-fancy"></i><span>{{ call .T "bottom_nav.essay" }}</span></a>
+          <a class="atp-bottom-nav__card" href="/ai/sentence-rewriter" data-ga="ai_bottom_nav_sentence_rewriter" data-ga-category="ai_nav" data-ga data-ga-action="navigate" data-ga-category="ai-plagiarism" data-ga-label="bottom_nav_sentence_rewriter"><i class="fa-solid fa-rotate"></i><span>{{ call .T "bottom_nav.sentence_rewriter" }}</span></a>
+          <a class="atp-bottom-nav__card" href="/ai/paragraph-rewriter" data-ga="ai_bottom_nav_paragraph_rewriter" data-ga-category="ai_nav" data-ga data-ga-action="navigate" data-ga-category="ai-plagiarism" data-ga-label="bottom_nav_paragraph_rewriter"><i class="fa-solid fa-align-left"></i><span>{{ call .T "bottom_nav.paragraph_rewriter" }}</span></a>
+          <a class="atp-bottom-nav__card" href="/ai/article-rewriter" data-ga data-ga-action="navigate" data-ga-category="ai-plagiarism" data-ga-label="bottom_nav_article_rewriter"><i class="fa-solid fa-file-lines"></i><span>{{ call .T "bottom_nav.article_rewriter" }}</span></a>
+          <a class="atp-bottom-nav__card" href="/ai/detector/for-academic-writing" data-ga="ai_bottom_nav_detector_academic" data-ga-category="ai_nav" data-ga data-ga-action="navigate" data-ga-category="ai-plagiarism" data-ga-label="bottom_nav_detector_academic"><i class="fa-solid fa-graduation-cap"></i><span>{{ call .T "bottom_nav.detector_academic" }}</span></a>
+          <a class="atp-bottom-nav__card" href="/ai/for-college" data-ga="ai_bottom_nav_for_college" data-ga-category="ai_nav" data-ga data-ga-action="navigate" data-ga-category="ai-plagiarism" data-ga-label="bottom_nav_for_college"><i class="fa-solid fa-school"></i><span>{{ call .T "bottom_nav.for_college" }}</span></a>
+          <a class="atp-bottom-nav__card" href="/ai/for-professors" data-ga="ai_bottom_nav_for_professors" data-ga-category="ai_nav" data-ga data-ga-action="navigate" data-ga-category="ai-plagiarism" data-ga-label="bottom_nav_for_professors"><i class="fa-solid fa-chalkboard-user"></i><span>{{ call .T "bottom_nav.for_professors" }}</span></a>
+        </div>
+      </div>
+    </section>
+
+  </section>
+
+  <!-- Detailed Report Modal -->
+  <div class="aid-report-modal" id="aidReportModal">
+    <div class="aid-report-modal__overlay" onclick="AID.closeReportModal()"></div>
+    <div class="aid-report-modal__content">
+      <div class="aid-report-modal__header">
+        <h3><i class="fa-solid fa-file-lines"></i> {{ call .T "ailab.detector.btn.view_report" }}</h3>
+        <button class="aid-btn-icon" onclick="AID.closeReportModal()" data-ga data-ga-action="click" data-ga-category="ai-detector" data-ga-label="report_modal_close"><i class="fa-solid fa-xmark"></i></button>
+      </div>
+      <div class="aid-report-modal__body">
+        <!-- Verdict Summary -->
+        <div class="aid-verdict-summary" id="aidReportVerdictSummary" style="display:none">
+          <i class="fa-solid fa-gavel aid-verdict-summary__icon"></i>
+          <p class="aid-verdict-summary__text" id="aidReportVerdictSummaryText"></p>
+          <p class="aid-verdict-summary__reasoning" id="aidReportConfidenceReasoning"></p>
+        </div>
+        <!-- Model Signature -->
+        <div class="aid-signature-section" id="aidReportSignatureSection" style="display:none">
+          <h4 class="aid-section-title">{{ call .T "ailab.detector.report.model_signature" }}</h4>
+          <div class="aid-signature-bars" id="aidReportSignatureBars"></div>
+          <div class="aid-signature-dominant" id="aidReportSignatureDominant"></div>
+        </div>
+        <!-- Linguistic Metrics -->
+        <div class="aid-metrics-section" id="aidReportMetricsSection" style="display:none">
+          <h4 class="aid-section-title">{{ call .T "ailab.detector.report.linguistic_metrics" }}</h4>
+          <div class="aid-metrics-grid" id="aidReportMetricsGrid"></div>
+        </div>
+        <!-- Forensic Evidence -->
+        <div class="aid-evidence-section" id="aidReportEvidenceSection" style="display:none">
+          <h4 class="aid-section-title">{{ call .T "ailab.detector.report.forensic_evidence" }}</h4>
+          <div class="aid-evidence-list" id="aidReportEvidenceList"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="ah-toast-container" id="ah-toast-container" role="alert" aria-live="assertive"></div>
+  <div class="aid-toast-container" id="aidToastContainer" aria-live="polite"></div>
+</div>
+{{ end }}
+
+{{ define "extraScript" }}
+<script>
+window.__AID_I18N__ = {
+  "btn.detect":"{{ call .T `ailab.detector.btn.detect` }}","btn.detecting":"{{ call .T `ailab.detector.btn.detecting` }}",
+  "btn.humanize":"{{ call .T `ailab.detector.btn.humanize` }}","btn.humanizing":"{{ call .T `ailab.detector.btn.humanizing` }}",
+  "btn.rehumanize":"{{ call .T `ailab.detector.btn.rehumanize` }}","verdict.human":"{{ call .T `ailab.detector.result.verdict_human` }}",
+  "verdict.mixed":"{{ call .T `ailab.detector.result.verdict_mixed` }}","verdict.ai":"{{ call .T `ailab.detector.result.verdict_ai` }}",
+  "result.confidence":"{{ call .T `ailab.detector.result.confidence` }}","result.sentences":"{{ call .T `ailab.detector.result.sentences_analyzed` }}",
+  "result.analysis_title":"{{ call .T `ailab.detector.result.analysis_title` }}","action.goto_humanizer":"{{ call .T `aid.action.goto_humanizer` }}",
+  "compare.words":"{{ call .T `ailab.detector.compare.words_changed` }}","download.copy":"{{ call .T `ailab.detector.download.copy_btn` }}",
+  "download.copied":"{{ call .T `ailab.detector.download.copy_success` }}","history.empty":"{{ call .T `ailab.detector.history.empty` }}",
+  "error.too_short":"{{ call .T `ailab.detector.error.text_too_short` }}","error.too_long":"{{ call .T `ailab.detector.error.text_too_long` }}",
+  "error.api_failed":"{{ call .T `ailab.detector.error.api_failed` }}","error.network":"{{ call .T `ailab.detector.error.network` }}",
+  "toast.copy_success":"{{ call .T `ailab.detector.toast.copy_success` }}","toast.detect_success":"{{ call .T `ailab.detector.toast.detect_success` }}",
+  "toast.humanize_success":"{{ call .T `ailab.detector.toast.humanize_success` }}","toast.error_generic":"{{ call .T `ailab.detector.toast.error_generic` }}",
+  "detector.gptzero":"GPTZero","detector.turnitin":"Turnitin","detector.copyleaks":"Copyleaks",
+  "detector.zerogpt":"ZeroGPT","detector.writer":"Writer.com","detector.sapling":"Sapling",
+  "detector.originality":"Originality.AI","detector.winston":"Winston AI",
+  "signature.gpt":"GPT","signature.claude":"Claude","signature.deepseek":"DeepSeek / Gemini","signature.dominant":"Dominant",
+  "metrics.burstiness":"Burstiness","metrics.perplexity":"Perplexity","metrics.ttr":"Type-Token Ratio","metrics.anchors":"Personal Anchors",
+  "report.model_signature":"Model Signature Analysis","report.linguistic_metrics":"Linguistic Metrics","report.forensic_evidence":"Forensic Evidence"
+};
+window.__AID_CONFIG__ = { freeLimit: {{ .FreeWordLimit }}, lang: "{{ .Lang }}" };
+</script>
+<script src="/static/js/ai-humanize.js?v={{ .AssetVer }}"></script>
+<script src="/static/js/ai-tool-nav.js?v={{ .AssetVer }}"></script>
+<script src="/static/js/ai-humanizer.js?v={{ .AssetVer }}"></script>
+<script src="/static/js/ai-detector.js?v={{ .AssetVer }}"></script>
+<script src="/static/js/ai-plagiarism.js?v={{ .AssetVer }}"></script>
+{{ end }}

@@ -1,0 +1,27 @@
+{
+  "name": "json AI Humanizer",
+  "short_name": "AI Humanizer",
+  "description": "Transform AI-generated text into natural human writing. Free online tool.",
+  "start_url": "/ai/humanizer",
+  "display": "standalone",
+  "background_color": "#0f0e17",
+  "theme_color": "#6c47ff",
+  "orientation": "any",
+  "categories": ["utilities", "productivity"],
+  "icons": [
+    {
+      "src": "/static/img/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any maskable"
+    },
+    {
+      "src": "/static/img/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ],
+  "screenshots": [],
+  "prefer_related_applications": false
+}

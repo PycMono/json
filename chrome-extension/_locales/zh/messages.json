@@ -1,0 +1,31 @@
+{
+  "extName": {
+    "message": "ToolBoxNova - 开发者与隐私工具"
+  },
+  "extDescription": {
+    "message": "JSON 工具、密码生成器、AI 检测、图片工具、颜色选择器等。注重隐私，支持离线使用。"
+  },
+  "commandOpenPopup": {
+    "message": "打开 ToolBoxNova 面板"
+  },
+  "commandJsonTools": {
+    "message": "打开 JSON 工具"
+  },
+  "contextFormatJson": {
+    "message": "用 ToolBoxNova 格式化 JSON"
+  },
+  "contextAiDetect": {
+    "message": "用 ToolBoxNova 检测 AI 内容"
+  },
+  "contextAiHumanize": {
+    "message": "用 ToolBoxNova 人性化文本"
+  },
+  "toolJson": { "message": "JSON 工具" },
+  "toolPassword": { "message": "密码生成" },
+  "toolColor": { "message": "颜色工具" },
+  "toolImage": { "message": "图片工具" },
+  "toolTimestamp": { "message": "时间戳" },
+  "toolQrcode": { "message": "二维码" },
+  "toolAiDetect": { "message": "AI 检测" },
+  "toolAiHumanize": { "message": "人性化" }
+}

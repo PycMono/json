@@ -1,0 +1,19 @@
+{
+  "extName": {
+    "message": "ToolBoxNova - Herramientas de desarrollador y privacidad"
+  },
+  "extDescription": {
+    "message": "Herramientas JSON, generador de contraseñas, detección de IA, herramientas de imagen, selector de color y más. Con privacidad y sin conexión."
+  },
+  "contextFormatJson": { "message": "Formatear JSON con ToolBoxNova" },
+  "contextAiDetect": { "message": "Detectar contenido IA con ToolBoxNova" },
+  "contextAiHumanize": { "message": "Humanizar texto con ToolBoxNova" },
+  "toolJson": { "message": "JSON" },
+  "toolPassword": { "message": "Contraseña" },
+  "toolColor": { "message": "Color" },
+  "toolImage": { "message": "Imagen" },
+  "toolTimestamp": { "message": "Timestamp" },
+  "toolQrcode": { "message": "QR" },
+  "toolAiDetect": { "message": "Detectar IA" },
+  "toolAiHumanize": { "message": "Humanizar" }
+}
