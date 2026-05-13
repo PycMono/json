@@ -1112,7 +1112,7 @@ async function saveSnapshot() {
     ctx.fillStyle = 'rgba(255,255,255,0.4)';
     ctx.font = `${Math.floor(canvas.width*0.022)}px system-ui, sans-serif`;
     ctx.textAlign = 'right';
-    ctx.fillText('toolboxnova.com', canvas.width-12, canvas.height-10);
+    ctx.fillText('ycjson.top', canvas.width-12, canvas.height-10);
     const a = document.createElement('a');
     const dt = new Date().toISOString().slice(0,10);
     a.href = canvas.toDataURL('image/png');

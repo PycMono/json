@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <script>(function(){var t=localStorage.getItem('tbn-theme')||'light';document.documentElement.setAttribute('data-theme',t);})()</script>
+  <script>(function(){var t=localStorage.getItem('tbn-theme');if(!t)t=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';document.documentElement.setAttribute('data-theme',t);})()</script>
   {{- template "partials/ga.html" . }}
   {{ if .AdsEnabled }}
   <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client={{ .AdsClientID }}"
@@ -63,12 +63,11 @@
     <div class="footer-col">
       <h4>{{ call .T "footer.popular_tools" }}</h4>
       <ul class="footer-links">
-        <li><a href="https://smsin.me/sms?lang={{ .Lang }}" data-ga="footer_sms" data-ga-category="footer">📱 {{ call .T "home.tool_sms" }}</a></li>
-        <li><a href="https://smsin.me/temp-email?lang={{ .Lang }}" data-ga="footer_email" data-ga-category="footer">📧 {{ call .T "home.tool_email" }}</a></li>
-        <li><a href="https://smsin.me/virtual-address?lang={{ .Lang }}" data-ga="footer_address" data-ga-category="footer">🏠 {{ call .T "home.tool_address" }}</a></li>
-        <li><a href="https://smsin.me/privacy/check?lang={{ .Lang }}" data-ga="footer_password" data-ga-category="footer">🔑 {{ call .T "home.tool_password" }}</a></li>
-        <li><a href="https://smsin.me/proxy?lang={{ .Lang }}" data-ga="footer_proxy" data-ga-category="footer">🌐 {{ call .T "home.tool_proxy" }}</a></li>
         <li><a href="/json?lang={{ .Lang }}" data-ga="footer_json" data-ga-category="footer">{ } {{ call .T "home.tool_json" }}</a></li>
+        <li><a href="/json/validate?lang={{ .Lang }}" data-ga="footer_validate" data-ga-category="footer">✓ JSON Validator</a></li>
+        <li><a href="/json/pretty?lang={{ .Lang }}" data-ga="footer_pretty" data-ga-category="footer">✨ JSON Formatter</a></li>
+        <li><a href="/dev/hash?lang={{ .Lang }}" data-ga="footer_hash" data-ga-category="footer">🔐 {{ call .T "nav.dev_hash" }}</a></li>
+        <li><a href="/dev/base64?lang={{ .Lang }}" data-ga="footer_base64" data-ga-category="footer">🔡 {{ call .T "nav.dev_base64" }}</a></li>
       </ul>
     </div>
     <div class="footer-col">
@@ -111,6 +110,7 @@ if (typeof PageEngagementTracker !== 'undefined') PageEngagementTracker.init();
 {{ if .ToolCategory }}window.__TBN_TOOL_CATEGORY__ = '{{ .ToolCategory }}';{{ end }}
 </script>
 <script src="/static/js/main.js?{{ .AssetVer }}"></script>
+<script defer src="/static/js/cmd-palette.js?v={{ .AssetVer }}"></script>
 <script defer src="/static/js/theme.js?v={{ .AssetVer }}"></script>
 {{ block "json_scripts" . }}{{ end }}
 </body>

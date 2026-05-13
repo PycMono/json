@@ -19,7 +19,7 @@
   "whois.hero.cta_guide": "WHOISガイド",
 
   "whois.input.label": "ドメイン名を入力",
-  "whois.input.placeholder": "例: example.com, toolboxnova.com, openai.com",
+  "whois.input.placeholder": "例: example.com, ycjson.top, openai.com",
   "whois.input.btn_lookup": "検索",
   "whois.input.btn_clear": "クリア",
   "whois.input.btn_example": "サンプルを試す",
@@ -28,7 +28,7 @@
   "whois.examples.google": "google.com",
   "whois.examples.github": "github.com",
   "whois.examples.cloudflare": "cloudflare.com",
-  "whois.examples.toolboxnova": "toolboxnova.com",
+  "whois.examples.toolboxnova": "ycjson.top",
   "whois.examples.openai": "openai.com",
 
   "whois.error.invalid_domain": "このドメインを認識できません。有効なドメイン名を入力してください（例: example.com）。",

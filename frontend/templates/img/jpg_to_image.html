@@ -1,16 +1,16 @@
 {{ template "base" . }}
 
 {{ define "extraHead" }}
-<link rel="canonical" href="https://toolboxnova.com/img/jpg-to-image">
-<link rel="alternate" hreflang="zh" href="https://toolboxnova.com/img/jpg-to-image?lang=zh">
-<link rel="alternate" hreflang="en" href="https://toolboxnova.com/img/jpg-to-image?lang=en">
-<link rel="alternate" hreflang="ja" href="https://toolboxnova.com/img/jpg-to-image?lang=ja">
-<link rel="alternate" hreflang="ko" href="https://toolboxnova.com/img/jpg-to-image?lang=ko">
-<link rel="alternate" hreflang="spa" href="https://toolboxnova.com/img/jpg-to-image?lang=spa">
-<link rel="alternate" hreflang="x-default" href="https://toolboxnova.com/img/jpg-to-image">
+<link rel="canonical" href="https://ycjson.top/img/jpg-to-image">
+<link rel="alternate" hreflang="zh" href="https://ycjson.top/img/jpg-to-image?lang=zh">
+<link rel="alternate" hreflang="en" href="https://ycjson.top/img/jpg-to-image?lang=en">
+<link rel="alternate" hreflang="ja" href="https://ycjson.top/img/jpg-to-image?lang=ja">
+<link rel="alternate" hreflang="ko" href="https://ycjson.top/img/jpg-to-image?lang=ko">
+<link rel="alternate" hreflang="spa" href="https://ycjson.top/img/jpg-to-image?lang=spa">
+<link rel="alternate" hreflang="x-default" href="https://ycjson.top/img/jpg-to-image">
 <link rel="stylesheet" href="/static/css/img-toolbox.css?v={{ .AssetVer }}">
 <link rel="stylesheet" href="/static/css/img-tabs.css?v={{ .AssetVer }}">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"{{ .Title }}","applicationCategory":"MultimediaApplication","operatingSystem":"Web Browser","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"description":"{{ .Description }}","url":"https://toolboxnova.com/img/jpg-to-image","featureList":["Convert JPG to PNG (lossless)","Convert JPG to WebP (smallest size)","Convert JPG to GIF or BMP","Batch convert up to 30 images","Browser-side processing - no upload required"]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"SoftwareApplication","name":"{{ .Title }}","applicationCategory":"MultimediaApplication","operatingSystem":"Web Browser","offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},"description":"{{ .Description }}","url":"https://ycjson.top/img/jpg-to-image","featureList":["Convert JPG to PNG (lossless)","Convert JPG to WebP (smallest size)","Convert JPG to GIF or BMP","Batch convert up to 30 images","Browser-side processing - no upload required"]}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{{- range $i,$f := .FAQs }}{{if $i}},{{end}}{"@type":"Question","name":{{ $f.Q | html }},"acceptedAnswer":{"@type":"Answer","text":{{ $f.A | html }}}}{{- end}}]}</script>
 {{ end }}
 

@@ -10,7 +10,7 @@ import (
 type ConsentConfig struct {
 	CookieName   string // default: "cky_consent"
 	CookieMaxAge int    // default: 365 days in seconds
-	Domain       string // e.g. "toolboxnova.com"
+	Domain       string // e.g. "ycjson.top"
 }
 
 // ConsentMiddleware reads the user's consent cookie and injects

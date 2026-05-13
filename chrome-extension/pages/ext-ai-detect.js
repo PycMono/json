@@ -90,7 +90,7 @@ document.addEventListener('DOMContentLoaded', function() {
       }
     }).catch(function(err) {
       resultDiv.innerHTML = '<p style="color:#e53935;">Error: ' + err.message + '</p>' +
-        '<p style="font-size:12px;color:#999;margin-top:8px;">Make sure you have internet access and toolboxnova.com is reachable.</p>';
+        '<p style="font-size:12px;color:#999;margin-top:8px;">Make sure you have internet access and ycjson.top is reachable.</p>';
     }).finally(function() {
       btn.disabled = false;
       btn.textContent = '🔍 Detect AI Content';

@@ -141,6 +141,8 @@ require(['vs/editor/editor.main'], function() {
   initTooltipShortcuts();
   // Init empty state cards
   initEmptyState();
+  // Init auto-format on paste
+  initAutoFormatOnPaste();
 
   // Force layout update for all Monaco editors to ensure correct sizing
   // Use multiple attempts to ensure editors are sized correctly
@@ -254,7 +256,7 @@ function switchOutputView(viewType) {
           renderTreeOutput(outputDataCache);
         } else {
           // Show loading state if no data
-          treeView.innerHTML = '<div class="jt-empty-state">请先执行操作生成输出</div>';
+          treeView.innerHTML = '<div class="jt-empty-state">' + (i18n('json.common.empty_output') || 'Execute an operation to generate output') + '</div>';
         }
       }
       break;
@@ -265,7 +267,7 @@ function switchOutputView(viewType) {
           renderTableOutput(outputDataCache);
         } else {
           // Show loading state if no data
-          tableView.innerHTML = '<div class="jt-empty-state">请先执行操作生成输出</div>';
+          tableView.innerHTML = '<div class="jt-empty-state">' + (i18n('json.common.empty_output') || 'Execute an operation to generate output') + '</div>';
         }
       }
       break;
@@ -325,7 +327,7 @@ setOutput = function(val, lang) {
           if (val) {
             renderTreeOutput(val);
           } else {
-            treeView.innerHTML = '<div class="jt-empty-state">请先执行操作生成输出</div>';
+            treeView.innerHTML = '<div class="jt-empty-state">' + (i18n('json.common.empty_output') || 'Execute an operation to generate output') + '</div>';
           }
         }
         break;
@@ -337,7 +339,7 @@ setOutput = function(val, lang) {
           if (val) {
             renderTableOutput(val);
           } else {
-            tableView.innerHTML = '<div class="jt-empty-state">请先执行操作生成输出</div>';
+            tableView.innerHTML = '<div class="jt-empty-state">' + (i18n('json.common.empty_output') || 'Execute an operation to generate output') + '</div>';
           }
         }
         break;
@@ -557,7 +559,7 @@ const _originalParseInput = parseInput;
 function parseInputAsync() {
   const raw = getInput().trim();
   if (!raw) {
-    showToast(i18n('json.common.error.empty') || '请先输入 JSON', 'error');
+    showToast(i18n('json.common.error.empty') || 'Please enter some content first', 'error');
     return Promise.resolve(null);
   }
   const bytes = new Blob([raw]).size;
@@ -581,7 +583,7 @@ function parseInputAsync() {
 function parseInput() {
   const raw = getInput().trim();
   if (!raw) {
-    showToast(i18n('json.common.error.empty') || '请先输入 JSON', 'error');
+    showToast(i18n('json.common.error.empty') || 'Please enter some content first', 'error');
     return null;
   }
   try {
@@ -596,16 +598,16 @@ function parseInput() {
 function jsonEscapeInput() {
   if (!inputEditor) return;
   const val = inputEditor.getValue();
-  if (!val.trim()) { showToast('输入为空', 'info'); return; }
+  if (!val.trim()) { showToast(i18n('json.common.input_empty') || 'Input is empty', 'info'); return; }
   inputEditor.setValue(JSON.stringify(val));
-  showToast('已转义', 'success');
+  showToast(i18n('json.common.escaped') || 'Escaped', 'success');
 }
 
 function smartJsonUnescape(input) {
   const str = input.trim();
   if (!str) return str;
 
-  // 尝试1: 输入是合法 JSON（可能是被双引号包裹的字符串，或已经是 JSON 对象/数组）
+  // Try 1: input is valid JSON (could be a double-quoted string, or already a JSON object/array)
   try {
     const parsed = JSON.parse(str);
     if (typeof parsed === 'string') {
@@ -614,7 +616,7 @@ function smartJsonUnescape(input) {
     return JSON.stringify(parsed);
   } catch (e) {}
 
-  // 尝试2: 输入被单引号包裹
+  // Try 2: input is wrapped in single quotes
   if (str.startsWith("'") && str.endsWith("'")) {
     const inner = str.slice(1, -1);
     try {
@@ -624,8 +626,8 @@ function smartJsonUnescape(input) {
     } catch (e) {}
   }
 
-  // 尝试3: 输入是没有外层引号的转义 JSON 字符串（如 {\"id\":\"xxx\"}）
-  // 把它当作 JSON 字符串内容来解析，利用 JSON.parse 处理所有标准转义序列
+  // Try 3: input is an escaped JSON string without outer quotes (e.g. {\"id\":\"xxx\"})
+  // Parse it as JSON string content, using JSON.parse to handle all standard escape sequences
   try {
     const unescaped = JSON.parse('"' + str + '"');
     try {
@@ -635,19 +637,19 @@ function smartJsonUnescape(input) {
     }
   } catch (e) {}
 
-  throw new Error('无法解析输入');
+  throw new Error(i18n('json.repair.cannot_parse') || 'Unable to parse input');
 }
 
 function jsonUnescapeInput() {
   if (!inputEditor) return;
   const val = inputEditor.getValue().trim();
-  if (!val) { showToast('输入为空', 'info'); return; }
+  if (!val) { showToast(i18n('json.common.input_empty') || 'Input is empty', 'info'); return; }
   try {
     const result = smartJsonUnescape(val);
     inputEditor.setValue(result);
-    showToast('已反转义', 'success');
+    showToast(i18n('json.common.unescaped') || 'Unescaped', 'success');
   } catch(e) {
-    showToast('反转义失败：不是有效的转义字符串', 'error');
+    showToast(i18n('json.common.unescape_failed') || 'Unescape failed: not a valid escaped string', 'error');
   }
 }
 
@@ -893,10 +895,10 @@ function repairStringAwareReport(str, fixes) {
 
     if ((ch === '"' || ch === "'") && !inStr) {
       if (ch === "'") {
-        fixes.push({ line: getLine(), type: 'single_quotes', desc: i18n('json.repair.single_quotes') || '单引号→双引号' });
+        fixes.push({ line: getLine(), type: 'single_quotes', desc: i18n('json.repair.single_quotes') || 'Single quotes → double quotes' });
       }
       if (hadWs && /[0-9"\]}'el]/.test(lastNonWs)) {
-        fixes.push({ line: getLine(), type: 'added_comma', desc: i18n('json.repair.added_comma') || '补充缺失的逗号' });
+        fixes.push({ line: getLine(), type: 'added_comma', desc: i18n('json.repair.added_comma') || 'Added missing comma' });
         res += ',';
       }
       hadWs = false; inStr = true; strQuote = ch; res += '"'; i++; continue;
@@ -910,16 +912,16 @@ function repairStringAwareReport(str, fixes) {
     if (/\s/.test(ch)) { res += ch; hadWs = true; i++; continue; }
 
     if (ch === '/' && ch2 === '/') {
-      fixes.push({ line: getLine(), type: 'comment_removed', desc: i18n('json.repair.comment_removed') || '移除注释' });
+      fixes.push({ line: getLine(), type: 'comment_removed', desc: i18n('json.repair.comment_removed') || 'Removed comment' });
       while (i < len && str[i] !== '\n') i++; continue;
     }
     if (ch === '/' && ch2 === '*') {
-      fixes.push({ line: getLine(), type: 'comment_removed', desc: i18n('json.repair.comment_removed') || '移除块注释' });
+      fixes.push({ line: getLine(), type: 'comment_removed', desc: i18n('json.repair.comment_removed') || 'Removed block comment' });
       i += 2; while (i < len && !(str[i] === '*' && str[i + 1] === '/')) i++; i += 2; continue;
     }
 
     if (ch === ',' && (ch2 === '}' || ch2 === ']' || /^\s*[}\]]/.test(str.slice(i + 1)))) {
-      fixes.push({ line: getLine(), type: 'trailing_comma', desc: i18n('json.repair.trailing_comma') || '移除尾随逗号' });
+      fixes.push({ line: getLine(), type: 'trailing_comma', desc: i18n('json.repair.trailing_comma') || 'Removed trailing comma' });
       i++; continue;
     }
 
@@ -930,13 +932,13 @@ function repairStringAwareReport(str, fixes) {
       let afterKey = keyEnd;
       while (afterKey < len && /\s/.test(str[afterKey])) afterKey++;
       if (str[afterKey] === ':') {
-        fixes.push({ line: getLine(), type: 'unquoted_key', desc: i18n('json.repair.unquoted_key') || '为未引用的 key 添加引号' });
+        fixes.push({ line: getLine(), type: 'unquoted_key', desc: i18n('json.repair.unquoted_key') || 'Quoted unquoted key' });
         res += '"' + potentialKey + '"'; i = keyEnd; lastNonWs = '"'; continue;
       }
     }
 
     if (hadWs && /[0-9"'tfn-{\[]/.test(ch) && /[0-9"\]}'el]/.test(lastNonWs)) {
-      fixes.push({ line: getLine(), type: 'added_comma', desc: i18n('json.repair.added_comma') || '补充缺失的逗号' });
+      fixes.push({ line: getLine(), type: 'added_comma', desc: i18n('json.repair.added_comma') || 'Added missing comma' });
       res += ',';
     }
     hadWs = false;
@@ -983,7 +985,7 @@ function balanceBracketsReport(s, fixes) {
   }
   if (stack.length) {
     const line = s.split('\n').length;
-    fixes.push({ line, type: 'missing_bracket', desc: (i18n('json.repair.missing_bracket') || '补全缺失的括号') + ' ' + stack.map(c => pairs[c]).join('') });
+    fixes.push({ line, type: 'missing_bracket', desc: (i18n('json.repair.missing_bracket') || 'Added missing bracket(s)') + ' ' + stack.map(c => pairs[c]).join('') });
     while (stack.length) s += pairs[stack.pop()];
   }
   return s;
@@ -995,7 +997,7 @@ function showRepairReport(fixes) {
   const container = document.getElementById('repairReportPanel');
   if (!container) return;
   const lines = fixes.map(f => `<div class="jt-repair-report__item"><span class="jt-repair-report__line">L${f.line}</span><span class="jt-repair-report__desc">${escapeHtml(f.desc)}</span></div>`);
-  container.innerHTML = `<div class="jt-repair-report__header">✅ ${i18n('json.repair.report_title') || '修复报告'} (${fixes.length})</div>` + lines.join('');
+  container.innerHTML = `<div class="jt-repair-report__header">✅ ${i18n('json.repair.report_title') || 'Repair Report'} (${fixes.length})</div>` + lines.join('');
   container.style.display = 'block';
 }
 
@@ -1003,7 +1005,7 @@ function showRepairReport(fixes) {
 function jsonRepairInput() {
   if (typeof inputEditor === 'undefined' || !inputEditor) return;
   const val = inputEditor.getValue().trim();
-  if (!val) { showToast('输入为空', 'info'); return; }
+  if (!val) { showToast(i18n('json.common.input_empty') || 'Input is empty', 'info'); return; }
   try {
     const repaired = repairJson(val);
     // Compare parsed results: if both parse to the same object, only formatting changed
@@ -1017,10 +1019,10 @@ function jsonRepairInput() {
       try { JSON.parse(repaired); changed = true; } catch(e2) { changed = repaired.trim() !== val; }
     }
     inputEditor.setValue(repaired);
-    showToast(changed ? '已修复' : 'JSON 格式已整理', 'success');
+    showToast(changed ? (i18n('json.repair.repaired') || 'Repaired') : (i18n('json.repair.formatted') || 'JSON formatted'), 'success');
     if (typeof processJson === 'function') processJson();
   } catch(e) {
-    showToast('修复失败: ' + e.message, 'error');
+    showToast((i18n('json.repair.failed') || 'Repair failed') + ': ' + e.message, 'error');
   }
 }
 
@@ -1090,7 +1092,7 @@ function copyOutput() {
   const text = getOutput();
   if (!text) return;
   navigator.clipboard.writeText(text).then(() => {
-    showToast(i18n('json.common.copy_done') || '已复制！', 'success');
+    showToast(i18n('json.common.copy_done') || 'Copied!', 'success');
     const btn = document.getElementById('copyBtn');
     if (btn) {
       const orig = btn.innerHTML;
@@ -1185,11 +1187,11 @@ const REVERSE_TOOLS = {
 function swapEditors() {
   const a = getInput(), b = getOutput();
   if (!a && !b) {
-    showToast(i18n('json.common.swap_empty') || '输入和输出都为空，无法交换', 'info');
+    showToast(i18n('json.common.swap_empty') || 'Both input and output are empty', 'info');
     return;
   }
   if (!b) {
-    showToast(i18n('json.common.swap_no_output') || '请先执行操作生成输出', 'info');
+    showToast(i18n('json.common.swap_no_output') || 'Please run the tool first to generate output', 'info');
     return;
   }
 
@@ -1224,7 +1226,7 @@ function swapEditors() {
     treeDiv.classList.remove('visible');
     treeDiv.style.display = 'none';
   }
-  showToast(i18n('json.common.swap') || '已交换输入/输出', 'success');
+  showToast(i18n('json.common.swap') || 'Swapped input/output', 'success');
 }
 
 // Swap left/right editors for diff tool
@@ -1234,7 +1236,7 @@ function swapDiffEditors() {
   const rightVal = rightEditor.getValue();
   leftEditor.setValue(rightVal);
   rightEditor.setValue(leftVal);
-  showToast(i18n('json.common.swap') || '已交换左右 JSON', 'success');
+  showToast(i18n('json.common.swap') || 'Swapped left/right JSON', 'success');
 }
 
 function uploadFile(input) {
@@ -1254,7 +1256,7 @@ async function fetchJsonFromUrl() {
   const input = document.getElementById('jsonUrlInput');
   const url = input?.value?.trim();
   if (!url) {
-    showToast(i18n('json.common.url_empty') || '请输入 URL', 'error');
+    showToast(i18n('json.common.url_empty') || 'Please enter a URL', 'error');
     return;
   }
 
@@ -1281,17 +1283,17 @@ async function fetchJsonFromUrl() {
         const parsed = JSON.parse(text);
         const formatted = JSON.stringify(parsed, null, 2);
         inputEditor.setValue(formatted);
-        showToast(i18n('json.common.fetch_success') || '已加载 JSON', 'success');
+        showToast(i18n('json.common.fetch_success') || 'JSON loaded successfully', 'success');
       } catch (e) {
         // Not valid JSON, just set as-is
-        showToast(i18n('json.common.fetch_success_raw') || '已加载内容（非 JSON）', 'info');
+        showToast(i18n('json.common.fetch_success_raw') || 'Content loaded (not JSON)', 'info');
       }
     }
     clearErrorPanel();
   } catch (err) {
     const msg = err.name === 'TimeoutError'
-      ? (i18n('json.common.fetch_timeout') || '请求超时')
-      : (err.message || (i18n('json.common.fetch_error') || 'URL 抓取失败'));
+      ? (i18n('json.common.fetch_timeout') || 'Request timed out')
+      : (err.message || (i18n('json.common.fetch_error') || 'Failed to fetch URL'));
     showToast(msg, 'error');
   } finally {
     if (btn && origText) btn.innerHTML = origText;
@@ -1307,7 +1309,7 @@ function updateInputStats() {
   if (bytes > LARGE_FILE_WARNING) {
     const warnEl = document.getElementById('inputWarning');
     if (warnEl) {
-      warnEl.textContent = i18n('json.common.large_file_warning') || '大文件可能影响性能';
+      warnEl.textContent = i18n('json.common.large_file_warning') || 'Large files may affect performance';
       warnEl.style.display = '';
     }
   }
@@ -1494,7 +1496,7 @@ function showRepairBadge(fixCount) {
   const badge = document.getElementById('realtimeValidationBadge');
   if (!badge) return;
   badge.className = 'jt-validation-badge jt-validation-badge--repair';
-  badge.innerHTML = `<span class="jt-badge-icon"></span><span class="jt-badge-text">⚠ 修复了 ${fixCount} 处</span>`;
+  badge.innerHTML = `<span class="jt-badge-icon"></span><span class="jt-badge-text">⚠ ` + (i18n('json.repair.fix_count') || 'Fixed') + ` ${fixCount}</span>`;
   badge.style.cursor = '';
   badge.onclick = null;
   // Auto-revert to normal validation after 5s
@@ -1576,7 +1578,7 @@ function showEditorErrorMarkers(errMsg, line, col) {
       className: 'jt-error-line',
       glyphMarginClassName: 'jt-error-glyph',
       hoverMessage: {
-        value: `第 ${line} 行: ${errMsg}`,
+        value: `Line ${line}: ${errMsg}`,
       }
     }
   }]);
@@ -1623,6 +1625,44 @@ function initFontSizeControl() {
         adjustFontSize(e.deltaY < 0 ? 1 : -1);
       }
     }, { passive: false });
+  });
+}
+
+/* ── Auto-Format on Paste ──────────────────────── */
+function initAutoFormatOnPaste() {
+  if (!inputEditor) return;
+  const editorEl = document.getElementById('inputEditor');
+  if (!editorEl) return;
+
+  editorEl.addEventListener('paste', function(e) {
+    const pasted = (e.clipboardData || window.clipboardData)?.getData('text');
+    if (!pasted) return;
+    const trimmed = pasted.trim();
+    // Only auto-format if it looks like JSON
+    if (!trimmed.startsWith('{') && !trimmed.startsWith('[')) return;
+
+    // Check if it's compact/minified (no newlines or very short)
+    const hasNewlines = trimmed.indexOf('\n') > 0;
+    const isCompact = !hasNewlines || trimmed.split('\n').length <= 2;
+    if (!isCompact) return;
+
+    // Wait for Monaco to insert the pasted content
+    setTimeout(function() {
+      const current = inputEditor.getValue().trim();
+      if (!current) return;
+      try {
+        JSON.parse(current);
+        // Valid JSON and compact — auto-format
+        const formatted = JSON.stringify(JSON.parse(current), null, 2);
+        // Only format if it actually changed
+        if (formatted !== current) {
+          inputEditor.setValue(formatted);
+          showToast(i18n('json.common.auto_formatted') || 'Auto-formatted', 'success');
+        }
+      } catch (err) {
+        // Not valid JSON, ignore
+      }
+    }, 50);
   });
 }
 
@@ -1874,7 +1914,7 @@ function toggleSyncScroll() {
   const btn = document.getElementById('syncScrollBtn');
   if (btn) {
     btn.classList.toggle('jt-btn--active', _syncScrollEnabled);
-    btn.title = (_syncScrollEnabled ? 'Sync Scroll: ON' : 'Sync Scroll: OFF');
+    btn.title = (_syncScrollEnabled ? (i18n('json.common.sync_scroll_on') || 'Sync Scroll: ON') : (i18n('json.common.sync_scroll_off') || 'Sync Scroll: OFF'));
   }
 }
 
@@ -1902,7 +1942,7 @@ function initDragDrop() {
     if (!file) return;
     const ext = '.' + file.name.split('.').pop().toLowerCase();
     if (!validExts.includes(ext)) {
-      showToast(i18n('json.common.drop_unsupported') || '仅支持 JSON/TXT/YAML/XML 等文本文件', 'error');
+      showToast(i18n('json.common.drop_unsupported') || 'Only JSON/TXT/YAML/XML text files are supported', 'error');
       return;
     }
     const reader = new FileReader();
@@ -2246,9 +2286,9 @@ function showErrorPanel(err, raw) {
   if (!panel) return;
 
   const analysis = analyzeJsonError(err, raw || '');
-  if (titleEl) titleEl.textContent = '❌ JSON 格式错误';
+  if (titleEl) titleEl.textContent = '❌ JSON Format Error';
   if (bodyEl) bodyEl.innerHTML = `
-    <div class="jt-error-location">📍 第 <strong>${analysis.line}</strong> 行，第 <strong>${analysis.col}</strong> 列</div>
+    <div class="jt-error-location">📍 Line <strong>${analysis.line}</strong>, Column <strong>${analysis.col}</strong></div>
     <div class="jt-error-message">${escapeHtml(analysis.message)}</div>
     ${analysis.suggestion ? `<div class="jt-error-suggestion">💡 ${escapeHtml(analysis.suggestion)}</div>` : ''}
     ${analysis.context ? `<pre class="jt-error-context">${escapeHtml(analysis.context)}</pre>` : ''}
@@ -2295,12 +2335,12 @@ function analyzeJsonError(err, raw) {
   const context = lines.slice(Math.max(0, line - 2), line + 1).join('\n');
   const near    = lines[line - 1]?.substring(0, col + 5) || '';
   let suggestion = '';
-  if (/,\s*[}\]]/.test(raw))           suggestion = '移除尾随逗号（最后一个元素后不能有逗号）';
-  else if (/[^\\]'/.test(near))        suggestion = '使用双引号 " 代替单引号 \'';
-  else if (/:\s*undefined/.test(near)) suggestion = 'undefined 不是合法 JSON 值，请使用 null';
-  else if (/\/\//.test(raw))           suggestion = 'JSON 不支持注释，请使用 /json/jsonc 工具先处理';
-  else if (/{[^}]*$/.test(raw))        suggestion = '对象括号 { 未闭合';
-  else if (/\[[^\]]*$/.test(raw))      suggestion = '数组括号 [ 未闭合';
+  if (/,\s*[}\]]/.test(raw))           suggestion = 'Remove trailing comma (no comma after last element)';
+  else if (/[^\\]'/.test(near))        suggestion = 'Use double quotes " instead of single quotes \'';
+  else if (/:\s*undefined/.test(near)) suggestion = 'undefined is not valid JSON, use null';
+  else if (/\/\//.test(raw))           suggestion = 'JSON does not support comments, use /json/jsonc tool first';
+  else if (/{[^}]*$/.test(raw))        suggestion = 'Object brace { is not closed';
+  else if (/\[[^\]]*$/.test(raw))      suggestion = 'Array bracket [ is not closed';
   return { line, col, message: msg, suggestion, context };
 }
 
@@ -2397,7 +2437,7 @@ function buildJSONTable(data) {
   }
 
   if (arr.length > 100) {
-    tbody += '<tr><td colspan="' + keys.length + '" style="text-align:center;color:var(--jt-muted);">... and ' + (arr.length - 100) + ' more rows (显示前100行)</td></tr>';
+    tbody += '<tr><td colspan="' + keys.length + '" style="text-align:center;color:var(--jt-muted);">... and ' + (arr.length - 100) + ' more rows</td></tr>';
   }
 
   return '<div class="jt-table-wrap"><table class="jt-table"><thead>' + thead + '</thead><tbody>' + tbody + '</tbody></table></div>';
@@ -2629,18 +2669,18 @@ function initKeyboardShortcuts() {
 
 function showKeyboardHelp() {
   const shortcuts = [
-    { key: 'Ctrl/Cmd + Enter', action: i18n('json.shortcuts.run') || '执行' },
-    { key: 'Ctrl/Cmd + S', action: i18n('json.shortcuts.download') || '下载' },
-    { key: 'Ctrl/Cmd + Shift + C', action: i18n('json.shortcuts.copy') || '复制输出' },
-    { key: 'Ctrl/Cmd + Shift + F', action: i18n('json.shortcuts.format') || '格式化' },
-    { key: 'Ctrl/Cmd + Shift + M', action: i18n('json.shortcuts.minify') || '压缩' },
-    { key: 'Ctrl/Cmd + Shift + X', action: i18n('json.shortcuts.clear') || '清空输入' },
-    { key: 'Ctrl/Cmd + Shift + D', action: i18n('json.shortcuts.theme') || '切换主题' },
-    { key: 'Ctrl/Cmd + K', action: i18n('json.shortcuts.selector') || '工具选择器' },
-    { key: 'F11', action: i18n('json.shortcuts.fullscreen') || '全屏' },
-    { key: 'F8', action: i18n('json.shortcuts.jump_error') || '跳转到错误' },
-    { key: 'Tab', action: i18n('json.shortcuts.switch_focus') || '切换输入/输出' },
-    { key: 'Escape', action: i18n('json.shortcuts.close') || '关闭' },
+    { key: 'Ctrl/Cmd + Enter', action: i18n('json.shortcuts.run') || 'Run' },
+    { key: 'Ctrl/Cmd + S', action: i18n('json.shortcuts.download') || 'Download' },
+    { key: 'Ctrl/Cmd + Shift + C', action: i18n('json.shortcuts.copy') || 'Copy output' },
+    { key: 'Ctrl/Cmd + Shift + F', action: i18n('json.shortcuts.format') || 'Format' },
+    { key: 'Ctrl/Cmd + Shift + M', action: i18n('json.shortcuts.minify') || 'Minify' },
+    { key: 'Ctrl/Cmd + Shift + X', action: i18n('json.shortcuts.clear') || 'Clear input' },
+    { key: 'Ctrl/Cmd + Shift + D', action: i18n('json.shortcuts.theme') || 'Toggle theme' },
+    { key: 'Ctrl/Cmd + K', action: i18n('json.shortcuts.selector') || 'Tool selector' },
+    { key: 'F11', action: i18n('json.shortcuts.fullscreen') || 'Fullscreen' },
+    { key: 'F8', action: i18n('json.shortcuts.jump_error') || 'Jump to error' },
+    { key: 'Tab', action: i18n('json.shortcuts.switch_focus') || 'Switch focus' },
+    { key: 'Escape', action: i18n('json.shortcuts.close') || 'Close' },
   ];
   // Build overlay HTML instead of alert
   let overlay = document.getElementById('jtShortcutsOverlay');
@@ -2834,14 +2874,14 @@ function restoreHistory(index) {
     inputEditor.setValue(item.input);
     clearErrorPanel();
   }
-  showToast(i18n('json.history.restore') || '已恢复', 'success');
+  showToast(i18n('json.history.restore') || 'Restored', 'success');
 }
 
 function clearHistory() {
   if (!confirm(i18n('json.history.clear_confirm'))) return;
   saveHistory([]);
   renderHistory();
-  showToast(i18n('json.history.cleared') || '已清空', 'info');
+  showToast(i18n('json.history.cleared') || 'History cleared', 'info');
 }
 
 function deleteHistoryItem(index) {
@@ -2857,7 +2897,7 @@ function formatHistoryTime(ts) {
   const d = new Date(ts);
   const now = new Date();
   const diff = now - d;
-  if (diff < 60000) return i18n('json.history.time.just_now') || '刚刚';
+  if (diff < 60000) return i18n('json.history.time.just_now') || 'just now';
   if (diff < 3600000) return Math.floor(diff/60000) + i18n('json.history.time.minutes');
   if (diff < 86400000) return Math.floor(diff/3600000) + i18n('json.history.time.hours');
   if (diff < 604800000) return Math.floor(diff/86400000) + i18n('json.history.time.days');
@@ -2936,7 +2976,7 @@ function filterToolDropdown(query) {
         noResults.className = 'jt-tool-dropdown__no-results';
         dropdown.appendChild(noResults);
       }
-      noResults.textContent = i18n('json.selector.no_results') || '没有找到匹配的工具';
+      noResults.textContent = i18n('json.selector.no_results') || 'No matching tools found';
       noResults.style.display = '';
     } else if (noResults) {
       noResults.style.display = 'none';
@@ -2993,7 +3033,7 @@ function selectTool(toolKey) {
   if (input && input.length <= maxHash) {
     hash = '#' + encodeURIComponent(input);
   } else if (input && input.length > maxHash) {
-    showToast(i18n('json.selector.input_too_long') || '输入过长', 'info');
+    showToast(i18n('json.selector.input_too_long') || 'Input too long', 'info');
   }
   // Navigate
   const lang = window.JT_LANG || 'en';
@@ -3020,7 +3060,7 @@ function showOutputTreeView() {
   // Render tree from output
   const output = getOutput();
   if (!output || !output.trim()) {
-    showToast(i18n('json.common.error.empty') || '请先执行操作生成输出', 'info');
+    showToast(i18n('json.common.error.empty') || 'Please enter some content first', 'info');
     return false;
   }
   try {
@@ -3030,12 +3070,12 @@ function showOutputTreeView() {
     const toolbar = document.createElement('div');
     toolbar.className = 'jt-tree-toolbar';
     toolbar.innerHTML =
-      '<input type="text" id="treeSearchInput" placeholder="' + (i18n('json.tree.search') || '搜索...') + '" class="jt-options-input jt-options-input--sm" style="width:140px" oninput="filterTree(this.value)">' +
+      '<input type="text" id="treeSearchInput" placeholder="' + (i18n('json.tree.search') || 'Search...') + '" class="jt-options-input jt-options-input--sm" style="width:140px" oninput="filterTree(this.value)">' +
       '<label style="display:flex;align-items:center;gap:4px;font-size:0.75rem;color:var(--jt-muted)">' +
-        (i18n('json.tree.depth') || '深度') +
+        (i18n('json.tree.depth') || 'Depth') +
         '<select id="treeDepthSelect" class="jt-options-select jt-options-select--sm" onchange="setTreeDepth(this.value)">' +
           '<option value="1">1</option><option value="2">2</option><option value="3" selected>3</option>' +
-          '<option value="4">4</option><option value="5">5</option><option value="99">' + (i18n('json.tree.all') || '全部') + '</option>' +
+          '<option value="4">4</option><option value="5">5</option><option value="99">' + (i18n('json.tree.all') || 'All') + '</option>' +
         '</select>' +
       '</label>';
     treeDiv.appendChild(toolbar);
@@ -3044,7 +3084,7 @@ function showOutputTreeView() {
     content.appendChild(renderOutputTreeNode(parsed, 'root', '$', 0));
     treeDiv.appendChild(content);
   } catch(e) {
-    treeDiv.innerHTML = '<div class="jt-history-empty">' + (i18n('json.output.tree_parse_error') || '无法渲染树视图：JSON 解析失败') + '</div>';
+    treeDiv.innerHTML = '<div class="jt-history-empty">' + (i18n('json.output.tree_parse_error') || 'Cannot render tree view: JSON parse failed') + '</div>';
   }
   editorDiv.style.display = 'none';
   treeDiv.classList.add('visible');
@@ -3126,9 +3166,9 @@ function renderOutputTreeNode(value, key, path, depth) {
     leaf.className = 'jt-tree-leaf';
     leaf.innerHTML =
       '<span class="jt-tree-icon">' + typeIcon + '</span>' +
-      '<span class="jt-tree-key" onclick="copyOutputTreePath(\'' + escapeHtml(path) + '\')" title="' + (i18n('json.tree.copy_path') || '复制路径') + '">' + escapeHtml(String(key)) + '</span>' +
+      '<span class="jt-tree-key" onclick="copyOutputTreePath(\'' + escapeHtml(path) + '\')" title="' + (i18n('json.tree.copy_path') || 'Copy path') + '">' + escapeHtml(String(key)) + '</span>' +
       '<span class="jt-tree-sep">: </span>' + renderOutputTreeValue(value) +
-      '<button class="jt-tree-copy-btn" onclick="event.stopPropagation();copyTreeValue(\'' + escapeHtml(JSON.stringify(value)) + '\')" title="' + (i18n('json.tree.copy_value') || '复制值') + '" style="margin-left:4px;opacity:0.5;border:none;background:none;cursor:pointer;font-size:0.6875rem">📋</button>';
+      '<button class="jt-tree-copy-btn" onclick="event.stopPropagation();copyTreeValue(\'' + escapeHtml(JSON.stringify(value)) + '\')" title="' + (i18n('json.tree.copy_value') || 'Copy value') + '" style="margin-left:4px;opacity:0.5;border:none;background:none;cursor:pointer;font-size:0.6875rem">📋</button>';
     leaf.addEventListener('click', function() { _locateInputByPath(path); });
     return wrap;
   }
@@ -3140,7 +3180,7 @@ function renderOutputTreeNode(value, key, path, depth) {
   header.innerHTML =
     '<button class="jt-tree-toggle" onclick="toggleOutputTreeNode(this)">' + (open ? '▼' : '▶') + '</button>' +
     '<span class="jt-tree-icon">' + typeIcon + '</span>' +
-    '<span class="jt-tree-key" onclick="copyOutputTreePath(\'' + escapeHtml(path) + '\')" title="' + (i18n('json.tree.copy_path') || '复制路径') + '">' + escapeHtml(String(key)) + '</span>' +
+    '<span class="jt-tree-key" onclick="copyOutputTreePath(\'' + escapeHtml(path) + '\')" title="' + (i18n('json.tree.copy_path') || 'Copy path') + '">' + escapeHtml(String(key)) + '</span>' +
     '<span class="jt-tree-sep">: </span>' +
     '<span class="jt-tree-bracket">' + (isArr ? '[' : '{') + '</span>' +
     '<span class="jt-tree-count">' + keys.length + '</span>' +
@@ -3171,9 +3211,9 @@ function copyTreeValue(jsonStr) {
   try {
     const val = JSON.parse(jsonStr);
     const text = typeof val === 'object' ? JSON.stringify(val, null, 2) : String(val);
-    navigator.clipboard.writeText(text).then(() => showToast(i18n('json.tree.copied') || '已复制', 'success'));
+    navigator.clipboard.writeText(text).then(() => showToast(i18n('json.tree.copied') || 'Copied', 'success'));
   } catch(e) {
-    navigator.clipboard.writeText(jsonStr).then(() => showToast(i18n('json.tree.copied') || '已复制', 'success'));
+    navigator.clipboard.writeText(jsonStr).then(() => showToast(i18n('json.tree.copied') || 'Copied', 'success'));
   }
 }
 
@@ -3297,7 +3337,7 @@ function collapseAllOutputTree() {
 }
 
 function copyOutputTreePath(path) {
-  navigator.clipboard.writeText(path).then(() => showToast((i18n('json.output.copy_path') || '已复制') + '：' + path, 'success'));
+  navigator.clipboard.writeText(path).then(() => showToast((i18n('json.output.copy_path') || 'Copied') + '：' + path, 'success'));
 }
 
 function _locateInputByPath(jsonPath) {
@@ -3526,7 +3566,7 @@ function createDefaultTab() {
 
 function newTab() {
   if (tabs.length >= MAX_TABS) {
-    showToast(i18n('json.tabs.max_reached') || '最多支持5个标签页', 'warning');
+    showToast(i18n('json.tabs.max_reached') || 'Maximum 5 tabs allowed', 'warning');
     return;
   }
 
@@ -3554,7 +3594,7 @@ function closeTab(index) {
 
   // Check for dirty state
   if (tab.isDirty) {
-    const msg = i18n('json.tabs.close_dirty_confirm') || '此标签包含未保存内容，确定关闭？';
+    const msg = i18n('json.tabs.close_dirty_confirm') || 'This tab contains unsaved content. Close anyway?';
     if (!confirm(msg)) {
       return;
     }
@@ -3623,7 +3663,7 @@ function renderTabs() {
       <div class="jt-tab ${isActive ? 'active' : ''}" data-tab="${tab.id}" onclick="switchTab(${tab.id})">
         <span class="jt-tab-title">${escapeHtml(tab.title)}</span>
         ${tab.isDirty ? '<span class="jt-tab-dirty">●</span>' : ''}
-        <button class="jt-tab-close" onclick="event.stopPropagation(); closeTab(${index})" style="${closeStyle}" title="关闭">×</button>
+        <button class="jt-tab-close" onclick="event.stopPropagation(); closeTab(${index})" style="${closeStyle}" title="Close">×</button>
       </div>
     `;
   }).join('');

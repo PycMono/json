@@ -19,7 +19,7 @@
   "whois.hero.cta_guide": "WHOIS Guide",
 
   "whois.input.label": "Enter domain name",
-  "whois.input.placeholder": "e.g. example.com, toolboxnova.com, openai.com",
+  "whois.input.placeholder": "e.g. example.com, ycjson.top, openai.com",
   "whois.input.btn_lookup": "Look up",
   "whois.input.btn_clear": "Clear",
   "whois.input.btn_example": "Try example",
@@ -28,7 +28,7 @@
   "whois.examples.google": "google.com",
   "whois.examples.github": "github.com",
   "whois.examples.cloudflare": "cloudflare.com",
-  "whois.examples.toolboxnova": "toolboxnova.com",
+  "whois.examples.toolboxnova": "ycjson.top",
   "whois.examples.openai": "openai.com",
 
   "whois.error.invalid_domain": "Unable to recognize this domain. Please enter a valid domain name, e.g. example.com.",

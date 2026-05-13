@@ -62,7 +62,9 @@
   /* ── Init on DOM ready ── */
   function init() {
     var saved = localStorage.getItem('tbn-theme');
-    if (!saved || THEMES.indexOf(saved) < 0) saved = 'light';
+    if (!saved || THEMES.indexOf(saved) < 0) {
+      saved = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+    }
     // Apply without closing menu (init only)
     document.documentElement.setAttribute('data-theme', saved);
     localStorage.setItem('tbn-theme', saved);

@@ -347,7 +347,7 @@ func (s *AuthService) GetSessionCookieName() string {
 func (s *AuthService) callbackURL(provider string) string {
 	base := s.cfg.SiteURL
 	if base == "" {
-		base = "https://toolboxnova.com"
+		base = "https://ycjson.top"
 	}
 	return fmt.Sprintf("%s/auth/%s/callback", base, provider)
 }

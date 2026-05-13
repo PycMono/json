@@ -11,7 +11,7 @@
     "storage"
   ],
   "host_permissions": [
-    "https://toolboxnova.com/*"
+    "https://ycjson.top/*"
   ],
   "background": {
     "service_worker": "background.js"

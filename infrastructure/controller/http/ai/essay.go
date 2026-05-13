@@ -13,17 +13,17 @@ func EssayPage(c *gin.Context) {
 	t := render.GetT(c)
 	lang := render.GetLang(c)
 
-	canonical := "https://toolboxnova.com/ai/essay"
+	canonical := "https://ycjson.top/ai/essay"
 	if lang != "en" && lang != "" {
-		canonical = fmt.Sprintf("https://toolboxnova.com/ai/essay?lang=%s", lang)
+		canonical = fmt.Sprintf("https://ycjson.top/ai/essay?lang=%s", lang)
 	}
 
 	hreflang := map[string]string{
-		"en":  "https://toolboxnova.com/ai/essay?lang=en",
-		"zh":  "https://toolboxnova.com/ai/essay?lang=zh",
-		"ja":  "https://toolboxnova.com/ai/essay?lang=ja",
-		"ko":  "https://toolboxnova.com/ai/essay?lang=ko",
-		"spa": "https://toolboxnova.com/ai/essay?lang=spa",
+		"en":  "https://ycjson.top/ai/essay?lang=en",
+		"zh":  "https://ycjson.top/ai/essay?lang=zh",
+		"ja":  "https://ycjson.top/ai/essay?lang=ja",
+		"ko":  "https://ycjson.top/ai/essay?lang=ko",
+		"spa": "https://ycjson.top/ai/essay?lang=spa",
 	}
 
 	data := render.BaseData(c, gin.H{
@@ -35,7 +35,7 @@ func EssayPage(c *gin.Context) {
 		"Canonical":      canonical,
 		"HreflangMap":    hreflang,
 		"SEOArticle":     template.HTML(t("essay.seo.article")),
-		"OGImage":        "https://toolboxnova.com/static/img/og-essay.png",
+		"OGImage":        "https://ycjson.top/static/img/og-essay.png",
 		"FreeWordLimit":  15000,
 		"CaptchaEnabled": false,
 		"CaptchaSiteKey": "",

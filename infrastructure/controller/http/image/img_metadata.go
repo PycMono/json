@@ -27,9 +27,9 @@ func ImgMetadataGuidePage(c *gin.Context) {
 		"Title":       t("img.metadata.guide.seo.title"),
 		"Description": t("img.metadata.guide.seo.desc"),
 		"Keywords":    "image metadata guide,EXIF explained,GPS metadata privacy,remove EXIF data,IPTC vs XMP,image privacy check,photo metadata tutorial,what is EXIF data",
-		"Canonical":   "https://toolboxnova.com/img/metadata-guide",
-		"HreflangZH":  "https://toolboxnova.com/img/metadata-guide?lang=zh",
-		"HreflangEN":  "https://toolboxnova.com/img/metadata-guide?lang=en",
+		"Canonical":   "https://ycjson.top/img/metadata-guide",
+		"HreflangZH":  "https://ycjson.top/img/metadata-guide?lang=zh",
+		"HreflangEN":  "https://ycjson.top/img/metadata-guide?lang=en",
 		"PageClass":   "page-img-metadata-guide",
 	})
 	render.Render(c, "img/img-metadata-guide.html", data)

@@ -241,7 +241,7 @@ func TestCallbackURL_Fallback(t *testing.T) {
 		StateTTLMinutes: 10,
 	})
 
-	expected := "https://toolboxnova.com/auth/google/callback"
+	expected := "https://ycjson.top/auth/google/callback"
 	got := svc.callbackURL("google")
 	if got != expected {
 		t.Errorf("expected %s, got %s", expected, got)

@@ -1,17 +1,17 @@
 {{ template "base" . }}
 
 {{ define "extraHead" }}
-<link rel="canonical" href="https://toolboxnova.com/img/to-pdf-guide">
-<link rel="alternate" hreflang="zh" href="https://toolboxnova.com/img/to-pdf-guide?lang=zh">
-<link rel="alternate" hreflang="en" href="https://toolboxnova.com/img/to-pdf-guide?lang=en">
-<link rel="alternate" hreflang="ja" href="https://toolboxnova.com/img/to-pdf-guide?lang=ja">
-<link rel="alternate" hreflang="ko" href="https://toolboxnova.com/img/to-pdf-guide?lang=ko">
-<link rel="alternate" hreflang="spa" href="https://toolboxnova.com/img/to-pdf-guide?lang=spa">
-<link rel="alternate" hreflang="x-default" href="https://toolboxnova.com/img/to-pdf-guide">
+<link rel="canonical" href="https://ycjson.top/img/to-pdf-guide">
+<link rel="alternate" hreflang="zh" href="https://ycjson.top/img/to-pdf-guide?lang=zh">
+<link rel="alternate" hreflang="en" href="https://ycjson.top/img/to-pdf-guide?lang=en">
+<link rel="alternate" hreflang="ja" href="https://ycjson.top/img/to-pdf-guide?lang=ja">
+<link rel="alternate" hreflang="ko" href="https://ycjson.top/img/to-pdf-guide?lang=ko">
+<link rel="alternate" hreflang="spa" href="https://ycjson.top/img/to-pdf-guide?lang=spa">
+<link rel="alternate" hreflang="x-default" href="https://ycjson.top/img/to-pdf-guide">
 <link rel="stylesheet" href="/static/css/img-toolbox.css?v={{ .AssetVer }}">
 <link rel="stylesheet" href="/static/css/img-tabs.css?v={{ .AssetVer }}">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{{- range $i,$f := .FAQs }}{{if $i}},{{end}}{"@type":"Question","name":{{ $f.Q | html }},"acceptedAnswer":{"@type":"Answer","text":{{ $f.A | html }}}}{{- end}}]}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"HowTo","name":"{{ call .T "guide.to_pdf.howto.name" }}","description":"{{ call .T "guide.to_pdf.howto.desc" }}","step":[{"@type":"HowToStep","name":"{{ call .T "guide.to_pdf.howto.s1.name" }}","text":"{{ call .T "guide.to_pdf.howto.s1.text" }}","url":"https://toolboxnova.com/img/to-pdf-guide#step1"},{"@type":"HowToStep","name":"{{ call .T "guide.to_pdf.howto.s2.name" }}","text":"{{ call .T "guide.to_pdf.howto.s2.text" }}","url":"https://toolboxnova.com/img/to-pdf-guide#step2"},{"@type":"HowToStep","name":"{{ call .T "guide.to_pdf.howto.s3.name" }}","text":"{{ call .T "guide.to_pdf.howto.s3.text" }}","url":"https://toolboxnova.com/img/to-pdf-guide#step3"},{"@type":"HowToStep","name":"{{ call .T "guide.to_pdf.howto.s4.name" }}","text":"{{ call .T "guide.to_pdf.howto.s4.text" }}","url":"https://toolboxnova.com/img/to-pdf-guide#step4"}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"HowTo","name":"{{ call .T "guide.to_pdf.howto.name" }}","description":"{{ call .T "guide.to_pdf.howto.desc" }}","step":[{"@type":"HowToStep","name":"{{ call .T "guide.to_pdf.howto.s1.name" }}","text":"{{ call .T "guide.to_pdf.howto.s1.text" }}","url":"https://ycjson.top/img/to-pdf-guide#step1"},{"@type":"HowToStep","name":"{{ call .T "guide.to_pdf.howto.s2.name" }}","text":"{{ call .T "guide.to_pdf.howto.s2.text" }}","url":"https://ycjson.top/img/to-pdf-guide#step2"},{"@type":"HowToStep","name":"{{ call .T "guide.to_pdf.howto.s3.name" }}","text":"{{ call .T "guide.to_pdf.howto.s3.text" }}","url":"https://ycjson.top/img/to-pdf-guide#step3"},{"@type":"HowToStep","name":"{{ call .T "guide.to_pdf.howto.s4.name" }}","text":"{{ call .T "guide.to_pdf.howto.s4.text" }}","url":"https://ycjson.top/img/to-pdf-guide#step4"}]}</script>
 {{ end }}
 
 {{ define "content" }}

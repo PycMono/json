@@ -1,6 +1,6 @@
 -- Auto-generated from 5SIM guest prices.
 -- Generated at: 2026-04-10T08:58:14Z
-USE `toolboxnova`;
+USE `biz`;
 
 INSERT INTO `sms_country` (`name`, `display_name`, `iso2`, `flag`) VALUES
 ('afghanistan', 'Afghanistan', 'AF', '🇦🇫'),

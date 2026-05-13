@@ -19,17 +19,17 @@ func HumanizePage(c *gin.Context) {
 		activeTab = "home"
 	}
 
-	canonical := "https://toolboxnova.com/ai/humanize"
+	canonical := "https://ycjson.top/ai/humanize"
 	if lang != "en" && lang != "" {
-		canonical = fmt.Sprintf("https://toolboxnova.com/ai/humanize?lang=%s", lang)
+		canonical = fmt.Sprintf("https://ycjson.top/ai/humanize?lang=%s", lang)
 	}
 
 	hreflang := map[string]string{
-		"en":  "https://toolboxnova.com/ai/humanize?lang=en",
-		"zh":  "https://toolboxnova.com/ai/humanize?lang=zh",
-		"ja":  "https://toolboxnova.com/ai/humanize?lang=ja",
-		"ko":  "https://toolboxnova.com/ai/humanize?lang=ko",
-		"spa": "https://toolboxnova.com/ai/humanize?lang=spa",
+		"en":  "https://ycjson.top/ai/humanize?lang=en",
+		"zh":  "https://ycjson.top/ai/humanize?lang=zh",
+		"ja":  "https://ycjson.top/ai/humanize?lang=ja",
+		"ko":  "https://ycjson.top/ai/humanize?lang=ko",
+		"spa": "https://ycjson.top/ai/humanize?lang=spa",
 	}
 
 	data := render.BaseData(c, gin.H{
@@ -42,7 +42,7 @@ func HumanizePage(c *gin.Context) {
 		"Canonical":      canonical,
 		"HreflangMap":    hreflang,
 		"SEOArticle":     template.HTML(t("humanize.seo.article")),
-		"OGImage":        "https://toolboxnova.com/static/img/og-humanize.png",
+		"OGImage":        "https://ycjson.top/static/img/og-humanize.png",
 		"ActiveTab":      activeTab,
 		"FreeWordLimit":  15000,
 		"CaptchaEnabled": false,

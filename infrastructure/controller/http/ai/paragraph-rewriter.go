@@ -13,17 +13,17 @@ func ParagraphRewriterPage(c *gin.Context) {
 	t := render.GetT(c)
 	lang := render.GetLang(c)
 
-	canonical := "https://toolboxnova.com/ai/paragraph-rewriter"
+	canonical := "https://ycjson.top/ai/paragraph-rewriter"
 	if lang != "en" && lang != "" {
-		canonical = fmt.Sprintf("https://toolboxnova.com/ai/paragraph-rewriter?lang=%s", lang)
+		canonical = fmt.Sprintf("https://ycjson.top/ai/paragraph-rewriter?lang=%s", lang)
 	}
 
 	hreflang := map[string]string{
-		"en":  "https://toolboxnova.com/ai/paragraph-rewriter?lang=en",
-		"zh":  "https://toolboxnova.com/ai/paragraph-rewriter?lang=zh",
-		"ja":  "https://toolboxnova.com/ai/paragraph-rewriter?lang=ja",
-		"ko":  "https://toolboxnova.com/ai/paragraph-rewriter?lang=ko",
-		"spa": "https://toolboxnova.com/ai/paragraph-rewriter?lang=spa",
+		"en":  "https://ycjson.top/ai/paragraph-rewriter?lang=en",
+		"zh":  "https://ycjson.top/ai/paragraph-rewriter?lang=zh",
+		"ja":  "https://ycjson.top/ai/paragraph-rewriter?lang=ja",
+		"ko":  "https://ycjson.top/ai/paragraph-rewriter?lang=ko",
+		"spa": "https://ycjson.top/ai/paragraph-rewriter?lang=spa",
 	}
 
 	data := render.BaseData(c, gin.H{
@@ -35,7 +35,7 @@ func ParagraphRewriterPage(c *gin.Context) {
 		"Canonical":      canonical,
 		"HreflangMap":    hreflang,
 		"SEOArticle":     template.HTML(t("paragraph_rewriter.seo.article")),
-		"OGImage":        "https://toolboxnova.com/static/img/og-paragraph-rewriter.png",
+		"OGImage":        "https://ycjson.top/static/img/og-paragraph-rewriter.png",
 		"FreeWordLimit":  15000,
 		"CaptchaEnabled": false,
 		"CaptchaSiteKey": "",

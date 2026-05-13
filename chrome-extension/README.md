@@ -126,7 +126,7 @@ export CW_APP_ID="your_extension_id"
 
 JSON 工具（40+）、密码生成器、密码强度检测、图片压缩/缩放/Metadata、颜色工具、QR 码、Base 转换、大小写转换、正则测试、Markdown 预览、时间戳转换、浏览器指纹
 
-### B 类 — 需要调用 API（通过 toolboxnova.com 中转）
+### B 类 — 需要调用 API（通过 ycjson.top 中转）
 
 AI 内容检测、AI 人性化、AI 竞品分析、AI 抄袭检测、隐私账号检查
 

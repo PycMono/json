@@ -1,5 +1,5 @@
 'use strict';
-// json-home.js — search filter + recent tools
+// json-home.js — search filter + recent tools + category tabs
 
 function filterTools(query) {
   if (typeof gaTrackSiteSearch === 'function') gaTrackSiteSearch('json', query, 0);
@@ -7,10 +7,17 @@ function filterTools(query) {
   document.querySelectorAll('.jt-tool-card').forEach(card => {
     card.style.display = (!q || card.textContent.toLowerCase().includes(q)) ? '' : 'none';
   });
-  document.querySelectorAll('.jt-tool-group').forEach(group => {
-    const visible = [...group.querySelectorAll('.jt-tool-card')].some(c => c.style.display !== 'none');
-    group.style.display = visible ? '' : 'none';
+}
+
+function filterGroup(group) {
+  document.querySelectorAll('.jt-category-tab').forEach(tab => {
+    tab.classList.toggle('active', tab.dataset.group === group);
   });
+  document.querySelectorAll('.jt-tool-card').forEach(card => {
+    const cardGroup = card.dataset.group;
+    card.style.display = (group === 'all' || cardGroup === group) ? '' : 'none';
+  });
+  if (typeof gaTrackToolUse === 'function') gaTrackToolUse('json-filter-' + group);
 }
 
 function loadRecentTools() {

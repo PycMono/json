@@ -144,18 +144,18 @@ func SMSLandingPage(c *gin.Context) {
   "operatingSystem": "Web",
   "offers": { "@type": "Offer", "price": "0.01", "priceCurrency": "USD" },
   "description": "Virtual phone numbers for SMS verification. 180+ countries, 700+ services.",
-  "url": "https://toolboxnova.com/sms"
+  "url": "https://ycjson.top/sms"
 }`),
 	})
 
 	// 添加 hreflang 和 canonical
 	if lang == "zh" {
-		data["Canonical"] = "https://toolboxnova.com/sms?lang=zh"
+		data["Canonical"] = "https://ycjson.top/sms?lang=zh"
 	} else {
-		data["Canonical"] = "https://toolboxnova.com/sms"
+		data["Canonical"] = "https://ycjson.top/sms"
 	}
-	data["AlternateEN"] = "https://toolboxnova.com/sms?lang=en"
-	data["AlternateZH"] = "https://toolboxnova.com/sms?lang=zh"
+	data["AlternateEN"] = "https://ycjson.top/sms?lang=en"
+	data["AlternateZH"] = "https://ycjson.top/sms?lang=zh"
 
 	render.Render(c, "sms_landing.html", data)
 }

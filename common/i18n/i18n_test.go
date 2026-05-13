@@ -752,7 +752,6 @@ func TestIntegration_LocalesDir(t *testing.T) {
 		{"zh", "home.title", ""}, // just verify it's not the key itself
 		{"en", "nav.privacy", "Privacy Tools"},
 		{"en", "sms.name", "SMS Receiver"},
-		{"en", "qr.name", ""}, // just verify non-empty
 		{"en", "img.resize.hero.title", ""},
 	}
 	for _, tc := range cases {

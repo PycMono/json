@@ -1,17 +1,17 @@
 {{ template "base" . }}
 
 {{ define "extraHead" }}
-<link rel="canonical" href="https://toolboxnova.com/img/watermark-guide">
-<link rel="alternate" hreflang="zh" href="https://toolboxnova.com/img/watermark-guide?lang=zh">
-<link rel="alternate" hreflang="en" href="https://toolboxnova.com/img/watermark-guide?lang=en">
-<link rel="alternate" hreflang="ja" href="https://toolboxnova.com/img/watermark-guide?lang=ja">
-<link rel="alternate" hreflang="ko" href="https://toolboxnova.com/img/watermark-guide?lang=ko">
-<link rel="alternate" hreflang="spa" href="https://toolboxnova.com/img/watermark-guide?lang=spa">
-<link rel="alternate" hreflang="x-default" href="https://toolboxnova.com/img/watermark-guide">
+<link rel="canonical" href="https://ycjson.top/img/watermark-guide">
+<link rel="alternate" hreflang="zh" href="https://ycjson.top/img/watermark-guide?lang=zh">
+<link rel="alternate" hreflang="en" href="https://ycjson.top/img/watermark-guide?lang=en">
+<link rel="alternate" hreflang="ja" href="https://ycjson.top/img/watermark-guide?lang=ja">
+<link rel="alternate" hreflang="ko" href="https://ycjson.top/img/watermark-guide?lang=ko">
+<link rel="alternate" hreflang="spa" href="https://ycjson.top/img/watermark-guide?lang=spa">
+<link rel="alternate" hreflang="x-default" href="https://ycjson.top/img/watermark-guide">
 <link rel="stylesheet" href="/static/css/img-toolbox.css?v={{ .AssetVer }}">
 <link rel="stylesheet" href="/static/css/img-tabs.css?v={{ .AssetVer }}">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{{- range $i,$f := .FAQs }}{{if $i}},{{end}}{"@type":"Question","name":{{ $f.Q | html }},"acceptedAnswer":{"@type":"Answer","text":{{ $f.A | html }}}}{{- end}}]}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"HowTo","name":"{{ call .T "guide.watermark.howto.name" }}","description":"{{ call .T "guide.watermark.howto.desc" }}","step":[{"@type":"HowToStep","name":"{{ call .T "guide.watermark.howto.step1.name" }}","text":"{{ call .T "guide.watermark.howto.step1.text" }}","url":"https://toolboxnova.com/img/watermark-guide#step1"},{"@type":"HowToStep","name":"{{ call .T "guide.watermark.howto.step2.name" }}","text":"{{ call .T "guide.watermark.howto.step2.text" }}","url":"https://toolboxnova.com/img/watermark-guide#step2"},{"@type":"HowToStep","name":"{{ call .T "guide.watermark.howto.step3.name" }}","text":"{{ call .T "guide.watermark.howto.step3.text" }}","url":"https://toolboxnova.com/img/watermark-guide#step3"}]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"HowTo","name":"{{ call .T "guide.watermark.howto.name" }}","description":"{{ call .T "guide.watermark.howto.desc" }}","step":[{"@type":"HowToStep","name":"{{ call .T "guide.watermark.howto.step1.name" }}","text":"{{ call .T "guide.watermark.howto.step1.text" }}","url":"https://ycjson.top/img/watermark-guide#step1"},{"@type":"HowToStep","name":"{{ call .T "guide.watermark.howto.step2.name" }}","text":"{{ call .T "guide.watermark.howto.step2.text" }}","url":"https://ycjson.top/img/watermark-guide#step2"},{"@type":"HowToStep","name":"{{ call .T "guide.watermark.howto.step3.name" }}","text":"{{ call .T "guide.watermark.howto.step3.text" }}","url":"https://ycjson.top/img/watermark-guide#step3"}]}</script>
 {{ end }}
 
 {{ define "content" }}

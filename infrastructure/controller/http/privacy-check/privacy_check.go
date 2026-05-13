@@ -34,9 +34,9 @@ func PrivacyCheckPage(c *gin.Context) {
 	faqs := faq.PrivacyCheckFAQs(t)
 
 	// Canonical & hreflang
-	canonical := "https://toolboxnova.com/privacy/check"
+	canonical := "https://ycjson.top/privacy/check"
 	if lang != "en" && lang != "" {
-		canonical = fmt.Sprintf("https://toolboxnova.com/privacy/check?lang=%s", lang)
+		canonical = fmt.Sprintf("https://ycjson.top/privacy/check?lang=%s", lang)
 	}
 
 	data := render.BaseData(c, gin.H{
@@ -62,7 +62,7 @@ func PrivacyCheckPage(c *gin.Context) {
   "operatingSystem": "Web Browser",
   "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
   "description": "Check if your email and password have been compromised in data breaches.",
-  "url": "https://toolboxnova.com/privacy/check",
+  "url": "https://ycjson.top/privacy/check",
   "aggregateRating": {
     "@type": "AggregateRating",
     "ratingValue": "4.8",

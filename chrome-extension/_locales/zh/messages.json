@@ -25,7 +25,6 @@
   "toolColor": { "message": "颜色工具" },
   "toolImage": { "message": "图片工具" },
   "toolTimestamp": { "message": "时间戳" },
-  "toolQrcode": { "message": "二维码" },
   "toolAiDetect": { "message": "AI 检测" },
   "toolAiHumanize": { "message": "人性化" }
 }

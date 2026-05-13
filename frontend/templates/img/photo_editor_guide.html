@@ -1,20 +1,20 @@
 {{ template "base" . }}
 
 {{ define "extraHead" }}
-<link rel="canonical" href="https://toolboxnova.com/img/photo-editor-guide">
-<link rel="alternate" hreflang="zh" href="https://toolboxnova.com/img/photo-editor-guide?lang=zh">
-<link rel="alternate" hreflang="en" href="https://toolboxnova.com/img/photo-editor-guide?lang=en">
-<link rel="alternate" hreflang="ja" href="https://toolboxnova.com/img/photo-editor-guide?lang=ja">
-<link rel="alternate" hreflang="ko" href="https://toolboxnova.com/img/photo-editor-guide?lang=ko">
-<link rel="alternate" hreflang="spa" href="https://toolboxnova.com/img/photo-editor-guide?lang=spa">
-<link rel="alternate" hreflang="x-default" href="https://toolboxnova.com/img/photo-editor-guide">
+<link rel="canonical" href="https://ycjson.top/img/photo-editor-guide">
+<link rel="alternate" hreflang="zh" href="https://ycjson.top/img/photo-editor-guide?lang=zh">
+<link rel="alternate" hreflang="en" href="https://ycjson.top/img/photo-editor-guide?lang=en">
+<link rel="alternate" hreflang="ja" href="https://ycjson.top/img/photo-editor-guide?lang=ja">
+<link rel="alternate" hreflang="ko" href="https://ycjson.top/img/photo-editor-guide?lang=ko">
+<link rel="alternate" hreflang="spa" href="https://ycjson.top/img/photo-editor-guide?lang=spa">
+<link rel="alternate" hreflang="x-default" href="https://ycjson.top/img/photo-editor-guide">
 <link rel="stylesheet" href="/static/css/img-toolbox.css?v={{ .AssetVer }}">
 <link rel="stylesheet" href="/static/css/img-tabs.css?v={{ .AssetVer }}">
 <script type="application/ld+json">
 {"@context":"https://schema.org","@type":"FAQPage","mainEntity":[{{- range $i,$f := .FAQs }}{{if $i}},{{end}}{"@type":"Question","name":{{ $f.Q | html }},"acceptedAnswer":{"@type":"Answer","text":{{ $f.A | html }}}}{{- end}}]}
 </script>
 <script type="application/ld+json">
-{"@context":"https://schema.org","@type":"HowTo","name":"{{ call .T "guide.photo_editor.howto.title" }}","description":"{{ call .T "guide.photo_editor.howto.desc" }}","step":[{"@type":"HowToStep","name":"{{ call .T "guide.photo_editor.howto.s1.name" }}","text":"{{ call .T "guide.photo_editor.howto.s1.text" }}","url":"https://toolboxnova.com/img/photo-editor-guide#step-upload"},{"@type":"HowToStep","name":"{{ call .T "guide.photo_editor.howto.s2.name" }}","text":"{{ call .T "guide.photo_editor.howto.s2.text" }}","url":"https://toolboxnova.com/img/photo-editor-guide#step-adjust"},{"@type":"HowToStep","name":"{{ call .T "guide.photo_editor.howto.s3.name" }}","text":"{{ call .T "guide.photo_editor.howto.s3.text" }}","url":"https://toolboxnova.com/img/photo-editor-guide#step-filter"},{"@type":"HowToStep","name":"{{ call .T "guide.photo_editor.howto.s4.name" }}","text":"{{ call .T "guide.photo_editor.howto.s4.text" }}","url":"https://toolboxnova.com/img/photo-editor-guide#step-export"}]}
+{"@context":"https://schema.org","@type":"HowTo","name":"{{ call .T "guide.photo_editor.howto.title" }}","description":"{{ call .T "guide.photo_editor.howto.desc" }}","step":[{"@type":"HowToStep","name":"{{ call .T "guide.photo_editor.howto.s1.name" }}","text":"{{ call .T "guide.photo_editor.howto.s1.text" }}","url":"https://ycjson.top/img/photo-editor-guide#step-upload"},{"@type":"HowToStep","name":"{{ call .T "guide.photo_editor.howto.s2.name" }}","text":"{{ call .T "guide.photo_editor.howto.s2.text" }}","url":"https://ycjson.top/img/photo-editor-guide#step-adjust"},{"@type":"HowToStep","name":"{{ call .T "guide.photo_editor.howto.s3.name" }}","text":"{{ call .T "guide.photo_editor.howto.s3.text" }}","url":"https://ycjson.top/img/photo-editor-guide#step-filter"},{"@type":"HowToStep","name":"{{ call .T "guide.photo_editor.howto.s4.name" }}","text":"{{ call .T "guide.photo_editor.howto.s4.text" }}","url":"https://ycjson.top/img/photo-editor-guide#step-export"}]}
 </script>
 {{ end }}
 

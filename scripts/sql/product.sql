@@ -1,6 +1,6 @@
 -- Auto-generated from 5SIM guest prices.
 -- Generated at: 2026-04-10T08:58:14Z
-USE `toolboxnova`;
+USE `biz`;
 
 INSERT INTO `sms_product` (`name`, `display_name`, `category`, `icon`) VALUES
 ('101z', '101z', 'activation', '101z'),

@@ -5,7 +5,7 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <!-- Theme init: must run before CSS renders to avoid FOUC -->
-  <script>(function(){var t=localStorage.getItem('tbn-theme')||'light';document.documentElement.setAttribute('data-theme',t);})()</script>
+  <script>(function(){var t=localStorage.getItem('tbn-theme');if(!t)t=window.matchMedia&&window.matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light';document.documentElement.setAttribute('data-theme',t);})()</script>
 
   {{/* ── Consent Mode v2 defaults — must be FIRST script, before any GA/Ads ── */}}
   <script>
@@ -57,12 +57,12 @@
   <title>{{ .Title }}</title>
   <meta name="description" content="{{ .Description }}">
   <meta name="keywords" content="{{ .Keywords }}">
-  <link rel="canonical" href="https://json{{ .CurrentPath }}">
+  <link rel="canonical" href="https://ycjson.top{{ .CurrentPath }}">
   <meta property="og:title" content="{{ .Title }}">
   <meta property="og:description" content="{{ .Description }}">
-  <meta property="og:url" content="https://json{{ .CurrentPath }}">
+  <meta property="og:url" content="https://ycjson.top{{ .CurrentPath }}">
   <meta property="og:type" content="website">
-  <meta property="og:image" content="https://json/static/img/og.png">
+  <meta property="og:image" content="https://ycjson.top/static/img/og.png">
   <meta name="twitter:card" content="summary_large_image">
 
   {{/* ── Hreflang for multi-language SEO ── */}}
@@ -72,12 +72,12 @@
   {{ end }}
   <link rel="alternate" hreflang="x-default" href="{{ index .HreflangMap "en" }}">
   {{ else }}
-  <link rel="alternate" hreflang="en" href="https://json{{ .CurrentPath }}?lang=en">
-  <link rel="alternate" hreflang="zh" href="https://json{{ .CurrentPath }}?lang=zh">
-  <link rel="alternate" hreflang="ja" href="https://json{{ .CurrentPath }}?lang=ja">
-  <link rel="alternate" hreflang="ko" href="https://json{{ .CurrentPath }}?lang=ko">
-  <link rel="alternate" hreflang="es" href="https://json{{ .CurrentPath }}?lang=spa">
-  <link rel="alternate" hreflang="x-default" href="https://json{{ .CurrentPath }}">
+  <link rel="alternate" hreflang="en" href="https://ycjson.top{{ .CurrentPath }}?lang=en">
+  <link rel="alternate" hreflang="zh" href="https://ycjson.top{{ .CurrentPath }}?lang=zh">
+  <link rel="alternate" hreflang="ja" href="https://ycjson.top{{ .CurrentPath }}?lang=ja">
+  <link rel="alternate" hreflang="ko" href="https://ycjson.top{{ .CurrentPath }}?lang=ko">
+  <link rel="alternate" hreflang="es" href="https://ycjson.top{{ .CurrentPath }}?lang=spa">
+  <link rel="alternate" hreflang="x-default" href="https://ycjson.top{{ .CurrentPath }}">
   {{ end }}
 
   <link rel="icon" href="/static/img/favicon.svg" type="image/svg+xml">
@@ -114,7 +114,6 @@
         <li><a href="/dev/base64?lang={{ .Lang }}" data-ga="footer_base64" data-ga-category="footer">🔡 {{ call .T "nav.dev_base64" }}</a></li>
         <li><a href="/tools/timestamp?lang={{ .Lang }}" data-ga="footer_timestamp" data-ga-category="footer">🕐 {{ call .T "nav.dev_timestamp" }}</a></li>
         <li><a href="/tools/regex?lang={{ .Lang }}" data-ga="footer_regex" data-ga-category="footer">🔍 {{ call .T "nav.dev_regex" }}</a></li>
-        <li><a href="/media/qr?lang={{ .Lang }}" data-ga="footer_qr" data-ga-category="footer">▦ {{ call .T "qr.name" }}</a></li>
       </ul>
     </div>
     <div class="footer-col">
@@ -161,6 +160,7 @@ window.__GADS_CONV_SMS__ = '{{ .GoogleAdsConversionID }}' + '/' + '{{ .GoogleAds
 if(typeof PageEngagementTracker!=='undefined')PageEngagementTracker.init();
 </script>
 <script defer src="/static/js/main.js?v={{ .AssetVer }}"></script>
+<script defer src="/static/js/cmd-palette.js?v={{ .AssetVer }}"></script>
 {{ template "extraScript" . }}
 
 {{/* ── Cookie Consent Banner + Modal ── */}}

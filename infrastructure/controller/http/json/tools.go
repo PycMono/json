@@ -55,9 +55,9 @@ func JSONToolPage(c *gin.Context) {
 		"PresetJSON":  presetJSON,
 		"PresetURL":   presetURL,
 		"FAQs":        faq.JSONToolFAQs(lang),
-		"Canonical":   "https://toolboxnova.com/tools/json",
-		"HreflangZH":  "https://toolboxnova.com/tools/json?lang=zh",
-		"HreflangEN":  "https://toolboxnova.com/tools/json?lang=en",
+		"Canonical":   "https://ycjson.top/tools/json",
+		"HreflangZH":  "https://ycjson.top/tools/json?lang=zh",
+		"HreflangEN":  "https://ycjson.top/tools/json?lang=en",
 		"SEOArticle":  template.HTML(t("tools.json.seo.article")),
 	})
 	render.Render(c, "tools_json.html", data)
@@ -71,9 +71,9 @@ func RegexToolPage(c *gin.Context) {
 		"Title":       t("tools.regex.seo.title"),
 		"Description": t("tools.regex.seo.description"),
 		"Keywords":    t("tools.regex.seo.keywords"),
-		"Canonical":   "https://toolboxnova.com/tools/regex",
-		"HreflangZH":  "https://toolboxnova.com/tools/regex?lang=zh",
-		"HreflangEN":  "https://toolboxnova.com/tools/regex?lang=en",
+		"Canonical":   "https://ycjson.top/tools/regex",
+		"HreflangZH":  "https://ycjson.top/tools/regex?lang=zh",
+		"HreflangEN":  "https://ycjson.top/tools/regex?lang=en",
 		"PageClass":   "page-regex-tool",
 		"FAQs":        faq.JSONSubToolFAQs(lang, "regex"),
 		"SEOArticle":  template.HTML(t("tools.regex.seo.article")),
@@ -89,9 +89,9 @@ func MarkdownToolPage(c *gin.Context) {
 		"Title":       t("tools.markdown.seo.title"),
 		"Description": t("tools.markdown.seo.description"),
 		"Keywords":    t("tools.markdown.seo.keywords"),
-		"Canonical":   "https://toolboxnova.com/tools/markdown",
-		"HreflangZH":  "https://toolboxnova.com/tools/markdown?lang=zh",
-		"HreflangEN":  "https://toolboxnova.com/tools/markdown?lang=en",
+		"Canonical":   "https://ycjson.top/tools/markdown",
+		"HreflangZH":  "https://ycjson.top/tools/markdown?lang=zh",
+		"HreflangEN":  "https://ycjson.top/tools/markdown?lang=en",
 		"PageClass":   "page-markdown-tool",
 		"FAQs":        faq.JSONSubToolFAQs(lang, "markdown"),
 		"SEOArticle":  template.HTML(t("tools.markdown.seo.article")),
@@ -106,9 +106,9 @@ func TimestampToolPage(c *gin.Context) {
 		"Title":       t("tools.timestamp.seo.title"),
 		"Description": t("tools.timestamp.seo.description"),
 		"Keywords":    t("tools.timestamp.seo.keywords"),
-		"Canonical":   "https://toolboxnova.com/tools/timestamp",
-		"HreflangZH":  "https://toolboxnova.com/tools/timestamp?lang=zh",
-		"HreflangEN":  "https://toolboxnova.com/tools/timestamp?lang=en",
+		"Canonical":   "https://ycjson.top/tools/timestamp",
+		"HreflangZH":  "https://ycjson.top/tools/timestamp?lang=zh",
+		"HreflangEN":  "https://ycjson.top/tools/timestamp?lang=en",
 		"PageClass":   "page-timestamp-tool",
 		"SEOArticle":  template.HTML(t("tools.timestamp.seo.article")),
 	})
@@ -122,9 +122,9 @@ func TimestampGuidePage(c *gin.Context) {
 		"Title":       t("tools.timestamp-guide.seo.title"),
 		"Description": t("tools.timestamp-guide.seo.description"),
 		"Keywords":    t("tools.timestamp-guide.seo.keywords"),
-		"Canonical":   "https://toolboxnova.com/tools/timestamp-guide",
-		"HreflangZH":  "https://toolboxnova.com/tools/timestamp-guide?lang=zh",
-		"HreflangEN":  "https://toolboxnova.com/tools/timestamp-guide?lang=en",
+		"Canonical":   "https://ycjson.top/tools/timestamp-guide",
+		"HreflangZH":  "https://ycjson.top/tools/timestamp-guide?lang=zh",
+		"HreflangEN":  "https://ycjson.top/tools/timestamp-guide?lang=en",
 		"PageClass":   "page-timestamp-guide",
 	})
 	render.Render(c, "tools_timestamp_guide.html", data)
@@ -137,9 +137,9 @@ func BaseConverterPage(c *gin.Context) {
 		"Title":       t("tools.base.seo.title"),
 		"Description": t("tools.base.seo.description"),
 		"Keywords":    t("tools.base.seo.keywords"),
-		"Canonical":   "https://toolboxnova.com/tools/base-converter",
-		"HreflangZH":  "https://toolboxnova.com/tools/base-converter?lang=zh",
-		"HreflangEN":  "https://toolboxnova.com/tools/base-converter?lang=en",
+		"Canonical":   "https://ycjson.top/tools/base-converter",
+		"HreflangZH":  "https://ycjson.top/tools/base-converter?lang=zh",
+		"HreflangEN":  "https://ycjson.top/tools/base-converter?lang=en",
 		"PageClass":   "page-base-converter",
 		"SEOArticle":  template.HTML(t("tools.base.seo.article")),
 	})
@@ -153,9 +153,9 @@ func BaseConverterGuidePage(c *gin.Context) {
 		"Title":       t("tools.base-guide.seo.title"),
 		"Description": t("tools.base-guide.seo.description"),
 		"Keywords":    t("tools.base-guide.seo.keywords"),
-		"Canonical":   "https://toolboxnova.com/tools/base-converter-guide",
-		"HreflangZH":  "https://toolboxnova.com/tools/base-converter-guide?lang=zh",
-		"HreflangEN":  "https://toolboxnova.com/tools/base-converter-guide?lang=en",
+		"Canonical":   "https://ycjson.top/tools/base-converter-guide",
+		"HreflangZH":  "https://ycjson.top/tools/base-converter-guide?lang=zh",
+		"HreflangEN":  "https://ycjson.top/tools/base-converter-guide?lang=en",
 		"PageClass":   "page-base-converter-guide",
 	})
 	render.Render(c, "tools_base_guide.html", data)
@@ -169,9 +169,9 @@ func CaseConverterPage(c *gin.Context) {
 		"Title":       t("tools.case.seo.title"),
 		"Description": t("tools.case.seo.description"),
 		"Keywords":    t("tools.case.seo.keywords"),
-		"Canonical":   "https://toolboxnova.com/tools/case-converter",
-		"HreflangZH":  "https://toolboxnova.com/tools/case-converter?lang=zh",
-		"HreflangEN":  "https://toolboxnova.com/tools/case-converter?lang=en",
+		"Canonical":   "https://ycjson.top/tools/case-converter",
+		"HreflangZH":  "https://ycjson.top/tools/case-converter?lang=zh",
+		"HreflangEN":  "https://ycjson.top/tools/case-converter?lang=en",
 		"PageClass":   "page-case-converter",
 		"FAQs":        faq.JSONSubToolFAQs(lang, "case"),
 		"SEOArticle":  template.HTML(t("tools.case.seo.article")),
@@ -183,8 +183,8 @@ func CaseConverterPage(c *gin.Context) {
 func MediaToolsPage(c *gin.Context) {
 	data := render.BaseData(c, gin.H{
 		"Title":       "Free Online Media Tools - Image Compress, Video Convert, Color | json",
-		"Description": "Free online media tools. Compress images, convert video formats, color picker, unit converter, QR code generator and more.",
-		"Keywords":    "image compressor, video converter, color picker, qr code generator, unit converter",
+		"Description": "Free online media tools. Compress images, convert video formats, color picker, unit converter and more.",
+		"Keywords":    "image compressor, video converter, color picker, unit converter",
 		"PageClass":   "page-media-tools",
 	})
 	render.Render(c, "tools_media.html", data)
@@ -222,14 +222,3 @@ func UnitConverterPage(c *gin.Context) {
 	})
 	render.Render(c, "tools_media_unit.html", data)
 }
-
-//// QRGeneratorPage Renders the QR code generator tool
-//func QRGeneratorPage(c *gin.Context) {
-//	data := BaseData(c, gin.H{
-//		"Title":       "QR Code Generator Free - Custom QR Codes Online | json",
-//		"Description": "Generate free QR codes for URLs, text, WiFi, email, vCard. Customize colors, size, and add logo. Download PNG or SVG.",
-//		"Keywords":    "qr code generator, create qr code, custom qr code, qr code maker, generate qr code free",
-//		"PageClass":   "page-qr-generator",
-//	})
-//	Render(c, "tools_media_qr.html", data)
-//}

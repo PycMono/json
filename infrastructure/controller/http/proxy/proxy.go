@@ -30,7 +30,7 @@ func ProxyPage(c *gin.Context) {
 		"Keywords":    "free proxy, anonymous proxy, web proxy, hide IP, online proxy",
 		"PageClass":   "page-proxy",
 		"FAQs":        faqs,
-		"OGImage":     "https://toolboxnova.com/static/img/og-proxy.png",
+		"OGImage":     "https://ycjson.top/static/img/og-proxy.png",
 		"SEOArticle":  template.HTML(t("proxy.seo.article")),
 		"JSONLD": template.JS(`{
   "@context": "https://schema.org",
@@ -40,7 +40,7 @@ func ProxyPage(c *gin.Context) {
   "operatingSystem": "Web Browser",
   "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
   "description": "Browse the web anonymously with our free online proxy. Hide your IP address, no software required.",
-  "url": "https://toolboxnova.com/proxy",
+  "url": "https://ycjson.top/proxy",
   "aggregateRating": { "@type": "AggregateRating", "ratingValue": "4.8", "ratingCount": "15000", "bestRating": "5", "worstRating": "1" }
 }`),
 	})

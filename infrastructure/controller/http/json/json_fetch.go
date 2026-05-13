@@ -99,7 +99,7 @@ func JSONFetch(c *gin.Context) {
 	}
 
 	// 设置请求头，模拟浏览器请求
-	req.Header.Set("User-Agent", "json/2.0 (+https://toolboxnova.com)")
+	req.Header.Set("User-Agent", "json/2.0 (+https://ycjson.top)")
 	req.Header.Set("Accept", "application/json, text/plain, */*")
 	req.Header.Set("Accept-Encoding", "gzip")
 

@@ -114,7 +114,7 @@ func TempEmailPage(c *gin.Context) {
   "operatingSystem": "Web Browser",
   "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
   "description": "Free disposable temporary email address, auto-expires in 10 minutes.",
-  "url": "https://toolboxnova.com/temp-email",
+  "url": "https://ycjson.top/temp-email",
   "aggregateRating": {
     "@type": "AggregateRating",
     "ratingValue": "4.9",

@@ -32,10 +32,10 @@
 | App name | ToolBoxNova |
 | User support email | 你的邮箱 |
 | App logo | 可选，上传网站 logo |
-| Application home page | https://toolboxnova.com |
-| Application privacy policy link | https://toolboxnova.com/privacy-policy |
-| Application terms of service link | https://toolboxnova.com/terms-of-service |
-| Authorized domains | toolboxnova.com |
+| Application home page | https://ycjson.top |
+| Application privacy policy link | https://ycjson.top/privacy-policy |
+| Application terms of service link | https://ycjson.top/terms-of-service |
+| Authorized domains | ycjson.top |
 | Developer contact email | 你的邮箱 |
 
 点击「SAVE AND CONTINUE」。
@@ -65,13 +65,13 @@
 
 **Authorized JavaScript origins**（添加以下）：
 ```
-https://toolboxnova.com
+https://ycjson.top
 http://localhost:5009
 ```
 
 **Authorized redirect URIs**（添加以下）：
 ```
-https://toolboxnova.com/auth/google/callback
+https://ycjson.top/auth/google/callback
 http://localhost:5009/auth/google/callback
 ```
 
@@ -120,7 +120,7 @@ http://localhost:5009/auth/google/callback
 |------|-----|
 | Name | ToolBoxNova |
 | Supported account types | Accounts in any organizational directory and personal Microsoft accounts（即多租户） |
-| Redirect URI (optional) | Web: `https://toolboxnova.com/auth/microsoft/callback` |
+| Redirect URI (optional) | Web: `https://ycjson.top/auth/microsoft/callback` |
 
 点击「Register」。
 
@@ -167,8 +167,8 @@ http://localhost:5009/auth/google/callback
 
 | 平台 | 回调 URL |
 |------|---------|
-| Google | `https://toolboxnova.com/auth/google/callback` |
-| Microsoft | `https://toolboxnova.com/auth/microsoft/callback` |
+| Google | `https://ycjson.top/auth/google/callback` |
+| Microsoft | `https://ycjson.top/auth/microsoft/callback` |
 
 **本地开发时**，每个平台也应添加：
 ```
@@ -202,7 +202,7 @@ go run cmd/server/main.go
 
 ```json
 "oauth": {
-  "site_url": "https://toolboxnova.com",
+  "site_url": "https://ycjson.top",
   "session_cookie_name": "tbn_session",
   "session_ttl_hours": 720,
   "session_secure": true,

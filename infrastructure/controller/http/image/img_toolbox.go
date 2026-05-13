@@ -21,9 +21,9 @@ func ImgCropPage(c *gin.Context) {
 		"PageClass":   "page-img-crop",
 		"FAQs":        faqs,
 		"CurrentTool": "crop",
-		"Canonical":   "https://toolboxnova.com/img/crop",
-		"HreflangZH":  "https://toolboxnova.com/img/crop?lang=zh",
-		"HreflangEN":  "https://toolboxnova.com/img/crop?lang=en",
+		"Canonical":   "https://ycjson.top/img/crop",
+		"HreflangZH":  "https://ycjson.top/img/crop?lang=zh",
+		"HreflangEN":  "https://ycjson.top/img/crop?lang=en",
 	})
 	render.Render(c, "img/crop.html", data)
 }
@@ -37,9 +37,9 @@ func ImgCropGuidePage(c *gin.Context) {
 		"Keywords":    t("seo.crop_guide.keywords"),
 		"PageClass":   "page-img-crop-guide",
 		"CurrentTool": "crop",
-		"Canonical":   "https://toolboxnova.com/img/crop-guide",
-		"HreflangZH":  "https://toolboxnova.com/img/crop-guide?lang=zh",
-		"HreflangEN":  "https://toolboxnova.com/img/crop-guide?lang=en",
+		"Canonical":   "https://ycjson.top/img/crop-guide",
+		"HreflangZH":  "https://ycjson.top/img/crop-guide?lang=zh",
+		"HreflangEN":  "https://ycjson.top/img/crop-guide?lang=en",
 	})
 	render.Render(c, "img/crop-guide.html", data)
 }
@@ -58,12 +58,12 @@ func ImgConvertToJpgPage(c *gin.Context) {
 		"PageClass":   "page-img-to-jpg",
 		"FAQs":        faqs,
 		"CurrentTool": "to-jpg",
-		"Canonical":   "https://toolboxnova.com/img/convert-to-jpg",
-		"HreflangZH":  "https://toolboxnova.com/img/convert-to-jpg?lang=zh",
-		"HreflangEN":  "https://toolboxnova.com/img/convert-to-jpg?lang=en",
-		"HreflangJA":  "https://toolboxnova.com/img/convert-to-jpg?lang=ja",
-		"HreflangKO":  "https://toolboxnova.com/img/convert-to-jpg?lang=ko",
-		"HreflangSPA": "https://toolboxnova.com/img/convert-to-jpg?lang=spa",
+		"Canonical":   "https://ycjson.top/img/convert-to-jpg",
+		"HreflangZH":  "https://ycjson.top/img/convert-to-jpg?lang=zh",
+		"HreflangEN":  "https://ycjson.top/img/convert-to-jpg?lang=en",
+		"HreflangJA":  "https://ycjson.top/img/convert-to-jpg?lang=ja",
+		"HreflangKO":  "https://ycjson.top/img/convert-to-jpg?lang=ko",
+		"HreflangSPA": "https://ycjson.top/img/convert-to-jpg?lang=spa",
 	})
 	render.Render(c, "img/convert_to_jpg.html", data)
 }
@@ -77,9 +77,9 @@ func ImgConvertToJpgGuidePage(c *gin.Context) {
 		"Keywords":    t("seo.to_jpg_guide.keywords"),
 		"PageClass":   "page-img-to-jpg-guide",
 		"CurrentTool": "to-jpg",
-		"Canonical":   "https://toolboxnova.com/img/convert-to-jpg-guide",
-		"HreflangZH":  "https://toolboxnova.com/img/convert-to-jpg-guide?lang=zh",
-		"HreflangEN":  "https://toolboxnova.com/img/convert-to-jpg-guide?lang=en",
+		"Canonical":   "https://ycjson.top/img/convert-to-jpg-guide",
+		"HreflangZH":  "https://ycjson.top/img/convert-to-jpg-guide?lang=zh",
+		"HreflangEN":  "https://ycjson.top/img/convert-to-jpg-guide?lang=en",
 	})
 	render.Render(c, "img/convert_to_jpg_guide.html", data)
 }
@@ -98,12 +98,12 @@ func ImgJpgToImagePage(c *gin.Context) {
 		"PageClass":   "page-jpg-to-image",
 		"FAQs":        faqs,
 		"CurrentTool": "jpg-to",
-		"Canonical":   "https://toolboxnova.com/img/jpg-to-image",
-		"HreflangZH":  "https://toolboxnova.com/img/jpg-to-image?lang=zh",
-		"HreflangEN":  "https://toolboxnova.com/img/jpg-to-image?lang=en",
-		"HreflangJA":  "https://toolboxnova.com/img/jpg-to-image?lang=ja",
-		"HreflangKO":  "https://toolboxnova.com/img/jpg-to-image?lang=ko",
-		"HreflangSPA": "https://toolboxnova.com/img/jpg-to-image?lang=spa",
+		"Canonical":   "https://ycjson.top/img/jpg-to-image",
+		"HreflangZH":  "https://ycjson.top/img/jpg-to-image?lang=zh",
+		"HreflangEN":  "https://ycjson.top/img/jpg-to-image?lang=en",
+		"HreflangJA":  "https://ycjson.top/img/jpg-to-image?lang=ja",
+		"HreflangKO":  "https://ycjson.top/img/jpg-to-image?lang=ko",
+		"HreflangSPA": "https://ycjson.top/img/jpg-to-image?lang=spa",
 	})
 	render.Render(c, "img/jpg_to_image.html", data)
 }
@@ -122,12 +122,12 @@ func ImgJpgToImageGuidePage(c *gin.Context) {
 		"PageClass":   "page-jpg-to-image-guide",
 		"FAQs":        faqs,
 		"CurrentTool": "jpg-to",
-		"Canonical":   "https://toolboxnova.com/img/jpg-to-image-guide",
-		"HreflangZH":  "https://toolboxnova.com/img/jpg-to-image-guide?lang=zh",
-		"HreflangEN":  "https://toolboxnova.com/img/jpg-to-image-guide?lang=en",
-		"HreflangJA":  "https://toolboxnova.com/img/jpg-to-image-guide?lang=ja",
-		"HreflangKO":  "https://toolboxnova.com/img/jpg-to-image-guide?lang=ko",
-		"HreflangSPA": "https://toolboxnova.com/img/jpg-to-image-guide?lang=spa",
+		"Canonical":   "https://ycjson.top/img/jpg-to-image-guide",
+		"HreflangZH":  "https://ycjson.top/img/jpg-to-image-guide?lang=zh",
+		"HreflangEN":  "https://ycjson.top/img/jpg-to-image-guide?lang=en",
+		"HreflangJA":  "https://ycjson.top/img/jpg-to-image-guide?lang=ja",
+		"HreflangKO":  "https://ycjson.top/img/jpg-to-image-guide?lang=ko",
+		"HreflangSPA": "https://ycjson.top/img/jpg-to-image-guide?lang=spa",
 	})
 	render.Render(c, "img/jpg_to_image_guide.html", data)
 }
@@ -146,12 +146,12 @@ func ImgPhotoEditorPage(c *gin.Context) {
 		"PageClass":   "page-photo-editor",
 		"FAQs":        faqs,
 		"CurrentTool": "photo-editor",
-		"Canonical":   "https://toolboxnova.com/img/photo-editor",
-		"HreflangZH":  "https://toolboxnova.com/img/photo-editor?lang=zh",
-		"HreflangEN":  "https://toolboxnova.com/img/photo-editor?lang=en",
-		"HreflangJA":  "https://toolboxnova.com/img/photo-editor?lang=ja",
-		"HreflangKO":  "https://toolboxnova.com/img/photo-editor?lang=ko",
-		"HreflangSPA": "https://toolboxnova.com/img/photo-editor?lang=spa",
+		"Canonical":   "https://ycjson.top/img/photo-editor",
+		"HreflangZH":  "https://ycjson.top/img/photo-editor?lang=zh",
+		"HreflangEN":  "https://ycjson.top/img/photo-editor?lang=en",
+		"HreflangJA":  "https://ycjson.top/img/photo-editor?lang=ja",
+		"HreflangKO":  "https://ycjson.top/img/photo-editor?lang=ko",
+		"HreflangSPA": "https://ycjson.top/img/photo-editor?lang=spa",
 	})
 	render.Render(c, "img/photo_editor.html", data)
 }
@@ -170,12 +170,12 @@ func ImgPhotoEditorGuidePage(c *gin.Context) {
 		"PageClass":   "page-photo-editor-guide",
 		"FAQs":        faqs,
 		"CurrentTool": "photo-editor",
-		"Canonical":   "https://toolboxnova.com/img/photo-editor-guide",
-		"HreflangZH":  "https://toolboxnova.com/img/photo-editor-guide?lang=zh",
-		"HreflangEN":  "https://toolboxnova.com/img/photo-editor-guide?lang=en",
-		"HreflangJA":  "https://toolboxnova.com/img/photo-editor-guide?lang=ja",
-		"HreflangKO":  "https://toolboxnova.com/img/photo-editor-guide?lang=ko",
-		"HreflangSPA": "https://toolboxnova.com/img/photo-editor-guide?lang=spa",
+		"Canonical":   "https://ycjson.top/img/photo-editor-guide",
+		"HreflangZH":  "https://ycjson.top/img/photo-editor-guide?lang=zh",
+		"HreflangEN":  "https://ycjson.top/img/photo-editor-guide?lang=en",
+		"HreflangJA":  "https://ycjson.top/img/photo-editor-guide?lang=ja",
+		"HreflangKO":  "https://ycjson.top/img/photo-editor-guide?lang=ko",
+		"HreflangSPA": "https://ycjson.top/img/photo-editor-guide?lang=spa",
 	})
 	render.Render(c, "img/photo_editor_guide.html", data)
 }
@@ -194,12 +194,12 @@ func ImgRemoveBgPage(c *gin.Context) {
 		"PageClass":   "page-remove-bg",
 		"FAQs":        faqs,
 		"CurrentTool": "remove-bg",
-		"Canonical":   "https://toolboxnova.com/img/remove-bg",
-		"HreflangZH":  "https://toolboxnova.com/img/remove-bg?lang=zh",
-		"HreflangEN":  "https://toolboxnova.com/img/remove-bg?lang=en",
-		"HreflangJA":  "https://toolboxnova.com/img/remove-bg?lang=ja",
-		"HreflangKO":  "https://toolboxnova.com/img/remove-bg?lang=ko",
-		"HreflangSPA": "https://toolboxnova.com/img/remove-bg?lang=spa",
+		"Canonical":   "https://ycjson.top/img/remove-bg",
+		"HreflangZH":  "https://ycjson.top/img/remove-bg?lang=zh",
+		"HreflangEN":  "https://ycjson.top/img/remove-bg?lang=en",
+		"HreflangJA":  "https://ycjson.top/img/remove-bg?lang=ja",
+		"HreflangKO":  "https://ycjson.top/img/remove-bg?lang=ko",
+		"HreflangSPA": "https://ycjson.top/img/remove-bg?lang=spa",
 	})
 	render.Render(c, "img/remove_bg.html", data)
 }
@@ -218,12 +218,12 @@ func ImgRemoveBgGuidePage(c *gin.Context) {
 		"PageClass":   "page-remove-bg-guide",
 		"FAQs":        faqs,
 		"CurrentTool": "remove-bg",
-		"Canonical":   "https://toolboxnova.com/img/remove-bg-guide",
-		"HreflangZH":  "https://toolboxnova.com/img/remove-bg-guide?lang=zh",
-		"HreflangEN":  "https://toolboxnova.com/img/remove-bg-guide?lang=en",
-		"HreflangJA":  "https://toolboxnova.com/img/remove-bg-guide?lang=ja",
-		"HreflangKO":  "https://toolboxnova.com/img/remove-bg-guide?lang=ko",
-		"HreflangSPA": "https://toolboxnova.com/img/remove-bg-guide?lang=spa",
+		"Canonical":   "https://ycjson.top/img/remove-bg-guide",
+		"HreflangZH":  "https://ycjson.top/img/remove-bg-guide?lang=zh",
+		"HreflangEN":  "https://ycjson.top/img/remove-bg-guide?lang=en",
+		"HreflangJA":  "https://ycjson.top/img/remove-bg-guide?lang=ja",
+		"HreflangKO":  "https://ycjson.top/img/remove-bg-guide?lang=ko",
+		"HreflangSPA": "https://ycjson.top/img/remove-bg-guide?lang=spa",
 	})
 	render.Render(c, "img/remove_bg_guide.html", data)
 }
@@ -242,12 +242,12 @@ func ImgWatermarkPage(c *gin.Context) {
 		"PageClass":   "page-watermark",
 		"FAQs":        faqs,
 		"CurrentTool": "watermark",
-		"Canonical":   "https://toolboxnova.com/img/watermark",
-		"HreflangZH":  "https://toolboxnova.com/img/watermark?lang=zh",
-		"HreflangEN":  "https://toolboxnova.com/img/watermark?lang=en",
-		"HreflangJA":  "https://toolboxnova.com/img/watermark?lang=ja",
-		"HreflangKO":  "https://toolboxnova.com/img/watermark?lang=ko",
-		"HreflangSPA": "https://toolboxnova.com/img/watermark?lang=spa",
+		"Canonical":   "https://ycjson.top/img/watermark",
+		"HreflangZH":  "https://ycjson.top/img/watermark?lang=zh",
+		"HreflangEN":  "https://ycjson.top/img/watermark?lang=en",
+		"HreflangJA":  "https://ycjson.top/img/watermark?lang=ja",
+		"HreflangKO":  "https://ycjson.top/img/watermark?lang=ko",
+		"HreflangSPA": "https://ycjson.top/img/watermark?lang=spa",
 	})
 	render.Render(c, "img/watermark.html", data)
 }
@@ -266,12 +266,12 @@ func ImgWatermarkGuidePage(c *gin.Context) {
 		"PageClass":   "page-watermark-guide",
 		"FAQs":        faqs,
 		"CurrentTool": "watermark",
-		"Canonical":   "https://toolboxnova.com/img/watermark-guide",
-		"HreflangZH":  "https://toolboxnova.com/img/watermark-guide?lang=zh",
-		"HreflangEN":  "https://toolboxnova.com/img/watermark-guide?lang=en",
-		"HreflangJA":  "https://toolboxnova.com/img/watermark-guide?lang=ja",
-		"HreflangKO":  "https://toolboxnova.com/img/watermark-guide?lang=ko",
-		"HreflangSPA": "https://toolboxnova.com/img/watermark-guide?lang=spa",
+		"Canonical":   "https://ycjson.top/img/watermark-guide",
+		"HreflangZH":  "https://ycjson.top/img/watermark-guide?lang=zh",
+		"HreflangEN":  "https://ycjson.top/img/watermark-guide?lang=en",
+		"HreflangJA":  "https://ycjson.top/img/watermark-guide?lang=ja",
+		"HreflangKO":  "https://ycjson.top/img/watermark-guide?lang=ko",
+		"HreflangSPA": "https://ycjson.top/img/watermark-guide?lang=spa",
 	})
 	render.Render(c, "img/watermark_guide.html", data)
 }
@@ -290,12 +290,12 @@ func ImgRotatePage(c *gin.Context) {
 		"PageClass":   "page-rotate",
 		"FAQs":        faqs,
 		"CurrentTool": "rotate",
-		"Canonical":   "https://toolboxnova.com/img/rotate",
-		"HreflangZH":  "https://toolboxnova.com/img/rotate?lang=zh",
-		"HreflangEN":  "https://toolboxnova.com/img/rotate?lang=en",
-		"HreflangJA":  "https://toolboxnova.com/img/rotate?lang=ja",
-		"HreflangKO":  "https://toolboxnova.com/img/rotate?lang=ko",
-		"HreflangSPA": "https://toolboxnova.com/img/rotate?lang=spa",
+		"Canonical":   "https://ycjson.top/img/rotate",
+		"HreflangZH":  "https://ycjson.top/img/rotate?lang=zh",
+		"HreflangEN":  "https://ycjson.top/img/rotate?lang=en",
+		"HreflangJA":  "https://ycjson.top/img/rotate?lang=ja",
+		"HreflangKO":  "https://ycjson.top/img/rotate?lang=ko",
+		"HreflangSPA": "https://ycjson.top/img/rotate?lang=spa",
 	})
 	render.Render(c, "img/rotate.html", data)
 }
@@ -314,12 +314,12 @@ func ImgRotateGuidePage(c *gin.Context) {
 		"PageClass":   "page-rotate-guide",
 		"FAQs":        faqs,
 		"CurrentTool": "rotate",
-		"Canonical":   "https://toolboxnova.com/img/rotate-guide",
-		"HreflangZH":  "https://toolboxnova.com/img/rotate-guide?lang=zh",
-		"HreflangEN":  "https://toolboxnova.com/img/rotate-guide?lang=en",
-		"HreflangJA":  "https://toolboxnova.com/img/rotate-guide?lang=ja",
-		"HreflangKO":  "https://toolboxnova.com/img/rotate-guide?lang=ko",
-		"HreflangSPA": "https://toolboxnova.com/img/rotate-guide?lang=spa",
+		"Canonical":   "https://ycjson.top/img/rotate-guide",
+		"HreflangZH":  "https://ycjson.top/img/rotate-guide?lang=zh",
+		"HreflangEN":  "https://ycjson.top/img/rotate-guide?lang=en",
+		"HreflangJA":  "https://ycjson.top/img/rotate-guide?lang=ja",
+		"HreflangKO":  "https://ycjson.top/img/rotate-guide?lang=ko",
+		"HreflangSPA": "https://ycjson.top/img/rotate-guide?lang=spa",
 	})
 	render.Render(c, "img/rotate_guide.html", data)
 }
@@ -356,12 +356,12 @@ func ImgOCRGuidePage(c *gin.Context) {
 		"PageClass":   "page-img-ocr-guide",
 		"FAQs":        faqs,
 		"CurrentTool": "ocr",
-		"Canonical":   "https://toolboxnova.com/img/ocr-guide",
-		"HreflangZH":  "https://toolboxnova.com/img/ocr-guide?lang=zh",
-		"HreflangEN":  "https://toolboxnova.com/img/ocr-guide?lang=en",
-		"HreflangJA":  "https://toolboxnova.com/img/ocr-guide?lang=ja",
-		"HreflangKO":  "https://toolboxnova.com/img/ocr-guide?lang=ko",
-		"HreflangSPA": "https://toolboxnova.com/img/ocr-guide?lang=spa",
+		"Canonical":   "https://ycjson.top/img/ocr-guide",
+		"HreflangZH":  "https://ycjson.top/img/ocr-guide?lang=zh",
+		"HreflangEN":  "https://ycjson.top/img/ocr-guide?lang=en",
+		"HreflangJA":  "https://ycjson.top/img/ocr-guide?lang=ja",
+		"HreflangKO":  "https://ycjson.top/img/ocr-guide?lang=ko",
+		"HreflangSPA": "https://ycjson.top/img/ocr-guide?lang=spa",
 	})
 	render.Render(c, "img/ocr_guide.html", data)
 }
@@ -380,12 +380,12 @@ func ImgToVideoPage(c *gin.Context) {
 		"PageClass":   "page-img-to-video",
 		"FAQs":        faqs,
 		"CurrentTool": "to-video",
-		"Canonical":   "https://toolboxnova.com/img/to-video",
-		"HreflangZH":  "https://toolboxnova.com/img/to-video?lang=zh",
-		"HreflangEN":  "https://toolboxnova.com/img/to-video?lang=en",
-		"HreflangJA":  "https://toolboxnova.com/img/to-video?lang=ja",
-		"HreflangKO":  "https://toolboxnova.com/img/to-video?lang=ko",
-		"HreflangSPA": "https://toolboxnova.com/img/to-video?lang=spa",
+		"Canonical":   "https://ycjson.top/img/to-video",
+		"HreflangZH":  "https://ycjson.top/img/to-video?lang=zh",
+		"HreflangEN":  "https://ycjson.top/img/to-video?lang=en",
+		"HreflangJA":  "https://ycjson.top/img/to-video?lang=ja",
+		"HreflangKO":  "https://ycjson.top/img/to-video?lang=ko",
+		"HreflangSPA": "https://ycjson.top/img/to-video?lang=spa",
 	})
 	render.Render(c, "img/to_video.html", data)
 }
@@ -404,12 +404,12 @@ func ImgToVideoGuidePage(c *gin.Context) {
 		"PageClass":   "page-img-to-video-guide",
 		"FAQs":        faqs,
 		"CurrentTool": "to-video",
-		"Canonical":   "https://toolboxnova.com/img/to-video-guide",
-		"HreflangZH":  "https://toolboxnova.com/img/to-video-guide?lang=zh",
-		"HreflangEN":  "https://toolboxnova.com/img/to-video-guide?lang=en",
-		"HreflangJA":  "https://toolboxnova.com/img/to-video-guide?lang=ja",
-		"HreflangKO":  "https://toolboxnova.com/img/to-video-guide?lang=ko",
-		"HreflangSPA": "https://toolboxnova.com/img/to-video-guide?lang=spa",
+		"Canonical":   "https://ycjson.top/img/to-video-guide",
+		"HreflangZH":  "https://ycjson.top/img/to-video-guide?lang=zh",
+		"HreflangEN":  "https://ycjson.top/img/to-video-guide?lang=en",
+		"HreflangJA":  "https://ycjson.top/img/to-video-guide?lang=ja",
+		"HreflangKO":  "https://ycjson.top/img/to-video-guide?lang=ko",
+		"HreflangSPA": "https://ycjson.top/img/to-video-guide?lang=spa",
 	})
 	render.Render(c, "img/to_video_guide.html", data)
 }
@@ -428,12 +428,12 @@ func ImgToPDFPage(c *gin.Context) {
 		"PageClass":   "page-img-to-pdf",
 		"FAQs":        faqs,
 		"CurrentTool": "to-pdf",
-		"Canonical":   "https://toolboxnova.com/img/to-pdf",
-		"HreflangZH":  "https://toolboxnova.com/img/to-pdf?lang=zh",
-		"HreflangEN":  "https://toolboxnova.com/img/to-pdf?lang=en",
-		"HreflangJA":  "https://toolboxnova.com/img/to-pdf?lang=ja",
-		"HreflangKO":  "https://toolboxnova.com/img/to-pdf?lang=ko",
-		"HreflangSPA": "https://toolboxnova.com/img/to-pdf?lang=spa",
+		"Canonical":   "https://ycjson.top/img/to-pdf",
+		"HreflangZH":  "https://ycjson.top/img/to-pdf?lang=zh",
+		"HreflangEN":  "https://ycjson.top/img/to-pdf?lang=en",
+		"HreflangJA":  "https://ycjson.top/img/to-pdf?lang=ja",
+		"HreflangKO":  "https://ycjson.top/img/to-pdf?lang=ko",
+		"HreflangSPA": "https://ycjson.top/img/to-pdf?lang=spa",
 	})
 	render.Render(c, "img/to_pdf.html", data)
 }
@@ -452,12 +452,12 @@ func ImgToPDFGuidePage(c *gin.Context) {
 		"PageClass":   "page-img-to-pdf-guide",
 		"FAQs":        faqs,
 		"CurrentTool": "to-pdf",
-		"Canonical":   "https://toolboxnova.com/img/to-pdf-guide",
-		"HreflangZH":  "https://toolboxnova.com/img/to-pdf-guide?lang=zh",
-		"HreflangEN":  "https://toolboxnova.com/img/to-pdf-guide?lang=en",
-		"HreflangJA":  "https://toolboxnova.com/img/to-pdf-guide?lang=ja",
-		"HreflangKO":  "https://toolboxnova.com/img/to-pdf-guide?lang=ko",
-		"HreflangSPA": "https://toolboxnova.com/img/to-pdf-guide?lang=spa",
+		"Canonical":   "https://ycjson.top/img/to-pdf-guide",
+		"HreflangZH":  "https://ycjson.top/img/to-pdf-guide?lang=zh",
+		"HreflangEN":  "https://ycjson.top/img/to-pdf-guide?lang=en",
+		"HreflangJA":  "https://ycjson.top/img/to-pdf-guide?lang=ja",
+		"HreflangKO":  "https://ycjson.top/img/to-pdf-guide?lang=ko",
+		"HreflangSPA": "https://ycjson.top/img/to-pdf-guide?lang=spa",
 	})
 	render.Render(c, "img/to_pdf_guide.html", data)
 }

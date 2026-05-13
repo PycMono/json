@@ -1,6 +1,6 @@
 // ToolBoxNova Chrome Extension — Background Service Worker (MV3)
 
-const SITE_ORIGIN = 'https://toolboxnova.com';
+const SITE_ORIGIN = 'https://ycjson.top';
 
 // ── 右键菜单 ──────────────────────────────────────────────
 chrome.runtime.onInstalled.addListener(() => {

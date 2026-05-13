@@ -36,7 +36,7 @@ func (c *FiveSimClient) get(path string, target interface{}) error {
 
 	req.Header.Set("Authorization", "Bearer "+c.apiKey)
 	req.Header.Set("Accept", "application/json")
-	req.Header.Set("User-Agent", "ToolBoxNova/1.0 (+https://toolboxnova.com)")
+	req.Header.Set("User-Agent", "ToolBoxNova/1.0 (+https://ycjson.top)")
 
 	resp, err := c.httpClient.Do(req)
 	if err != nil {

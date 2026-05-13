@@ -25,7 +25,6 @@
   "toolColor": { "message": "Color Tools" },
   "toolImage": { "message": "Image Tools" },
   "toolTimestamp": { "message": "Timestamp" },
-  "toolQrcode": { "message": "QR Code" },
   "toolAiDetect": { "message": "AI Detect" },
   "toolAiHumanize": { "message": "Humanize" }
 }

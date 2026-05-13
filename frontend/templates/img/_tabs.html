@@ -7,7 +7,6 @@
     <a href="/img/compress?lang={{ .Lang }}"        class="img-tab {{ if eq .CurrentTool "compress"     }}img-tab--active{{ end }}">📦 <span>{{ call .T "img.tab.compress" }}</span></a>
     <a href="/img/resize?lang={{ .Lang }}"          class="img-tab {{ if eq .CurrentTool "resize"       }}img-tab--active{{ end }}">📐 <span>{{ call .T "img.tab.resize" }}</span></a>
     <a href="/img/metadata?lang={{ .Lang }}"        class="img-tab {{ if eq .CurrentTool "metadata"     }}img-tab--active{{ end }}">🔍 <span>{{ call .T "img.tab.metadata" }}</span></a>
-    <a href="/media/qr?lang={{ .Lang }}"            class="img-tab {{ if eq .CurrentTool "qr"           }}img-tab--active{{ end }}">📱 <span>{{ call .T "img.tab.qr" }}</span></a>
 
     <div class="img-tabs-dropdown" id="imgTabsDropdown">
       <button class="img-tab img-tab--more" type="button" id="imgTabsMoreBtn">

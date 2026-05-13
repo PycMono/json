@@ -176,12 +176,12 @@ func AiCompeteLandingPage(c *gin.Context) {
 		"Description": t("ai-compete.seo.desc"),
 		"Keywords":    t("ai-compete.seo.keywords"),
 		"PageClass":   "page-ai-compete",
-		"Canonical":   "https://toolboxnova.com/ai/compete",
-		"HreflangZH":  "https://toolboxnova.com/ai/compete?lang=zh",
-		"HreflangEN":  "https://toolboxnova.com/ai/compete?lang=en",
-		"HreflangJA":  "https://toolboxnova.com/ai/compete?lang=ja",
-		"HreflangKO":  "https://toolboxnova.com/ai/compete?lang=ko",
-		"HreflangSPA": "https://toolboxnova.com/ai/compete?lang=spa",
+		"Canonical":   "https://ycjson.top/ai/compete",
+		"HreflangZH":  "https://ycjson.top/ai/compete?lang=zh",
+		"HreflangEN":  "https://ycjson.top/ai/compete?lang=en",
+		"HreflangJA":  "https://ycjson.top/ai/compete?lang=ja",
+		"HreflangKO":  "https://ycjson.top/ai/compete?lang=ko",
+		"HreflangSPA": "https://ycjson.top/ai/compete?lang=spa",
 	}))
 }
 
@@ -195,12 +195,12 @@ func AiCompetePage(c *gin.Context) {
 		"Description": t("ai-compete.seo.desc"),
 		"Keywords":    t("ai-compete.seo.keywords"),
 		"PageClass":   "page-ai-compete",
-		"Canonical":   "https://toolboxnova.com/ai/compete/analyze",
-		"HreflangZH":  "https://toolboxnova.com/ai/compete/analyze?lang=zh",
-		"HreflangEN":  "https://toolboxnova.com/ai/compete/analyze?lang=en",
-		"HreflangJA":  "https://toolboxnova.com/ai/compete/analyze?lang=ja",
-		"HreflangKO":  "https://toolboxnova.com/ai/compete/analyze?lang=ko",
-		"HreflangSPA": "https://toolboxnova.com/ai/compete/analyze?lang=spa",
+		"Canonical":   "https://ycjson.top/ai/compete/analyze",
+		"HreflangZH":  "https://ycjson.top/ai/compete/analyze?lang=zh",
+		"HreflangEN":  "https://ycjson.top/ai/compete/analyze?lang=en",
+		"HreflangJA":  "https://ycjson.top/ai/compete/analyze?lang=ja",
+		"HreflangKO":  "https://ycjson.top/ai/compete/analyze?lang=ko",
+		"HreflangSPA": "https://ycjson.top/ai/compete/analyze?lang=spa",
 	}))
 }
 

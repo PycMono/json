@@ -27,9 +27,9 @@ func ImgCompressGuidePage(c *gin.Context) {
 		"Title":       t("img.compress.guide.seo.title"),
 		"Description": t("img.compress.guide.seo.desc"),
 		"Keywords":    "image compression guide, compress images for web, optimize jpg png webp, reduce image file size, browser image compression tutorial",
-		"Canonical":   "https://toolboxnova.com/img/compress-guide",
-		"HreflangZH":  "https://toolboxnova.com/img/compress-guide?lang=zh",
-		"HreflangEN":  "https://toolboxnova.com/img/compress-guide?lang=en",
+		"Canonical":   "https://ycjson.top/img/compress-guide",
+		"HreflangZH":  "https://ycjson.top/img/compress-guide?lang=zh",
+		"HreflangEN":  "https://ycjson.top/img/compress-guide?lang=en",
 		"PageClass":   "page-img-compress-guide",
 	})
 	render.Render(c, "img/img-compress-guide.html", data)

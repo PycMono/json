@@ -170,19 +170,19 @@ func IndexPage(c *gin.Context) {
 			{
 				"@type": "WebSite",
 				"name": "json",
-				"url": "https://toolboxnova.com",
+				"url": "https://ycjson.top",
 				"description": "` + t("home.hero_sub") + `",
 				"potentialAction": {
 					"@type": "SearchAction",
-					"target": "https://toolboxnova.com/?q={search_term_string}",
+					"target": "https://ycjson.top/?q={search_term_string}",
 					"query-input": "required name=search_term_string"
 				}
 			},
 			{
 				"@type": "Organization",
 				"name": "json",
-				"url": "https://toolboxnova.com",
-				"logo": "https://toolboxnova.com/static/img/logo.svg",
+				"url": "https://ycjson.top",
+				"logo": "https://ycjson.top/static/img/logo.svg",
 				"sameAs": []
 			}
 		]
@@ -190,11 +190,11 @@ func IndexPage(c *gin.Context) {
 
 	// Build hreflang map for homepage
 	hreflangMap := map[string]string{
-		"en":  "https://toolboxnova.com/?lang=en",
-		"zh":  "https://toolboxnova.com/?lang=zh",
-		"ja":  "https://toolboxnova.com/?lang=ja",
-		"ko":  "https://toolboxnova.com/?lang=ko",
-		"spa": "https://toolboxnova.com/?lang=spa",
+		"en":  "https://ycjson.top/?lang=en",
+		"zh":  "https://ycjson.top/?lang=zh",
+		"ja":  "https://ycjson.top/?lang=ja",
+		"ko":  "https://ycjson.top/?lang=ko",
+		"spa": "https://ycjson.top/?lang=spa",
 	}
 
 	// Homepage FAQ items from centralized package
@@ -343,58 +343,9 @@ func SitemapXML(c *gin.Context) {
 		"/terms-of-service", "/contact", "/sitemap",
 		"/user/tokens",
 
-		// SMS Receiver (S-01)
-		"/sms", "/sms/buy", "/sms/prices", "/sms/login", "/sms/register",
-
-		// Privacy Tools
-		"/virtual-address", "/temp-email", "/proxy",
-		"/proxy/list",
-		"/proxy/list?lang=en", "/proxy/list?lang=zh",
-		"/proxy/list?lang=ja", "/proxy/list?lang=ko", "/proxy/list?lang=spa",
-		"/privacy/check",
-		"/browser-fingerprint",
-
-		// Weather Tools
-		"/weather/query",
-
-		// AI Lab
-		"/ai/detector",
-		"/ai/detector?lang=en", "/ai/detector?lang=zh",
-		"/ai/detector?lang=ja", "/ai/detector?lang=ko", "/ai/detector?lang=es",
-		// AI Humanizer (new)
-		"/ai/humanizer",
-		"/ai/humanizer?lang=en", "/ai/humanizer?lang=zh",
-		"/ai/humanizer?lang=ja", "/ai/humanizer?lang=ko", "/ai/humanizer?lang=spa",
-		// AI Competitive Analysis
-		"/ai/compete",
-		"/ai/compete?lang=en", "/ai/compete?lang=zh",
-		"/ai/compete?lang=ja", "/ai/compete?lang=ko", "/ai/compete?lang=spa",
-
-		// AI Image Generator
-		"/ai/image",
-		"/ai/image?lang=en", "/ai/image?lang=zh",
-		"/ai/image?lang=ja", "/ai/image?lang=ko", "/ai/image?lang=spa",
-		// AI Image Generator (SEO landing)
-		"/ai/image-generator",
-		"/ai/image-generator?lang=en", "/ai/image-generator?lang=zh",
-		"/ai/image-generator?lang=ja", "/ai/image-generator?lang=ko", "/ai/image-generator?lang=spa",
-
 		// Dev Tools
-		"/tools", "/tools/json", "/tools/json-formatter", "/tools/json-validator",
-		"/tools/regex", "/tools/markdown", "/tools/timestamp",
+		"/tools", "/tools/regex", "/tools/markdown", "/tools/timestamp",
 		"/tools/base-converter", "/tools/case-converter",
-
-		// Media / Multimedia Tools
-		"/media/image-compress", "/img/compress",
-		"/media/image-resize", "/img/resize",
-		"/img/metadata", "/media/image-metadata",
-		"/media/qr",
-
-		// Image Toolbox
-		"/img/crop", "/img/convert-to-jpg", "/img/jpg-to-image",
-		"/img/photo-editor", "/img/remove-bg", "/img/watermark", "/img/rotate",
-		"/img/ocr", "/img/to-video", "/img/to-pdf",
-		"/img/compress-guide",
 
 		// JSON Toolkit
 		"/json",
@@ -446,49 +397,21 @@ func SitemapXML(c *gin.Context) {
 		"/dev/hash", "/dev/base64", "/dev/url-encode",
 		"/dev/ip", "/dev/whois", "/dev/word-counter",
 		"/dev/uuid", "/dev/lorem",
-
-		// Color Tools Suite
-		"/color/tools",
-		"/color/picker", "/color/palette", "/color/wheel",
-		"/color/converter", "/color/contrast", "/color/gradient",
-		"/color/image-picker", "/color/blindness", "/color/names",
-		"/color/mixer", "/color/tailwind",
 	}
 
 	c.Header("Content-Type", "application/xml")
 	xml := "<?xml version=\"1.0\" encoding=\"UTF-8\"?>\n<urlset xmlns=\"http://www.sitemaps.org/schemas/sitemap/0.9\">\n"
-	siteURL := "https://toolboxnova.com"
+	siteURL := "https://ycjson.top"
 	lastMod := time.Now().Format("2006-01-02")
 
 	for _, r := range routes {
 		priority := "0.8"
 		changefreq := "weekly"
 
-		// 首页最高优先级
 		if r == "/" {
 			priority = "1.0"
-		} else if r == "/sms" || r == "/sms/buy" {
-			// SMS 主页和购买页优先级
+		} else if r == "/tools" {
 			priority = "0.9"
-			changefreq = "daily"
-		} else if r == "/sms/prices" {
-			priority = "0.85"
-			changefreq = "daily"
-		} else if r == "/tools/json" || r == "/tools" || r == "/ai/detector" {
-			priority = "0.9"
-		} else if r == "/media/qr" {
-			priority = "0.9"
-		} else if r == "/media/image-compress" || r == "/img/compress" ||
-			r == "/media/image-resize" || r == "/img/resize" ||
-			r == "/img/metadata" || r == "/media/image-metadata" {
-			priority = "0.85"
-		} else if r == "/img/crop" || r == "/img/convert-to-jpg" || r == "/img/jpg-to-image" ||
-			r == "/img/photo-editor" || r == "/img/remove-bg" ||
-			r == "/img/watermark" || r == "/img/rotate" ||
-			r == "/img/ocr" || r == "/img/to-video" || r == "/img/to-pdf" {
-			priority = "0.9"
-		} else if r == "/img/compress-guide" {
-			priority = "0.85"
 		} else if r == "/json" {
 			priority = "0.9"
 		} else if r == "/json/validate" || r == "/json/diff" || r == "/json/pretty" ||
@@ -498,14 +421,6 @@ func SitemapXML(c *gin.Context) {
 		} else if r == "/dev/hash" || r == "/dev/base64" || r == "/dev/ip" {
 			priority = "0.9"
 		} else if r == "/dev/url-encode" || r == "/dev/whois" || r == "/dev/word-counter" {
-			priority = "0.8"
-		} else if r == "/color/tools" {
-			priority = "0.9"
-		} else if r == "/color/picker" || r == "/color/palette" || r == "/color/converter" ||
-			r == "/color/contrast" || r == "/color/gradient" || r == "/color/image-picker" {
-			priority = "0.85"
-		} else if r == "/color/wheel" || r == "/color/blindness" || r == "/color/names" ||
-			r == "/color/mixer" || r == "/color/tailwind" {
 			priority = "0.8"
 		} else if r == "/json/learn" || r == "/json/datasets" {
 			priority = "0.9"
@@ -519,46 +434,6 @@ func SitemapXML(c *gin.Context) {
 		xml += "    <changefreq>" + changefreq + "</changefreq>\n"
 		xml += "    <priority>" + priority + "</priority>\n"
 		xml += "  </url>\n"
-
-		// 为 SMS 主页添加多语言版本
-		if r == "/sms" || r == "/sms/buy" || r == "/sms/prices" {
-			for _, lang := range []string{"en", "zh"} {
-				xml += "  <url>\n"
-				xml += "    <loc>" + siteURL + r + "?lang=" + lang + "</loc>\n"
-				xml += "    <lastmod>" + lastMod + "</lastmod>\n"
-				xml += "    <changefreq>" + changefreq + "</changefreq>\n"
-				xml += "    <priority>0.85</priority>\n"
-				xml += "  </url>\n"
-			}
-		}
-
-		// 为多媒体和 QR 工具添加多语言版本
-		if r == "/media/qr" || r == "/img/metadata" || r == "/media/image-compress" ||
-			r == "/media/image-resize" || r == "/img/compress" ||
-			r == "/img/resize" || r == "/img/compress-guide" {
-			for _, lang := range []string{"zh", "en"} {
-				xml += "  <url>\n"
-				xml += "    <loc>" + siteURL + r + "?lang=" + lang + "</loc>\n"
-				xml += "    <lastmod>" + lastMod + "</lastmod>\n"
-				xml += "    <changefreq>" + changefreq + "</changefreq>\n"
-				xml += "    <priority>0.80</priority>\n"
-				xml += "  </url>\n"
-			}
-		}
-
-		// 为 Color 工具添加多语言版本
-		if r == "/color/tools" || r == "/color/picker" || r == "/color/palette" ||
-			r == "/color/converter" || r == "/color/contrast" || r == "/color/gradient" ||
-			r == "/color/image-picker" {
-			for _, lang := range []string{"zh", "en"} {
-				xml += "  <url>\n"
-				xml += "    <loc>" + siteURL + r + "?lang=" + lang + "</loc>\n"
-				xml += "    <lastmod>" + lastMod + "</lastmod>\n"
-				xml += "    <changefreq>" + changefreq + "</changefreq>\n"
-				xml += "    <priority>0.80</priority>\n"
-				xml += "  </url>\n"
-			}
-		}
 	}
 
 	xml += "</urlset>"
@@ -568,7 +443,7 @@ func SitemapXML(c *gin.Context) {
 // RobotsTxt returns robots.txt
 func RobotsTxt(c *gin.Context) {
 	robots := `# ToolBoxNova robots.txt
-# https://toolboxnova.com
+# https://ycjson.top
 # Updated: 2026-04-13 - Comprehensive AI crawler protection
 
 # ── Allow standard search engines ────────────────────────────────────
@@ -853,7 +728,7 @@ Disallow: /user/
 Crawl-delay: 2
 
 # Sitemap
-Sitemap: https://toolboxnova.com/sitemap.xml
+Sitemap: https://ycjson.top/sitemap.xml
 `
 	c.Header("Content-Type", "text/plain; charset=utf-8")
 	c.String(http.StatusOK, robots)
@@ -867,16 +742,6 @@ func SearchAPI(c *gin.Context) {
 		return
 	}
 	tools := []gin.H{
-		{"name_zh": "SMS 接码平台", "name_en": "SMS Receiver", "description": "Receive SMS online for free", "url": "/sms", "search": "sms 接码平台 receiver phone"},
-		{"name_zh": "虚拟身份生成器", "name_en": "Fake Identity Generator", "description": "Generate fake identity info", "url": "/virtual-address", "search": "fake identity 虚拟身份 virtual identity generator"},
-		{"name_zh": "随机密码生成器", "name_en": "Password Generator", "description": "Generate secure passwords and check for breaches", "url": "/privacy/check", "search": "password generator 密码 random secure breach check"},
-		{"name_zh": "匿名临时邮箱", "name_en": "Temporary Email", "description": "Disposable email address", "url": "/temp-email", "search": "temp email 临时邮箱 temporary disposable"},
-		{"name_zh": "匿名代理", "name_en": "Anonymous Proxy", "description": "Browse anonymously", "url": "/proxy", "search": "proxy 代理 anonymous vpn"},
-		{"name_zh": "免费代理列表", "name_en": "Free Proxy List", "description": "10,000+ free proxy servers, updated every 30 minutes", "url": "/proxy/list", "search": "免费代理 代理服务器 proxy list free proxy http socks5"},
-		{"name_zh": "图片压缩", "name_en": "Image Compress", "description": "Compress images online, supports JPG/PNG/WebP", "url": "/media/image-compress", "search": "image compress 图片 压缩 media jpg png webp"},
-		{"name_zh": "图片调整大小", "name_en": "Image Resizer", "description": "Resize images online, supports pixel/percent/presets", "url": "/media/image-resize", "search": "image resize 调整大小 尺寸 图片 png jpg"},
-		{"name_zh": "图片元数据查看", "name_en": "Image Metadata Viewer", "description": "View EXIF, GPS, IPTC metadata from images", "url": "/img/metadata", "search": "exif metadata 元数据 gps iptc image photo 图片"},
-		{"name_zh": "二维码生成器", "name_en": "QR Code Generator", "description": "Generate free QR codes for URLs, WiFi, vCard, SMS and more", "url": "/media/qr", "search": "qr code 二维码 generator wifi vcard url sms bitcoin"},
 		// JSON Toolkit
 		{"name_zh": "JSON 验证器", "name_en": "JSON Validator", "description": "Validate JSON online with error highlighting", "url": "/json/validate", "search": "json validator 验证 lint format"},
 		{"name_zh": "JSON 美化", "name_en": "JSON Pretty Print", "description": "Format and pretty print JSON", "url": "/json/pretty", "search": "json format pretty print beautify 格式化"},
@@ -891,12 +756,12 @@ func SearchAPI(c *gin.Context) {
 		{"name_zh": "JWT 解码", "name_en": "JWT Decoder", "description": "Decode and inspect JWT tokens", "url": "/json/jwt", "search": "jwt decode token header payload"},
 		{"name_zh": "JSON Schema 验证", "name_en": "JSON Schema Validator", "description": "Validate JSON against a schema", "url": "/json/schema-validate", "search": "json schema validate 验证"},
 		{"name_zh": "JSON 工具箱", "name_en": "JSON Toolkit", "description": "40+ free online JSON tools", "url": "/json", "search": "json tools 工具箱 toolkit all"},
-		{"name_zh": "AI 检测器", "name_en": "AI Content Detector", "description": "Detect AI-generated content", "url": "/ai/detector", "search": "ai detector detect ai检测 检测器 gptzero"},
-		{"name_zh": "AI 人性化改写", "name_en": "AI Humanizer", "description": "Humanize AI-generated text to bypass detection", "url": "/ai/humanizer", "search": "ai humanize 人性化 bypass humanize rewrite"},
-		{"name_zh": "AI 竞品分析", "name_en": "AI Competitive Analysis", "description": "Analyze competitors across 7 dimensions with AI", "url": "/ai/compete", "search": "competitive analysis 竞品分析 swot marketing pricing competitor"},
-		{"name_zh": "AI 文生图", "name_en": "AI Image Generator", "description": "Generate AI images from text prompts, supports SD3, DALL-E, img2img", "url": "/ai/image", "search": "AI文生图 图片生成 ai绘图 stable diffusion dall-e 文转图 AI画画 image generator text to image ai art"},
-		{"name_zh": "密码强度检测", "name_en": "Password Strength Checker", "description": "Check password strength, detect breaches, generate secure passwords", "url": "/privacy/check", "search": "password strength checker security breach 密码强度 安全检测"},
-		{"name_zh": "浏览器指纹检测", "name_en": "Browser Fingerprint Detector", "description": "Detect what information your browser is leaking", "url": "/browser-fingerprint", "search": "browser fingerprint webRTC leak canvas privacy 浏览器指纹 隐私泄漏"},
+		{"name_zh": "JSON 转义", "name_en": "JSON Escape", "description": "Escape or unescape JSON strings", "url": "/json/escape", "search": "json escape unescape 转义"},
+		{"name_zh": "JSON 搜索", "name_en": "JSON Search", "description": "Search for keys and values in JSON data", "url": "/json/search", "search": "json search 搜索 find key value"},
+		{"name_zh": "JSON 转 CSV", "name_en": "JSON to CSV", "description": "Convert JSON arrays to CSV format", "url": "/json/to-csv", "search": "json csv convert 转换 table"},
+		{"name_zh": "JSON 转 SQL", "name_en": "JSON to SQL", "description": "Generate SQL INSERT statements from JSON", "url": "/json/to-sql", "search": "json sql convert insert 转换"},
+		{"name_zh": "JSON 数据集", "name_en": "JSON Datasets", "description": "85+ free open-source JSON datasets", "url": "/json/datasets", "search": "json dataset 数据集 sample test free"},
+		{"name_zh": "JSON 教程", "name_en": "JSON Learn", "description": "53+ free JSON tutorials from beginner to advanced", "url": "/json/learn", "search": "json learn tutorial 教程 beginner 入门"},
 		// Developer Tools Suite
 		{"name_zh": "哈希计算器", "name_en": "Hash Generator", "description": "MD5 SHA-1 SHA-256 SHA-512 HMAC hash calculator, client-side", "url": "/dev/hash", "search": "hash md5 sha256 sha512 hmac 哈希 摘要 加密 generator"},
 		{"name_zh": "Base64 编解码", "name_en": "Base64 Encoder Decoder", "description": "Encode or decode Base64 text and files up to 50MB", "url": "/dev/base64", "search": "base64 encode decode 编码 解码 base64url mime"},
@@ -906,37 +771,12 @@ func SearchAPI(c *gin.Context) {
 		{"name_zh": "文字计数器", "name_en": "Word Counter", "description": "Count words, characters, readability score and keyword density", "url": "/dev/word-counter", "search": "word counter 文字 计数 字数 词数 可读性 readability flesch keyword"},
 		{"name_zh": "UUID 生成器", "name_en": "UUID Generator", "description": "Generate random UUID v4 and v7 instantly, batch up to 100", "url": "/dev/uuid", "search": "uuid generator guid v4 v7 随机 唯一 标识符"},
 		{"name_zh": "Lorem Ipsum 生成器", "name_en": "Lorem Ipsum Generator", "description": "Generate placeholder text for design and prototypes", "url": "/dev/lorem", "search": "lorem ipsum placeholder text dummy 占位 文本 生成"},
-		// Image Tools
-		{"name_zh": "图片裁剪", "name_en": "Image Cropper", "description": "Crop images online, free/pixel/fixed ratio modes, batch up to 30", "url": "/img/crop", "search": "image crop 裁剪 cut trim 图片 free ratio pixel"},
-		{"name_zh": "图片格式转换", "name_en": "Image Format Converter", "description": "Convert PNG/WebP/GIF to JPG and JPG to PNG/WebP/GIF/BMP", "url": "/img/convert-to-jpg", "search": "image convert 转换 format png jpg webp gif bmp"},
-		{"name_zh": "图片编辑器", "name_en": "Photo Editor", "description": "Adjust brightness, contrast, saturation, blur in browser", "url": "/img/photo-editor", "search": "photo editor 图片 编辑 brightness contrast saturation blur"},
-		{"name_zh": "背景去除", "name_en": "Background Remover", "description": "AI-powered background removal, runs locally in browser", "url": "/img/remove-bg", "search": "remove background 去除 背景 ai transparent png"},
-		{"name_zh": "图片水印", "name_en": "Image Watermark", "description": "Add text or image watermark, batch support up to 30", "url": "/img/watermark", "search": "watermark 水印 image text logo copyright"},
-		{"name_zh": "图片旋转", "name_en": "Image Rotator", "description": "Rotate and flip images, arbitrary angle support", "url": "/img/rotate", "search": "image rotate 旋转 flip 翻转 angle"},
-		// Color Tools
-		{"name_zh": "颜色选择器", "name_en": "Color Picker", "description": "Pick colors from screen or input HEX/RGB/HSL values", "url": "/color/picker", "search": "color picker 选色 颜色 hex rgb hsl"},
-		{"name_zh": "调色板生成器", "name_en": "Color Palette Generator", "description": "Generate harmonious color palettes from a base color", "url": "/color/palette", "search": "color palette 调色板 配色 生成 harmony"},
-		{"name_zh": "颜色转换器", "name_en": "Color Converter", "description": "Convert between HEX, RGB, HSL, HSV, CMYK formats", "url": "/color/converter", "search": "color convert 转换 hex rgb hsl hsv cmyk"},
-		{"name_zh": "对比度检查", "name_en": "Color Contrast Checker", "description": "Check WCAG accessibility contrast ratios", "url": "/color/contrast", "search": "color contrast 对比度 accessibility wcag a11y"},
-		{"name_zh": "渐变生成器", "name_en": "Gradient Generator", "description": "Create CSS gradients with live preview", "url": "/color/gradient", "search": "gradient 渐变 css linear radial"},
-		{"name_zh": "Tailwind 颜色", "name_en": "Tailwind Color Reference", "description": "Browse all Tailwind CSS colors with copy-paste", "url": "/color/tailwind", "search": "tailwind color 颜色 css reference"},
 		// Text & Dev Tools
 		{"name_zh": "正则表达式测试", "name_en": "Regex Tester", "description": "Test and debug regular expressions with real-time matching", "url": "/tools/regex", "search": "regex regular expression 正则 测试 test debug"},
 		{"name_zh": "Markdown 编辑器", "name_en": "Markdown Editor", "description": "Live preview Markdown editor", "url": "/tools/markdown", "search": "markdown editor 编辑器 preview live 实时预览"},
 		{"name_zh": "时间戳转换", "name_en": "Timestamp Converter", "description": "Convert between Unix timestamp and dates", "url": "/tools/timestamp", "search": "timestamp 时间戳 unix date 日期 转换"},
 		{"name_zh": "进制转换", "name_en": "Base Converter", "description": "Convert between binary, octal, decimal, hex", "url": "/tools/base-converter", "search": "base converter 进制 binary octal decimal hex"},
 		{"name_zh": "大小写转换", "name_en": "Case Converter", "description": "Convert between camelCase, snake_case, UPPER_CASE", "url": "/tools/case-converter", "search": "case converter 大小写 camelCase snake_case UPPER"},
-		{"name_zh": "单位转换器", "name_en": "Unit Converter", "description": "Convert length, weight, temperature, area, volume", "url": "/tools/media/unit-converter", "search": "unit converter 单位 转换 length weight temperature"},
-		// More JSON subtools
-		{"name_zh": "JSON 转义", "name_en": "JSON Escape", "description": "Escape or unescape JSON strings", "url": "/json/escape", "search": "json escape unescape 转义"},
-		{"name_zh": "JSON 搜索", "name_en": "JSON Search", "description": "Search for keys and values in JSON data", "url": "/json/search", "search": "json search 搜索 find key value"},
-		{"name_zh": "JSON 转 CSV", "name_en": "JSON to CSV", "description": "Convert JSON arrays to CSV format", "url": "/json/to-csv", "search": "json csv convert 转换 table"},
-		{"name_zh": "JSON 转 SQL", "name_en": "JSON to SQL", "description": "Generate SQL INSERT statements from JSON", "url": "/json/to-sql", "search": "json sql convert insert 转换"},
-		{"name_zh": "JSON 数据集", "name_en": "JSON Datasets", "description": "85+ free open-source JSON datasets", "url": "/json/datasets", "search": "json dataset 数据集 sample test free"},
-		{"name_zh": "JSON 教程", "name_en": "JSON Learn", "description": "53+ free JSON tutorials from beginner to advanced", "url": "/json/learn", "search": "json learn tutorial 教程 beginner 入门"},
-		// Privacy
-		{"name_zh": "隐私泄露检查", "name_en": "Privacy Check", "description": "Check if your email or password was exposed in data breaches", "url": "/privacy/check", "search": "privacy check 隐私 泄露 breach data password email"},
-		{"name_zh": "Token 用量", "name_en": "Token Usage", "description": "Track your AI token consumption and balance", "url": "/user/tokens", "search": "token 用量 余额 ai 消耗 balance usage tokens dashboard"},
 	}
 	var results []gin.H
 	for _, tool := range tools {
@@ -973,7 +813,7 @@ func VirtualAddressPage(c *gin.Context) {
   "operatingSystem": "Web Browser",
   "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
   "description": "Generate random virtual identity info including name, address, phone and email.",
-  "url": "https://toolboxnova.com/virtual-address",
+  "url": "https://ycjson.top/virtual-address",
   "aggregateRating": {
     "@type": "AggregateRating",
     "ratingValue": "4.8",

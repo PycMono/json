@@ -6,7 +6,7 @@ type Config struct {
 	// 服务基础
 	Port         string `json:"port"          default:"8086"                    env:"PORT"`
 	Debug        bool   `json:"debug"         default:"false"                   env:"DEBUG"`
-	SiteURL      string `json:"site_url"      default:"https://toolboxnova.com" env:"SITE_URL"`
+	SiteURL      string `json:"site_url"      default:"https://ycjson.top" env:"SITE_URL"`
 	AssetVersion string `json:"asset_version" default:"v1"                      env:"ASSET_VERSION"`
 
 	// 通知
@@ -27,7 +27,7 @@ type Config struct {
 
 	// Cookie Consent (GDPR / CCPA)
 	ConsentCookieName string `json:"consent_cookie_name" default:"cky_consent"     env:"CONSENT_COOKIE_NAME"`
-	Domain            string `json:"domain"              default:"toolboxnova.com" env:"DOMAIN"`
+	Domain            string `json:"domain"              default:"ycjson.top" env:"DOMAIN"`
 
 	// Social Media Links
 	TwitterURL  string `json:"twitter_url"  default:"https://twitter.com/toolboxnova"`
@@ -111,7 +111,7 @@ type RedisConfig struct {
 
 // OAuthConfig OAuth 登录配置
 type OAuthConfig struct {
-	SiteURL           string `json:"site_url"            default:"https://toolboxnova.com"`
+	SiteURL           string `json:"site_url"            default:"https://ycjson.top"`
 	SessionCookieName string `json:"session_cookie_name" default:"tbn_session"`
 	SessionTTLHours   int    `json:"session_ttl_hours"   default:"720"`
 	SessionSecure     bool   `json:"session_secure"      default:"true"`

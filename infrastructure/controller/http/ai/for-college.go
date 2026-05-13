@@ -13,17 +13,17 @@ func ForCollegePage(c *gin.Context) {
 	t := render.GetT(c)
 	lang := render.GetLang(c)
 
-	canonical := "https://toolboxnova.com/ai/for-college"
+	canonical := "https://ycjson.top/ai/for-college"
 	if lang != "en" && lang != "" {
-		canonical = fmt.Sprintf("https://toolboxnova.com/ai/for-college?lang=%s", lang)
+		canonical = fmt.Sprintf("https://ycjson.top/ai/for-college?lang=%s", lang)
 	}
 
 	hreflang := map[string]string{
-		"en":  "https://toolboxnova.com/ai/for-college?lang=en",
-		"zh":  "https://toolboxnova.com/ai/for-college?lang=zh",
-		"ja":  "https://toolboxnova.com/ai/for-college?lang=ja",
-		"ko":  "https://toolboxnova.com/ai/for-college?lang=ko",
-		"spa": "https://toolboxnova.com/ai/for-college?lang=spa",
+		"en":  "https://ycjson.top/ai/for-college?lang=en",
+		"zh":  "https://ycjson.top/ai/for-college?lang=zh",
+		"ja":  "https://ycjson.top/ai/for-college?lang=ja",
+		"ko":  "https://ycjson.top/ai/for-college?lang=ko",
+		"spa": "https://ycjson.top/ai/for-college?lang=spa",
 	}
 
 	data := render.BaseData(c, gin.H{
@@ -35,7 +35,7 @@ func ForCollegePage(c *gin.Context) {
 		"Canonical":      canonical,
 		"HreflangMap":    hreflang,
 		"SEOArticle":     template.HTML(t("for_college.seo.article")),
-		"OGImage":        "https://toolboxnova.com/static/img/og-for-college.png",
+		"OGImage":        "https://ycjson.top/static/img/og-for-college.png",
 		"FreeWordLimit":  15000,
 		"CaptchaEnabled": false,
 		"CaptchaSiteKey": "",

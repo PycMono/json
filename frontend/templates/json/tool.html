@@ -220,7 +220,7 @@
       </div>
 
       <!-- Resize Handle -->
-      <div class="jt-resize-handle" id="resizeHandle" title="拖动调整比例，双击重置"></div>
+      <div class="jt-resize-handle" id="resizeHandle" title="{{ call .T "json.common.resize_handle" }}"></div>
 
       <!-- Middle: orange arrow button -->
       <div class="jt-editor-actions">
@@ -464,7 +464,7 @@
         <div class="jt-tabs-bar" id="tabsBar">
           <div class="jt-tabs-list" id="tabsList">
             <div class="jt-tab active" data-tab="0" onclick="switchTab(0)">
-              <span class="jt-tab-title">文档 1</span>
+              <span class="jt-tab-title">{{ call .T "json.tabs.document" }} 1</span>
               <button class="jt-tab-close" onclick="event.stopPropagation(); closeTab(0)" style="display:none">×</button>
             </div>
           </div>
@@ -589,7 +589,7 @@
             <!-- Fullscreen -->
             <button onclick="openFullscreen()" class="jt-btn jt-btn--ghost" id="fullscreenBtn" title="{{ call .T "json.output.fullscreen" }}" aria-label='{{ call .T "json.output.fullscreen" }}' data-tooltip='{{ call .T "json.output.fullscreen" }}' data-shortcut="F11" data-ga data-ga-action="fullscreen" data-ga-category="json-tool" data-ga-label="{{ .ToolKey }}">⛶ {{ call .T "json.output.fullscreen" }}</button>
             <!-- Sync Scroll -->
-            <button onclick="toggleSyncScroll()" class="jt-btn jt-btn--ghost jt-btn--active" id="syncScrollBtn" title="同步滚动开启" aria-label='同步滚动' data-tooltip="同步滚动 (Ctrl+M)" data-shortcut="Ctrl+M" data-ga data-ga-action="toggle_sync_scroll" data-ga-category="json-tool" data-ga-label="{{ .ToolKey }}">同步滚动</button>
+            <button onclick="toggleSyncScroll()" class="jt-btn jt-btn--ghost jt-btn--active" id="syncScrollBtn" title="{{ call .T "json.common.sync_scroll_on" }}" aria-label='{{ call .T "json.common.sync_scroll_on" }}' data-tooltip="{{ call .T "json.common.sync_scroll_on" }} (Ctrl+M)" data-shortcut="Ctrl+M" data-ga data-ga-action="toggle_sync_scroll" data-ga-category="json-tool" data-ga-label="{{ .ToolKey }}">{{ call .T "json.common.sync_scroll_on" }}</button>
             {{ if eq .ToolKey "unescape" }}
             <button onclick="beautifyOutput()" class="jt-btn jt-btn--primary" aria-label='{{ call .T "json.common.beautify" }}' data-tooltip='{{ call .T "json.common.beautify" }}' data-ga data-ga-action="beautify" data-ga-category="json-tool" data-ga-label="{{ .ToolKey }}">✨ {{ call .T "json.common.beautify" }}</button>
             {{ end }}

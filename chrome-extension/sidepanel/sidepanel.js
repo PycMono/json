@@ -11,7 +11,6 @@
     'json':           '../pages/json.html',
     'color':          '../pages/color.html',
     'image-compress': '../pages/image-compress.html',
-    'qrcode':         '../pages/qrcode.html',
   };
 
   let currentTool = 'home';

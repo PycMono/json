@@ -18,11 +18,11 @@ func QueryPage(c *gin.Context) {
 
 	faqs := faq.WeatherFAQs(t)
 
-	canonical := "https://toolboxnova.com/weather/query"
-	hreflangZH := "https://toolboxnova.com/weather/query?lang=zh"
-	hreflangEN := "https://toolboxnova.com/weather/query?lang=en"
+	canonical := "https://ycjson.top/weather/query"
+	hreflangZH := "https://ycjson.top/weather/query?lang=zh"
+	hreflangEN := "https://ycjson.top/weather/query?lang=en"
 	if lang != "en" && lang != "" {
-		canonical = fmt.Sprintf("https://toolboxnova.com/weather/query?lang=%s", lang)
+		canonical = fmt.Sprintf("https://ycjson.top/weather/query?lang=%s", lang)
 	}
 
 	// JSON-LD structured data
@@ -31,11 +31,11 @@ func QueryPage(c *gin.Context) {
   "@type":"SoftwareApplication",
   "name":"%s",
   "description":"%s",
-  "url":"https://toolboxnova.com/weather/query",
+  "url":"https://ycjson.top/weather/query",
   "applicationCategory":"UtilitiesApplication",
   "operatingSystem":"Web",
   "offers":{"@type":"Offer","price":"0","priceCurrency":"USD"},
-  "provider":{"@type":"Organization","name":"json","url":"https://toolboxnova.com"}
+  "provider":{"@type":"Organization","name":"json","url":"https://ycjson.top"}
 }`, t("wq.seo.title"), t("wq.seo.description"))
 
 	data := render.BaseData(c, gin.H{

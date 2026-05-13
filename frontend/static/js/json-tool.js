@@ -117,7 +117,7 @@ function fillSampleJSON() {
         "features": ["JSON Validator", "AI Detector", "Background Remover"],
         "author": {
             "name": "json Team",
-            "url": "https://toolboxnova.com"
+            "url": "https://ycjson.top"
         },
         "active": true,
         "userCount": 50000,

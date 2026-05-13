@@ -13,7 +13,6 @@
   "toolColor": { "message": "カラー" },
   "toolImage": { "message": "画像" },
   "toolTimestamp": { "message": "タイムスタンプ" },
-  "toolQrcode": { "message": "QR コード" },
   "toolAiDetect": { "message": "AI 検出" },
   "toolAiHumanize": { "message": "Humanize" }
 }

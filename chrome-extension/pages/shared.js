@@ -4,7 +4,7 @@
 (function() {
   'use strict';
 
-  var SITE_ORIGIN = 'https://toolboxnova.com';
+  var SITE_ORIGIN = 'https://ycjson.top';
 
   // ── Toast notification (polyfill for main.js showToast) ───
   window.showToast = function(msg, duration) {
@@ -39,7 +39,7 @@
         var namespaceMap = {
           'password': 'tools', 'timestamp': 'tools', 'image-compress': 'img',
           'json': 'json', 'json-tool': 'json', 'color': 'tools',
-          'qrcode': 'tools', 'ai-detect': 'ailab', 'ai-humanize': 'ailab',
+          'ai-detect': 'ailab', 'ai-humanize': 'ailab',
         };
         var ns = namespaceMap[page];
         if (ns) {

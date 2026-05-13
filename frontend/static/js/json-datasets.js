@@ -2,6 +2,9 @@
 // Datasets page engine for json
 
 var DS = (function () {
+  var i18n = window.DS_I18N || {};
+  var categoryLabels = i18n.categoryLabels || {};
+
   var state = {
     allDatasets: [],
     filteredDatasets: [],
@@ -16,7 +19,7 @@ var DS = (function () {
 
   var STATIC_BASE = '/static/datasets/';
   var VALIDATOR_URL = '/json/validate';
-  var PLACEHOLDER_EN = ['Try "http status"','Try "mock users"','Try "countries"','Try "crypto"','Try "aws regions"'];
+  var PLACEHOLDER_EN = ['Try "http status"','Try "mock users"','Try "countries"','Try "crypto"'];
   var PLACEHOLDER_ZH = ['搜索 "HTTP 状态码"','搜索 "Mock 用户"','搜索 "国家列表"','搜索 "加密货币"'];
 
   function init() {
@@ -104,21 +107,21 @@ var DS = (function () {
       if (e.target.closest('.ds-card__actions')) return;
       openDrawer(ds.slug);
     });
-    var fieldsPreview = ds.fields.slice(0, 4).join(', ') + (ds.fields.length > 4 ? ' +' + (ds.fields.length - 4) + ' more' : '');
+    var fieldsPreview = ds.fields.slice(0, 4).join(', ') + (ds.fields.length > 4 ? ' +' + (ds.fields.length - 4) + ' ' + (i18n.more || 'more') : '');
     card.innerHTML =
       '<div class="ds-card__header">' +
         '<span class="ds-badge ds-badge--' + ds.category + '">' + escapeHTML(getCategoryLabel(ds.category)) + '</span>' +
-        '<span class="ds-card__records">' + formatRecords(ds.records) + ' records</span>' +
+        '<span class="ds-card__records">' + formatRecords(ds.records) + ' ' + (i18n.records || 'records') + '</span>' +
       '</div>' +
       '<h3 class="ds-card__name">' + escapeHTML(ds.name) + '</h3>' +
       '<p class="ds-card__desc">' + escapeHTML(ds.description) + '</p>' +
-      '<div class="ds-card__fields"><span class="ds-card__fields-label">Fields:</span><span>' + escapeHTML(fieldsPreview) + '</span></div>' +
+      '<div class="ds-card__fields"><span class="ds-card__fields-label">' + (i18n.fieldsLabel || 'Fields:') + '</span><span>' + escapeHTML(fieldsPreview) + '</span></div>' +
       '<div class="ds-card__footer">' +
         '<span class="ds-card__size">' + formatSize(ds.sizeBytes) + '</span>' +
         '<div class="ds-card__actions">' +
-          '<button class="ds-btn" onclick="DS.copyDataset(\'' + ds.slug + '\', this)">Copy</button>' +
-          '<button class="ds-btn" onclick="DS.validateDataset(\'' + ds.slug + '\')">Validate</button>' +
-          '<button class="ds-btn ds-btn--primary" onclick="DS.downloadDataset(\'' + ds.slug + '\')">Download</button>' +
+          '<button class="ds-btn" onclick="DS.copyDataset(\'' + ds.slug + '\', this)">' + (i18n.copy || 'Copy') + '</button>' +
+          '<button class="ds-btn" onclick="DS.validateDataset(\'' + ds.slug + '\')">' + (i18n.validate || 'Validate') + '</button>' +
+          '<button class="ds-btn ds-btn--primary" onclick="DS.downloadDataset(\'' + ds.slug + '\')">' + (i18n.download || 'Download') + '</button>' +
         '</div>' +
       '</div>';
     return card;
@@ -132,7 +135,7 @@ var DS = (function () {
     var badge = document.getElementById('ds-drawer-badge');
     badge.className = 'ds-badge ds-badge--' + ds.category;
     badge.textContent = getCategoryLabel(ds.category);
-    document.getElementById('ds-drawer-records').textContent = formatRecords(ds.records) + ' records';
+    document.getElementById('ds-drawer-records').textContent = formatRecords(ds.records) + ' ' + (i18n.records || 'records');
     document.getElementById('ds-drawer-size').textContent = formatSize(ds.sizeBytes);
     document.getElementById('ds-drawer-desc').textContent = ds.description;
     // Fields
@@ -149,20 +152,20 @@ var DS = (function () {
       return '<span class="ds-tag">' + escapeHTML(u) + '</span>';
     }).join('');
     // URL
-    var rawURL = 'https://toolboxnova.com' + STATIC_BASE + ds.slug + '.json';
+    var rawURL = 'https://ycjson.top' + STATIC_BASE + ds.slug + '.json';
     var urlEl = document.getElementById('ds-drawer-url');
     urlEl.textContent = rawURL;
     urlEl.dataset.url = rawURL;
     // Preview
     var previewEl = document.getElementById('ds-drawer-preview');
-    previewEl.textContent = 'Loading preview...';
+    previewEl.textContent = i18n.previewLoading || 'Loading preview...';
     fetch(STATIC_BASE + ds.slug + '.json')
       .then(function (r) { return r.json(); })
       .then(function (data) {
         var preview = Array.isArray(data) ? data.slice(0, 5) : data;
         previewEl.textContent = JSON.stringify(preview, null, 2);
       })
-      .catch(function () { previewEl.textContent = '// Preview not available for this dataset'; });
+      .catch(function () { previewEl.textContent = i18n.previewError || '// Preview not available for this dataset'; });
     // Related
     var related = state.allDatasets.filter(function (d) { return d.category === ds.category && d.slug !== slug; }).slice(0, 4);
     document.getElementById('ds-drawer-related').innerHTML = related.map(function (r) {
@@ -203,18 +206,18 @@ var DS = (function () {
       })
       .then(function () {
         var orig = btnEl.textContent;
-        btnEl.textContent = 'Copied!';
+        btnEl.textContent = i18n.copied || 'Copied!';
         btnEl.classList.add('ds-btn--success');
-        showToast('Copied to clipboard!', 'success');
+        showToast(i18n.toastCopySuccess || 'Copied to clipboard!', 'success');
         if (typeof gaTrackResultCopy === 'function') gaTrackResultCopy('json-datasets', 'text');
         setTimeout(function () { btnEl.textContent = orig; btnEl.classList.remove('ds-btn--success'); }, 1500);
         document.dispatchEvent(new CustomEvent('dataset:copy', { detail: { slug: slug } }));
       })
-      .catch(function () { showToast('Copy failed. Please select and copy manually.', 'error'); });
+      .catch(function () { showToast(i18n.toastCopyError || 'Copy failed. Please select and copy manually.', 'error'); });
   }
 
   function downloadDataset(slug) {
-    showToast('Preparing download…', 'info');
+    showToast(i18n.toastDownloadPrep || 'Preparing download…', 'info');
     var ds = state.allDatasets.find(function (d) { return d.slug === slug; });
     fetch(STATIC_BASE + slug + '.json')
       .then(function (r) { return r.blob(); })
@@ -228,13 +231,13 @@ var DS = (function () {
         document.dispatchEvent(new CustomEvent('dataset:download', { detail: { slug: slug, category: ds && ds.category } }));
       })
       .catch(function () {
-        showToast('Download failed. Please try again.', 'error');
+        showToast(i18n.toastDownloadError || 'Download failed. Please try again.', 'error');
         document.dispatchEvent(new CustomEvent('dataset:error', { detail: { slug: slug } }));
       });
   }
 
   function validateDataset(slug) {
-    var rawURL = encodeURIComponent('https://toolboxnova.com' + STATIC_BASE + slug + '.json');
+    var rawURL = encodeURIComponent('https://ycjson.top' + STATIC_BASE + slug + '.json');
     window.open(VALIDATOR_URL + '?import=' + rawURL, '_blank', 'noopener');
   }
 
@@ -242,8 +245,8 @@ var DS = (function () {
     var urlEl = document.getElementById('ds-drawer-url');
     var url = urlEl.dataset.url || urlEl.textContent;
     (navigator.clipboard ? navigator.clipboard.writeText(url) : Promise.resolve(legacyCopy(url)))
-      .then(function () { showToast('URL copied!', 'success'); })
-      .catch(function () { showToast('Copy failed', 'error'); });
+      .then(function () { showToast(i18n.toastURLSuccess || 'URL copied!', 'success'); })
+      .catch(function () { showToast(i18n.toastURLError || 'Copy failed', 'error'); });
   }
 
   function downloadFromDrawer() {
@@ -331,27 +334,12 @@ var DS = (function () {
   function updateResultCount(count) {
     var el = document.getElementById('ds-result-count');
     if (!el) return;
-    var lang = state.lang;
-    if (lang === 'zh') {
-      el.innerHTML = '显示 <strong>' + count + '</strong> 个数据集';
-    } else {
-      el.innerHTML = 'Showing <strong>' + count + '</strong> dataset' + (count !== 1 ? 's' : '');
-    }
+    var text = i18n.resultCount || 'Showing {count} datasets';
+    el.innerHTML = text.replace('{count}', '<strong>' + count + '</strong>');
   }
 
   function getCategoryLabel(cat) {
-    var lang = state.lang;
-    if (lang === 'zh') {
-      var zh = { geographic:'地理', reference:'参考', configuration:'配置', testing:'测试',
-        api_mocks:'API Mock', finance:'金融', science:'科学', sports:'体育',
-        devops:'DevOps', aiml:'AI/ML', government:'政府', social:'社交', iot:'物联网', healthcare:'医疗' };
-      return zh[cat] || cat;
-    }
-    var en = { geographic:'Geographic', reference:'Reference', configuration:'Config',
-      testing:'Testing', api_mocks:'API Mocks', finance:'Finance', science:'Science',
-      sports:'Sports', devops:'DevOps', aiml:'AI/ML', government:'Government',
-      social:'Social', iot:'IoT', healthcare:'Healthcare' };
-    return en[cat] || cat;
+    return categoryLabels[cat] || cat;
   }
 
   function legacyCopy(text) {
@@ -402,4 +390,3 @@ var DS = (function () {
   s.onerror = function () { DS.init(); }; // fallback without fuzzy search
   document.head.appendChild(s);
 })();
-

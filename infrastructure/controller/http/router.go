@@ -4,21 +4,11 @@ import (
 	"net/http"
 
 	"PycMono/github/json/infrastructure/config"
-	"PycMono/github/json/infrastructure/controller/http/ai"
 	authController "PycMono/github/json/infrastructure/controller/http/auth"
-	"PycMono/github/json/infrastructure/controller/http/color"
-	"PycMono/github/json/infrastructure/controller/http/email"
-	"PycMono/github/json/infrastructure/controller/http/image"
 	"PycMono/github/json/infrastructure/controller/http/json"
-	pdfController "PycMono/github/json/infrastructure/controller/http/pdf"
-	"PycMono/github/json/infrastructure/controller/http/privacy-check"
-	"PycMono/github/json/infrastructure/controller/http/proxy"
-	"PycMono/github/json/infrastructure/controller/http/qrcode"
 	"PycMono/github/json/infrastructure/controller/http/render"
-	"PycMono/github/json/infrastructure/controller/http/sms"
 	tokenController "PycMono/github/json/infrastructure/controller/http/token"
 	"PycMono/github/json/infrastructure/controller/http/tools"
-	"PycMono/github/json/infrastructure/controller/http/weather"
 	"PycMono/github/json/infrastructure/middleware"
 	"time"
 
@@ -26,9 +16,6 @@ import (
 )
 
 func Setup(r *gin.Engine, cfg *config.Config) {
-	// Init image services
-	image.InitOCRService(cfg.OCRSpaceAPIKey)
-
 	// Initialize security middlewares
 	ipBlacklist := middleware.NewIPBlacklistMiddleware(&middleware.IPBlacklistConfig{
 		BlackList:     cfg.Security.IPBlacklist,
@@ -119,8 +106,8 @@ func Setup(r *gin.Engine, cfg *config.Config) {
 		c.Redirect(302, "/static/img/favicon.svg")
 	})
 
-	// Page routes
-	r.GET("/", render.IndexPage)
+	// Page routes — homepage serves the JSON toolbox
+	r.GET("/", json.JsonToolsHome)
 
 	// ── Auth routes ──────────────────────────────────────────────────
 	authGroup := r.Group("/auth")
@@ -162,45 +149,7 @@ func Setup(r *gin.Engine, cfg *config.Config) {
 		adminTokenAPI.POST("/refund", tokenController.AdminRefundAPI)
 	}
 
-	// SMS Receiver routes (S-01)
-	r.GET("/sms", sms.SMSLandingPage)
-	r.GET("/sms/buy", sms.SMSBuyPage)
-	r.GET("/sms/prices", sms.SMSPricesPage)
-	r.GET("/sms/active", sms.SMSActivePage)
-	r.GET("/sms/history", sms.SMSHistoryPage)
-	r.GET("/sms/faq", sms.SMSFAQPage)
-
-	// Privacy Check routes
-	privacy := r.Group("/privacy")
-	{
-		privacy.GET("/check", privacy_check.PrivacyCheckPage)
-	}
-
-	// ── Privacy tools (standalone routes) ──────────────────────────
-	r.GET("/proxy/list", proxy.ProxyListPage)
-
-	// ── Weather Tools ─────────────────────────────────────────────
-	weatherGroup := r.Group("/weather")
-	{
-		weatherGroup.GET("/query", weather.QueryPage)
-	}
-	privacyAPI := r.Group("/api/privacy")
-	{
-		privacyAPI.POST("/check-email", privacy_check.PrivacyCheckEmail)
-		privacyAPI.GET("/password-range/:prefix", privacy_check.PrivacyPasswordRange)
-		privacyAPI.GET("/breaches", privacy_check.PrivacyBreaches)
-		// Proxy breach logos so frontend never directly loads from external sites
-		privacyAPI.GET("/logo/:name", privacy_check.PrivacyBreachLogo)
-	}
-
-	r.GET("/virtual-address", render.VirtualAddressPage)
-	r.GET("/temp-email", email.TempEmailPage)
-	r.GET("/proxy", proxy.ProxyPage)
-	r.GET("/browser-fingerprint", render.BrowserFingerprintPage)
-
-	// Redirect removed standalone pages to privacy check (merged into tabs)
-	r.GET("/password-generator", func(c *gin.Context) { c.Redirect(301, "/privacy/check") })
-	r.GET("/password-checker", func(c *gin.Context) { c.Redirect(301, "/privacy/check") })
+	// Basic site pages
 	r.GET("/about", render.AboutPage)
 	r.GET("/privacy-policy", render.PrivacyPage)
 	r.GET("/cookie-policy", render.CookiePolicyPage)
@@ -219,13 +168,6 @@ func Setup(r *gin.Engine, cfg *config.Config) {
 		toolsGroup.GET("/base-converter", json.BaseConverterPage)
 		toolsGroup.GET("/base-converter-guide", json.BaseConverterGuidePage)
 		toolsGroup.GET("/case-converter", json.CaseConverterPage)
-
-		// Media tools
-		toolsGroup.GET("/media", json.MediaToolsPage)
-		toolsGroup.GET("/media/image-compress", image.ImgCompressPage)
-		toolsGroup.GET("/media/color-converter", json.ColorConverterPage)
-		toolsGroup.GET("/media/unit-converter", json.UnitConverterPage)
-		toolsGroup.GET("/media/qr-generator", qrcode.QRGeneratorPage)
 	}
 
 	// ── New JSON Toolkit routes (/json/*)  ──────────────────────
@@ -329,102 +271,6 @@ func Setup(r *gin.Engine, cfg *config.Config) {
 		jt.GET("/learn", json.JSONLearnHub)
 		jt.GET("/learn/:slug", json.JSONLearnArticle)
 	}
-	// AI routes (canonical /ai/*)
-	aiGroup := r.Group("/ai")
-	{
-		aiGroup.GET("/humanize", ai.HumanizePage) // unified hub (tabs: home/humanizer/detector)
-		aiGroup.GET("/detector", ai.DetectorPage)
-		aiGroup.GET("/humanizer", ai.HumanizerPage)
-		aiGroup.GET("/compete", ai.AiCompeteLandingPage)
-		aiGroup.GET("/plagiarism-checker", ai.PlagiarismPage)
-		aiGroup.GET("/compete/analyze", ai.AiCompetePage)
-		aiGroup.GET("/essay", ai.EssayPage)
-		aiGroup.GET("/sentence-rewriter", ai.SentenceRewriterPage)
-		aiGroup.GET("/for-college", ai.ForCollegePage)
-		aiGroup.GET("/for-professors", ai.ForProfessorsPage)
-		aiGroup.GET("/paragraph-rewriter", ai.ParagraphRewriterPage)
-		aiGroup.GET("/article-rewriter", ai.ArticleRewriterPage)
-		aiGroup.GET("/detector/for-academic-writing", ai.DetectorAcademicPage)
-		aiGroup.GET("/image", ai.AIImagePage)
-		aiGroup.GET("/image-generator", ai.AIImageLandingPage)
-	}
-
-	// Image/Multimedia tools
-	img := r.Group("/img")
-	{
-		img.GET("/compress", image.ImgCompressPage)
-		img.GET("/compress-guide", image.ImgCompressGuidePage)
-		img.GET("/resize", image.ImgResizePage)
-		img.GET("/resize-guide", image.ImgResizeGuidePage)
-		img.GET("/metadata", image.ImgMetadataPage)
-		img.GET("/metadata-guide", image.ImgMetadataGuidePage)
-		// Image Toolbox (I-00 ~ I-04)
-		img.GET("/crop", image.ImgCropPage)
-		img.GET("/crop-guide", image.ImgCropGuidePage)
-		img.GET("/convert-to-jpg", image.ImgConvertToJpgPage)
-		img.GET("/convert-to-jpg-guide", image.ImgConvertToJpgGuidePage)
-		img.GET("/jpg-to-image", image.ImgJpgToImagePage)
-		img.GET("/jpg-to-image-guide", image.ImgJpgToImageGuidePage)
-		img.GET("/photo-editor", image.ImgPhotoEditorPage)
-		img.GET("/photo-editor-guide", image.ImgPhotoEditorGuidePage)
-		img.GET("/remove-bg", image.ImgRemoveBgPage)
-		img.GET("/remove-bg-guide", image.ImgRemoveBgGuidePage)
-		img.GET("/watermark", image.ImgWatermarkPage)
-		img.GET("/watermark-guide", image.ImgWatermarkGuidePage)
-		img.GET("/rotate", image.ImgRotatePage)
-		img.GET("/rotate-guide", image.ImgRotateGuidePage)
-		// New image tools
-		img.GET("/ocr", image.ImgOCRPage)
-		img.GET("/ocr-guide", image.ImgOCRGuidePage)
-		img.GET("/to-video", image.ImgToVideoPage)
-		img.GET("/to-video-guide", image.ImgToVideoGuidePage)
-		img.GET("/to-pdf", image.ImgToPDFPage)
-		img.GET("/to-pdf-guide", image.ImgToPDFGuidePage)
-	}
-
-	// Media tools (alias for img)
-	media := r.Group("/media")
-	{
-		media.GET("/image-compress", image.ImgCompressPage)
-		media.GET("/image-resize", image.ImgResizePage)
-		media.GET("/image-resize-guide", image.ImgResizeGuidePage)
-		media.GET("/image-metadata", image.ImgMetadataPage)
-		media.GET("/image-metadata-guide", image.ImgMetadataGuidePage)
-		// QR Code Generator
-		media.GET("/qr", qrcode.QRPage)
-		media.GET("/qr-guide", qrcode.QRGuidePage)
-		media.POST("/qr/api/eps", qrcode.QREpsDownload)
-	}
-
-	// ── PDF Tools Suite — /pdf/* ──────────────────────────────
-	pdfGroup := r.Group("/pdf")
-	{
-		pdfGroup.GET("/reorder", pdfController.ReorderPage)
-		pdfGroup.GET("/extract-text", pdfController.ExtractTextPage)
-		pdfGroup.GET("/merge", pdfController.MergePage)
-		pdfGroup.GET("/split", pdfController.SplitPage)
-		pdfGroup.GET("/to-image", pdfController.ToImagePage)
-		pdfGroup.GET("/watermark", pdfController.WatermarkPage)
-		pdfGroup.GET("/encrypt", pdfController.EncryptPage)
-		pdfGroup.GET("/compress", pdfController.CompressPage)
-	}
-
-	// ── Color Tools Suite — /color/* ──────────────────────────────
-	colorGroup := r.Group("/color")
-	{
-		colorGroup.GET("/tools", color.ColorToolsHub)
-		colorGroup.GET("/picker", color.ColorPickerPage)
-		colorGroup.GET("/palette", color.ColorPalettePage)
-		colorGroup.GET("/wheel", color.ColorWheelPage)
-		colorGroup.GET("/converter", color.ColorConverterV2Page)
-		colorGroup.GET("/contrast", color.ColorContrastPage)
-		colorGroup.GET("/gradient", color.ColorGradientPage)
-		colorGroup.GET("/image-picker", color.ColorImagePickerPage)
-		colorGroup.GET("/blindness", color.ColorBlindnessPage)
-		colorGroup.GET("/names", color.ColorNamesPage)
-		colorGroup.GET("/mixer", color.ColorMixerPage)
-		colorGroup.GET("/tailwind", color.ColorTailwindPage)
-	}
 
 	// Developer Tools Suite — /dev/*
 	dev := r.Group("/dev")
@@ -451,106 +297,13 @@ func Setup(r *gin.Engine, cfg *config.Config) {
 	{
 		api.GET("/search", render.SearchAPI)
 
-		// AI API (canonical /api/ai/*)
-		aiAPI := api.Group("/ai")
-		aiAPI.Use(middleware.RateLimit(3, time.Minute))
-		{
-			aiAPI.POST("/detect", ai.HumanizerDetectAPI)
-			aiAPI.POST("/detect-file", ai.DetectFileAPI)
-			aiAPI.POST("/humanize", ai.HumanizerStream)
-			aiAPI.POST("/humanize-json", ai.HumanizerNewAPI) // JSON (non-streaming) for detector
-			aiAPI.POST("/fetch-url", ai.DetectURLAPI)
-			aiAPI.POST("/plagiarism-check", ai.PlagiarismCheckAPI)
-			aiAPI.POST("/image/generate", ai.AIImageGenerate)
-			aiAPI.POST("/image/enhance", ai.AIImageEnhancePrompt)
-			aiAPI.GET("/image/models", ai.AIImageModels)
-			aiAPI.GET("/image/history", ai.AIImageHistory)
-		}
-
-		// API v1 — Public API with API key auth (60 req/min)ntttv1API := api.Group("/v1")ntttv1API.Use(middleware.APIKeyAuth())nttt{nttttv1API.POST("/humanize", ai.HumanizeAPIV1)nttttv1API.POST("/detect", ai.DetectAPIV1)nttt}
-
-		// AI Compete API
-		aiCompeteAPI := api.Group("/ai-compete")
-		aiCompeteAPI.Use(middleware.RateLimit(3, time.Minute))
-		{
-			aiCompeteAPI.POST("/analyze", ai.AiCompeteAnalyze)
-			aiCompeteAPI.POST("/suggest", ai.AiCompeteSuggest)
-		}
-
-		// SMS API (S-05, S-06, S-07, S-08, S-09)
-		smsGroup := api.Group("/sms")
-		{
-			// S-10: 5SIM API 代理层
-			smsGroup.GET("/products", sms.SMSGetProducts)
-			smsGroup.GET("/countries", sms.SMSGetCountries)
-			smsGroup.GET("/operators", sms.SMSGetOperators)
-			smsGroup.GET("/prices", sms.SMSGetPrices)
-			smsGroup.GET("/price-countries", sms.SMSGetPriceCountries)
-			smsGroup.GET("/stats", sms.SMSGetStats)
-
-			// S-06: 订单管理
-			smsGroup.POST("/buy", sms.SMSBuyNumber)
-			smsGroup.GET("/order/:orderId", sms.SMSGetOrder)
-			smsGroup.POST("/order/:orderId/cancel", sms.SMSCancelOrder)
-			smsGroup.POST("/order/:orderId/finish", sms.SMSFinishOrder)
-			smsGroup.POST("/order/:orderId/rebuy", sms.SMSRebuyNumber)
-
-			// S-07: 活跃订单列表
-			smsGroup.GET("/orders/active", sms.SMSGetActiveOrders)
-
-			// S-08: 历史订单列表（分页+筛选）
-			smsGroup.GET("/orders/history", sms.SMSGetOrderHistory)
-		}
-
-		// 价格快捷路径 /api/prices（与 /api/sms/prices 相同）
-		api.GET("/prices", sms.SMSGetPrices)
-
-		// Email API
-		emailGroup := api.Group("/email")
-		{
-			emailGroup.POST("/create", email.EmailCreateAPI)
-			emailGroup.POST("/custom", email.EmailCustomAPI)
-			emailGroup.GET("/messages/:address", email.EmailMessagesAPI)
-			emailGroup.DELETE("/destroy/:address", email.EmailDestroyAPI)
-			emailGroup.GET("/stats", email.EmailStatsAPI)
-			emailGroup.POST("/extend/:address", email.EmailExtendAPI)
-		}
-
-		// Proxy API
-		proxyGroup := api.Group("/proxy")
-		{
-			proxyGroup.POST("/fetch", proxy.ProxyFetchAPI)
-			proxyGroup.GET("/stats", proxy.ProxyStatsAPI)
-			proxyGroup.GET("/nodes", proxy.ProxyNodesAPI)
-		}
-
-		// Proxy List API
-		api.GET("/proxy-list/data",
-			middleware.RateLimit(30, time.Minute),
-			proxy.ProxyListDataAPI)
-		api.POST("/proxy-list/refresh",
-			middleware.RateLimit(1, 10*time.Minute),
-			authController.RequireAuth(),
-			middleware.AdminAuth(cfg),
-			proxy.ProxyListRefreshAPI)
-		api.GET("/proxy-list/export",
-			middleware.RateLimit(10, time.Minute),
-			proxy.ProxyListExportAPI)
-
 		// Whois proxy (for /dev/whois)
 		api.GET("/whois", tools.WhoisAPI)
-
-		// Image Tools API
-		imgAPI := api.Group("/img")
-		imgAPI.Use(middleware.RateLimit(20, time.Minute))
-		{
-			imgAPI.POST("/ocr", image.ImgOCRAPI)
-		}
 
 		// Tools API
 		toolsAPI := api.Group("/tools")
 		{
-			// JSON URL 代理抓取（每 IP 每分钟最多 30 次）
+			// JSON URL proxy fetch
 			toolsAPI.GET("/json/fetch",
 				middleware.RateLimit(30, time.Minute),
 				json.JSONFetch,

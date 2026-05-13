@@ -91,9 +91,9 @@ func JsonToolPage(toolKey string) gin.HandlerFunc {
 		}[lang]
 
 		// Canonical URL
-		canonical := "https://toolboxnova.com/json/" + toolKey
-		hreflangZH := "https://toolboxnova.com/json/" + toolKey + "?lang=zh"
-		hreflangEN := "https://toolboxnova.com/json/" + toolKey + "?lang=en"
+		canonical := "https://ycjson.top/json/" + toolKey
+		hreflangZH := "https://ycjson.top/json/" + toolKey + "?lang=zh"
+		hreflangEN := "https://ycjson.top/json/" + toolKey + "?lang=en"
 
 		var seoArticle string
 		switch toolKey {
@@ -276,6 +276,15 @@ func JsonToolsHome(c *gin.Context) {
 		{Icon: "🗃️", TitleZH: "JSON 数据集", TitleEN: "JSON Datasets", DescZH: "85+ 免费开源数据集，用于测试和开发", DescEN: "85+ free, open-source datasets for testing and development.", URL: "/json/datasets", Badge: "85+"},
 	}
 
+	// Root (/) is the canonical JSON homepage
+	canonical := "https://ycjson.top/"
+
+	// If serving from root, pretend we're on /json so navbar active-states work
+	currentPath := c.Request.URL.Path
+	if currentPath == "/" {
+		currentPath = "/json"
+	}
+
 	data := render.BaseData(c, gin.H{
 		"Title":          titleMap[lang],
 		"Description":    descMap[lang],
@@ -287,6 +296,10 @@ func JsonToolsHome(c *gin.Context) {
 		"LearnResources": learnResources,
 		"PageClass":      "page-json-home",
 		"SEOArticle":     template.HTML(seoArticle),
+		"Canonical":      canonical,
+		"HreflangEN":     canonical + "?lang=en",
+		"HreflangZH":     canonical + "?lang=zh",
+		"CurrentPath":    currentPath,
 	})
 	render.RenderJSONTool(c, "home.html", data)
 }

@@ -27,9 +27,9 @@ func ImgResizeGuidePage(c *gin.Context) {
 		"Title":       t("img.resize.guide.seo.title"),
 		"Description": t("img.resize.guide.seo.desc"),
 		"Keywords":    "image resize guide,resize images for web,social media image sizes,instagram image size,facebook image size,youtube thumbnail size,image dimensions guide,how to resize images,image aspect ratio,crop focus",
-		"Canonical":   "https://toolboxnova.com/img/resize-guide",
-		"HreflangZH":  "https://toolboxnova.com/img/resize-guide?lang=zh",
-		"HreflangEN":  "https://toolboxnova.com/img/resize-guide?lang=en",
+		"Canonical":   "https://ycjson.top/img/resize-guide",
+		"HreflangZH":  "https://ycjson.top/img/resize-guide?lang=zh",
+		"HreflangEN":  "https://ycjson.top/img/resize-guide?lang=en",
 		"PageClass":   "page-img-resize-guide",
 	})
 	render.Render(c, "img/img-resize-guide.html", data)

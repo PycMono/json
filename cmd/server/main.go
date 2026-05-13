@@ -66,7 +66,7 @@ func main() {
 	emailCodeRepo := redis_persistence.NewEmailCodeRepository(sessionRDB)
 	var emailSender repository.IEmailSender
 	if cfg.EmailAPIKey != "" {
-		emailSender = email.NewResendSender(cfg.EmailAPIKey, "json <noreply@toolboxnova.com>")
+		emailSender = email.NewResendSender(cfg.EmailAPIKey, "json <noreply@ycjson.top>")
 	}
 	authSvc := auth_service.NewAuthService(cfg.OAuth, userRepo, oauthRepo, sessionRepo, stateRepo, emailCodeRepo, emailSender)
 	authController.SetAuthService(authSvc)

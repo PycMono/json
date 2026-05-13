@@ -1,9 +1,9 @@
 -- proxies 代理服务器列表
 -- ─────────────────────────────────────────────────────────────────────────────
 -- 用途: 存储从公开 API 同步的免费代理服务器数据
--- 使用方式: mysql -u root -p toolboxnova < scripts/sql/proxies.sql
+-- 使用方式: mysql -u root -p biz < scripts/sql/proxies.sql
 
-USE toolboxnova;
+USE biz;
 
 -- 代理服务器表
 CREATE TABLE IF NOT EXISTS `proxies`

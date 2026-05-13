@@ -518,8 +518,8 @@
 }
 
 [data-theme="dark"] .editor-tab--active {
-  color: #fbbf24;
-  border-bottom-color: #fbbf24;
+  color: #818cf8;
+  border-bottom-color: #818cf8;
   background: #1a1a18;
 }
 
@@ -535,7 +535,7 @@
 }
 
 [data-theme="dark"] .url-bar-input:focus {
-  border-color: #fbbf24;
+  border-color: #818cf8;
   box-shadow: 0 0 0 3px rgba(251, 191, 36, 0.15);
 }
 
@@ -740,7 +740,7 @@
 }
 
 [data-theme="dark"] .jt-url-bar__input:focus {
-  border-color: #fbbf24;
+  border-color: #818cf8;
   box-shadow: 0 0 0 3px rgba(251, 191, 36, 0.15);
 }
 
@@ -759,8 +759,8 @@
 }
 
 .jt-theme-btn:hover {
-  border-color: var(--jt-amber);
-  background: var(--jt-amber-light);
+  border-color: var(--jt-primary);
+  background: var(--jt-primary-light);
   transform: rotate(20deg);
 }
 
@@ -787,8 +787,8 @@
   transition: background .1s;
 }
 
-.jt-theme-opt:hover { background: var(--jt-amber-light); }
-.jt-theme-opt.active { color: var(--jt-amber-dark); font-weight: 600; }
+.jt-theme-opt:hover { background: var(--jt-primary-light); }
+.jt-theme-opt.active { color: var(--jt-primary-dark); font-weight: 600; }
 
 /* Dark theme specific overrides for editor panel */
 .json-editor-panel.theme-dark .json-toolbar {

@@ -13,7 +13,6 @@
   "toolColor": { "message": "Color" },
   "toolImage": { "message": "Imagen" },
   "toolTimestamp": { "message": "Timestamp" },
-  "toolQrcode": { "message": "QR" },
   "toolAiDetect": { "message": "Detectar IA" },
   "toolAiHumanize": { "message": "Humanizar" }
 }

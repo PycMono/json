@@ -28,37 +28,33 @@
   </div>
 </section>
 
-<!-- Tool Groups -->
-<section class="jt-home-tools">
-  <div class="jt-container">
-
-    {{ $lang := .Lang }}
+<!-- Category Tabs -->
+<div class="jt-container">
+  <div class="jt-category-tabs" id="categoryTabs">
+    <button class="jt-category-tab active" data-group="all" onclick="filterGroup('all')">{{ call .T "json.home.all" }}</button>
     {{ $groups := list "validate" "view" "convert" "codegen" "generate" "schema" "encode" }}
     {{ range $groups }}
-    <div class="jt-tool-group" data-group="{{ . }}">
-      <h2 class="jt-tool-group__title">
-        <span class="jt-group-name">{{ call $.T (printf "json.home.group.%s" .) }}</span>
-        <span class="jt-group-count">{{ groupCount $.AllTools . }}</span>
-      </h2>
-      <div class="jt-tool-grid" id="grid-{{ . }}">
-        {{ $g := . }}
-        {{ range $.AllTools }}{{ if eq .Group $g }}
-        <a class="jt-tool-card" href="/json/{{ .Key }}?lang={{ $lang }}" data-ga="json_home_tool_card" data-ga-category="json_nav" data-ga-label="{{ .Key }}">
-          <span class="jt-tool-card__icon">{{ .Icon }}</span>
-          <div class="jt-tool-card__body">
-            <span class="jt-tool-card__name">{{ if eq $lang "zh" }}{{ .TitleZH }}{{ else }}{{ .TitleEN }}{{ end }}</span>
-            <span class="jt-tool-card__desc">{{ if eq $lang "zh" }}{{ .DescZH }}{{ else }}{{ .DescEN }}{{ end }}</span>
-          </div>
-          <svg class="jt-tool-card__arrow" width="14" height="14" viewBox="0 0 24 24"
-               fill="none" stroke="currentColor" stroke-width="2">
-            <polyline points="9 18 15 12 9 6"/>
-          </svg>
-        </a>
-        {{ end }}{{ end }}
-      </div>
-    </div>
+    <button class="jt-category-tab" data-group="{{ . }}" onclick="filterGroup('{{ . }}')">{{ call $.T (printf "json.home.group.%s" .) }}</button>
     {{ end }}
+  </div>
+</div>
 
+<!-- Tool Grid -->
+<section class="jt-home-tools">
+  <div class="jt-container">
+    {{ $lang := .Lang }}
+    <div class="jt-tool-grid jt-tool-grid--bento" id="toolGrid">
+      {{ range $.AllTools }}
+      <a class="jt-tool-card jt-tool-card--{{ .Group }}" href="/json/{{ .Key }}?lang={{ $lang }}" data-ga="json_home_tool_card" data-ga-category="json_nav" data-ga-label="{{ .Key }}" data-group="{{ .Group }}">
+        <span class="jt-tool-card__icon">{{ .Icon }}</span>
+        <div class="jt-tool-card__body">
+          <span class="jt-tool-card__name">{{ if eq $lang "zh" }}{{ .TitleZH }}{{ else }}{{ .TitleEN }}{{ end }}</span>
+          <span class="jt-tool-card__desc">{{ if eq $lang "zh" }}{{ .DescZH }}{{ else }}{{ .DescEN }}{{ end }}</span>
+        </div>
+        <span class="jt-tool-card__badge">{{ call $.T (printf "json.home.group.%s" .Group) }}</span>
+      </a>
+      {{ end }}
+    </div>
   </div>
 </section>
 

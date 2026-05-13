@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## Project Overview
 
-ToolBoxNova (toolboxnova.com) — a privacy-focused online tools website built with Go 1.25 + Gin. Provides tools including SMS receiver, password generator, virtual address generator, temp email, AI detection/humanization, JSON tools, image tools, color tools, PDF tools, QR code, developer utilities, weather, proxy list, and more.
+ToolBoxNova (ycjson.top) — a privacy-focused online tools website built with Go 1.25 + Gin. Provides tools including SMS receiver, password generator, virtual address generator, temp email, AI detection/humanization, JSON tools, image tools, color tools, PDF tools, QR code, developer utilities, weather, proxy list, and more.
 
 ## Common Commands
 

@@ -19,7 +19,7 @@
   "whois.hero.cta_guide": "WHOIS 가이드",
 
   "whois.input.label": "도메인 이름 입력",
-  "whois.input.placeholder": "예: example.com, toolboxnova.com, openai.com",
+  "whois.input.placeholder": "예: example.com, ycjson.top, openai.com",
   "whois.input.btn_lookup": "조회",
   "whois.input.btn_clear": "지우기",
   "whois.input.btn_example": "예제 시도",
@@ -28,7 +28,7 @@
   "whois.examples.google": "google.com",
   "whois.examples.github": "github.com",
   "whois.examples.cloudflare": "cloudflare.com",
-  "whois.examples.toolboxnova": "toolboxnova.com",
+  "whois.examples.toolboxnova": "ycjson.top",
   "whois.examples.openai": "openai.com",
 
   "whois.error.invalid_domain": "이 도메인을 인식할 수 없습니다. 유효한 도메인 이름을 입력하세요(예: example.com).",

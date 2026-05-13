@@ -1,6 +1,6 @@
 -- seed_proxies.py 自动生成的测试数据
 -- 生成 10000 条记录 · 2026-04-17 23:50:56 UTC
-USE toolboxnova;
+USE biz;
 
 DELETE FROM `proxies` WHERE `source` = 'seed';
 

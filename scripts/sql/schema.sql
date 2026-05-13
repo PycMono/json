@@ -3,10 +3,10 @@
 -- 使用方式: mysql -u root -p < scripts/sql/schema.sql
 
 -- 创建数据库（如果不存在）
-CREATE DATABASE IF NOT EXISTS `toolboxnova` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+CREATE DATABASE IF NOT EXISTS `biz` CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 
 -- 切换到目标数据库
-USE toolboxnova;
+USE biz;
 
 -- sms_country  国家表
 -- ─────────────────────────────────────────────────────────────────────────────

@@ -269,7 +269,7 @@ func buildProxyListJSONLD(t func(string) string) template.JS {
 				"name":                t("proxy-list.seo.title"),
 				"applicationCategory": "UtilityApplication",
 				"operatingSystem":     "Web Browser",
-				"url":                 "https://toolboxnova.com/proxy/list",
+				"url":                 "https://ycjson.top/proxy/list",
 				"offers":              map[string]string{"@type": "Offer", "price": "0", "priceCurrency": "USD"},
 				"description":         t("proxy-list.seo.desc"),
 			},

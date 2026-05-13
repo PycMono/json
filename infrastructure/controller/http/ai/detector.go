@@ -28,11 +28,11 @@ func DetectorPage(c *gin.Context) {
 		"ToolName":      "ai-detector",
 		"Lang":          lang,
 		"FAQ":           faq.DetectorFAQs,
-		"HreflangEN":    "https://toolboxnova.com/ai/detector?lang=en",
-		"HreflangZH":    "https://toolboxnova.com/ai/detector?lang=zh",
-		"HreflangJA":    "https://toolboxnova.com/ai/detector?lang=ja",
-		"HreflangKO":    "https://toolboxnova.com/ai/detector?lang=ko",
-		"HreflangES":    "https://toolboxnova.com/ai/detector?lang=es",
+		"HreflangEN":    "https://ycjson.top/ai/detector?lang=en",
+		"HreflangZH":    "https://ycjson.top/ai/detector?lang=zh",
+		"HreflangJA":    "https://ycjson.top/ai/detector?lang=ja",
+		"HreflangKO":    "https://ycjson.top/ai/detector?lang=ko",
+		"HreflangES":    "https://ycjson.top/ai/detector?lang=es",
 		"FreeWordLimit": 15000,
 	})
 	render.Render(c, "ailab/detector.html", data)
